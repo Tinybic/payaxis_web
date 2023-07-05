@@ -1,0 +1,167 @@
+// 
+// type.scss
+//
+
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 10px 0;
+    font-family: $font-family-base;
+    color: #{$typeblackprimary};
+    font-weight: $font-weight-normal;
+}
+.bold-700{
+    font-weight: 700;
+}
+
+.bold-600{
+    font-weight: 600;
+}
+
+h1{
+    font-size: 5.6125rem;
+    line-height: 7rem;
+    letter-spacing: -1.5px;
+}
+
+h2 {
+    font-size: 4.20875rem;
+    line-height: 4.5rem;
+    letter-spacing: -0.5px;
+}
+
+h3 {
+    font-size: 3.1575rem;
+    line-height: 3.5rem;
+    letter-spacing: -0px;
+}
+h5 {
+    line-height: 2rem;
+    letter-spacing: -0.18px;
+}
+
+h6 {
+    color: #{$primarylight};
+    font-weight: $font-weight-bold;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    line-height: 1rem;
+}
+
+.ms-1-1 {
+    margin-left: 0.5rem;
+}
+
+.mb-1-1 {
+    margin-bottom: 0.5rem;
+}
+
+.mt-1-1 {
+    margin-top: 0.5rem;
+}
+
+.mb-2-1 {
+    margin-bottom: 1rem;
+}
+
+.ms-2-1 {
+    margin-left: 1rem;
+}
+
+.mt-2-1 {
+    margin-top: 1rem;
+}
+// Font sizes (Custom)
+.font-11 {
+    font-size: 11px !important;
+}
+
+.font-12 {
+    font-size: 12px !important;
+}
+
+.font-13 {
+    font-size: 13px !important;
+}
+
+.font-14 {
+    font-size: 14px !important;
+}
+
+.font-15 {
+    font-size: 15px !important;
+}
+
+.font-16 {
+    font-size: 16px !important;
+}
+
+.font-17 {
+    font-size: 17px !important;
+}
+
+.font-18 {
+    font-size: 18px !important;
+}
+
+.font-19 {
+    font-size: 19px !important;
+}
+
+.font-20 {
+    font-size: 20px !important;
+}
+
+.font-22 {
+    font-size: 22px !important;
+}
+
+.font-24 {
+    font-size: 24px !important;
+}
+
+.font-26 {
+    font-size: 26px !important;
+}
+
+.font-28 {
+    font-size: 28px !important;
+}
+
+// Font Weight
+
+.fw-medium {
+    font-weight: $font-weight-medium;
+}
+
+.fw-semibold {
+    font-weight: $font-weight-semibold;
+}
+
+// dark mode
+body[data-layout-color="dark"] {
+
+    .h1,
+    .h2,
+    .h3,
+    .h4,
+    .h5,
+    .h6,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        color: #{map-get($dark-grays, "800")};
+    }
+}

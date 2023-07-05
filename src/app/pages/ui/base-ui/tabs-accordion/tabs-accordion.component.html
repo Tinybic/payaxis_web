@@ -1,0 +1,78 @@
+<div class="row">
+    <div class="col-xl-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title mb-4">Tabs Justified</h4>
+
+                <ul ngbNav #nav2="ngbNav" [(activeId)]="tabs2" class="nav-pills navtab-bg nav-justified">
+                    <li [ngbNavItem]="1">
+                        <a ngbNavLink>
+                            Home
+                        </a>
+                        <ng-template ngbNavContent>
+                            <ng-container *ngTemplateOutlet="Tab1"></ng-container>
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="2">
+                        <a ngbNavLink>
+                            Profile
+                        </a>
+                        <ng-template ngbNavContent>
+                            <ng-container *ngTemplateOutlet="Tab2"></ng-container>
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="3">
+                        <a ngbNavLink>
+                            Messages
+                        </a>
+                        <ng-template ngbNavContent>
+                            <ng-container *ngTemplateOutlet="Tab3"></ng-container>
+                        </ng-template>
+                    </li>
+                </ul>
+                <div [ngbNavOutlet]="nav2"></div>
+
+            </div>
+        </div> <!-- end card-->
+    </div> <!-- end col -->
+</div>
+<!-- end row -->
+
+<!-- reusable templates -->
+<ng-template #Tab1>
+    <p>Vakal text here dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum
+        sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies
+        nec,
+        pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
+    <p class="mb-0">Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut,
+        imperdiet
+        a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus
+        elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae,
+        eleifend
+        ac, enim.</p>
+</ng-template>
+
+<ng-template #Tab2>
+    <p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a,
+        venenatis
+        vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum
+        semper
+        nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
+    <p class="mb-0">Vakal text here dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
+        Aenean
+        massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis,
+        ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
+</ng-template>
+
+<ng-template #Tab3>
+    <p>Vakal text here dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum
+        sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies
+        nec,
+        pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
+    <p class="mb-0">Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut,
+        imperdiet
+        a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus
+        elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae,
+        eleifend
+        ac, enim.</p>
+</ng-template>

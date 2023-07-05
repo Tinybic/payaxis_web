@@ -1,0 +1,39 @@
+// 
+// pagination.scss
+//
+
+
+// Pagination rounded (Custom)
+.pagination-rounded {
+    .page-link {
+        border-radius: 30px !important;
+        margin: 0 6px;
+        border: none;
+    }
+    .page-item {
+        &:last-child {
+            .page-link {
+                margin-right: 0px;
+            }
+        }
+    }
+}
+
+.pagination {
+    a {
+        line-height: $line-height-sm !important;
+    }
+}
+
+.number-rounded {
+    border-radius: 20px;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #ffffff;
+    background-color: #215EA9;
+    text-align: center;
+    line-height: 20px;
+    display: inline-block;
+}

@@ -1,0 +1,44 @@
+<div style="display: flex; height: 100vh;">
+
+    <div style="background-color: royalblue; flex: 1;">
+
+    </div>
+    <div class="p-3" style="width: 579px; background-color: var(--ct-backgroundmaterial);">
+        <div class="account-pages" style="background-color: var(--ct-white);height: 100%">
+            <div class="row justify-content-center">
+                <div class="col-md-12 col-lg-12 col-xl-12">
+                    <div class="text-center" *ngIf="hasLogo">
+                        <div class="auth-logo mt-3">
+                            <a [routerLink]="'/'" class="logo logo-dark mt-1-1">
+                                <span class="logo-lg">
+                                    <img src="assets/images/logo.png" alt="" height="30">
+                                </span>
+                            </a>
+
+                            <a [routerLink]="'/'" class="logo logo-light mt-1-1 ">
+                                <span class="logo-lg">
+                                    <img src="assets/images/logo.png" alt="" height="30">
+                                </span>
+                            </a>
+                        </div>
+                        <p class="text-muted mt-2 mb-4"></p>
+
+                    </div>
+                    <div class="card" [class]="cardClass">
+                        <div class="card-body p-3">
+
+                            <ng-content></ng-content>
+
+                        </div> <!-- end card-body -->
+                    </div>
+
+                    <ng-content select="[footerLink]"></ng-content>
+
+                </div> <!-- end col -->
+            </div>
+            <!-- end row -->
+        </div>
+    </div>
+
+</div>
+<!-- end page -->

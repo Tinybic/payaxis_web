@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-xl-6">
+                        <h4 class="header-title">Default Buttons</h4>
+                        <p class="sub-header">
+                            Use the button classes on an <code>&lt;a&gt;</code>, <code>&lt;button&gt;</code>, or
+                            <code>&lt;input&gt;</code> element.
+                        </p>
+
+                        <div class="button-list">
+                            <button type="button" *ngFor="let variant of variants2"
+                                class="btn btn-{{variant}} waves-effect"
+                                [class.waves-light]="!['secondary','light','link'].includes(variant)">{{variant |
+                                titlecase}}</button>
+                        </div>
+                    </div> <!-- end col -->
+
+                    
+                </div> <!-- end row -->
+            </div>
+        </div> <!-- end card-->
+    </div> <!-- end col -->
+</div>
+<!-- end row-->
