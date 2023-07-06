@@ -38,7 +38,7 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/web.config"
+              "src/routes.json"
             ],
             "styles": [
               "src/assets/scss/theme.scss"
