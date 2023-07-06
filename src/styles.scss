@@ -1,1 +1,50 @@
 /* You can add global styles to this file, and also import other style files */
+.otherLogin {
+    display: flex;
+    flex: 1;
+    text-align: center;
+    border-radius: 8px;
+    border: 1px solid #E5E7EB;
+    padding: 10px 16px;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.lineorline {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    color: #20202080;
+
+}
+
+.lineorline:after,
+.lineorline:before {
+    background: #E5E7EB;
+    content: "";
+    height: 1px;
+    width: 50%;
+}
+
+.lineorline:before {
+    margin-right: 24px;
+}
+
+.lineorline:after {
+    margin-left: 24px;
+}
+
+.passwordIcon {
+    position: absolute;
+    font-size: 1rem;
+    right: 1rem;
+    top: 40px;
+    cursor: pointer;
+}
+.auth-button{
+    position: fixed; bottom: 24px; width: 481px;
+}

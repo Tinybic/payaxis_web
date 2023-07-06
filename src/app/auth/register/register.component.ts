@@ -12,58 +12,44 @@ import { User } from 'src/app/core/models/auth.models';
 @Component({
   selector: 'app-auth-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
-
   signUpForm: FormGroup = this.fb.group({
-    name: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required]]
-  });;
+    password: ['', [Validators.required]],
+  });
   formSubmitted: boolean = false;
   showPassword: boolean = false;
   loading: boolean = false;
   error: string = '';
 
-  constructor (
+  constructor(
     private fb: FormBuilder,
     private router: Router,
-    private authenticationService: AuthenticationService,
-  ) { }
+    private authenticationService: AuthenticationService
+  ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   /**
-  * convenience getter for easy access to form fields
-  */
+   * convenience getter for easy access to form fields
+   */
   get formValues() {
     return this.signUpForm.controls;
   }
 
+  inputShowPassword() {
+    this.showPassword = !this.showPassword;
+  }
 
   /**
    * On form submit
    */
   onSubmit(): void {
     this.formSubmitted = true;
-
     if (this.signUpForm.valid) {
       this.loading = true;
-      this.authenticationService.signup(this.formValues['name'].value, this.formValues['email'].value, this.formValues['password'].value)
-        .pipe(first())
-        .subscribe(
-          (data: User) => {
-            // navigates to confirm mail screen
-            this.router.navigate(['/auth/confirm-mail']);
-          },
-          (error: string) => {
-            this.error = error;
-            this.loading = false;
-          });
     }
   }
-
-
 }

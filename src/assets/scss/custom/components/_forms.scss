@@ -32,6 +32,24 @@ input.form-control[type="range"] {
 }
 
 
+.form-control:disabled, .form-control[readonly]{
+    border: 1px solid #D1D8E2;
+    background-color: #F1F3F9;
+    color:#20202080;
+    
+}
+
+
+.form-check-input:disabled{
+    background-color: #F1F3F9;
+    border-color: #D1D8E2;
+}
+
+.form-check-input:checked:disabled{
+    background-color: #D1D8E2;
+    border-color: #D1D8E2;
+}
+
 // Custom select
 .custom-select.is-invalid, .form-control.is-invalid,.custom-select:invalid, .form-control:invalid,
 .custom-select.is-valid, .form-control.is-valid, .custom-select:valid,.form-control:valid {
