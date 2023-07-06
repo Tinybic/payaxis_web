@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
     password: ['', Validators.required]
   });
   formSubmitted: boolean = false;
+  showPassword: boolean = false;
   error: string = '';
   returnUrl: string = '/';
   loading: boolean = false;
@@ -42,6 +43,10 @@ export class LoginComponent implements OnInit {
    */
   get formValues() { return this.loginForm.controls; }
 
+  inputShowPassword() {
+    this.showPassword = !this.showPassword;
+  }
+
   /**
   * On submit form
   */
@@ -50,16 +55,7 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.loading = true;
       this.router.navigate(['icons/feather']);
-      // this.authenticationService.login(this.formValues['email'].value, this.formValues['password'].value)
-      //   .pipe(first())
-      //   .subscribe(
-      //     (data: User) => {
-      //       this.router.navigate([this.returnUrl]);
-      //     },
-      //     (error: string) => {
-      //       this.error = error;
-      //       this.loading = false;
-      //     });
+      
     }
   }
 

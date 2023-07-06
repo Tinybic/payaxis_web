@@ -10,6 +10,7 @@ import { RecoverPasswordComponent } from './recover-password/recover-password.co
 import { LockScreenComponent } from './lock-screen/lock-screen.component';
 import { ConfirmMailComponent } from './confirm-mail/confirm-mail.component';
 import { LogoutComponent } from './logout/logout.component';
+import { InfoComponent } from './info/info.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { LogoutComponent } from './logout/logout.component';
     RecoverPasswordComponent,
     LockScreenComponent,
     ConfirmMailComponent,
-    LogoutComponent
+    LogoutComponent,
+    InfoComponent
   ],
   imports: [
     CommonModule,

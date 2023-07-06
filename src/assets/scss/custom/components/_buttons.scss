@@ -8,8 +8,22 @@
     box-shadow: $btn-box-shadow rgba($color, 0.5);
 }
 
+.btn {
+    font-weight: 600;
+}
+
+.btn:disabled,
+.btn.disabled,
+fieldset:disabled .btn {
+    background-color: #D1D8E2;
+    color: #FFFFFF;
+    opacity: 1;
+}
+
 
 .btn-primary {
+    box-shadow: 0 0 0 2px #ffffff;
+    border: 2px solid transparent;
     &:hover {
         background-color: #{$interactivelighthover};
         border-color: #{$interactivelighthover};
@@ -20,6 +34,16 @@
         border-color: #{$interactivelight};
         box-shadow: none !important;
     }
+    &:focus {
+        border: 2px solid #ffffff;
+        box-shadow: 0 0 0 2px #4468E9;
+    }
+    
+
+}
+.btn-primary::before{
+    content: ' ';
+    padding-left: 2px ;
 }
 
 // Button Shadows
@@ -59,7 +83,6 @@ $value in $theme-colors {
         border-color: #{map-get($grays, "100")};
     }
 
-    &:focus,
     &.focus {
         box-shadow: 0 0 0 $btn-focus-width #{rgba(map-get($grays, "300"), .3)};
     }
@@ -100,10 +123,33 @@ $value in $theme-colors {
 //
 // Alternate buttons
 //
-@each $color,
-$value in $theme-colors {
-    .btn-outline-#{$color} {
-        @include button-outline-variant($value);
+// @each $color,
+// $value in $theme-colors {
+//     .btn-outline-#{$color} {
+//         @include button-outline-variant($value);
+//     }
+// }
+
+
+.btn-outline-primary {
+    background-color: #FFFFFF;
+    &:hover{
+       color: #1C3DB2;
+       border-color: #1C3DB2;
+       background-color: #1C3DB21A;
+    }
+    &:focus{
+        color: #4468E9;
+        border-color: #4468E9;
+        background-color: #1C3DB21A;
+        box-shadow: none;
+    }
+    &:active,
+    &.active {
+        color: #18328E;
+        border-color: #18328E;
+        background-color: #1C3DB21A;
+        box-shadow: none;
     }
 }
 
