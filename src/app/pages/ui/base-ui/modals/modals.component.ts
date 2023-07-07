@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 // service
@@ -15,14 +15,14 @@ import { EventType } from 'src/app/core/constants/events';
 })
 export class ModalsComponent implements OnInit {
 
-  signupForm!: FormGroup;
-  loginForm!: FormGroup;
-  responsiveModalForm!: FormGroup;
+  signupForm!: UntypedFormGroup;
+  loginForm!: UntypedFormGroup;
+  responsiveModalForm!: UntypedFormGroup;
 
   constructor (
     private eventService: EventService,
     private modalService: NgbModal,
-    private fb: FormBuilder
+    private fb: UntypedFormBuilder
   ) { }
 
   ngOnInit(): void {

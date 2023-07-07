@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 // constants
 import { EventType } from 'src/app/core/constants/events';
 
@@ -14,11 +14,11 @@ import { EventService } from 'src/app/core/service/event.service';
 })
 export class ValidationComponent implements OnInit {
 
-  validationGroup1!: FormGroup;
-  validationGroup2!: FormGroup;
+  validationGroup1!: UntypedFormGroup;
+  validationGroup2!: UntypedFormGroup;
 
 
-  constructor (private fb: FormBuilder, private eventService: EventService) { }
+  constructor (private fb: UntypedFormBuilder, private eventService: EventService) { }
 
   ngOnInit(): void {
     this.eventService.broadcast(EventType.CHANGE_PAGE_TITLE, {

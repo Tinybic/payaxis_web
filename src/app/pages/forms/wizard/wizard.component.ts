@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 // constants
 import { EventType } from 'src/app/core/constants/events';
 
@@ -19,20 +19,20 @@ export class WizardComponent implements OnInit {
   activeWizard3: number = 1;
   activeWizard4: number = 1;
 
-  basicWizardForm!: FormGroup;
+  basicWizardForm!: UntypedFormGroup;
 
-  btnWizardForm !: FormGroup;
+  btnWizardForm !: UntypedFormGroup;
 
-  progressWizardForm !: FormGroup;
+  progressWizardForm !: UntypedFormGroup;
 
-  accountForm!: FormGroup;
+  accountForm!: UntypedFormGroup;
 
-  profileForm!: FormGroup;
+  profileForm!: UntypedFormGroup;
 
-  validationWizardForm!: FormGroup;
+  validationWizardForm!: UntypedFormGroup;
 
 
-  constructor (private fb: FormBuilder, private eventService: EventService) { }
+  constructor (private fb: UntypedFormBuilder, private eventService: EventService) { }
 
   ngOnInit(): void {
     this.eventService.broadcast(EventType.CHANGE_PAGE_TITLE, {

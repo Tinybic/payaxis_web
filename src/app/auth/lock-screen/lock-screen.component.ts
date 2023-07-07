@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 
@@ -17,14 +17,14 @@ import { User } from 'src/app/core/models/auth.models';
 })
 export class LockScreenComponent implements OnInit {
 
-  lockScreenForm!: FormGroup;
+  lockScreenForm!: UntypedFormGroup;
   formSubmitted: boolean = false;
   error: string = '';
 
   constructor (
     private router: Router,
     private authenticationService: AuthenticationService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
   ) { }
 
   ngOnInit(): void {

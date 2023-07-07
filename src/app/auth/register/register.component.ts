@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { first } from 'rxjs';
 
@@ -15,7 +15,7 @@ import { User } from 'src/app/core/models/auth.models';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
-  signUpForm: FormGroup = this.fb.group({
+  signUpForm: UntypedFormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
   });
@@ -25,7 +25,7 @@ export class RegisterComponent implements OnInit {
   error: string = '';
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private router: Router,
     private authenticationService: AuthenticationService
   ) {}
