@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-auth-recover-password',
@@ -8,14 +8,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class RecoverPasswordComponent implements OnInit {
 
-  resetPassswordForm: FormGroup = this.fb.group({
+  resetPassswordForm: UntypedFormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]]
   });
   formSubmitted: boolean = false;
   successMessage?: string;
 
   constructor (
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
   ) { }
 
   ngOnInit(): void {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-landing-cta',
@@ -8,10 +8,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class CtaComponent implements OnInit {
 
-  contactForm!: FormGroup;
+  contactForm!: UntypedFormGroup;
   submitted: boolean = false;
 
-  constructor (private fb: FormBuilder) { }
+  constructor (private fb: UntypedFormBuilder) { }
 
   ngOnInit(): void {
     this.contactForm = this.fb.group({

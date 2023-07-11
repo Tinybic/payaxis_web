@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 // constants
 import { EventType } from 'src/app/core/constants/events';
@@ -22,7 +22,7 @@ export class MemberListComponent implements OnInit {
 
   members: Member[] = [];
 
-  contactForm: FormGroup = this.fb.group({
+  contactForm: UntypedFormGroup = this.fb.group({
     name: ['', Validators.required],
     position: ['', Validators.required],
     company: ['', Validators.required],
@@ -36,7 +36,7 @@ export class MemberListComponent implements OnInit {
   constructor (
     public activeModal: NgbModal,
     private eventService: EventService,
-    private fb: FormBuilder
+    private fb: UntypedFormBuilder
   ) { }
 
   ngOnInit(): void {

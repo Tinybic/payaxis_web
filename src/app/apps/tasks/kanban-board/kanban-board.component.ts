@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SortableOptions } from 'sortablejs';
 
@@ -29,7 +29,7 @@ export class KanbanBoardComponent implements OnInit {
   options: SortableOptions = {};
   newTaskStatus: string = 'upcoming';
 
-  newTask: FormGroup = this.fb.group({
+  newTask: UntypedFormGroup = this.fb.group({
     name: ['', Validators.required],
     assignTo: [''],
     priority: [''],
@@ -42,7 +42,7 @@ export class KanbanBoardComponent implements OnInit {
 
   @ViewChild('content', { static: true }) content: any;
 
-  constructor (public activeModal: NgbModal, private eventService: EventService, private fb: FormBuilder) { }
+  constructor (public activeModal: NgbModal, private eventService: EventService, private fb: UntypedFormBuilder) { }
 
   ngOnInit(): void {
     this.eventService.broadcast(EventType.CHANGE_PAGE_TITLE, {

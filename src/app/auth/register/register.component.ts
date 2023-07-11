@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
-import { first } from 'rxjs';
 
 // service
-import { AuthenticationService } from 'src/app/core/service/auth.service';
+import { ApolloService } from 'src/app/core/service/apollo.service';
 
 // types
-import { User } from 'src/app/core/models/auth.models';
+import { SignupStep1 } from 'src/app/core/gql/user';
 
 @Component({
   selector: 'app-auth-register',
@@ -15,7 +18,7 @@ import { User } from 'src/app/core/models/auth.models';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
-  signUpForm: FormGroup = this.fb.group({
+  signUpForm: UntypedFormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
   });
@@ -25,9 +28,9 @@ export class RegisterComponent implements OnInit {
   error: string = '';
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private router: Router,
-    private authenticationService: AuthenticationService
+    private apolloService: ApolloService
   ) {}
 
   ngOnInit(): void {}
@@ -50,6 +53,19 @@ export class RegisterComponent implements OnInit {
     this.formSubmitted = true;
     if (this.signUpForm.valid) {
       this.loading = true;
+      this.apolloService
+        .mutate(SignupStep1, {
+          email: this.formValues['email'].value,
+          password: this.formValues['password'].value,
+        })
+        .then((res) => {
+          const result = res.user_account_add;
+          
+          this.loading = false;
+        })
+        .catch((error) => {
+          this.error = error;
+        });
     }
   }
 }

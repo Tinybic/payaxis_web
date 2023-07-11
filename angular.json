@@ -41,7 +41,12 @@
               "src/routes.json"
             ],
             "styles": [
-              "src/assets/scss/theme.scss"
+              "src/assets/scss/theme.scss",
+              "./node_modules/@fullcalendar/bootstrap/main.css",
+              "./node_modules/@fullcalendar/common/main.css",
+              "./node_modules/@fullcalendar/daygrid/main.css",
+              "./node_modules/@fullcalendar/timegrid/main.css",
+              "./node_modules/@fullcalendar/list/main.css"
             ],
             "scripts": []
           },
@@ -132,6 +137,5 @@
         }
       }
     }
-  },
-  "defaultProject": "adminto-angular"
+  }
 }
