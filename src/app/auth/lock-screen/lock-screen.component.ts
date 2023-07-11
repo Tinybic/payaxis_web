@@ -46,15 +46,7 @@ export class LockScreenComponent implements OnInit {
   onSubmit(): void {
     this.formSubmitted = true;
     if (this.lockScreenForm.valid) {
-      this.authenticationService.login(this.authenticationService.currentUser()?.email!, this.formValues['password'].value)
-        .pipe(first())
-        .subscribe(
-          (data: User) => {
-            this.router.navigate(['/']);
-          },
-          (error: string) => {
-            this.error = error;
-          });
+     
     }
   }
 
