@@ -114,7 +114,7 @@
 .swal2-container {
     &.swal2-backdrop-show,
     &.swal2-noanimation {
-        background-color: rgba($modal-backdrop-bg, $modal-backdrop-opacity) !important;
+        background-color: rgba(0,0,0,0.25) !important;
     }
 }
 

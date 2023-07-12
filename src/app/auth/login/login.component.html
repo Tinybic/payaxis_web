@@ -40,7 +40,7 @@
 
     <div class="mb-3" style="position: relative;">
       <label for="password" class="form-label" i18n>Password</label>
-      <label class="float-end"><a href="#">Forgot Password?</a></label>
+      <label class="float-end"><a routerLink="../recover-password">Forgot Password?</a></label>
 
       <input class="form-control" type="password" required i18n-placeholder id="password"
                 placeholder="Enter Password" formControlName="password" *ngIf="!showPassword"

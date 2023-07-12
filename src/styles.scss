@@ -45,6 +45,65 @@
     top: 40px;
     cursor: pointer;
 }
-.auth-button{
-    position: fixed; bottom: 24px; width: 481px;
+
+.auth-button {
+    position: fixed;
+    bottom: 24px;
+    width: 481px;
 }
+
+.swal2-close {
+    width: 1rem !important;
+    height: 1rem !important;
+    font-size: 1rem !important;
+    color: #202020 !important;
+}
+
+.swal2-close:active,.swal2-close:focus{
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.swal2-html-container {
+    margin: 1rem !important;
+}
+
+.swal2-alert-title {
+    color: #0A1629;
+    text-align: center;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 36px;
+}
+
+.swal2-alert-content {
+    color: #303742;
+    text-align: center;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    margin-top: 16px;
+}
+
+.swal2-alert-link {
+    color: #2B52DD;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0.28px;
+    margin-top: 40px;
+    text-align: center;
+}
+.digicode-input{
+    width: 48px !important;
+    height: 48px !important;
+    margin:8px;
+    text-align: center;
+    font-size: 30px !important;
+    font-weight: 600 !important;
+    padding: 0px !important;
+}
+

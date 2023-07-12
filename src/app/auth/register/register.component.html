@@ -57,7 +57,9 @@
                 <div *ngIf="formValues['password'].errors?.['required']" i18n>
                     Password is required.
                 </div>
-
+                <div *ngIf="formValues['password'].errors?.['strong']" i18n>
+                    Password 123123
+                </div>
             </div>
         </div>
         <div class="mb-3">
@@ -77,7 +79,7 @@
               </span>
         </div>
 
+        <swal #ajaxRequest [swalOptions]="alertOption"></swal>
     </form>
-
 
 </app-default-layout>

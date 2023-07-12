@@ -11,8 +11,13 @@ import { LockScreenComponent } from './lock-screen/lock-screen.component';
 import { ConfirmMailComponent } from './confirm-mail/confirm-mail.component';
 import { LogoutComponent } from './logout/logout.component';
 import { InfoComponent } from './info/info.component';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { CodeInputModule } from 'angular-code-input';
 
-
+const maskConfig: Partial<IConfig> = {
+  validation: false,
+};
 @NgModule({
   declarations: [
     LoginComponent,
@@ -28,7 +33,10 @@ import { InfoComponent } from './info/info.component';
     ReactiveFormsModule,
     NgbAlertModule,
     UiModule,
-    AuthRoutingModule
+    AuthRoutingModule,
+    SweetAlert2Module,
+    NgxMaskModule.forRoot(maskConfig),
+    CodeInputModule
   ]
 })
 export class AuthModule { }

@@ -10,8 +10,7 @@ import { JoyrideModule } from 'ngx-joyride';
 import { APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
-import { ApolloService } from './core/service/apollo.service';
-
+import { CodeInputModule } from 'angular-code-input';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -22,7 +21,8 @@ import { ApolloService } from './core/service/apollo.service';
     CoreModule,
     LayoutModule,
     AppRoutingModule,
-    ApolloModule
+    ApolloModule,
+    CodeInputModule,
   ],
   providers: [
     {
@@ -36,7 +36,7 @@ import { ApolloService } from './core/service/apollo.service';
         };
       },
       deps: [HttpLink],
-    },
+    }
   ],
   bootstrap: [AppComponent],
 })
