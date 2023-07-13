@@ -7,6 +7,9 @@ import { LogoutComponent } from './logout/logout.component';
 import { RecoverPasswordComponent } from './recover-password/recover-password.component';
 import { RegisterComponent } from './register/register.component';
 import { InfoComponent } from './info/info.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { RecoverPasswordPhoneComponent } from './recover-password-phone/recover-password-phone.component';
+import { InvitingRegisterComponent } from './inviting-register/inviting-register.component';
 
 const routes: Routes = [
   {
@@ -36,6 +39,18 @@ const routes: Routes = [
   {
     path: 'logout',
     component: LogoutComponent
+  },
+  {
+    path: 'reset-password',
+    component: ResetPasswordComponent
+  },
+  {
+    path: 'recover-password-phone',
+    component: RecoverPasswordPhoneComponent
+  },
+  {
+    path: 'inviting-register',
+    component: InvitingRegisterComponent
   }
 ];
 

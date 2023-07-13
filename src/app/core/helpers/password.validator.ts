@@ -15,6 +15,6 @@ export class PasswordValidator {
             // return what´s not valid
             return { strong: true };
         }
-        return { strong: false };
+        return {};
     }
 }

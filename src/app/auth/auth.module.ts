@@ -14,6 +14,10 @@ import { InfoComponent } from './info/info.component';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { CodeInputModule } from 'angular-code-input';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { RecoverPasswordPhoneComponent } from './recover-password-phone/recover-password-phone.component';
+import { InvitingRegisterComponent } from './inviting-register/inviting-register.component';
+
 
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -26,7 +30,10 @@ const maskConfig: Partial<IConfig> = {
     LockScreenComponent,
     ConfirmMailComponent,
     LogoutComponent,
-    InfoComponent
+    InfoComponent,
+    ResetPasswordComponent,
+    RecoverPasswordPhoneComponent,
+    InvitingRegisterComponent
   ],
   imports: [
     CommonModule,

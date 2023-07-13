@@ -1,7 +1,7 @@
 <app-default-layout>
 
     <div class="text-center mb-3">
-        <h5 i18n>Create an account</h5>
+        <h5 i18n>Join the "{{companyName}}" team</h5>
         <h6>WELCOME to the comfort management space </h6>
     </div>
     <div style="display: flex" class="mb-3">
@@ -17,11 +17,45 @@
     <div class="lineorline mb-3">
         or
     </div>
-    <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="InvitingsignUpForm" (ngSubmit)="onSubmit()">
         <app-ui-preloader [display]="loading"></app-ui-preloader>
         <ngb-alert [dismissible]="false" type="danger" *ngIf="error">
             {{ error }}
         </ngb-alert>
+        <div class="mb-2">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="firstname" class="form-label" i18n>First Name</label>
+                    <input class="form-control mb-1-1" type="text" id="firstname" required i18n-placeholder
+                        placeholder="First Name" formControlName="firstname"
+                        [ngClass]="{'is-invalid':formSubmitted && formValues['firstname'].invalid}" />
+
+                    <div *ngIf="formSubmitted && formValues['firstname'].invalid" class="invalid-feedback">
+
+                        <div *ngIf="formValues['firstname'].errors?.['required']" i18n>
+                            Please enter first name
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <label for="lastname" class="form-label" i18n>Last name</label>
+                    <input class="form-control mb-1-1" type="text" id="lastname" required i18n-placeholder
+                        placeholder="Last name" formControlName="lastname"
+                        [ngClass]="{'is-invalid':formSubmitted && formValues['lastname'].invalid}" />
+                    <div *ngIf="formSubmitted && formValues['lastname'].invalid" class="invalid-feedback">
+                        <div *ngIf="formValues['lastname'].errors?.['required']" i18n>
+                            Please enter last name
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
         <div class="mb-2-1">
             <label for="emailaddress" class="form-label" i18n>Email</label>
             <input class="form-control mb-1-1" type="email" id="emailaddress" required i18n-placeholder
@@ -46,11 +80,15 @@
             <input class="form-control" type="password" required i18n-placeholder id="password"
                 placeholder="Enter Password" formControlName="password" *ngIf="!showPassword"
                 [ngClass]="{'is-invalid':formSubmitted && formValues['password'].invalid}" />
-            <input class="form-control" type="text" required i18n-placeholder id="password"
-                placeholder="Enter Password" formControlName="password"  *ngIf="showPassword"
+            <input class="form-control" type="text" required i18n-placeholder id="password" placeholder="Enter Password"
+                formControlName="password" *ngIf="showPassword"
                 [ngClass]="{'is-invalid':formSubmitted && formValues['password'].invalid}" />
-            <i class="fe-eye-off passwordIcon" *ngIf="!(formSubmitted && formValues['password'].invalid) && !showPassword " (click) = "inputShowPassword()"></i>
-            <i class="fe-eye passwordIcon hide" *ngIf="!(formSubmitted && formValues['password'].invalid)&& showPassword  " (click) = "inputShowPassword()"></i>
+            <i class="fe-eye-off passwordIcon"
+                *ngIf="!(formSubmitted && formValues['password'].invalid) && !showPassword "
+                (click)="inputShowPassword()"></i>
+            <i class="fe-eye passwordIcon hide"
+                *ngIf="!(formSubmitted && formValues['password'].invalid)&& showPassword  "
+                (click)="inputShowPassword()"></i>
             <div *ngIf="formSubmitted && formValues['password'].invalid " class="invalid-feedback">
 
                 <div *ngIf="formValues['password'].errors?.['required']" i18n>
@@ -72,10 +110,10 @@
         <div class="mb-3 d-grid text-center auth-button">
             <button class="btn btn-primary  mb-2-1" type="submit" i18n>Create account</button>
 
-            <span i18n >
+            <span i18n>
                 Already have account?
                 <a routerLink="../login">Sign In</a>
-              </span>
+            </span>
         </div>
 
         <swal #ajaxRequest [swalOptions]="alertOption"></swal>

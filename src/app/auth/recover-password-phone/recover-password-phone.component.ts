@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-auth-recover-password',
-  templateUrl: './recover-password.component.html',
-  styleUrls: ['./recover-password.component.scss']
+  selector: 'app-recover-password-phone',
+  templateUrl: './recover-password-phone.component.html',
+  styleUrls: ['./recover-password-phone.component.scss']
 })
-export class RecoverPasswordComponent implements OnInit {
+export class RecoverPasswordPhoneComponent implements OnInit {
 
   resetPassswordForm: UntypedFormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]]
+    phone: ['', [Validators.required]]
   });
   formSubmitted: boolean = false;
   successMessage?: string;

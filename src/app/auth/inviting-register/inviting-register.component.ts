@@ -14,14 +14,17 @@ import { ApolloService } from 'src/app/core/service/apollo.service';
 import { PasswordValidator } from 'src/app/core/helpers/password.validator';
 
 @Component({
-  selector: 'app-auth-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
+  selector: 'app-inviting-register',
+  templateUrl: './inviting-register.component.html',
+  styleUrls: ['./inviting-register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class InvitingRegisterComponent implements OnInit {
+
   @ViewChild('ajaxRequest') ajaxRequest!: SwalComponent;
 
-  signUpForm: UntypedFormGroup = this.fb.group({
+  InvitingsignUpForm: UntypedFormGroup = this.fb.group({
+    firstname:[''],
+    lastname:['',[Validators.required]],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, PasswordValidator.strong]],
   });
@@ -30,6 +33,7 @@ export class RegisterComponent implements OnInit {
   showPassword: boolean = false;
   loading: boolean = false;
   error: string = '';
+  companyName: string = 'Company Name'
 
   public alertOption: SweetAlertOptions = {
     html: `<div>
@@ -52,18 +56,14 @@ export class RegisterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const token = this.activatedRoute.snapshot.queryParams['token'];
-    const code  = this.activatedRoute.snapshot.queryParams['code'];
-
-    if(token&&code)
-    console.log(token)
+    
   }
 
   /**
    * convenience getter for easy access to form fields
    */
   get formValues() {
-    return this.signUpForm.controls;
+    return this.InvitingsignUpForm.controls;
   }
 
   inputShowPassword() {
@@ -95,4 +95,5 @@ export class RegisterComponent implements OnInit {
     //     });
     // }
   }
+
 }
