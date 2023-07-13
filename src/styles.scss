@@ -59,7 +59,8 @@
     color: #202020 !important;
 }
 
-.swal2-close:active,.swal2-close:focus{
+.swal2-close:active,
+.swal2-close:focus {
     outline: none !important;
     box-shadow: none !important;
 }
@@ -97,10 +98,11 @@
     margin-top: 40px;
     text-align: center;
 }
-.digicode-input{
+
+.digicode-input {
     width: 48px !important;
     height: 48px !important;
-    margin:8px;
+    margin: 8px;
     text-align: center;
     font-size: 30px !important;
     font-weight: 600 !important;

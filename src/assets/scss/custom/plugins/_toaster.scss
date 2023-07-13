@@ -7,15 +7,16 @@
    Notification
 ============= */
 #toast-container {
-    > div {
+    >div {
         box-shadow: $box-shadow;
         opacity: 1;
     }
+
     >:hover {
         box-shadow: $box-shadow;
         opacity: 0.9;
     }
-    
+
 }
 
 @mixin toast-variant($bg) {
@@ -23,16 +24,44 @@
     background-color: rgba($bg, 0.8) !important;
 }
 
-@each $color, $value in $theme-colors {
+@each $color,
+$value in $theme-colors {
     .toast-#{$color} {
-      @include toast-variant($value);
+        @include toast-variant($value);
     }
 }
 
+.toast-info {
+    background-image: none !important;
+    border-radius: 16px !important;
+    padding: 16px !important;
+    border: 1px solid #9CA3AF !important;
+    background: #4B5563 !important;
+    width: auto !important;
+}
 
+.toast-title {
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600 !important;
+    line-height: 24px;
+    letter-spacing: 0.5px;
+}
+.toast-message{
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px; 
+    letter-spacing: 0.5px;
+}
 // for error
 
 .toast-error {
-    background-color: rgba($danger,0.8);
+    background-color: rgba($danger, 0.8);
     border: 2px solid $danger;
+}
+
+.toast-top-right{
+    right: 42px !important;
+    top: 18px !important;
 }
