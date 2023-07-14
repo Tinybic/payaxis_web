@@ -13,11 +13,6 @@ import { InMemoryCache } from '@apollo/client/core';
 import { CodeInputModule } from 'angular-code-input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
-import { SocialLoginModule, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
-import {
-  GoogleLoginProvider
-} from '@abacritt/angularx-social-login';
-
 
 @NgModule({
   declarations: [AppComponent],
@@ -47,23 +42,6 @@ import {
         };
       },
       deps: [HttpLink],
-    },
-    {
-      provide: 'SocialAuthServiceConfig',
-      useValue: {
-        autoLogin: false,
-        providers: [
-          {
-            id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(
-              '903218914898-4fkqdjnj31gu7fouidfj7th7cnkccgub.apps.googleusercontent.com'
-            )
-          }
-        ],
-        onError: (err) => {
-          console.error(err);
-        }
-      } as SocialAuthServiceConfig,
     }
   ],
   bootstrap: [AppComponent],

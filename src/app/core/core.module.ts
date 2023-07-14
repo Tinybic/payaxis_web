@@ -11,10 +11,7 @@ import { JwtInterceptor } from './helpers/jwt.interceptor';
   imports: [CommonModule],
   providers: [
     Title,
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    // provider used to create fake backend
-    FakeBackendProvider,
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
 })
 export class CoreModule {}

@@ -8,7 +8,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SweetAlertOptions } from 'sweetalert2';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 // service
-import { ApolloService } from 'src/app/core/service/apollo.service';
+import { HttpService } from 'src/app/core/service/http.service';
 
 // types
 import { PasswordValidator } from 'src/app/core/helpers/password.validator';
@@ -20,6 +20,7 @@ import { PasswordValidator } from 'src/app/core/helpers/password.validator';
 })
 export class RegisterComponent implements OnInit {
   @ViewChild('ajaxRequest') ajaxRequest!: SwalComponent;
+  @ViewChild('ajaxRequest1') ajaxRequest1!: SwalComponent;
 
   signUpForm: UntypedFormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -44,19 +45,56 @@ export class RegisterComponent implements OnInit {
     background: '#fff',
   };
 
+  public successAlertOption: SweetAlertOptions = {
+    html: `<div style="overflow: hidden">
+    <div class="swal2-alert-title">Verification confirmed</div>
+    <div class="swal2-alert-content">Thank you!</div>
+    <div class="swal2-icon swal2-success swal2-icon-show" style="display: flex;transform: scale(0.5);margin-top: -5px;">
+       <div class="swal2-success-circular-line-left" style="background-color: rgb(255, 255, 255);"></div>
+      <span class="swal2-success-line-tip"></span> <span class="swal2-success-line-long"></span>
+      <div class="swal2-success-ring"></div> <div class="swal2-success-fix" style="background-color: rgb(255, 255, 255);"></div>
+      <div class="swal2-success-circular-line-right" style="background-color: rgb(255, 255, 255);"></div>
+    </div>
+    </div>`,
+    showCloseButton: true,
+    showConfirmButton: false,
+    width: 604,
+    padding: 16,
+    background: '#fff',
+  };
+
   constructor(
     private fb: UntypedFormBuilder,
     private router: Router,
-    private apolloService: ApolloService,
+    private httpService: HttpService,
     private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     const token = this.activatedRoute.snapshot.queryParams['token'];
-    const code  = this.activatedRoute.snapshot.queryParams['code'];
+    const code = this.activatedRoute.snapshot.queryParams['code'];
 
-    if(token&&code)
-    console.log(token)
+    if (token && code) {
+      this.loading = true;
+      this.httpService
+        .get('activate', '?token=' + token + '&code=' + code)
+        .then((res) => {
+          this.loading = false;
+          if (!res.error) {
+            this.ajaxRequest1.fire();
+            setTimeout(() => {
+              this.router.navigate(['auth/info']);
+            }, 3000);
+
+          } else {
+            this.error = res.message;
+          }
+        })
+        .catch((error) => {
+          this.loading = false;
+          this.error = error;
+        });
+    }
   }
 
   /**
@@ -76,23 +114,27 @@ export class RegisterComponent implements OnInit {
   onSubmit(): void {
     this.formSubmitted = true;
 
-    this.ajaxRequest.fire();
-
-    // if (this.signUpForm.valid) {
-    //   this.loading = true;
-    //   this.apolloService
-    //     .mutate(SignupStep1, {
-    //       email: this.formValues['email'].value,
-    //       password: this.formValues['password'].value,
-    //     })
-    //     .then((res) => {
-    //       const result = res.user_account_add;
-
-    //       this.loading = false;
-    //     })
-    //     .catch((error) => {
-    //       this.error = error;
-    //     });
-    // }
+    if (this.signUpForm.valid) {
+      this.loading = true;
+      this.httpService
+        .post('signup', {
+          email: this.formValues['email'].value,
+          password: this.formValues['password'].value,
+        })
+        .then((res) => {
+          this.loading = false;
+          this.formValues['email'].setValue('');
+          this.formValues['password'].setValue('');
+          if (!res.error) {
+            this.ajaxRequest.fire();
+          } else {
+            this.error = res.message;
+          }
+        })
+        .catch((error) => {
+          this.loading = false;
+          this.error = error;
+        });
+    }
   }
 }
