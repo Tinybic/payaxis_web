@@ -29,10 +29,10 @@
       <div *ngIf="formSubmitted && formValues['email'].invalid" class="invalid-feedback">
 
         <div *ngIf="formValues['email'].errors?.['required']" i18n>
-          Please enter email
+          <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter email
         </div>
         <div *ngIf="formValues['email'].errors?.['email']" i18n>
-          Email must be a valid Email Address
+          <i class="fe-alert-triangle invalid-feedback-icon"></i> Email must be a valid Email Address
         </div>
 
       </div>
@@ -55,7 +55,7 @@
       <div *ngIf="formSubmitted && formValues['password'].invalid " class="invalid-feedback">
 
         <div *ngIf="formValues['password'].errors?.['required']" i18n>
-          Password is required.
+          <i class="fe-alert-triangle invalid-feedback-icon"></i> Password is required.
         </div>
 
       </div>

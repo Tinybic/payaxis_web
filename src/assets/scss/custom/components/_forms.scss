@@ -106,6 +106,8 @@ input.form-control[type="range"] {
     }
 }
 
+ fe-alert-triangle
+
 
 // Show Password
 .password-eye {
@@ -130,10 +132,19 @@ input.form-control[type="range"] {
 }
 
 
+.was-validated .form-control:invalid, .form-control.is-invalid{
+    background-image: none;
+    border-color: #EA001E;
+}
 
-
-
-
+.invalid-feedback-icon{
+    color: #DC2626;
+    font-size: 16px;
+    margin-right: 4px;
+}
+.invalid-feedback{
+    color:#202020;
+}
 // dark mode
 body[data-layout-color="dark"] {
     .comment-area-box {

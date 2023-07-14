@@ -29,13 +29,13 @@
                 [ngClass]="{'is-invalid':formSubmitted && formValues['email'].invalid}" />
             <small *ngIf="!(formSubmitted && formValues['email'].invalid)" id="emailHelp" class="form-text text-muted">A verification email will be sent to you to verify your
                 address</small>
-            <div *ngIf="formSubmitted && formValues['email'].invalid" class="invalid-feedback">
+            <div *ngIf="formSubmitted && formValues['email'].invalid">
 
                 <div *ngIf="formValues['email'].errors?.['required']" i18n>
-                    Please enter email
+                   <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter email
                 </div>
                 <div *ngIf="formValues['email'].errors?.['email']" i18n>
-                    Email must be a valid Email Address
+                    <i class="fe-alert-triangle invalid-feedback-icon"></i> Email must be a valid Email Address
                 </div>
 
             </div>
@@ -59,10 +59,10 @@
             <div *ngIf="formSubmitted && formValues['password'].invalid " class="invalid-feedback">
 
                 <div *ngIf="formValues['password'].errors?.['required']" i18n>
-                    Password is required.
+                    <i class="fe-alert-triangle invalid-feedback-icon"></i> Password is required.
                 </div>
                 <div *ngIf="!formValues['password'].errors?.['required'] && formValues['password'].errors?.['strong']" i18n>
-                    The password needs to include uppercase, lowercase, and numeric characters.
+                    <i class="fe-alert-triangle invalid-feedback-icon"></i> The password needs to include uppercase, lowercase, and numeric characters.
                 </div>
             </div>
         </div>
@@ -75,7 +75,7 @@
                         href="javascript: void(0);">Terms</a> and <a href="javascript: void(0);">Privacy
                         policy</a></label>
                 <div *ngIf="formSubmitted && formValues['acceptTerms'].invalid" class="invalid-feedback">
-                    You must agree before submitting.
+                    <i class="fe-alert-triangle invalid-feedback-icon"></i> You must agree before submitting.
                 </div>
             </div>
         </div>
