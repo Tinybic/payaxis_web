@@ -78,7 +78,7 @@ export class RegisterComponent implements OnInit {
     if (token && code) {
       this.loading = true;
       this.httpService
-        .get('activate', '?token=' + token + '&code=' + code)
+        .get('activate', '?token=' + decodeURIComponent(token) + '&code=' + decodeURIComponent(code))
         .then((res) => {
           this.loading = false;
           if (!res.error) {
