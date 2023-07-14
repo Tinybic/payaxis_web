@@ -25,6 +25,7 @@ export class RegisterComponent implements OnInit {
   signUpForm: UntypedFormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, PasswordValidator.strong]],
+    acceptTerms: [false, Validators.requiredTrue]
   });
 
   formSubmitted: boolean = false;

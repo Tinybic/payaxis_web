@@ -28,7 +28,6 @@ import { ToastrModule } from 'ngx-toastr';
     CodeInputModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    SocialLoginModule,
   ],
   providers: [
     {
