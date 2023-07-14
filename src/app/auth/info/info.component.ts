@@ -70,7 +70,7 @@ export class InfoComponent implements OnInit {
     const takeFourNumbers = numbers.pipe(take(58));
     takeFourNumbers.subscribe({
       next(x): any {
-        that.paracont = (58-x)+ "";
+        that.paracont = "Resend code in 00:" + (58-x);
       },
       error(err): any {},
       complete(): any{
