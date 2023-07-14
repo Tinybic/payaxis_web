@@ -21,7 +21,7 @@
                     <div *ngIf="formSubmitted && formValues['firstname'].invalid" class="invalid-feedback">
 
                         <div *ngIf="formValues['firstname'].errors?.['required']" i18n>
-                            Please enter first name
+                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter first name
                         </div>
 
                     </div>
@@ -34,7 +34,7 @@
                         [ngClass]="{'is-invalid':formSubmitted && formValues['lastname'].invalid}" />
                     <div *ngIf="formSubmitted && formValues['lastname'].invalid" class="invalid-feedback">
                         <div *ngIf="formValues['lastname'].errors?.['required']" i18n>
-                            Please enter last name
+                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter last name
                         </div>
                     </div>
 
@@ -53,7 +53,7 @@
             <div *ngIf="formSubmitted && formValues['companyName'].invalid " class="invalid-feedback">
 
                 <div *ngIf="formValues['companyName'].errors?.['required']" i18n>
-                    Company Name is required.
+                    <i class="fe-alert-triangle invalid-feedback-icon"></i> Company Name is required.
                 </div>
 
             </div>
@@ -68,7 +68,7 @@
             <div *ngIf="formSubmitted && formValues['phone'].invalid " class="invalid-feedback">
 
                 <div *ngIf="formValues['phone'].errors?.['required']" i18n>
-                    Phone number is required.
+                    <i class="fe-alert-triangle invalid-feedback-icon"></i> Phone number is required.
                 </div>
 
             </div>
@@ -101,7 +101,7 @@
                     (codeChanged)="onCodeChanged($event)" (codeCompleted)="onCodeCompleted($event)">
                 </code-input>
             </div>
-            <div class="swal2-alert-link">Resend code in 00:{{paracont}}</div>
+            <div class="swal2-alert-link">{{paracont}}</div>
         </div>
     </ng-template>
 </app-default-layout>
