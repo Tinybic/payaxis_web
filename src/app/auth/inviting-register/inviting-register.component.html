@@ -1,7 +1,7 @@
 <app-default-layout>
 
     <div class="text-center mb-3">
-        <h5 i18n>Create an account</h5>
+        <h5 i18n>Join the "{{companyName}}" team</h5>
         <h6>WELCOME to the comfort management space </h6>
     </div>
     <div style="display: flex" class="mb-3">
@@ -17,18 +17,51 @@
     <div class="lineorline mb-3">
         or
     </div>
-    <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="InvitingsignUpForm" (ngSubmit)="onSubmit()">
         <app-ui-preloader [display]="loading"></app-ui-preloader>
         <ngb-alert [dismissible]="false" type="danger" *ngIf="error">
             {{ error }}
         </ngb-alert>
+        <div class="mb-2">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="firstname" class="form-label" i18n>First Name</label>
+                    <input class="form-control mb-1-1" type="text" id="firstname" required i18n-placeholder
+                        placeholder="First Name" formControlName="firstname"
+                        [ngClass]="{'is-invalid':formSubmitted && formValues['firstname'].invalid}" />
+
+                    <div *ngIf="formSubmitted && formValues['firstname'].invalid" class="invalid-feedback">
+
+                        <div *ngIf="formValues['firstname'].errors?.['required']" i18n>
+                            Please enter first name
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <label for="lastname" class="form-label" i18n>Last name</label>
+                    <input class="form-control mb-1-1" type="text" id="lastname" required i18n-placeholder
+                        placeholder="Last name" formControlName="lastname"
+                        [ngClass]="{'is-invalid':formSubmitted && formValues['lastname'].invalid}" />
+                    <div *ngIf="formSubmitted && formValues['lastname'].invalid" class="invalid-feedback">
+                        <div *ngIf="formValues['lastname'].errors?.['required']" i18n>
+                            Please enter last name
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
         <div class="mb-2-1">
             <label for="emailaddress" class="form-label" i18n>Email</label>
             <input class="form-control mb-1-1" type="email" id="emailaddress" required i18n-placeholder
                 placeholder="Enter Email" formControlName="email"
                 [ngClass]="{'is-invalid':formSubmitted && formValues['email'].invalid}" />
-            <small *ngIf="!(formSubmitted && formValues['email'].invalid)" id="emailHelp" class="form-text text-muted">A verification email will be sent to you to verify your
-                address</small>
+            <small id="emailHelp" class="form-text text-muted">A verification email will be sent to you to verify your address</small>
             <div *ngIf="formSubmitted && formValues['email'].invalid" class="invalid-feedback">
 
                 <div *ngIf="formValues['email'].errors?.['required']" i18n>
@@ -61,22 +94,17 @@
                 <div *ngIf="formValues['password'].errors?.['required']" i18n>
                     Password is required.
                 </div>
-                <div *ngIf="!formValues['password'].errors?.['required'] && formValues['password'].errors?.['strong']" i18n>
+                <div *ngIf="formValues['password'].errors?.['strong']" i18n>
                     The password needs to include uppercase, lowercase, and numeric characters.
                 </div>
             </div>
         </div>
         <div class="mb-3">
             <div class="form-check">
-                <input type="checkbox" class="form-check-input me-1-1" id="invalidCheck" required
-                    formControlName="acceptTerms"
-                    [ngClass]="{ 'is-invalid': formSubmitted && formValues['acceptTerms'].invalid }">
+                <input type="checkbox" class="form-check-input me-1-1" id="checkbox-signup">
                 <label class="form-check-label" for="checkbox-signup" i18n>I agree to all the <a
                         href="javascript: void(0);">Terms</a> and <a href="javascript: void(0);">Privacy
                         policy</a></label>
-                <div *ngIf="formSubmitted && formValues['acceptTerms'].invalid" class="invalid-feedback">
-                    You must agree before submitting.
-                </div>
             </div>
         </div>
         <div class="mb-3 d-grid text-center auth-button">
@@ -89,7 +117,6 @@
         </div>
 
         <swal #ajaxRequest [swalOptions]="alertOption"></swal>
-        <swal #ajaxRequest1 [swalOptions]="successAlertOption"></swal>
     </form>
 
 </app-default-layout>

@@ -1,1 +1,107 @@
-<p>info works!</p>
+<app-default-layout>
+
+    <div class="text-center mb-3">
+        <h5 i18n>Welcom on board</h5>
+        <h6>WELCOME to the comfort management space </h6>
+    </div>
+    <form [formGroup]="signUpForm2" (ngSubmit)="onSubmit()" class="pt-2-1">
+        <app-ui-preloader [display]="loading"></app-ui-preloader>
+        <ngb-alert [dismissible]="false" type="danger" *ngIf="error">
+            {{ error }}
+        </ngb-alert>
+        <div class="mb-2">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="firstname" class="form-label" i18n>First Name</label>
+                    <input class="form-control mb-1-1" type="text" id="firstname" required i18n-placeholder
+                        placeholder="First Name" formControlName="firstname"
+                        [ngClass]="{'is-invalid':formSubmitted && formValues['firstname'].invalid}" />
+
+                    <div *ngIf="formSubmitted && formValues['firstname'].invalid" class="invalid-feedback">
+
+                        <div *ngIf="formValues['firstname'].errors?.['required']" i18n>
+                            Please enter first name
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <label for="lastname" class="form-label" i18n>Last name</label>
+                    <input class="form-control mb-1-1" type="text" id="lastname" required i18n-placeholder
+                        placeholder="Last name" formControlName="lastname"
+                        [ngClass]="{'is-invalid':formSubmitted && formValues['lastname'].invalid}" />
+                    <div *ngIf="formSubmitted && formValues['lastname'].invalid" class="invalid-feedback">
+                        <div *ngIf="formValues['lastname'].errors?.['required']" i18n>
+                            Please enter last name
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+        <div class="mb-2-1" style="position: relative;">
+            <label for="companyName" class="form-label" i18n>Company Name</label>
+
+            <input class="form-control" type="text" required i18n-placeholder id="companyName"
+                placeholder="Company Name" formControlName="companyName"
+                [ngClass]="{'is-invalid':formSubmitted && formValues['companyName'].invalid}" />
+
+            <div *ngIf="formSubmitted && formValues['companyName'].invalid " class="invalid-feedback">
+
+                <div *ngIf="formValues['companyName'].errors?.['required']" i18n>
+                    Company Name is required.
+                </div>
+
+            </div>
+        </div>
+        <div class="mb-2" style="position: relative;">
+            <label for="phone" class="form-label" i18n>Phone number</label>
+
+            <input class="form-control" type="text" required i18n-placeholder id="phone"
+                placeholder="Enter Phone number" formControlName="phone" prefix="+1" mask="(000)000-0000"
+                [ngClass]="{'is-invalid':formSubmitted && formValues['phone'].invalid}" />
+
+            <div *ngIf="formSubmitted && formValues['phone'].invalid " class="invalid-feedback">
+
+                <div *ngIf="formValues['phone'].errors?.['required']" i18n>
+                    Phone number is required.
+                </div>
+
+            </div>
+        </div>
+        <div class="mb-2-1 text-muted">
+            We will use it to set up two-factor authentication
+        </div>
+        <div class="mb-3">
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input me-1-1" id="checkbox-signup">
+                <label class="form-check-label" for="checkbox-signup" i18n>I want to set up two-factor authentication
+                    now</label>
+            </div>
+        </div>
+        <div class="mb-3 d-grid text-center auth-button">
+            <button class="btn btn-primary  mb-2-1" type="submit" i18n>Let's start</button>
+        </div>
+    </form>
+
+    <ng-template #centeredModal let-modal>
+        <div class="modal-header">
+            <i class="fe-x swal2-close align-text-bottom "  (click)="modal.dismiss('Cross click')"></i>
+        </div>
+        <div class="modal-body" style="padding-top: 0;">
+            <div class="swal2-alert-title">Two-factor authentication is enabled</div>
+            <div class="swal2-alert-content">Enter the 4-digit code sent to you at (929)336-5422</div>
+
+            <div class="code-input-container" >
+                <code-input [initialFocusField]="0" [isCodeHidden]="false" [codeLength]="4"
+                    (codeChanged)="onCodeChanged($event)" (codeCompleted)="onCodeCompleted($event)">
+                </code-input>
+            </div>
+            <div class="swal2-alert-link">Resend code in 00:{{paracont}}</div>
+        </div>
+    </ng-template>
+</app-default-layout>

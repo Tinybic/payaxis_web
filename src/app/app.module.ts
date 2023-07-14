@@ -10,7 +10,9 @@ import { JoyrideModule } from 'ngx-joyride';
 import { APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
-import { ApolloService } from './core/service/apollo.service';
+import { CodeInputModule } from 'angular-code-input';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,7 +24,10 @@ import { ApolloService } from './core/service/apollo.service';
     CoreModule,
     LayoutModule,
     AppRoutingModule,
-    ApolloModule
+    ApolloModule,
+    CodeInputModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
   ],
   providers: [
     {
@@ -36,7 +41,7 @@ import { ApolloService } from './core/service/apollo.service';
         };
       },
       deps: [HttpLink],
-    },
+    }
   ],
   bootstrap: [AppComponent],
 })

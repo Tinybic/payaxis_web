@@ -1,13 +1,13 @@
 <app-default-layout>
-    <div class="text-center">
-        <div class="mb-4">
-            <h4 class="text-uppercase mt-0" i18n>Check your email</h4>
-        </div>
-        <img src="assets/images/mail_confirm.png" alt="img" width="86" class="mx-auto d-block" />
-
-        <p class="text-muted font-14 mt-2" i18n>We have sent a password recover instructions to your email</p>
-
-        <a routerLink="/" class="btn d-block btn-pink waves-effect waves-light mt-3" i18n>Back to Home</a>
+    <div class="text-center mb-3">
+        <h5 i18n>Check your email</h5>
+        <p class="Subtitle-3">We have sent a password recover instructions to your email</p>
     </div>
-
+    <div class="mb-3 d-grid text-center auth-button">
+        <button class="btn btn-primary mb-2-1" type="submit" i18n>Open Email app</button>
+        <span i18n >
+            Didn't recieve the email? Check your spam filter or  
+          <a routerLink="../register">Try phone number</a>
+        </span>
+      </div>
 </app-default-layout>

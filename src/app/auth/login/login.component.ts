@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { first } from 'rxjs';
 
 // service
-import { AuthenticationService } from 'src/app/core/service/auth.service';
+import { HttpService } from 'src/app/core/service/http.service';
 
-// types
-import { User } from 'src/app/core/models/auth.models';
 
 @Component({
   selector: 'app-auth-login',
@@ -29,7 +26,7 @@ export class LoginComponent implements OnInit {
   constructor (
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AuthenticationService,
+    private httpService: HttpService,
     private fb: UntypedFormBuilder
   ) { }
 
@@ -54,7 +51,26 @@ export class LoginComponent implements OnInit {
     this.formSubmitted = true;
     if (this.loginForm.valid) {
       this.loading = true;
-      this.router.navigate(['icons/feather']);
+      this.httpService
+        .post('login', {
+          email: this.formValues['email'].value,
+          password: this.formValues['password'].value,
+        })
+        .then((res) => {
+          this.loading = false;
+          this.formValues['email'].setValue('');
+          this.formValues['password'].setValue('');
+          if (!res.error) {
+            this.router.navigate(['icons/feather']);
+          } else {
+            this.error = res.message;
+          }
+        })
+        .catch((error) => {
+          this.loading = false;
+          this.error = error;
+        });
+     
       
     }
   }

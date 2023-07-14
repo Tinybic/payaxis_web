@@ -94,6 +94,10 @@ h6 {
 .mt-2-1 {
     margin-top: 1rem;
 }
+
+.pt-2-1{
+   padding-top: 1rem !important;
+}
 // Font sizes (Custom)
 .font-11 {
     font-size: 11px !important;
@@ -180,6 +184,11 @@ h6 {
     font-weight: 0.75rem;
     line-height: 1rem;
     letter-spacing: 0.1px;
+}
+
+
+.Subtitle-3{
+    color: #20202080;
 }
 // dark mode
 body[data-layout-color="dark"] {
