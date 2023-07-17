@@ -81,8 +81,11 @@ export class RegisterComponent implements OnInit {
         .get('activate', '?token=' + encodeURIComponent(token) + '&code=' + encodeURIComponent(code))
         .then((res) => {
           this.loading = false;
+          console.log(res);
           if (!res.error) {
             this.ajaxRequest1.fire();
+            localStorage.setItem('refreshtoken',res.data.refreshtoken);
+            localStorage.setItem('token',res.data.token);
             setTimeout(() => {
               this.router.navigate(['auth/info']);
             }, 3000);

@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Title } from '@angular/platform-browser';
 import { ErrorInterceptor } from './helpers/error.interceptor';
-import { FakeBackendProvider } from './helpers/fake-backend';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
 
 @NgModule({
@@ -11,6 +10,7 @@ import { JwtInterceptor } from './helpers/jwt.interceptor';
   imports: [CommonModule],
   providers: [
     Title,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
 })

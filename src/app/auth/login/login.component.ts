@@ -58,9 +58,9 @@ export class LoginComponent implements OnInit {
         })
         .then((res) => {
           this.loading = false;
-          this.formValues['email'].setValue('');
-          this.formValues['password'].setValue('');
           if (!res.error) {
+            this.formValues['email'].setValue('');
+          this.formValues['password'].setValue('');
             this.router.navigate(['icons/feather']);
           } else {
             this.error = res.message;
