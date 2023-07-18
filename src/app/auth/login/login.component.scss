@@ -1,1 +1,28 @@
+code-input {
+    --item-spacing: 16px;
+    --item-height: 48px;
+    --item-border-radius: 8px;
+    --item-font-weight: 600;
+    --item-border: 1px solid #E8E8E8;
+    --item-border-focused: 1px solid #000000;
+    --item-border-bottom-focused: 1px solid #000000;
+  }
 
+
+.modal-dialog{
+    max-width: 650px !important;
+}
+
+.modal-content{
+    width:650px;
+    border-radius: 8px;
+}
+.code-input-container{
+    width: 272px; margin:12px auto; font-size: 24px;
+}
+.modal-header{
+    display: flex; justify-content: flex-end; border-bottom: none;
+}
+.swal2-close{
+    cursor: pointer;
+}

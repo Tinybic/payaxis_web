@@ -2,8 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 
-// service
-import { AuthenticationService } from 'src/app/core/service/auth.service';
 import { EventService } from 'src/app/core/service/event.service';
 
 // utility
@@ -40,7 +38,6 @@ export class LeftSidebarComponent implements OnInit {
 
   constructor (
     router: Router,
-    private authService: AuthenticationService,
     private eventService: EventService) {
     router.events.forEach((event) => {
       if (event instanceof NavigationEnd) {
@@ -54,7 +51,6 @@ export class LeftSidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.initMenu();
-    this.loggedInUser = this.authService.currentUser();
   }
 
   ngOnChanges(): void {

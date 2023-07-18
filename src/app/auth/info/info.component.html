@@ -61,25 +61,16 @@
         <div class="mb-2" style="position: relative;">
             <label for="phone" class="form-label" i18n>Phone number</label>
 
-            <input class="form-control" type="text" required i18n-placeholder id="phone"
-                placeholder="Enter Phone number" formControlName="phone" prefix="+1" mask="(000)000-0000"
-                [ngClass]="{'is-invalid':formSubmitted && formValues['phone'].invalid}" />
-
-            <div *ngIf="formSubmitted && formValues['phone'].invalid " class="invalid-feedback">
-
-                <div *ngIf="formValues['phone'].errors?.['required']" i18n>
-                    <i class="fe-alert-triangle invalid-feedback-icon"></i> Phone number is required.
-                </div>
-
-            </div>
+            <input class="form-control" type="text"  i18n-placeholder id="phone"
+                placeholder="Enter Phone number" formControlName="phone" prefix="+1  " mask="(000)000-0000" />
         </div>
         <div class="mb-2-1 text-muted">
             We will use it to set up two-factor authentication
         </div>
         <div class="mb-3">
             <div class="form-check">
-                <input type="checkbox" class="form-check-input me-1-1" id="checkbox-signup">
-                <label class="form-check-label" for="checkbox-signup" i18n>I want to set up two-factor authentication
+                <input type="checkbox" class="form-check-input me-1-1" id="f2_auth" formControlName="f2_auth" >
+                <label class="form-check-label" for="f2_auth" i18n>I want to set up two-factor authentication
                     now</label>
             </div>
         </div>
@@ -94,14 +85,14 @@
         </div>
         <div class="modal-body" style="padding-top: 0;">
             <div class="swal2-alert-title">Two-factor authentication is enabled</div>
-            <div class="swal2-alert-content">Enter the 4-digit code sent to you at (929)336-5422</div>
+            <div class="swal2-alert-content">Enter the 4-digit code sent to you at {{mobile| mask: '(000)000-0000'}}</div>
 
             <div class="code-input-container" >
                 <code-input [initialFocusField]="0" [isCodeHidden]="false" [codeLength]="4"
                     (codeChanged)="onCodeChanged($event)" (codeCompleted)="onCodeCompleted($event)">
                 </code-input>
             </div>
-            <div class="swal2-alert-link">{{paracont}}</div>
+            <div aria-disabled="paracont!='Resend'" class="swal2-alert-link" (click) = "onSubmit()">{{paracont}}</div>
         </div>
     </ng-template>
 </app-default-layout>

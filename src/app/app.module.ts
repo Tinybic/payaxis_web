@@ -13,6 +13,13 @@ import { InMemoryCache } from '@apollo/client/core';
 import { CodeInputModule } from 'angular-code-input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { SocialLoginModule, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
+import {
+  GoogleLoginProvider
+} from '@abacritt/angularx-social-login';
+import { createApollo } from './core/constants/apolloFactory';
+
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -28,19 +35,30 @@ import { ToastrModule } from 'ngx-toastr';
     CodeInputModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    SocialLoginModule
   ],
   providers: [
     {
       provide: APOLLO_OPTIONS,
-      useFactory(httpLink: HttpLink) {
-        return {
-          cache: new InMemoryCache(),
-          link: httpLink.create({
-            uri: 'https://payaxis.azurewebsites.net/graphql',
-          }),
-        };
-      },
+      useFactory: createApollo,
       deps: [HttpLink],
+    },
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              '903218914898-4fkqdjnj31gu7fouidfj7th7cnkccgub.apps.googleusercontent.com'
+            )
+          }
+        ],
+        onError: (err) => {
+          console.error(err);
+        }
+      } as SocialAuthServiceConfig,
     }
   ],
   bootstrap: [AppComponent],

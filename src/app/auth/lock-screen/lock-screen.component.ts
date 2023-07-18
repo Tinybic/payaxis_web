@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 
 // service
-import { AuthenticationService } from 'src/app/core/service/auth.service';
 
 // types
 import { User } from 'src/app/core/models/auth.models';
@@ -23,7 +22,6 @@ export class LockScreenComponent implements OnInit {
 
   constructor (
     private router: Router,
-    private authenticationService: AuthenticationService,
     private fb: UntypedFormBuilder,
   ) { }
 

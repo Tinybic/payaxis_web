@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 // services
-import { AuthenticationService } from 'src/app/core/service/auth.service';
 
 // types
 import { ChatUser } from '../chat.model';
@@ -23,11 +22,9 @@ export class ChatUsersComponent implements OnInit {
   //On selecting new user
   @Output() selectUser: EventEmitter<ChatUser> = new EventEmitter();
 
-  constructor (private authService: AuthenticationService) { }
+  constructor () { }
 
   ngOnInit(): void {
-    this.loggedInUser = this.authService.currentUser();
-
     // Get users for chat
     this._fetchUsers();
   }

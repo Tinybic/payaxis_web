@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 // service
-import { AuthenticationService } from 'src/app/core/service/auth.service';
 import { EventService } from 'src/app/core/service/event.service';
 
 // constant
@@ -39,7 +38,6 @@ export class TopbarComponent implements OnInit {
   @Output() mobileMenuButtonClicked = new EventEmitter<void>();
 
   constructor (
-    private authService: AuthenticationService,
     private eventService: EventService
   ) {
     this.eventService.on(EventType.CHANGE_PAGE_TITLE).subscribe(({ payload }) => {
@@ -51,7 +49,6 @@ export class TopbarComponent implements OnInit {
     this._fetchSearchData();
     this._fetchNotifications();
     this._fetchProfileOptions();
-    this.loggedInUser = this.authService.currentUser();
   }
 
   /**
