@@ -17,7 +17,7 @@ import { CodeInputModule } from 'angular-code-input';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { RecoverPasswordPhoneComponent } from './recover-password-phone/recover-password-phone.component';
 import { InvitingRegisterComponent } from './inviting-register/inviting-register.component';
-
+import { GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
 
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -43,7 +43,8 @@ const maskConfig: Partial<IConfig> = {
     AuthRoutingModule,
     SweetAlert2Module,
     NgxMaskModule.forRoot(maskConfig),
-    CodeInputModule
+    CodeInputModule,
+    GoogleSigninButtonModule
   ]
 })
 export class AuthModule { }

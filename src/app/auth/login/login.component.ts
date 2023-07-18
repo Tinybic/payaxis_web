@@ -4,6 +4,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 // service
 import { HttpService } from 'src/app/core/service/http.service';
+import { SocialAuthService } from "@abacritt/angularx-social-login";
+import { SocialUser } from "@abacritt/angularx-social-login";
+import {
+  SignInWithApple,
+  SignInWithAppleResponse,
+  SignInWithAppleOptions,
+} from '@capacitor-community/apple-sign-in';
 
 
 @Component({
@@ -22,17 +29,26 @@ export class LoginComponent implements OnInit {
   error: string = '';
   returnUrl: string = '/';
   loading: boolean = false;
+  user: SocialUser;
+  loggedIn: boolean;
 
   constructor (
     private route: ActivatedRoute,
     private router: Router,
     private httpService: HttpService,
-    private fb: UntypedFormBuilder
+    private fb: UntypedFormBuilder,
+    private authService: SocialAuthService
   ) { }
 
   ngOnInit(): void {
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || this.returnUrl;
+
+    this.authService.authState.subscribe((user) => {
+      this.user = user;
+      this.loggedIn = (user != null);
+      console.log(this.user);
+    });
   }
 
   /**
