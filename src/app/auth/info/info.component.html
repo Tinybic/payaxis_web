@@ -92,7 +92,7 @@
                     (codeChanged)="onCodeChanged($event)" (codeCompleted)="onCodeCompleted($event)">
                 </code-input>
             </div>
-            <div class="swal2-alert-link">{{paracont}}</div>
+            <div aria-disabled="paracont!='Resend'" class="swal2-alert-link" (click) = "onSubmit()">{{paracont}}</div>
         </div>
     </ng-template>
 </app-default-layout>
