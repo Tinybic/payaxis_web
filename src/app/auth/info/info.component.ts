@@ -33,6 +33,7 @@ export class InfoComponent implements OnInit {
   loading: boolean = false;
   error: string = '';
 
+  mobile: string = '';
   revision:number = 1;
 
   constructor(
@@ -113,6 +114,7 @@ export class InfoComponent implements OnInit {
           .mutate(profile_2fa, { mobile: this.formValues['phone'].value })
           .then((res) => {
             if (res.profile_2fa) {
+              this.mobile = this.formValues['phone'].value;
               this.openVerticallyCentered(this.centeredModal);
               let that = this;
               const numbers = interval(1000);

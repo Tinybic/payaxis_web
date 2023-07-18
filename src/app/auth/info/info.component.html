@@ -85,7 +85,7 @@
         </div>
         <div class="modal-body" style="padding-top: 0;">
             <div class="swal2-alert-title">Two-factor authentication is enabled</div>
-            <div class="swal2-alert-content">Enter the 4-digit code sent to you at (929)336-5422</div>
+            <div class="swal2-alert-content">Enter the 4-digit code sent to you at {{mobile| mask: '(000)000-0000'}}</div>
 
             <div class="code-input-container" >
                 <code-input [initialFocusField]="0" [isCodeHidden]="false" [codeLength]="4"

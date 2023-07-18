@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -11,6 +11,8 @@ import {
   SignInWithAppleResponse,
   SignInWithAppleOptions,
 } from '@capacitor-community/apple-sign-in';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { interval, take } from 'rxjs';
 
 
 @Component({
@@ -20,6 +22,7 @@ import {
 })
 export class LoginComponent implements OnInit {
 
+  @ViewChild('centeredModal') centeredModal: any;
   loginForm: UntypedFormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required]
@@ -37,7 +40,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private httpService: HttpService,
     private fb: UntypedFormBuilder,
-    private authService: SocialAuthService
+    private authService: SocialAuthService,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
@@ -75,10 +79,23 @@ export class LoginComponent implements OnInit {
         .then((res) => {
           this.loading = false;
           if (!res.error) {
-            this.formValues['email'].setValue('');
-          this.formValues['password'].setValue('');
             this.router.navigate(['icons/feather']);
-          } else {
+          }else if(res.code == 112){
+            this.openVerticallyCentered(this.centeredModal);
+            let that = this;
+              const numbers = interval(1000);
+              const takeFourNumbers = numbers.pipe(take(58));
+              takeFourNumbers.subscribe({
+                next(x): any {
+                  that.paracont = 'Resend code in 00:' + (58 - x);
+                },
+                error(err): any {},
+                complete(): any {
+                  that.paracont = 'Resend';
+                },
+              });
+          }
+           else {
             this.error = res.message;
           }
         })
@@ -90,6 +107,36 @@ export class LoginComponent implements OnInit {
       
     }
   }
+  
+  onCodeChanged(code: string) {}
+
+  onCodeCompleted(code: string) {
+    this.modalService.dismissAll();
+    this.httpService
+        .post('loginsms', {
+          email: this.formValues['email'].value,
+          code: code,
+        })
+        .then((res) => {
+          this.loading = false;
+          if (!res.error) {
+            this.router.navigate(['icons/feather']);
+          }
+           else {
+            this.error = res.message;
+          }
+        })
+        .catch((error) => {
+          this.loading = false;
+          this.error = error;
+        });
+
+  }
+
+  openVerticallyCentered(content: TemplateRef<NgbModal>): void {
+    this.modalService.open(content, { centered: true });
+  }
+  paracont = '59';
 
 
 }
