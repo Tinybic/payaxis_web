@@ -6539,10 +6539,10 @@ ngx-lightbox@^2.5.2:
     file-saver "^2.0.5"
     ngx-filesaver "8.1.0"
 
-ngx-mask@13.1.15:
-  version "13.1.15"
-  resolved "https://registry.yarnpkg.com/ngx-mask/-/ngx-mask-13.1.15.tgz#1bfd96772f72eabd70ae186335b5e6804789ee23"
-  integrity sha512-fplyzkFa6lFTzPo/AHaI3TBQxTMdcqQClR9BLLAWTvCyDZkV28fLqWkpIpy0VvPc9ADogFpJJj7R1356mszjag==
+ngx-mask@16.2.4:
+  version "16.2.4"
+  resolved "https://registry.yarnpkg.com/ngx-mask/-/ngx-mask-16.2.4.tgz#08e304c7260a6e8cdf7d265385b03b177cc9aaa2"
+  integrity sha512-JfBLyT1tIJDcbpC2rcM4p87utLW4jEDEH36PDioyUB5NFtZPIK9VLxcJLvdtTBp7jrWMTwmXqWd+dKvwo9iQHQ==
   dependencies:
     tslib "^2.3.0"
 

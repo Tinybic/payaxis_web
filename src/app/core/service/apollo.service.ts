@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { Mutation } from '../generated/generated';
+import { Mutation, Query } from '../generated/generated';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +16,25 @@ export class ApolloService {
           variables: para,
         })
         .subscribe({
+          next(res): any {
+            if (res.data) resolve(res.data);
+            else reject(null);
+          },
+          error(err): any {
+            reject(err);
+          },
+        });
+    });
+  }
+
+  query(gql: any, para: any): Promise<Query> {
+    return new Promise((resolve, reject) => {
+      this.apollo
+        .watchQuery<Query>({
+          query: gql,
+          variables: para,
+        })
+        .valueChanges.subscribe({
           next(res): any {
             if (res.data) resolve(res.data);
             else reject(null);

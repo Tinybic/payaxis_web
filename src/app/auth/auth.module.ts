@@ -12,7 +12,7 @@ import { ConfirmMailComponent } from './confirm-mail/confirm-mail.component';
 import { LogoutComponent } from './logout/logout.component';
 import { InfoComponent } from './info/info.component';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
-import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { provideNgxMask, IConfig, NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { CodeInputModule } from 'angular-code-input';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { RecoverPasswordPhoneComponent } from './recover-password-phone/recover-password-phone.component';
@@ -42,9 +42,13 @@ const maskConfig: Partial<IConfig> = {
     UiModule,
     AuthRoutingModule,
     SweetAlert2Module,
-    NgxMaskModule.forRoot(maskConfig),
+    NgxMaskDirective,
+     NgxMaskPipe,
     CodeInputModule,
     GoogleSigninButtonModule
+  ],
+  providers:[
+    provideNgxMask()
   ]
 })
 export class AuthModule { }

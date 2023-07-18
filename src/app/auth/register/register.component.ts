@@ -25,7 +25,7 @@ export class RegisterComponent implements OnInit {
   signUpForm: UntypedFormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, PasswordValidator.strong]],
-    acceptTerms: [false, Validators.requiredTrue]
+    acceptTerms: [false, Validators.requiredTrue],
   });
 
   formSubmitted: boolean = false;
@@ -37,7 +37,7 @@ export class RegisterComponent implements OnInit {
     html: `<div>
     <div class="swal2-alert-title">A verification email have been sent to you.</div>
     <div class="swal2-alert-content">Please, check the email</div>
-    <div class="swal2-alert-link">Resend<div>
+    <div class="swal2-alert-link" id="resend">Resend<div>
     </div>`,
     showCloseButton: true,
     showConfirmButton: false,
@@ -78,18 +78,21 @@ export class RegisterComponent implements OnInit {
     if (token && code) {
       this.loading = true;
       this.httpService
-        .get('activate', '?token=' + encodeURIComponent(token) + '&code=' + encodeURIComponent(code))
+        .post(
+          'activate',{
+            token:encodeURIComponent(token),
+            code: encodeURIComponent(code)
+          })
         .then((res) => {
           this.loading = false;
           console.log(res);
           if (!res.error) {
             this.ajaxRequest1.fire();
-            localStorage.setItem('refreshtoken',res.data.refreshtoken);
-            localStorage.setItem('token',res.data.token);
+            localStorage.setItem('refreshtoken', res.data.refreshtoken);
+            localStorage.setItem('token', res.data.token);
             setTimeout(() => {
               this.router.navigate(['auth/info']);
             }, 3000);
-
           } else {
             this.error = res.message;
           }
@@ -112,6 +115,7 @@ export class RegisterComponent implements OnInit {
     this.showPassword = !this.showPassword;
   }
 
+
   /**
    * On form submit
    */
@@ -127,10 +131,29 @@ export class RegisterComponent implements OnInit {
         })
         .then((res) => {
           this.loading = false;
-          this.formValues['email'].setValue('');
-          this.formValues['password'].setValue('');
           if (!res.error) {
             this.ajaxRequest.fire();
+            let that = this;
+            setTimeout(() => {
+              document.getElementById('resend').onclick = function () {
+                that.httpService
+                  .post('send_email_activation', {
+                    email: that.formValues['email'].value,
+                  })
+                  .then((res) => {
+                    that.loading = false;
+                    if (!res.error) {
+                      that.ajaxRequest.fire();
+                    } else {
+                      that.error = res.message;
+                    }
+                  })
+                  .catch((error) => {
+                    that.loading = false;
+                    that.error = error;
+                  });
+              };
+            }, 300);
           } else {
             this.error = res.message;
           }

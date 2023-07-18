@@ -17,6 +17,8 @@ import { SocialLoginModule, SocialAuthServiceConfig } from '@abacritt/angularx-s
 import {
   GoogleLoginProvider
 } from '@abacritt/angularx-social-login';
+import { createApollo } from './core/constants/apolloFactory';
+
 
 
 @NgModule({
@@ -38,14 +40,7 @@ import {
   providers: [
     {
       provide: APOLLO_OPTIONS,
-      useFactory(httpLink: HttpLink) {
-        return {
-          cache: new InMemoryCache(),
-          link: httpLink.create({
-            uri: 'https://payaxis.azurewebsites.net/graphql',
-          }),
-        };
-      },
+      useFactory: createApollo,
       deps: [HttpLink],
     },
     {
