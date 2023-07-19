@@ -119,6 +119,7 @@ export class InfoComponent implements OnInit {
    */
   paracont: string = 'Resend';
   onSubmit(): void {
+    this.error = '';
     this.formSubmitted = true;
     if (this.signUpForm2.valid) {
       if (this.formValues['f2_auth'].value) {

@@ -15,7 +15,6 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ResetPasswordComponent implements OnInit {
   setNewPassswordForm: UntypedFormGroup = this.fb.group({
-    number: ['', [Validators.required]],
     password: ['', [Validators.required, PasswordValidator.strong]],
     newpassword: ['', [Validators.required, PasswordValidator.strong]],
   });
@@ -65,7 +64,6 @@ export class ResetPasswordComponent implements OnInit {
             .post('reset', {
               token: encodeURIComponent(token),
               code: encodeURIComponent(code),
-              validation:this.formValues['number'].value,
               newpassword:this.formValues['password'].value
             })
             .then((res) => {
