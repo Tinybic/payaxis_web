@@ -93,7 +93,7 @@ export class LoginComponent implements OnInit {
             if (res.code == 113) {
               this.router.navigate(['auth/info']);
             } else {
-              this.router.navigate(['icons/feather']);
+              this.router.navigate([this.returnUrl]);
             }
           } else if (res.code == 112) {
             this.openmodal();

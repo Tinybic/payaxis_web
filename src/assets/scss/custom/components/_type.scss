@@ -19,15 +19,16 @@ h6 {
     color: #{$typeblackprimary};
     font-weight: $font-weight-normal;
 }
-.bold-700{
+
+.bold-700 {
     font-weight: 700;
 }
 
-.bold-600{
+.bold-600 {
     font-weight: 600;
 }
 
-h1{
+h1 {
     font-size: 5.6125rem;
     line-height: 7rem;
     letter-spacing: -1.5px;
@@ -45,7 +46,7 @@ h3 {
     letter-spacing: -0px;
 }
 
-h4{
+h4 {
     font-size: 2.36875rem;
     line-height: 2.5rem;
     letter-spacing: 0.25px;
@@ -66,6 +67,13 @@ h6 {
     line-height: 1rem;
 }
 
+.headline {
+    font-size: 21.33px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 40px;
+}
+
 .ms-1-1 {
     margin-left: 0.5rem;
 }
@@ -78,10 +86,17 @@ h6 {
     margin-top: 0.5rem;
 }
 
-
+.mt-40 {
+    margin-top: 40px;
+}
 .me-1-1 {
     margin-right: 0.5rem;
 }
+
+.me-2-1 {
+    margin-right: 1rem;
+}
+
 
 .mb-2-1 {
     margin-bottom: 1rem;
@@ -95,9 +110,10 @@ h6 {
     margin-top: 1rem;
 }
 
-.pt-2-1{
-   padding-top: 1rem !important;
+.pt-2-1 {
+    padding-top: 1rem !important;
 }
+
 // Font sizes (Custom)
 .font-11 {
     font-size: 11px !important;
@@ -166,20 +182,20 @@ h6 {
 }
 
 
-.Paragraph-1{
+.Paragraph-1 {
     font-weight: 1rem;
     line-height: 1.5rem;
     letter-spacing: 0.5px;
 }
 
 
-.Paragraph-2{
+.Paragraph-2 {
     font-weight: 0.75rem;
     line-height: 1rem;
     letter-spacing: 0px;
 }
 
-.Subtitle-2{
+.Subtitle-2 {
     font-weight: 500;
     font-weight: 0.75rem;
     line-height: 1rem;
@@ -187,9 +203,10 @@ h6 {
 }
 
 
-.Subtitle-3{
+.Subtitle-3 {
     color: #20202080;
 }
+
 // dark mode
 body[data-layout-color="dark"] {
 

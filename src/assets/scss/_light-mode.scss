@@ -267,7 +267,7 @@
     // <=============================================>
 
     // Left Sidebar
-    --#{$variable-prefix}bg-leftbar:                                      #{$primarymain};
+    --#{$variable-prefix}bg-leftbar:                                      #{$typeblackprimary};
     --#{$variable-prefix}bg-leftbar-dark:                                 #{map-get($grays, "800")};
     --#{$variable-prefix}bg-leftbar-brand:                                #4a81d4;
     --#{$variable-prefix}bg-leftbar-gradient:                             #{$purple};
@@ -277,15 +277,15 @@
     --#{$variable-prefix}left-menu-dark-user-box-border:                  #{rgba($white, .2)};
 
     // Dark leftbar menu color
-    --#{$variable-prefix}menu-item-color-dark:                            #FFFFFF;
+    --#{$variable-prefix}menu-item-color-dark:                            #D1D8E2;
     --#{$variable-prefix}menu-item-hover-color-dark:                      #c8cddc;
     --#{$variable-prefix}menu-item-active-color-dark:                     #{$white};
 
     //Menu item
-    --#{$variable-prefix}menu-item:                                       #FFFFFF;
-    --#{$variable-prefix}menu-item-hover:                                 #FFFFFF;
-    --#{$variable-prefix}menu-item-active:                                #FFFFFF;
-    --#{$variable-prefix}menu-sub-item-active:                            #FFFFFF;
+    --#{$variable-prefix}menu-item:                                       #D1D8E2;
+    --#{$variable-prefix}menu-item-hover:                                 #D1D8E2;
+    --#{$variable-prefix}menu-item-active:                                #D1D8E2;
+    --#{$variable-prefix}menu-sub-item-active:                            #D1D8E2;
 
     // Horizontal Menu Item
     --#{$variable-prefix}hori-menu-item-color:                            #6e7488;

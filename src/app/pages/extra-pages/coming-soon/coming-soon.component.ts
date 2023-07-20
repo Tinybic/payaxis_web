@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class ComingSoonComponent implements OnInit {
 
   remainingTime: string[] = [];
-  countDownDate = new Date("2022/11/19");
+  countDownDate = new Date("2023/11/19");
   tick = 1000;
   days!: string;
   hours!: string;

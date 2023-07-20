@@ -31,7 +31,7 @@
 .logo-box {
     height: $topbar-height;
     width: $leftbar-width;
-    background-color:#215EA9;
+    background-color:#202020;
     float: left;
     transition: all .1s ease-out;
 
@@ -54,11 +54,11 @@
     background-color: var(--#{$variable-prefix}body-bg);
     padding: 0 calc(#{$grid-gutter-width} / 2) 0 0;
     position: fixed;
-    left: 0;
+    left: 164px;
     right: 0;
     height: $topbar-height;
     z-index: 1001;
-
+    transition: all 0.1s ease-out;
     .topnav-menu {
         &.topnav-menu-left{
             display: inline-block;

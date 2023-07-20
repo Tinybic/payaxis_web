@@ -21,40 +21,42 @@
 }
 
 .sidebar-hr{
-    width: 138px; background-color: #73B2FF; height: 1px;
+    width: 138px; background-color: #3C3C42; height: 1px;
 }
 
 //Content Page
 .content-page {
     margin-left: $leftbar-width;
     overflow: hidden;
-    padding: 0 12px 65px 12px;
+    padding: 32px 24px 65px 24px;
     min-height: 80vh;
-    margin-top: $topbar-height;
+    margin-top: 0px;
 }
 
 .toggleMenuIcon {
-    background-color: #60A5FA;
-    position: fixed;
-    width: 24px;
-    height: 24px;
+    background-color: #3C3C42;
+    position: absolute;
+    width: 20px;
+    height: 20px;
     top: 70px;
-    left: 152px;
-    border-radius: 24px;
-    padding: 4px;
+    left: 25px;
+    border-radius: 20px;
+    padding: 2px;
     text-align: center;
     cursor: pointer;
 }
-
+.adminIcons{
+    display: none ;
+}
 // Sidemenu
 .left-side-menu {
     width: $leftbar-width;
     background: $bg-leftbar;
     bottom: 0;
-    padding: 20px 0;
+    padding: 0;
     position: fixed;
     transition: all 0.1s ease-out;
-    top: $topbar-height;
+    top: 0;
     box-shadow: $box-shadow;
 
     .user-box {
@@ -109,10 +111,10 @@
 
                 &:focus,
                 &:active {
-                    background-color: #73B2FF;
+                    background-color: #2B52DD;
 
                     i {
-                        color: #215EA9;
+                        color: #D1D8E2;
                     }
                 }
 
@@ -128,7 +130,7 @@
                     vertical-align: middle;
                     width: 24px;
                     font-size: 1.5rem;
-                    color: #73B2FF;
+                    color: #D1D8E2;
                     height: 24px;
                 }
 
@@ -185,10 +187,10 @@
 
         .active {
             color: $menu-item-active;
-            background-color: #73B2FF;
+            background-color: #2B52DD;
 
             i {
-                color: #215EA9;
+                color: #D1D8E2;
             }
         }
     }
@@ -270,16 +272,20 @@ body[data-leftbar-size="condensed"] {
     }
 
     .toggleMenuIcon {
-        background-color: #60A5FA;
-        position: fixed;
-        width: 24px;
-        height: 24px;
+        background-color: #3C3C42;
+        position: absolute;
+        width: 20px;
+        height: 20px;
         top: 70px;
-        left: 60px;
-        border-radius: 24px;
-        padding: 4px;
+        left: 25px;
+        border-radius: 20px;
+        padding: 2px;
         text-align: center;
         cursor: pointer;
+    }
+
+    .navbar-custom{
+        left: 72px !important;
     }
     .sidebar-hr{
         width: 48px;
@@ -287,7 +293,9 @@ body[data-leftbar-size="condensed"] {
     .adminIcon{
         display: none !important;
     }
-
+    .adminIcons{
+        display: block ;
+    }
     .user-box
     {
         width: $leftbar-width-condensed !important;
@@ -341,7 +349,7 @@ body[data-leftbar-size="condensed"] {
                         }
                         &:active,
                         &:focus {
-                            background-color: #73B2FF;
+                            background-color: #2B52DD;
                             color: $menu-item-hover;
                         }
 
