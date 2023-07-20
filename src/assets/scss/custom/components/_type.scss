@@ -89,6 +89,7 @@ h6 {
 .mt-40 {
     margin-top: 40px;
 }
+
 .me-1-1 {
     margin-right: 0.5rem;
 }
@@ -195,6 +196,16 @@ h6 {
     letter-spacing: 0px;
 }
 
+.Subtitle-1 {
+    text-align: center;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0.5px;
+}
+
+
 .Subtitle-2 {
     font-weight: 500;
     font-weight: 0.75rem;
@@ -205,6 +216,21 @@ h6 {
 
 .Subtitle-3 {
     color: #20202080;
+}
+
+.text-1 {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.5px;
+}
+
+del{
+    color:#20202080
+}
+
+.text-optional {
+    color: #20202080 !important;
 }
 
 // dark mode

@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Title } from '@angular/platform-browser';
 import { ErrorInterceptor } from './helpers/error.interceptor';
-import { JwtInterceptor } from './helpers/jwt.interceptor';
 
 @NgModule({
   declarations: [],

@@ -110,3 +110,26 @@
     padding: 0px !important;
 }
 
+.success-icon {
+    width: 32px;
+    height: 32px;
+    background-color: #3BA755;
+    border-radius: 32px;
+    color: #ffffff;
+    font-size: 16px;
+    padding: 8px;
+    display: inline-block;
+    line-height: 16px;
+}
+
+.notstart-icon {
+    width: 32px;
+    height: 32px;
+    border: 2px solid #9CA3AF;
+    border-radius: 32px;
+    color: #202020;
+    font-size: 16px;
+    padding: 6.5px;
+    display: inline-block;
+    line-height: 16px;
+}

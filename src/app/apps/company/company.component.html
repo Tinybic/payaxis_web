@@ -42,88 +42,94 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    Company Details
-                    <a href="mail:">asdf</a>
+                    <div class="col-md-6 headline">
+                        Company Details
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <div>
+                            <i class="fe-upload-cloud font-24"></i>
+                        </div>
+                    </div>
+                    
                 </div>
-                <div class="row">
+                <div class="row mt-1-1">
                     <div class="col-md-6">
-                        <label for="firstname" class="form-label" i18n>Tax ID/EIN</label>
-                        <input class="form-control mb-1-1" type="text" id="firstname" required i18n-placeholder
-                            placeholder="First Name" formControlName="firstname" />
+                        <label class="form-label" i18n>Company Name</label>
+                        <input class="form-control mb-1-1" type="text" id="companyName" required i18n-placeholder
+                            placeholder="Company Name" [(ngModel)]="companyName" />
                     </div>
                     <div class="col-md-6">
-                        <label for="firstname" class="form-label" i18n>Tax ID/EIN</label>
-                        <input class="form-control mb-1-1" type="text" id="firstname" required i18n-placeholder
-                            placeholder="First Name" formControlName="firstname" />
+                        <label class="form-label" i18n>Tax ID/EIN</label>
+                        <input class="form-control mb-1-1" type="text" id="taxId" required i18n-placeholder
+                            placeholder="Tax ID/EIN" [(ngModel)]="company.taxId" />
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mt-1-1">
                     <div class="col-md-6">
-                        <label for="firstname" class="form-label" i18n>Tax ID/EIN</label>
-                        <select  class="form-select mb-1-1"  i18n-placeholder>
-                            <option>ABC</option>
-                        </select>
+                        <label class="form-label" i18n>Industry</label>
+                        <input id="txtindustry" type="text" class="form-select position-relative" 
+                                [ngbTypeahead]="searchIndustry" placeholder="Enter the industry or sector in which the company operates" />
                     </div>
                     <div class="col-md-6">
-                        <label for="firstname" class="form-label" i18n>Payment Terms</label>
-                        <input class="form-control mb-1-1" type="text" id="firstname" required i18n-placeholder
-                            placeholder="First Name" formControlName="firstname" />
+                        <label class="form-label" i18n>Payment Terms</label>
+                        <input class="form-control mb-1-1" type="text" id="paymentTerms" required i18n-placeholder
+                            placeholder="Payment Terms" [(ngModel)]="company.paymentTerms" />
 
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row mt-1-1">
                     <div class="col-md-5">
-                        <label for="firstname" class="form-label" i18n>Payment Terms</label>
-                        <input class="form-control mb-1-1" type="text" id="firstname" required i18n-placeholder
-                            placeholder="First Name" formControlName="firstname" />
+                        <label class="form-label" i18n>Website <small class="text-optional">(optional)</small></label>
+                        <input class="form-control mb-1-1" type="text" id="website" required i18n-placeholder
+                            placeholder="Website" [(ngModel)]="company.website" />
                     </div>
                     <div class="col-md-5">
-                        <label for="firstname" class="form-label" i18n>Payment Terms</label>
-                        <input class="form-control mb-1-1" type="text" id="firstname" required i18n-placeholder
-                            placeholder="First Name" formControlName="firstname" />
+                        <label class="form-label" i18n>Street Address</label>
+                        <input class="form-control mb-1-1" type="text" id="txtAddress" required i18n-placeholder
+                            placeholder="Street Address" [(ngModel)]="company.txtAddress" />
                     </div>
                     <div class="col-md-2">
-                        <label for="firstname" class="form-label" i18n>Payment Terms</label>
+                        <label class="form-label" i18n>Suite Number</label>
                         <input class="form-control mb-1-1" type="text" id="firstname" required i18n-placeholder
-                            placeholder="First Name" formControlName="firstname" />
+                            placeholder="Suite Number" [(ngModel)]="company.txtAddress"  />
                     </div>
                 </div>
 
 
-                <div class="row">
+                <div class="row mt-1-1">
                     <div class="col-md-5">
-                        <label for="firstname" class="form-label" i18n>Payment Terms</label>
-                        <input class="form-control mb-1-1" type="text" id="firstname" required i18n-placeholder
-                            placeholder="First Name" formControlName="firstname" />
+                        <label  class="form-label" i18n>City</label>
+                        <input class="form-control mb-1-1" type="text" id="txtCity" required i18n-placeholder
+                            placeholder="City"  [(ngModel)]="company.txtCity" />
                     </div>
                     <div class="col-md-5">
-                        <label for="firstname" class="form-label" i18n>Payment Terms</label>
-                        <input class="form-control mb-1-1" type="text" id="firstname" required i18n-placeholder
-                            placeholder="First Name" formControlName="firstname" />
+                        <label class="form-label" i18n>State</label>
+                        <input id="txtState" type="text" class="form-select position-relative" 
+                                [ngbTypeahead]="searchState" (focus)="focus$.next($any($event).target.value)" placeholder="State"
+                                (click)="click$.next($any($event).target.value)" #instance="ngbTypeahead"  [(ngModel)]="company.txtState"/>
                     </div>
                     <div class="col-md-2">
-                        <label for="firstname" class="form-label" i18n>Payment Terms</label>
-                        <input class="form-control mb-1-1" type="text" id="firstname" required i18n-placeholder
-                            placeholder="First Name" formControlName="firstname" />
+                        <label class="form-label" i18n>Zip Code</label>
+                        <input class="form-control mb-1-1" type="text" id="txtZipcode" required i18n-placeholder
+                            placeholder="Zip Code" [(ngModel)]="company.txtZipcode" />
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row mt-1-1">
                     <div class="col-md-6">
-                        <label for="firstname" class="form-label" i18n>Tax ID/EIN</label>
-                        <input class="form-control mb-1-1" type="text" id="firstname" required i18n-placeholder
-                            placeholder="First Name" formControlName="firstname" />
+                        <label class="form-label" i18n>Contact Number <small class="text-optional">(optional)</small></label>
+                        <input class="form-control mb-1-1" type="text" id="contactNumber" required i18n-placeholder
+                            placeholder="Contact Number"  [(ngModel)]="company.contactNumber" />
                     </div>
                     <div class="col-md-6">
-                        <label for="firstname" class="form-label" i18n>Tax ID/EIN</label>
-                        <input class="form-control mb-1-1" type="text" id="firstname" required i18n-placeholder
-                            placeholder="First Name" formControlName="firstname" />
+                        <label class="form-label" i18n>Business Description</label>
+                        <input class="form-control mb-1-1" type="text" id="description" required i18n-placeholder
+                            placeholder="Enter a brief description or summary of the company's products, services, or activities"  [(ngModel)]="company.description" />
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
     <div class="col-md-4">
         <div class="card">

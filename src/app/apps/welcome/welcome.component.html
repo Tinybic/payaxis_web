@@ -1,1 +1,25 @@
-<p>welcome works!</p>
+<div>welcome page</div>
+<ng-template #welcomeModal let-modal>
+    <div class="modal-body">
+        <div class="text-center"><img src="/assets/images/logo_bg.png" /></div>
+        <div class="headline text-center mt-3">Great you join us!</div>
+        <div class="mt-2-1 text-center">We will provide you with the main items of the platform for fast and easy start.
+        </div>
+        <div class="Subtitle-1 mt-2-1">Here are the basics:</div>
+        <div class="text-1 mt-2-1">
+            <div class="success-icon  me-2"><i class="fe-check"></i></div><del>Account creation</del>
+        </div>
+        <div class="text-1 mt-2-1">
+            <div class="notstart-icon me-2"><i class="fe-circle"></i></div>Complete Company Settings
+        </div>
+        <div class="text-1 mt-2-1">
+            <div class="notstart-icon me-2"><i class="fe-circle"></i></div>Create first Project
+        </div>
+        <div class="text-1 mt-2-1">
+            <div class="notstart-icon me-2"><i class="fe-circle"></i></div>Bills, team and vendors Guide
+        </div>
+        <div class="mt-2-1">
+            <button class="btn btn-primary" style="width: 100%;" (click) = "goto()" >Let's go</button>
+        </div>
+    </div>
+</ng-template>

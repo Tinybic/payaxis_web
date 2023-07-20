@@ -13,13 +13,28 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+  avatar_String_NotNull_maxLength_512: { input: any; output: any; }
+  contactNumber_String_NotNull_maxLength_20: { input: any; output: any; }
+  description_String_NotNull_maxLength_512: { input: any; output: any; }
   mobile_String_NotNull_pattern_093093094: { input: any; output: any; }
+  paymentTerms_String_NotNull_maxLength_50: { input: any; output: any; }
+  taxId_String_NotNull_maxLength_50: { input: any; output: any; }
+  txtAddress_String_NotNull_maxLength_80: { input: any; output: any; }
+  txtCity_String_NotNull_maxLength_80: { input: any; output: any; }
+  txtName_String_NotNull_maxLength_128: { input: any; output: any; }
   txtName_String_NotNull_maxLength_128_format_email: { input: any; output: any; }
+  txtState_String_NotNull_maxLength_80: { input: any; output: any; }
+  txtZipcode_String_NotNull_maxLength_10: { input: any; output: any; }
+  website_String_NotNull_maxLength_180: { input: any; output: any; }
 };
 
 /** structure to handle table sms */
 export type Mutation = {
   __typename?: 'Mutation';
+  /** new company details */
+  company_new: Comresult;
+  /** update company details */
+  company_update: Comresult;
   /** to activate the user profile */
   profile_2fa?: Maybe<Scalars['Boolean']['output']>;
   /** to activate the user profile */
@@ -34,6 +49,42 @@ export type Mutation = {
   test1_delete?: Maybe<Scalars['Int']['output']>;
   /** mutation to update a row, 1=success, 0=not found */
   test1_update?: Maybe<Scalars['Int']['output']>;
+};
+
+
+/** structure to handle table sms */
+export type MutationCompany_NewArgs = {
+  avatar: Scalars['String']['input'];
+  contactNumber: Scalars['contactNumber_String_NotNull_maxLength_20']['input'];
+  description: Scalars['description_String_NotNull_maxLength_512']['input'];
+  idMasterCompany: Scalars['Int']['input'];
+  paymentTerms: Scalars['paymentTerms_String_NotNull_maxLength_50']['input'];
+  taxId: Scalars['taxId_String_NotNull_maxLength_50']['input'];
+  txtAddress: Scalars['txtAddress_String_NotNull_maxLength_80']['input'];
+  txtCity: Scalars['txtCity_String_NotNull_maxLength_80']['input'];
+  txtName: Scalars['txtName_String_NotNull_maxLength_128']['input'];
+  txtState: Scalars['txtState_String_NotNull_maxLength_80']['input'];
+  txtZipcode: Scalars['txtZipcode_String_NotNull_maxLength_10']['input'];
+  website: Scalars['website_String_NotNull_maxLength_180']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationCompany_UpdateArgs = {
+  avatar: Scalars['avatar_String_NotNull_maxLength_512']['input'];
+  contactNumber: Scalars['contactNumber_String_NotNull_maxLength_20']['input'];
+  description: Scalars['description_String_NotNull_maxLength_512']['input'];
+  id: Scalars['Int']['input'];
+  idMasterCompany: Scalars['Int']['input'];
+  paymentTerms: Scalars['paymentTerms_String_NotNull_maxLength_50']['input'];
+  revision: Scalars['Int']['input'];
+  taxId: Scalars['taxId_String_NotNull_maxLength_50']['input'];
+  txtAddress: Scalars['txtAddress_String_NotNull_maxLength_80']['input'];
+  txtCity: Scalars['txtCity_String_NotNull_maxLength_80']['input'];
+  txtName: Scalars['txtName_String_NotNull_maxLength_128']['input'];
+  txtState: Scalars['txtState_String_NotNull_maxLength_80']['input'];
+  txtZipcode: Scalars['txtZipcode_String_NotNull_maxLength_10']['input'];
+  website: Scalars['website_String_NotNull_maxLength_180']['input'];
 };
 
 
@@ -91,6 +142,8 @@ export type MutationTest1_UpdateArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  /** get company details for the loging user */
+  company_details: Companydetails;
   /** retrieve profile for the loging user */
   profile_info: Profile;
   /** query to retrieve an existing row */
@@ -102,6 +155,55 @@ export type Query = {
 
 export type QueryTest1_FindArgs = {
   id: Scalars['ID']['input'];
+};
+
+export type Company = {
+  __typename?: 'company';
+  active: Scalars['Boolean']['output'];
+  avatar: Scalars['String']['output'];
+  contactNumber: Scalars['String']['output'];
+  createdBy: Scalars['Int']['output'];
+  createdDate: Scalars['String']['output'];
+  description: Scalars['String']['output'];
+  email: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  idMasterCompany: Scalars['Int']['output'];
+  idUserOwner: Scalars['Int']['output'];
+  modifiedBy: Scalars['Int']['output'];
+  modifiedDate: Scalars['String']['output'];
+  paymentTerms: Scalars['String']['output'];
+  revision: Scalars['Int']['output'];
+  taxId: Scalars['String']['output'];
+  txtAddress: Scalars['String']['output'];
+  txtCity: Scalars['String']['output'];
+  txtName: Scalars['String']['output'];
+  txtState: Scalars['String']['output'];
+  txtZipcode: Scalars['String']['output'];
+  website: Scalars['String']['output'];
+};
+
+export type Companydetails = {
+  __typename?: 'companydetails';
+  comboxIndustry?: Maybe<Array<Keyvalue>>;
+  comboxPaymentTerms?: Maybe<Array<Keyvalue>>;
+  company?: Maybe<Company>;
+  companyName: Scalars['String']['output'];
+};
+
+/** structure to handle responses when updating information */
+export type Comresult = {
+  __typename?: 'comresult';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Residrevision>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+/** structure to handle table company */
+export type Keyvalue = {
+  __typename?: 'keyvalue';
+  id: Scalars['Int']['output'];
+  txtName: Scalars['String']['output'];
 };
 
 /** structure to handle table user account */
@@ -118,6 +220,12 @@ export type Profile = {
   socialMedia: Scalars['Int']['output'];
   socialMediaToken: Scalars['String']['output'];
   twofa: Scalars['Boolean']['output'];
+};
+
+export type Residrevision = {
+  __typename?: 'residrevision';
+  id: Scalars['Int']['output'];
+  revision: Scalars['Int']['output'];
 };
 
 /** structure to handle responses when updating information */

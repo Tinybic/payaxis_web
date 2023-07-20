@@ -43,7 +43,7 @@ const maskConfig: Partial<IConfig> = {
     AuthRoutingModule,
     SweetAlert2Module,
     NgxMaskDirective,
-     NgxMaskPipe,
+    NgxMaskPipe,
     CodeInputModule,
     GoogleSigninButtonModule
   ],
