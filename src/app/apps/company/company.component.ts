@@ -58,7 +58,10 @@ export class CompanyComponent {
     suiteNumber: '',
   };
 
-  constructor(private apolloService: ApolloService, private toastrService:ToastrService) {}
+  constructor(
+    private apolloService: ApolloService,
+    private toastrService: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.statesList = STATES;
@@ -72,9 +75,11 @@ export class CompanyComponent {
       this.paymentTermsList = result.comboxPaymentTerms.map(
         ({ txtName }) => txtName
       );
-      this.companyName = result.companyName;
+      this.company.txtName = result.companyName;
 
-      if (result.company) this.company =  JSON.parse(JSON.stringify(result.company));
+      if (result.company) {
+        this.company = JSON.parse(JSON.stringify(result.company));
+      }
     });
   }
 
@@ -131,9 +136,9 @@ export class CompanyComponent {
     if (this.company.id != 0) {
       gql = companyUpate;
     }
-    console.log(this.company)
+    console.log(this.company);
     this.apolloService.mutate(gql, this.company).then((res) => {
-      let result ;
+      let result;
       if (this.company.id != 0) {
         result = res.company_update;
       } else {
