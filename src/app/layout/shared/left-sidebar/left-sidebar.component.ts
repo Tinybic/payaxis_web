@@ -128,7 +128,6 @@ export class LeftSidebarComponent implements OnInit {
         else if(mid == 'setting'){
           this.activeMenuItems = ['setting']
         }
-        console.log(this.activeMenuItems)
       }
     }
   }

@@ -4,11 +4,8 @@ import { WelcomeComponent } from './welcome/welcome.component';
 import { CompanyComponent } from './company/company.component';
 
 const routes: Routes = [
-  { path: 'chat', loadChildren: () => import('./chat/chat.module').then(m => m.ChatModule) },
   { path: 'projects', loadChildren: () => import('./projects/projects.module').then(m => m.ProjectsModule) },
-  { path: 'email', loadChildren: () => import('./email/email.module').then(m => m.EmailModule) },
-  { path: 'tasks', loadChildren: () => import('./tasks/tasks.module').then(m => m.TasksModule) },
-  { path: 'contacts', loadChildren: () => import('./contacts/contacts.module').then(m => m.ContactsModule) },
+  { path: 'team', loadChildren: () => import('./team/team.module').then(m => m.TeamModule) },
   {
     path: 'welcome',
     component: WelcomeComponent

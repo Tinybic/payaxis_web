@@ -218,7 +218,7 @@
     --#{$variable-prefix}progress-bg:                                    #{map-get($grays, "300")};
     --#{$variable-prefix}progress-box-shadow:                            #{$box-shadow-inset};
     --#{$variable-prefix}progress-bar-color:                             #{$white};
-    --#{$variable-prefix}progress-bar-bg:                                #{$primary};
+    --#{$variable-prefix}progress-bar-bg:                                #{$primarylight};
 
     // scss-docs-start list-group-variables
     --#{$variable-prefix}list-group-color:                               #{null};

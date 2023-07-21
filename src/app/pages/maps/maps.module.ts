@@ -19,7 +19,7 @@ import { environment } from 'src/environments/environment.prod';
   imports: [
     CommonModule,
     AgmCoreModule.forRoot({
-      apiKey: environment.GOOGLE_MAPS_API_KEY
+      apiKey: ""
     }),
     WidgetModule,
     MapsRoutingModule

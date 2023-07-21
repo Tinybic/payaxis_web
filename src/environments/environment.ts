@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  GOOGLE_MAPS_API_KEY: 'AIzaSyDpgQMpcfx1QU-8SM-ljcgjG4xrYtIYby4'
+  apiUrl: "http://192.168.99.18:4000/api/",
+  apolloUrl :"http://192.168.99.18:4000/graphql"
 };
 
 /*

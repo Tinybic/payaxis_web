@@ -16,7 +16,7 @@ const MENU_ITEMS: MenuItem[] = [
     icon: 'fe-file-text',
     collapsed: true,
     url: '/icons/feather',
-  },
+  }, 
   {
     key: 'forms',
     label: 'Forms',
@@ -25,7 +25,14 @@ const MENU_ITEMS: MenuItem[] = [
     collapsed: true,
     url: '/forms/basic',
   },
-  
+  {
+    key: 'team',
+    label: 'Team',
+    isTitle: false,
+    icon: 'fe-users',
+    collapsed: true,
+    url: '/apps/team',
+  },
 ];
 
 const HORIZONTAL_MENU_ITEMS: MenuItem[] = [

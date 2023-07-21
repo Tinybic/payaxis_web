@@ -2,8 +2,9 @@ import { ApolloLink } from "@apollo/client/link/core/ApolloLink";
 import { setContext } from '@apollo/client/link/context'
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
+import { environment } from 'src/environments/environment';
 
-const uri = 'https://payaxis.azurewebsites.net/graphql';
+const uri = environment.apolloUrl;
 export function createApollo(httpLink: HttpLink) {
     const basic = setContext((operation, context) => ({
       headers: {

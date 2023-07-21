@@ -192,8 +192,8 @@ export type Company = {
 
 export type Companydetails = {
   __typename?: 'companydetails';
-  comboxIndustry?: Maybe<Array<comboxIndustry>>;
-  comboxPaymentTerms?: Maybe<Array<comboxPaymentTerms>>;
+  comboxIndustry?: Maybe<Array<Keyvalue1>>;
+  comboxPaymentTerms?: Maybe<Array<Keyvalue2>>;
   company?: Maybe<Company>;
   companyName: Scalars['String']['output'];
 };
@@ -208,14 +208,14 @@ export type Comresult = {
 };
 
 /** structure to handle table company */
-export type comboxIndustry = {
-  __typename?: 'comboxIndustry';
+export type Keyvalue1 = {
+  __typename?: 'keyvalue1';
   id: Scalars['Int']['output'];
   txtName: Scalars['String']['output'];
 };
 
-export type comboxPaymentTerms = {
-  __typename?: 'comboxPaymentTerms';
+export type Keyvalue2 = {
+  __typename?: 'keyvalue2';
   id: Scalars['Int']['output'];
   txtName: Scalars['String']['output'];
 };

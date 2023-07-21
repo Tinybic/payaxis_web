@@ -17,6 +17,7 @@ import {
   companyUpate,
 } from 'src/app/core/gql/company';
 import { ApolloService } from 'src/app/core/service/apollo.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-company',
@@ -57,7 +58,7 @@ export class CompanyComponent {
     suiteNumber: '',
   };
 
-  constructor(private apolloService: ApolloService) {}
+  constructor(private apolloService: ApolloService, private toastrService:ToastrService) {}
 
   ngOnInit(): void {
     this.statesList = STATES;
@@ -73,8 +74,7 @@ export class CompanyComponent {
       );
       this.companyName = result.companyName;
 
-      console.log(this.paymentTermsList);
-      if (result.company) this.company = result.company;
+      if (result.company) this.company =  JSON.parse(JSON.stringify(result.company));
     });
   }
 
@@ -131,14 +131,15 @@ export class CompanyComponent {
     if (this.company.id != 0) {
       gql = companyUpate;
     }
+    console.log(this.company)
     this.apolloService.mutate(gql, this.company).then((res) => {
-      let result = {};
+      let result ;
       if (this.company.id != 0) {
         result = res.company_update;
       } else {
         result = res.company_new;
       }
-      console.log(result);
+      this.toastrService.info(result.message, '');
     });
   }
 }
