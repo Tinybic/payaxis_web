@@ -1,20 +1,16 @@
 <div id="wrapper">
 
-    <!-- topbar -->
-    <app-topbar (mobileMenuButtonClicked)="onToggleMobileMenu()" layoutType="vertical"></app-topbar>
-
     <!-- left side bar-->
     <app-left-sidebar [includeUserProfile]="showSidebarUserInfo"></app-left-sidebar>
 
     <div class="content-page">
         <div class="content">
             <!-- content -->
-            <div class="container-fluid" *ngIf="reRender">
+            <div class="container-fluid ps-0 pe-0" *ngIf="reRender">
                 <router-outlet></router-outlet>
             </div>
         </div>
         <!-- footer -->
-        <app-footer></app-footer>
     </div>
 </div>
 <!-- END wrapper -->

@@ -1,8 +1,20 @@
 <!-- ========== Left Sidebar Start ========== -->
 <div class="left-side-menu" (clickOutside)="hideMenu()" [exclude]="'.open-left'" [excludeBeforeClick]="true">
-    <ngx-simplebar class="h-100">
+    <div class="logo-box" >
+        <div>
+            <img class="ms-3 adminIcons mt-3" src="/assets/images/Groups.svg" style="height: 19px;" />
+            <img class="ms-3 adminIcon mt-3" src="/assets/images/Group.svg" style="height: 19px;" />
+        </div>
+    </div>
+    
+    <div class="toggleMenuIcon">
+        <i (click)="changeLeftSidebarSize('condensed')" *ngIf="leftbarSize != 'condensed'" class="fe-chevron-left"
+            style="color: #E5E7EB; font-size: 16px;"></i>
+        <i (click)="changeLeftSidebarSize('default')" *ngIf="leftbarSize == 'condensed'" class="fe-chevron-right"
+            style="color: #E5E7EB; font-size: 16px;"></i>
+    </div>
 
-
+    <ngx-simplebar class="h-100" style="margin-top:102px">
         <!--- Sidemenu -->
         <div id="sidebar-menu">
 
@@ -29,6 +41,7 @@
                     </ng-container>
 
                 </ng-container>
+                
             </ul>
 
             <!-- User box -->
@@ -37,9 +50,8 @@
                 <div id="sidebar-menu1">
                     <ul id="side-menu1">
 
-                        <li >
-                            <a  class="side-nav-link-ref" ng-reflect-router-link="/forms/basic"
-                                 data-menu-key="icons" href="/forms/basic">
+                        <li [ngClass]="{'menuitem-active': activeMenuItems.includes('setting')}">
+                            <a  class="side-nav-link-ref" [ngClass]="{'active': activeMenuItems.includes('setting')}"  data-menu-key="setting" routerLink="/apps/company">
                                 <i  class="fe-settings"></i>
                                 <span >Settings</span>
                             </a>
@@ -64,12 +76,6 @@
 
     </ngx-simplebar>
 
-    <div class="toggleMenuIcon">
-        <i (click)="changeLeftSidebarSize('condensed')" *ngIf="leftbarSize != 'condensed'" class="fe-chevron-left"
-            style="color: #FFFFFF; font-size: 16px;"></i>
-        <i (click)="changeLeftSidebarSize('default')" *ngIf="leftbarSize == 'condensed'" class="fe-chevron-right"
-            style="color: #FFFFFF; font-size: 16px;"></i>
-    </div>
 
 </div>
 

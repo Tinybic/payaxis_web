@@ -1,12 +1,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpService {
 
-  public baseUrl = 'https://payaxis.azurewebsites.net/api/';
+  public baseUrl = environment.apiUrl;
   constructor(public http: HttpClient) { }
   
 

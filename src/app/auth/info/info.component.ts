@@ -100,7 +100,7 @@ export class InfoComponent implements OnInit {
       .then((res) => {
         this.loading = false;
         if (!res.profile_activate.error) {
-          this.router.navigate(['icons/feather']);
+          this.router.navigate(['apps/welcome']);
         } else {
           this.error = res.profile_activate.message;
         }
@@ -119,6 +119,7 @@ export class InfoComponent implements OnInit {
    */
   paracont: string = 'Resend';
   onSubmit(): void {
+    this.error = '';
     this.formSubmitted = true;
     if (this.signUpForm2.valid) {
       if (this.formValues['f2_auth'].value) {

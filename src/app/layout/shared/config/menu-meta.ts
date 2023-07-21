@@ -3,13 +3,20 @@ import { MenuItem } from '../models/menu.model';
 // menu items for vertcal and detached layout
 const MENU_ITEMS: MenuItem[] = [
   {
+    key: 'base-ui',
+    label: 'Projects',
+    isTitle: false,
+    icon: 'fe-grid',
+    collapsed: true,
+    url: '/apps/projects',
+  },{
     key: 'icons',
-    label: 'Icons',
+    label: 'Bills',
     isTitle: false,
     icon: 'fe-file-text',
     collapsed: true,
     url: '/icons/feather',
-  },
+  }, 
   {
     key: 'forms',
     label: 'Forms',
@@ -19,49 +26,12 @@ const MENU_ITEMS: MenuItem[] = [
     url: '/forms/basic',
   },
   {
-    key: 'base-ui',
-    label: 'Component',
+    key: 'team',
+    label: 'Team',
     isTitle: false,
-    icon: 'fe-grid',
+    icon: 'fe-users',
     collapsed: true,
-    children: [
-      {
-        key: 'base-ui-buttons',
-        label: 'Buttons',
-        url: '/base-ui/buttons',
-        parentKey: 'base-ui',
-      },
-      {
-        key: 'base-ui-avatars',
-        label: 'Avatars',
-        url: '/base-ui/avatars',
-        parentKey: 'base-ui',
-      },
-      {
-        key: 'base-ui-tabs-accordions',
-        label: 'Tabs',
-        url: '/base-ui/tabs-accordions',
-        parentKey: 'base-ui',
-      },
-      {
-        key: 'base-ui-progress',
-        label: 'Progress',
-        url: '/base-ui/progress',
-        parentKey: 'base-ui',
-      },
-      {
-        key: 'base-ui-general',
-        label: 'General UI',
-        url: '/base-ui/general',
-        parentKey: 'base-ui',
-      },
-      {
-        key: 'base-ui-typography',
-        label: 'Typography',
-        url: '/base-ui/typography',
-        parentKey: 'base-ui',
-      },
-    ],
+    url: '/apps/team',
   },
 ];
 

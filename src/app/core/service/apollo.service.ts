@@ -36,6 +36,7 @@ export class ApolloService {
         })
         .valueChanges.subscribe({
           next(res): any {
+            console.log(res)
             if (res.data) resolve(res.data);
             else reject(null);
           },

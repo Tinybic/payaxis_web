@@ -89,14 +89,24 @@ export class LeftSidebarComponent implements OnInit {
    * activates menu
    */
   _activateMenu(): void {
-    const div = document.getElementById('side-menu');
+    
+    const div = document.getElementById('side-menu') ;
+    const div1 = document.getElementById('side-menu1');
     let matchingMenuItem = null;
+
 
     if (div) {
       let items: any = div.getElementsByClassName('side-nav-link-ref');
+      let items1: any = div1.getElementsByClassName('side-nav-link-ref');
       for (let i = 0; i < items.length; ++i) {
         if (window.location.pathname === items[i].pathname) {
           matchingMenuItem = items[i];
+          break;
+        }
+      }
+      for (let i = 0; i < items1.length; ++i) {
+        if (window.location.pathname === items1[i].pathname) {
+          matchingMenuItem = items1[i];
           break;
         }
       }
@@ -104,6 +114,7 @@ export class LeftSidebarComponent implements OnInit {
       if (matchingMenuItem) {
         const mid = matchingMenuItem.getAttribute('data-menu-key');
         const activeMt = findMenuItem(this.menuItems, mid);
+        
         if (activeMt) {
 
           const matchingObjs = [activeMt['key'], ...findAllParent(this.menuItems, activeMt)];
@@ -113,6 +124,9 @@ export class LeftSidebarComponent implements OnInit {
           this.menuItems.forEach((menu: MenuItem) => {
             menu.collapsed = !matchingObjs.includes(menu.key!);
           });
+        }
+        else if(mid == 'setting'){
+          this.activeMenuItems = ['setting']
         }
       }
     }

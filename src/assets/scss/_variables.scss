@@ -418,7 +418,9 @@ $spacers: (
 $position-values: (
   0: 0,
   50: 50%,
-  100: 100%
+  100: 100%,
+  24: 24px,
+  40: 40px
 );
 // scss-docs-end position-map
 
@@ -426,7 +428,7 @@ $position-values: (
 //
 // Settings for the `<body>` element.
 
-$body-bg:                   #ebeff2;
+$body-bg:                   #F7FAFC;
 $body-color:                $typeblackprimary;
 $body-text-align:           null;
 

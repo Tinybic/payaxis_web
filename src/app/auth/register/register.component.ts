@@ -88,7 +88,7 @@ export class RegisterComponent implements OnInit {
           console.log(res);
           if (!res.error) {
             this.ajaxRequest1.fire();
-            localStorage.setItem('refreshtoken', res.data.refreshtoken);
+            localStorage.setItem('refreshToken', res.data.refreshToken);
             localStorage.setItem('token', res.data.token);
             setTimeout(() => {
               this.router.navigate(['auth/info']);
@@ -142,11 +142,9 @@ export class RegisterComponent implements OnInit {
                   })
                   .then((res) => {
                     that.loading = false;
-                    if (!res.error) {
-                      that.ajaxRequest.fire();
-                    } else {
+                    if (res.error) {
                       that.error = res.message;
-                    }
+                    } 
                   })
                   .catch((error) => {
                     that.loading = false;

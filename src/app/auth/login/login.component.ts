@@ -75,6 +75,7 @@ export class LoginComponent implements OnInit {
   paracont = 'Resend';
   takeFourNumbers: any;
   onSubmit(): void {
+    this.error = '';
     this.modalService.dismissAll();
     this.formSubmitted = true;
     if (this.loginForm.valid && this.paracont == 'Resend') {
@@ -87,9 +88,13 @@ export class LoginComponent implements OnInit {
         .then((res) => {
           this.loading = false;
           if (!res.error) {
-            localStorage.setItem('refreshtoken', res.data.refreshtoken);
+            localStorage.setItem('refreshToken', res.data.refreshToken);
             localStorage.setItem('token', res.data.token);
-            this.router.navigate(['icons/feather']);
+            if (res.code == 113) {
+              this.router.navigate(['auth/info']);
+            } else {
+              this.router.navigate(['apps/welcome']);
+            }
           } else if (res.code == 112) {
             this.openmodal();
           } else {
@@ -106,7 +111,7 @@ export class LoginComponent implements OnInit {
   openmodal() {
     if (this.paracont == 'Resend') {
       this.paracont = 'Resend code in 00:59';
-      
+
       this.openVerticallyCentered(this.centeredModal);
       let that = this;
       const numbers = interval(1000);

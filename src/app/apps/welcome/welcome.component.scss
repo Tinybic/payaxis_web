@@ -1,0 +1,17 @@
+.modal-body {
+    width: 443px;
+    border-radius: 8px;
+    padding:40px 30px;
+}
+.modal-dialog{
+    max-width: 443px !important;
+    width: 443px;
+}
+.modal-content{
+    width: 443px;
+    border-radius: 8px;
+}
+
+.btn-primary:focus{
+    border: 0;
+}

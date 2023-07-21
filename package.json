@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "format": "prettier --write \"**/*.{ts,json,md,html}\"",
-    "generate": "graphql-codegen"
+    "g": "graphql-codegen"
   },
   "private": true,
   "dependencies": {
