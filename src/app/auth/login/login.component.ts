@@ -88,7 +88,7 @@ export class LoginComponent implements OnInit {
         .then((res) => {
           this.loading = false;
           if (!res.error) {
-            localStorage.setItem('refreshtoken', res.data.refreshToken);
+            localStorage.setItem('refreshToken', res.data.refreshToken);
             localStorage.setItem('token', res.data.token);
             if (res.code == 113) {
               this.router.navigate(['auth/info']);

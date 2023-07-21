@@ -16,8 +16,10 @@ export type Scalars = {
   avatar_String_NotNull_maxLength_512: { input: any; output: any; }
   contactNumber_String_NotNull_maxLength_20: { input: any; output: any; }
   description_String_NotNull_maxLength_512: { input: any; output: any; }
+  industry_String_NotNull_maxLength_50: { input: any; output: any; }
   mobile_String_NotNull_pattern_093093094: { input: any; output: any; }
   paymentTerms_String_NotNull_maxLength_50: { input: any; output: any; }
+  suiteNumber_String_NotNull_maxLength_30: { input: any; output: any; }
   taxId_String_NotNull_maxLength_50: { input: any; output: any; }
   txtAddress_String_NotNull_maxLength_80: { input: any; output: any; }
   txtCity_String_NotNull_maxLength_80: { input: any; output: any; }
@@ -54,11 +56,13 @@ export type Mutation = {
 
 /** structure to handle table sms */
 export type MutationCompany_NewArgs = {
-  avatar: Scalars['String']['input'];
+  avatar: Scalars['avatar_String_NotNull_maxLength_512']['input'];
   contactNumber: Scalars['contactNumber_String_NotNull_maxLength_20']['input'];
   description: Scalars['description_String_NotNull_maxLength_512']['input'];
   idMasterCompany: Scalars['Int']['input'];
+  industry: Scalars['industry_String_NotNull_maxLength_50']['input'];
   paymentTerms: Scalars['paymentTerms_String_NotNull_maxLength_50']['input'];
+  suiteNumber: Scalars['suiteNumber_String_NotNull_maxLength_30']['input'];
   taxId: Scalars['taxId_String_NotNull_maxLength_50']['input'];
   txtAddress: Scalars['txtAddress_String_NotNull_maxLength_80']['input'];
   txtCity: Scalars['txtCity_String_NotNull_maxLength_80']['input'];
@@ -76,8 +80,10 @@ export type MutationCompany_UpdateArgs = {
   description: Scalars['description_String_NotNull_maxLength_512']['input'];
   id: Scalars['Int']['input'];
   idMasterCompany: Scalars['Int']['input'];
+  industry: Scalars['industry_String_NotNull_maxLength_50']['input'];
   paymentTerms: Scalars['paymentTerms_String_NotNull_maxLength_50']['input'];
   revision: Scalars['Int']['input'];
+  suiteNumber: Scalars['suiteNumber_String_NotNull_maxLength_30']['input'];
   taxId: Scalars['taxId_String_NotNull_maxLength_50']['input'];
   txtAddress: Scalars['txtAddress_String_NotNull_maxLength_80']['input'];
   txtCity: Scalars['txtCity_String_NotNull_maxLength_80']['input'];
@@ -169,10 +175,12 @@ export type Company = {
   id: Scalars['Int']['output'];
   idMasterCompany: Scalars['Int']['output'];
   idUserOwner: Scalars['Int']['output'];
+  industry: Scalars['String']['output'];
   modifiedBy: Scalars['Int']['output'];
   modifiedDate: Scalars['String']['output'];
   paymentTerms: Scalars['String']['output'];
   revision: Scalars['Int']['output'];
+  suiteNumber: Scalars['String']['output'];
   taxId: Scalars['String']['output'];
   txtAddress: Scalars['String']['output'];
   txtCity: Scalars['String']['output'];
@@ -184,8 +192,8 @@ export type Company = {
 
 export type Companydetails = {
   __typename?: 'companydetails';
-  comboxIndustry?: Maybe<Array<Keyvalue>>;
-  comboxPaymentTerms?: Maybe<Array<Keyvalue>>;
+  comboxIndustry?: Maybe<Array<comboxIndustry>>;
+  comboxPaymentTerms?: Maybe<Array<comboxPaymentTerms>>;
   company?: Maybe<Company>;
   companyName: Scalars['String']['output'];
 };
@@ -200,8 +208,14 @@ export type Comresult = {
 };
 
 /** structure to handle table company */
-export type Keyvalue = {
-  __typename?: 'keyvalue';
+export type comboxIndustry = {
+  __typename?: 'comboxIndustry';
+  id: Scalars['Int']['output'];
+  txtName: Scalars['String']['output'];
+};
+
+export type comboxPaymentTerms = {
+  __typename?: 'comboxPaymentTerms';
   id: Scalars['Int']['output'];
   txtName: Scalars['String']['output'];
 };

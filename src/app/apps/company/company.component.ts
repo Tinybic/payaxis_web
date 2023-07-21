@@ -11,7 +11,11 @@ import {
   merge,
 } from 'rxjs';
 import { STATES } from 'src/app/core/constants/states';
-import { compayDetail } from 'src/app/core/gql/company';
+import {
+  compayDetail,
+  companyNew,
+  companyUpate,
+} from 'src/app/core/gql/company';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 
 @Component({
@@ -26,6 +30,7 @@ export class CompanyComponent {
 
   statesList: string[] = [];
   industryList = [];
+  industryNameList = [];
   paymentTermsList = [];
   typeaheadModel: any;
   focus$ = new Subject<string>();
@@ -39,6 +44,7 @@ export class CompanyComponent {
     txtName: this.companyName,
     taxId: '',
     idMasterCompany: 0,
+    industry: '',
     paymentTerms: '',
     website: '',
     txtAddress: '',
@@ -48,6 +54,7 @@ export class CompanyComponent {
     contactNumber: '',
     description: '',
     avatar: '',
+    suiteNumber: '',
   };
 
   constructor(private apolloService: ApolloService) {}
@@ -58,8 +65,15 @@ export class CompanyComponent {
     this.apolloService.query(compayDetail, {}).then((res) => {
       const result = res.company_details;
       this.industryList = result.comboxIndustry;
-      this.paymentTermsList = result.comboxPaymentTerms;
+      this.industryNameList = result.comboxIndustry.map(
+        ({ txtName }) => txtName
+      );
+      this.paymentTermsList = result.comboxPaymentTerms.map(
+        ({ txtName }) => txtName
+      );
       this.companyName = result.companyName;
+
+      console.log(this.paymentTermsList);
       if (result.company) this.company = result.company;
     });
   }
@@ -88,13 +102,43 @@ export class CompanyComponent {
     );
   };
 
-  searchIndustry: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) =>
-  text$.pipe(
-    debounceTime(200),
-    distinctUntilChanged(),
-    map(term => term.length < 2 ? []
-      : this.statesList.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 5))
-  )
+  searchIndustry: OperatorFunction<string, readonly string[]> = (
+    text$: Observable<string>
+  ) =>
+    text$.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      map((term) =>
+        term.length < 1
+          ? []
+          : this.industryNameList
+              .filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
+              .slice(0, 5)
+      )
+    );
 
+  setIndustry(event) {
+    for (let item of this.industryList) {
+      if (item.txtName == event.item) {
+        this.company.idMasterCompany = item.id;
+        break;
+      }
+    }
+  }
 
+  saveCompany() {
+    let gql = companyNew;
+    if (this.company.id != 0) {
+      gql = companyUpate;
+    }
+    this.apolloService.mutate(gql, this.company).then((res) => {
+      let result = {};
+      if (this.company.id != 0) {
+        result = res.company_update;
+      } else {
+        result = res.company_new;
+      }
+      console.log(result);
+    });
+  }
 }

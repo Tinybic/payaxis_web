@@ -133,3 +133,21 @@
     display: inline-block;
     line-height: 16px;
 }
+
+.upload-icon {
+    width: 56px;
+    height: 56px;
+    background-color: #E5E7EB;
+    border-radius: 56px;
+    padding: 16px;
+    color: #202020CC;
+    cursor: pointer;
+}
+
+.upload-text {
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color:var(--ct-link-color)
+}

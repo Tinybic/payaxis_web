@@ -3,7 +3,7 @@
         My Company
     </div>
     <div class="col-md-6 text-end">
-        <button class="btn btn-primary">Save</button>
+        <button class="btn btn-primary" (click) = "saveCompany()">Save</button>
         <i class="fe-more-vertical- font-24 ms-2-1"></i>
     </div>
 </div>
@@ -45,62 +45,69 @@
                     <div class="col-md-6 headline">
                         Company Details
                     </div>
-                    <div class="col-md-6 text-end">
-                        <div>
+                    <div class="col-md-6 d-flex flex-row-reverse">
+                        <div class="upload-icon cursor-pointer">
                             <i class="fe-upload-cloud font-24"></i>
+                            <input type="file" class="invisible"/>
+                        </div>
+                        <div class="me-2 pt-2 upload-text">
+                            upload<br /> your LOGO
                         </div>
                     </div>
                     
                 </div>
-                <div class="row mt-1-1">
+                <div class="row mt-2-1">
                     <div class="col-md-6">
                         <label class="form-label" i18n>Company Name</label>
-                        <input class="form-control mb-1-1" type="text" id="companyName" required i18n-placeholder
+                        <input class="form-control" type="text" id="companyName" required i18n-placeholder
                             placeholder="Company Name" [(ngModel)]="companyName" />
                     </div>
                     <div class="col-md-6">
                         <label class="form-label" i18n>Tax ID/EIN</label>
-                        <input class="form-control mb-1-1" type="text" id="taxId" required i18n-placeholder
+                        <input class="form-control" type="text" id="taxId" required i18n-placeholder
                             placeholder="Tax ID/EIN" [(ngModel)]="company.taxId" />
                     </div>
                 </div>
-                <div class="row mt-1-1">
+                <div class="row mt-2-1">
                     <div class="col-md-6">
                         <label class="form-label" i18n>Industry</label>
                         <input id="txtindustry" type="text" class="form-select position-relative" 
-                                [ngbTypeahead]="searchIndustry" placeholder="Enter the industry or sector in which the company operates" />
+                                [ngbTypeahead]="searchIndustry" (selectItem)="setIndustry($event)" [(ngModel)]="company.industry" placeholder="Enter the industry or sector in which the company operates" />
                     </div>
                     <div class="col-md-6">
                         <label class="form-label" i18n>Payment Terms</label>
-                        <input class="form-control mb-1-1" type="text" id="paymentTerms" required i18n-placeholder
-                            placeholder="Payment Terms" [(ngModel)]="company.paymentTerms" />
+                        <select class="form-select position-relative" type="text" id="paymentTerms" required i18n-placeholder
+                            placeholder="Payment Terms" [(ngModel)]="company.paymentTerms">
+                            <option value="0">Payment Terms</option>
+                            <option *ngFor="let item of this.paymentTermsList" value="{{item}}">{{item}}</option>
+                            </select>
 
                     </div>
                 </div>
 
-                <div class="row mt-1-1">
+                <div class="row mt-2-1">
                     <div class="col-md-5">
                         <label class="form-label" i18n>Website <small class="text-optional">(optional)</small></label>
-                        <input class="form-control mb-1-1" type="text" id="website" required i18n-placeholder
+                        <input class="form-control" type="text" id="website" i18n-placeholder
                             placeholder="Website" [(ngModel)]="company.website" />
                     </div>
                     <div class="col-md-5">
                         <label class="form-label" i18n>Street Address</label>
-                        <input class="form-control mb-1-1" type="text" id="txtAddress" required i18n-placeholder
+                        <input class="form-control" type="text" id="txtAddress" required i18n-placeholder
                             placeholder="Street Address" [(ngModel)]="company.txtAddress" />
                     </div>
                     <div class="col-md-2">
                         <label class="form-label" i18n>Suite Number</label>
-                        <input class="form-control mb-1-1" type="text" id="firstname" required i18n-placeholder
-                            placeholder="Suite Number" [(ngModel)]="company.txtAddress"  />
+                        <input class="form-control" type="text" id="firstname" required i18n-placeholder
+                            placeholder="Suite Number" [(ngModel)]="company.suiteNumber"  />
                     </div>
                 </div>
 
 
-                <div class="row mt-1-1">
+                <div class="row mt-2-1">
                     <div class="col-md-5">
                         <label  class="form-label" i18n>City</label>
-                        <input class="form-control mb-1-1" type="text" id="txtCity" required i18n-placeholder
+                        <input class="form-control" type="text" id="txtCity" required i18n-placeholder
                             placeholder="City"  [(ngModel)]="company.txtCity" />
                     </div>
                     <div class="col-md-5">
@@ -111,20 +118,20 @@
                     </div>
                     <div class="col-md-2">
                         <label class="form-label" i18n>Zip Code</label>
-                        <input class="form-control mb-1-1" type="text" id="txtZipcode" required i18n-placeholder
+                        <input class="form-control" type="text" id="txtZipcode" required i18n-placeholder
                             placeholder="Zip Code" [(ngModel)]="company.txtZipcode" />
                     </div>
                 </div>
 
-                <div class="row mt-1-1">
+                <div class="row mt-2-1">
                     <div class="col-md-6">
                         <label class="form-label" i18n>Contact Number <small class="text-optional">(optional)</small></label>
-                        <input class="form-control mb-1-1" type="text" id="contactNumber" required i18n-placeholder
+                        <input class="form-control" type="text" id="contactNumber" i18n-placeholder
                             placeholder="Contact Number"  [(ngModel)]="company.contactNumber" />
                     </div>
                     <div class="col-md-6">
                         <label class="form-label" i18n>Business Description</label>
-                        <input class="form-control mb-1-1" type="text" id="description" required i18n-placeholder
+                        <input class="form-control" type="text" id="description" required i18n-placeholder
                             placeholder="Enter a brief description or summary of the company's products, services, or activities"  [(ngModel)]="company.description" />
                     </div>
                 </div>

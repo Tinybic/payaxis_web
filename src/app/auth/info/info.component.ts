@@ -100,7 +100,7 @@ export class InfoComponent implements OnInit {
       .then((res) => {
         this.loading = false;
         if (!res.profile_activate.error) {
-          this.router.navigate(['apps/company']);
+          this.router.navigate(['apps/welcome']);
         } else {
           this.error = res.profile_activate.message;
         }
