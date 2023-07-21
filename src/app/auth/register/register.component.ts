@@ -142,11 +142,9 @@ export class RegisterComponent implements OnInit {
                   })
                   .then((res) => {
                     that.loading = false;
-                    if (!res.error) {
-                      that.ajaxRequest.fire();
-                    } else {
+                    if (res.error) {
                       that.error = res.message;
-                    }
+                    } 
                   })
                   .catch((error) => {
                     that.loading = false;
