@@ -79,6 +79,7 @@ export class CompanyComponent {
 
       if (result.company) {
         this.company = JSON.parse(JSON.stringify(result.company));
+        localStorage.setItem('idcompany', this.company.id.toString());
       }
     });
   }
@@ -136,7 +137,6 @@ export class CompanyComponent {
     if (this.company.id != 0) {
       gql = companyUpate;
     }
-    console.log(this.company);
     this.apolloService.mutate(gql, this.company).then((res) => {
       let result;
       if (this.company.id != 0) {
@@ -148,7 +148,7 @@ export class CompanyComponent {
     });
   }
 
-  dropdownSelect(item){
-    this.company.paymentTerms= item;
+  dropdownSelect(item) {
+    this.company.paymentTerms = item;
   }
 }

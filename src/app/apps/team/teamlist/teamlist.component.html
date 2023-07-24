@@ -11,28 +11,32 @@
 <div class="row">
     <div class="col-md-4">
         <div class="dropdown" ngbDropdown>
-            <a href="javascript:void(0)" ngbDropdownToggle>ALL(4) <i class=" fe-chevron-down"></i></a>
+            <a href="javascript:void(0)" class="bold-600 font-20 text-black line-60"
+                ngbDropdownToggle>{{this.statusFilter}}(4) <i class=" fe-chevron-down"></i></a>
             <div class="dropdown-menu" ngbDropdownMenu>
                 <div class="mb-2">
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                        <label class="form-check-label" for="dropdownCheck">
-                            ALL(4)
+                        <input type="checkbox" class="form-check-input" name="statusFilter"
+                            [checked]="statusFilter=='All'" (change)="changeStatusFilter('All')">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                            All(4)
                         </label>
                     </div>
                 </div>
                 <div class="mb-2">
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                        <label class="form-check-label" for="dropdownCheck">
+                        <input type="checkbox" class="form-check-input" [checked]="statusFilter=='Active'"
+                            (change)="changeStatusFilter('Active')" name="statusFilter">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck">
                             Active(4)
                         </label>
                     </div>
                 </div>
-                <div class="mb-2">
+                <div>
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                        <label class="form-check-label" for="dropdownCheck">
+                        <input type="checkbox" class="form-check-input" [checked]="statusFilter=='Pending'"
+                            (change)="changeStatusFilter('Pending')" name="statusFilter">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck">
                             Pending(4)
                         </label>
                     </div>
@@ -40,5 +44,201 @@
             </div>
         </div>
     </div>
-    <div class="col-md-8"></div>
+    <div class="col-md-8 text-end mt-2-1">
+
+        <div class="dropdown" ngbDropdown>
+            <a class="dropdow-outline" href="javascript:void(0)" ngbDropdownToggle>
+                <i class="fe-user font-16 me-1-1"></i>
+                Approval
+                <i class="fe-chevron-down font-16 ms-1-1"></i>
+            </a>
+            <div class="dropdown-menu" ngbDropdownMenu>
+                <div class="mb-2">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                            ALL
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                            Approval
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                            Admin
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                            Editor
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                            Viewer
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end filter 1-->
+        <div class="dropdown ms-1-1" ngbDropdown>
+            <a class="dropdow-outline" href="javascript:void(0)" ngbDropdownToggle>
+                <i class="fe-folder font-16 me-1-1"></i>
+                Project
+                <i class="fe-chevron-down font-16 ms-1-1"></i>
+            </a>
+            <div class="dropdown-menu" ngbDropdownMenu>
+                <div class="mb-2">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                            ALL
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                            Approval
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                            Admin
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                            Editor
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                            Viewer
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end filter 2-->
+        <div class="dropdown ms-1-1" ngbDropdown>
+            <a class="dropdow-outline" href="javascript:void(0)" ngbDropdownToggle>
+                <i class="fe-dollar-sign font-16 me-1-1"></i>
+                Approval Amount
+                <i class="fe-chevron-down font-16 ms-1-1"></i>
+            </a>
+            <div class="dropdown-menu" ngbDropdownMenu>
+                <div class="mb-2">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                            ALL
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                            Approval
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                            Admin
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                            Editor
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                            Viewer
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end filter 3-->
+        <div class="d-inline-block ms-1-1">
+            <input class="form-control form-search" type="text" placeholder="Search here" />
+        </div>
+        <!-- end search-->
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-md-12">
+        <table
+            style="border:1px solid #73B2FF; border-radius: 16px; border-collapse: separate;border-spacing: 0; width: 100%;  ">
+            <thead style="background-color: #064088;">
+                <tr style=" color: #fff; ">
+                    <th class="subtitle-2-600" style="border-top-left-radius: 16px;"><input class="form-check"
+                            type="checkbox" /></th>
+                    <th class="subtitle-2-600">User</th>
+                    <th class="subtitle-2-600">Role</th>
+                    <th class="subtitle-2-600">Approval amount</th>
+                    <th class="subtitle-2-600" style="border-top-right-radius: 16px;">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of members">
+                    <td><input class="form-check" type="checkbox" /></td>
+                    <td>
+                        <div class="d-flex flex-row">
+                            <div class="me-1-1"><img src="/assets/images/users/profile.jpg" alt="user-img"
+                                    title="Mat Helme" class="rounded-circle img-thumbnail avatar-md-1"></div>
+                            <div>
+                                <div class="bold-600">{{item.firstName}}&nbsp;{{item.lastName}}</div>
+                                <div class="text-typeblackdeactivated">ManagerSales</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>{{item.role}}</td>
+                    <td>${{item.approvalAmount}}</td>
+                    <td><i class=" fe-trash-2"></i></td>
+                </tr>
+            </tbody>
+            <tfoot style="height: 16px;">
+                <tr>
+                    <td colspan="5" style="border-bottom-left-radius: 16px;">&nbsp;</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 </div>

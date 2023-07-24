@@ -28,7 +28,7 @@ h6 {
     font-weight: 600;
 }
 
-.bold-500{
+.bold-500 {
     font-weight: 500;
 }
 
@@ -179,9 +179,15 @@ h6 {
 .font-28 {
     font-size: 28px !important;
 }
-.line-40{
+
+.line-40 {
     line-height: 40px !important;
 }
+
+.line-60 {
+    line-height: 60px !important;
+}
+
 // Font Weight
 
 .fw-medium {
@@ -218,8 +224,14 @@ h6 {
 
 .Subtitle-2 {
     font-weight: 500;
-    font-weight: 0.75rem;
     line-height: 1rem;
+    letter-spacing: 0.1px;
+}
+
+.subtitle-2-600 {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 24px;
     letter-spacing: 0.1px;
 }
 
@@ -235,13 +247,17 @@ h6 {
     letter-spacing: 0.5px;
 }
 
-del{
-    color:#20202080
+del {
+    color: #20202080
 }
 
 .text-optional {
     color: #20202080 !important;
 }
+.text-typeblackdeactivated{
+    color: #20202080 !important;
+}
+
 
 // dark mode
 body[data-layout-color="dark"] {
