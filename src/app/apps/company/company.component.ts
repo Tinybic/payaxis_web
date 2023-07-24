@@ -147,4 +147,8 @@ export class CompanyComponent {
       this.toastrService.info(result.message, '');
     });
   }
+
+  dropdownSelect(item){
+    this.company.paymentTerms= item;
+  }
 }

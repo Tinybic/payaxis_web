@@ -76,11 +76,19 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label" i18n>Payment Terms</label>
-                        <select class="form-select position-relative" type="text" id="paymentTerms" required i18n-placeholder
+                        <div ngbDropdown class="mt-sm-0 mt-2">
+                            <input class="form-select position-relative" type="text"  id="paymentTerms"  i18n-placeholder
+                            placeholder="Payment Terms" [(ngModel)]="company.paymentTerms" ngbDropdownToggle/>
+
+                            <div ngbDropdownMenu aria-labelledby="paymentTerms">
+                                <a href="javascript:void(0)" *ngFor="let item of this.paymentTermsList" (click) = "dropdownSelect(item)" ngbDropdownItem>{{item}}</a>
+                            </div>
+                        </div>
+                        <!-- <select class="form-select position-relative" type="text" id="paymentTerms" required i18n-placeholder
                             placeholder="Payment Terms" [(ngModel)]="company.paymentTerms">
                             <option value="0">Payment Terms</option>
                             <option *ngFor="let item of this.paymentTermsList" value="{{item}}">{{item}}</option>
-                            </select>
+                            </select> -->
 
                     </div>
                 </div>
