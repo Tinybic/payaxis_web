@@ -5,33 +5,45 @@ import { CompanyMembers } from 'src/app/core/models/companyMember.models';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { Column } from 'src/app/shared/advanced-table/advanced-table.component';
 import { SortEvent } from 'src/app/shared/advanced-table/sortable.directive';
-import { STEP1 } from './html/step1.modal';
+
 @Component({
   selector: 'app-teamlist',
   templateUrl: './teamlist.component.html',
   styleUrls: ['./teamlist.component.scss'],
 })
 export class TeamlistComponent {
-  @ViewChild('step1') step1: any;
+  @ViewChild('inviteMember') inviteMember: any;
 
   statusFilter: string = 'All';
   members = [];
   COMPANY_MEMBERS = [];
   columns: Column[] = [];
-
+  bgColors = [
+    'bg-primary',
+    'bg-secondary',
+    'bg-danger',
+    'bg-success',
+    'bg-warning',
+    'bg-info',
+  ];
   allCount: number = 0;
   activeCount: number = 0;
   pendingCount: number = 0;
-  items;
-  step1html: any;
-  keywords:string = '';
+  email: string = '';
+  emailList = [
+    'wfszwk@qq.com',
+    'wfszw1k@qq.com',
+    'wfszw2k@qq.com',
+    'wfszw3k@qq.com',
+  ];
+  step: string = 'step1';
+  keywords: string = '';
+  userList = [];
 
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal
-  ) {
-    this.step1html = STEP1;
-  }
+  ) {}
 
   changeStatusFilter(filter: string) {
     this.statusFilter = filter;
@@ -117,7 +129,6 @@ export class TeamlistComponent {
    * @param event column name, sort direction
    */
   onSort(event: SortEvent): void {
-    console.log(event)
     if (event.direction === '') {
       this.members = this.COMPANY_MEMBERS;
     } else {
@@ -128,18 +139,59 @@ export class TeamlistComponent {
     }
   }
 
-
-  searchTable(){
+  searchTable() {
     this.members = this.COMPANY_MEMBERS;
-    this.members = this.members.filter((member) => member.firstName.toLowerCase().includes(this.keywords.toLowerCase()) || member.lastName.toLowerCase().includes(this.keywords.toLowerCase()));
+    this.members = this.members.filter(
+      (member) =>
+        member.firstName.toLowerCase().includes(this.keywords.toLowerCase()) ||
+        member.lastName.toLowerCase().includes(this.keywords.toLowerCase())
+    );
   }
 
-
   openVerticallyCentered(content: TemplateRef<NgbModal>): void {
-    this.modalService.open(content, { size: '443', centered: true });
+    this.modalService.open(content, { size: '530', centered: true });
   }
 
   inviteMembers() {
-    this.openVerticallyCentered(this.step1);
+    this.openVerticallyCentered(this.inviteMember);
+  }
+
+  isEmail(email: string) {
+    const expression: RegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    return expression.test(email);
+  }
+
+  step1() {
+    this.emailList = this.email.split(',');
+    this.emailList = this.emailList.filter((email) => this.isEmail(email));
+    if (this.emailList.length > 0) this.step = 'step2';
+  }
+
+  step2() {
+    this.userList = [];
+
+    this.emailList.forEach((item) => {
+      this.userList.push({
+        email: item,
+        idMasterRole: 0,
+        role: 'View Only',
+        approvalAmount: 'Approval Limit',
+      });
+    });
+
+    if (this.userList.length > 0) this.step = 'step3';
+  }
+
+  step3Approval(item, select) {
+    console.log(item);
+    console.log(select);
+    item.approvalAmount = select;
+  }
+  step3Role(item, idrole, role) {
+    item.idMasterRole = idrole;
+    item.role = role;
+  }
+  send(){
+
   }
 }
