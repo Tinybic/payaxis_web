@@ -204,41 +204,7 @@
 </div>
 <div class="row mt-3">
     <div class="col-md-12">
-        <table
-            style="border:1px solid #73B2FF; border-radius: 16px; border-collapse: separate;border-spacing: 0; width: 100%;  ">
-            <thead style="background-color: #064088;">
-                <tr style=" color: #fff; ">
-                    <th class="subtitle-2-600" style="border-top-left-radius: 16px; width:48px"><input class="form-check"
-                            type="checkbox" /></th>
-                    <th class="subtitle-2-600">User</th>
-                    <th class="subtitle-2-600">Role</th>
-                    <th class="subtitle-2-600">Approval amount</th>
-                    <th class="subtitle-2-600" style="border-top-right-radius: 16px;">Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let item of members">
-                    <td><input class="form-check" type="checkbox" /></td>
-                    <td>
-                        <div class="d-flex flex-row">
-                            <div class="me-1-1"><img src="/assets/images/users/profile.jpg" alt="user-img"
-                                    title="Mat Helme" class="rounded-circle img-thumbnail avatar-md-1"></div>
-                            <div>
-                                <div class="bold-600">{{item.firstName}}&nbsp;{{item.lastName}}</div>
-                                <div class="text-typeblackdeactivated">ManagerSales</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td>{{item.role}}</td>
-                    <td>${{item.approvalAmount}}</td>
-                    <td><i class=" fe-trash-2"></i></td>
-                </tr>
-            </tbody>
-            <tfoot style="height: 16px;">
-                <tr>
-                    <td colspan="5" style="border-bottom-left-radius: 16px;">&nbsp;</td>
-                </tr>
-            </tfoot>
-        </table>
+        <app-advanced-table [tableData]="members" [columns]="columns" [pagination]="false" [hasRowSelection]="true" [isSearchable]="false" [isSortable]="true" (sort)="onSort($event)">
+        </app-advanced-table>
     </div>
 </div>

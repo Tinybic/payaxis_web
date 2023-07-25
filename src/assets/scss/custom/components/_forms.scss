@@ -24,7 +24,10 @@
   padding-left: 36px;
 }
 
-
+.form-check-input[type=checkbox]:indeterminate{
+    background-color: #2B52DD;
+    border-color: #2B52DD;
+}
 
 
 .form-check-input{
