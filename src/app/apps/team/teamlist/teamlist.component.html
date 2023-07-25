@@ -5,21 +5,21 @@
     <div class="col-md-6 text-end">
         <button class="btn btn-outline-primary"><i class="fe-edit me-1-1"></i>Edit</button>
         <button class="btn btn-primary ms-2-1">New Bill<i class="fe-chevron-down ms-1-1"></i></button>
-        <i class="fe-more-vertical- font-24 ms-2-1"></i>
+        <i class="fe-more-vertical- font-24 ms-2-1" (click) = "inviteMembers()"></i>
     </div>
 </div>
 <div class="row">
     <div class="col-md-4">
         <div class="dropdown" ngbDropdown>
             <a href="javascript:void(0)" class="bold-600 font-20 text-black line-60"
-                ngbDropdownToggle>{{this.statusFilter}}(4) <i class=" fe-chevron-down"></i></a>
+                ngbDropdownToggle>{{this.statusFilter}}({{allCount}}) <i class=" fe-chevron-down"></i></a>
             <div class="dropdown-menu" ngbDropdownMenu>
                 <div class="mb-2">
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" name="statusFilter"
                             [checked]="statusFilter=='All'" (change)="changeStatusFilter('All')">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
-                            All(4)
+                            All({{allCount}})
                         </label>
                     </div>
                 </div>
@@ -28,7 +28,7 @@
                         <input type="checkbox" class="form-check-input" [checked]="statusFilter=='Active'"
                             (change)="changeStatusFilter('Active')" name="statusFilter">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
-                            Active(4)
+                            Active({{activeCount}})
                         </label>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                         <input type="checkbox" class="form-check-input" [checked]="statusFilter=='Pending'"
                             (change)="changeStatusFilter('Pending')" name="statusFilter">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
-                            Pending(4)
+                            Pending({{pendingCount}})
                         </label>
                     </div>
                 </div>
@@ -197,7 +197,7 @@
         </div>
         <!--end filter 3-->
         <div class="d-inline-block ms-1-1">
-            <input class="form-control form-search" type="text" placeholder="Search here" />
+            <input class="form-control form-search" type="text" placeholder="Search here" [(ngModel)]="keywords" (keyup.enter) = "searchTable()" />
         </div>
         <!-- end search-->
     </div>
@@ -208,3 +208,16 @@
         </app-advanced-table>
     </div>
 </div>
+
+
+<ng-template #step1 let-modal>
+    <div>
+        <tag-input theme='bootstrap' ></tag-input>
+        </div>
+</ng-template>
+
+<ng-template #step2 let-modal>
+</ng-template>
+
+<ng-template #step3 let-modal>
+</ng-template>
