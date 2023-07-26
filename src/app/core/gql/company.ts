@@ -133,4 +133,20 @@ const companyUpate = gql`
   }
 `;
 
-export { compayDetail, companyNew, companyUpate };
+const company_list = gql`
+  query company_list {
+    company_list {
+      error
+      code
+      message
+      data {
+        id
+        avatar
+        txtName
+        active
+      }
+    }
+  }
+`;
+
+export { compayDetail, companyNew, companyUpate, company_list };

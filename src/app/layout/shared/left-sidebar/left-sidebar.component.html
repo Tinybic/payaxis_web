@@ -1,12 +1,12 @@
 <!-- ========== Left Sidebar Start ========== -->
 <div class="left-side-menu" (clickOutside)="hideMenu()" [exclude]="'.open-left'" [excludeBeforeClick]="true">
-    <div class="logo-box" >
+    <div class="logo-box">
         <div>
             <img class="ms-3 adminIcons mt-3" src="/assets/images/Groups.svg" style="height: 19px;" />
             <img class="ms-3 adminIcon mt-3" src="/assets/images/Group.svg" style="height: 19px;" />
         </div>
     </div>
-    
+
     <div class="toggleMenuIcon">
         <i (click)="changeLeftSidebarSize('condensed')" *ngIf="leftbarSize != 'condensed'" class="fe-chevron-left"
             style="color: #E5E7EB; font-size: 16px;"></i>
@@ -41,9 +41,22 @@
                     </ng-container>
 
                 </ng-container>
-                
+
             </ul>
 
+            <div class="ms-2 sidebar-hr"></div>
+
+            <div style="display: flex; flex-direction: column-reverse; height: calc(100vh - 470px);">
+                <div class="mt-1-1 cursor-pointer" *ngFor="let item of companyList" (click) = "selectCompanyName(item.id,item.txtName)">
+                    <img src="/assets/images/companies/company.png" alt="user-img" title="Mat Helme"
+                        class="rounded-circle img-thumbnail avatar-md ms-2">
+
+                    <span class="user-profile bold-600 ms-1">
+                        {{item.txtName}}
+                    </span>
+                </div>
+
+            </div>
             <!-- User box -->
             <div class="user-box">
                 <div class="ms-2 sidebar-hr"></div>
@@ -51,21 +64,22 @@
                     <ul id="side-menu1">
 
                         <li [ngClass]="{'menuitem-active': activeMenuItems.includes('setting')}">
-                            <a  class="side-nav-link-ref" [ngClass]="{'active': activeMenuItems.includes('setting')}"  data-menu-key="setting" routerLink="/apps/company">
-                                <i  class="fe-settings"></i>
-                                <span >Settings</span>
+                            <a class="side-nav-link-ref" [ngClass]="{'active': activeMenuItems.includes('setting')}"
+                                data-menu-key="setting" routerLink="/apps/company">
+                                <i class="fe-settings"></i>
+                                <span>Settings</span>
                             </a>
                         </li>
                     </ul>
                 </div>
                 <div>
-                <img src="/assets/images/users/profile.jpg" alt="user-img" title="Mat Helme"
-                    class="rounded-circle img-thumbnail avatar-md ms-2">
+                    <img src="/assets/images/users/profile.jpg" alt="user-img" title="Mat Helme"
+                        class="rounded-circle img-thumbnail avatar-md ms-2">
 
-                <span class="user-profile bold-600 ms-1">
-                    Profile
-                </span>
-            </div>
+                    <span class="user-profile bold-600 ms-1">
+                        Profile
+                    </span>
+                </div>
             </div>
         </div>
         <!-- End Sidebar -->

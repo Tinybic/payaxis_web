@@ -134,8 +134,8 @@ export class InvitingRegisterComponent implements OnInit {
         .then((res) => {
           this.loading = false;
           if (!res.error) {
+            this.toastr.info('Your account was successfully created. Please log in.','Successful');
             this.router.navigateByUrl('auth/login?company=' + encodeURIComponent(this.companyName) );
-            console.log(res);
           } else {
             this.error = res.message;
           }
