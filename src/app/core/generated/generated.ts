@@ -16,6 +16,7 @@ export type Scalars = {
   avatar_String_NotNull_maxLength_512: { input: any; output: any; }
   contactNumber_String_NotNull_maxLength_20: { input: any; output: any; }
   description_String_NotNull_maxLength_512: { input: any; output: any; }
+  email_String_NotNull_maxLength_128_format_email: { input: any; output: any; }
   industry_String_NotNull_maxLength_50: { input: any; output: any; }
   mobile_String_NotNull_pattern_093093094: { input: any; output: any; }
   paymentTerms_String_NotNull_maxLength_50: { input: any; output: any; }
@@ -34,7 +35,7 @@ export type Scalars = {
 export type Mutation = {
   __typename?: 'Mutation';
   /** new company_invitedmember */
-  company_member_invite: Scalars['Boolean']['output'];
+  company_member_invite: Invitememberresult;
   /** new company details */
   company_new: Comresult;
   /** update company details */
@@ -59,8 +60,7 @@ export type Mutation = {
 /** structure to handle table sms */
 export type MutationCompany_Member_InviteArgs = {
   idCompany: Scalars['Int']['input'];
-  idUser: Scalars['Int']['input'];
-  inviteMembers: Scalars['String']['input'];
+  inviteMembers?: InputMaybe<Array<Invitemember>>;
 };
 
 
@@ -160,6 +160,8 @@ export type Query = {
   __typename?: 'Query';
   /** get company details for the loging user */
   company_details: Companydetails;
+  /** get company details for one company */
+  company_info: Companydetails;
   /** get company list */
   company_list?: Maybe<Array<Company>>;
   /** get company members for company */
@@ -170,6 +172,11 @@ export type Query = {
   test1_find: Test1;
   /** query to retrieve all existing rows */
   test1_findall: Array<Maybe<Test1>>;
+};
+
+
+export type QueryCompany_InfoArgs = {
+  id: Scalars['Int']['input'];
 };
 
 
@@ -267,11 +274,18 @@ export type Industrylist = {
   txtName: Scalars['String']['output'];
 };
 
-export type Invitememberlist = {
-  __typename?: 'invitememberlist';
-  approvalAmount: Scalars['Float']['output'];
-  email: Scalars['String']['output'];
-  idMasterRole: Scalars['Int']['output'];
+export type Invitemember = {
+  approvalAmount: Scalars['Float']['input'];
+  email: Scalars['email_String_NotNull_maxLength_128_format_email']['input'];
+  idMasterRole: Scalars['Int']['input'];
+};
+
+export type Invitememberresult = {
+  __typename?: 'invitememberresult';
+  code: Scalars['Int']['output'];
+  data: Scalars['Boolean']['output'];
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
 };
 
 export type Paymenttermslist = {

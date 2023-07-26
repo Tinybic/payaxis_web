@@ -2,7 +2,7 @@ import { ApolloLink } from "@apollo/client/link/core/ApolloLink";
 import { setContext } from '@apollo/client/link/context'
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 
 const uri = environment.apolloUrl;
 export function createApollo(httpLink: HttpLink) {
@@ -15,7 +15,6 @@ export function createApollo(httpLink: HttpLink) {
     const auth = setContext((operation, context) => {
       const token = localStorage.getItem('token');
    
-
       if (token === null) {
         return {};
       } else {

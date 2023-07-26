@@ -1,6 +1,7 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { company_members } from 'src/app/core/gql/team';
+import { ToastrService } from 'ngx-toastr';
+import { company_members, company_member_invite } from 'src/app/core/gql/team';
 import { CompanyMembers } from 'src/app/core/models/companyMember.models';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { Column } from 'src/app/shared/advanced-table/advanced-table.component';
@@ -30,19 +31,15 @@ export class TeamlistComponent {
   activeCount: number = 0;
   pendingCount: number = 0;
   email: string = '';
-  emailList = [
-    'wfszwk@qq.com',
-    'wfszw1k@qq.com',
-    'wfszw2k@qq.com',
-    'wfszw3k@qq.com',
-  ];
+  emailList = [];
   step: string = 'step1';
   keywords: string = '';
   userList = [];
 
   constructor(
     private apolloService: ApolloService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private toastrService: ToastrService
   ) {}
 
   changeStatusFilter(filter: string) {
@@ -85,7 +82,9 @@ export class TeamlistComponent {
         label: 'User',
         formatter: (member: CompanyMembers) => {
           let result = `<div class="d-flex flex-row">
-          <div class="me-1-1"><img src="/assets/images/users/profile.jpg" alt="user-img"
+          <div class="me-1-1"><img src="`;
+          result += member.avatar;
+          result += `" onerror="/assets/images/users/profile.jpg" alt="user-img"
                   title="Mat Helme" class="rounded-circle img-thumbnail avatar-md-1"></div>
           <div>`;
           result +=
@@ -161,6 +160,10 @@ export class TeamlistComponent {
     return expression.test(email);
   }
 
+  deleteEmail(index) {
+    this.emailList.splice(index, 1);
+  }
+
   step1() {
     this.emailList = this.email.split(',');
     this.emailList = this.emailList.filter((email) => this.isEmail(email));
@@ -175,23 +178,50 @@ export class TeamlistComponent {
         email: item,
         idMasterRole: 0,
         role: 'View Only',
-        approvalAmount: 'Approval Limit',
+        approvalAmount: 0,
+        approvalAmountText: 'Approval Limit',
       });
     });
 
     if (this.userList.length > 0) this.step = 'step3';
   }
 
-  step3Approval(item, select) {
-    console.log(item);
-    console.log(select);
-    item.approvalAmount = select;
+  step3Approval(item, select, selectText) {
+    item.approvalAmount = parseFloat(select);
+    item.approvalAmountText = selectText;
   }
   step3Role(item, idrole, role) {
-    item.idMasterRole = idrole;
+    item.idMasterRole = parseInt(idrole);
     item.role = role;
   }
-  send(){
 
+  send() {
+    this.modalService.dismissAll();
+    const inviteMembers = this.userList.map((item) => {
+      return Object.assign(
+        {},
+        {
+          email: item.email,
+          idMasterRole: item.idMasterRole,
+          approvalAmount: item.approvalAmount,
+        }
+      );
+    });
+
+    const data = {
+      idCompany: parseInt(localStorage.getItem('idcompany')),
+      inviteMembers: inviteMembers,
+    };
+
+    this.apolloService.mutate(company_member_invite, data).then((res) => {
+      let message = '';
+      const result = res.company_member_invite;
+      if (!result.error) {
+        message = this.userList.length + ' invitation has been sent';
+      } else {
+        message = result.message;
+      }
+      this.toastrService.info(message, '');
+    });
   }
 }

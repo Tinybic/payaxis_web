@@ -24,6 +24,24 @@ const company_members = gql`
         active
       }
     }
-  }`
+  }
+`;
 
-  export {company_members}
+const company_member_invite = gql`
+  mutation company_member_invite(
+    $idCompany: Int!
+    $inviteMembers: [invitemember!]
+  ) {
+    company_member_invite(
+      idCompany: $idCompany
+      inviteMembers: $inviteMembers
+    ) {
+      error
+      code
+      message
+      data
+    }
+  }
+`;
+
+export { company_members, company_member_invite };
