@@ -80,6 +80,7 @@ export class CompanyComponent {
       if (result.company) {
         this.company = JSON.parse(JSON.stringify(result.company));
         localStorage.setItem('idcompany', this.company.id.toString());
+        localStorage.setItem('companyName',this.company.txtName);
       }
     });
   }
