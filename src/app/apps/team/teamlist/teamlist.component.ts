@@ -6,7 +6,8 @@ import { CompanyMembers } from 'src/app/core/models/companyMember.models';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { Column } from 'src/app/shared/advanced-table/advanced-table.component';
 import { SortEvent } from 'src/app/shared/advanced-table/sortable.directive';
-
+import { SweetAlertOptions } from 'sweetalert2';
+import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 @Component({
   selector: 'app-teamlist',
   templateUrl: './teamlist.component.html',
@@ -14,6 +15,7 @@ import { SortEvent } from 'src/app/shared/advanced-table/sortable.directive';
 })
 export class TeamlistComponent {
   @ViewChild('inviteMember') inviteMember: any;
+  @ViewChild('ajaxRequest') ajaxRequest!: SwalComponent;
 
   statusFilter: string = 'All';
   members = [];
@@ -115,8 +117,47 @@ export class TeamlistComponent {
         label: 'Status',
         formatter: (member: CompanyMembers) => member.active,
       },
+      {
+        name: 'action',
+        label: '',
+        formatter: (member: CompanyMembers) => {
+          let result = '';
+          result +=
+            '<i class="fe-trash-2 cursor-pointer" (click) = "deactive(' +
+            member.id +
+            ',\'' +
+            member.lastName +
+            ' ' +
+            member.lastName +
+            '\')"></i>';
+          return result;
+        },
+        action() {this.deactive(1,'asdf')}
+      },
     ];
   }
+
+  public alertOption: SweetAlertOptions = {};
+  deactive(id, name) {
+    console.log(id);
+    this.alertOption = {
+      html:
+        `<div>
+      <div class="swal2-alert-title">Deactivating the account</div>
+      <div class="swal2-alert-content">Do you want to deactivate <b>` +
+        name +
+        `</b>?</div>
+      </div>`,
+      showCloseButton: true,
+      showConfirmButton: false,
+      width: 604,
+      padding: 16,
+      background: '#fff',
+    };
+    this.ajaxRequest.fire();
+  }
+
+  deactiveMembers(id) {}
 
   // compares two cell values
   compare(v1: string | number, v2: string | number): any {

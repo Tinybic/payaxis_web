@@ -8,32 +8,37 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SweetAlertOptions } from 'sweetalert2';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 // service
-import { ApolloService } from 'src/app/core/service/apollo.service';
-
+import { HttpService } from 'src/app/core/service/http.service';
 // types
 import { PasswordValidator } from 'src/app/core/helpers/password.validator';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-inviting-register',
   templateUrl: './inviting-register.component.html',
-  styleUrls: ['./inviting-register.component.scss']
+  styleUrls: ['./inviting-register.component.scss'],
 })
 export class InvitingRegisterComponent implements OnInit {
-
   @ViewChild('ajaxRequest') ajaxRequest!: SwalComponent;
 
   InvitingsignUpForm: UntypedFormGroup = this.fb.group({
-    firstname:[''],
-    lastname:['',[Validators.required]],
-    email: ['', [Validators.required, Validators.email]],
+    firstname: [''],
+    lastname: ['', [Validators.required]],
+    email: [
+      { value: '', disabled: true },
+      [Validators.required, Validators.email],
+    ],
     password: ['', [Validators.required, PasswordValidator.strong]],
+    acceptTerms: [false, Validators.requiredTrue],
   });
 
   formSubmitted: boolean = false;
   showPassword: boolean = false;
   loading: boolean = false;
   error: string = '';
-  companyName: string = 'Company Name'
+  companyName: string = 'Company Name';
+  token: string = '';
+  code: string = '';
 
   public alertOption: SweetAlertOptions = {
     html: `<div>
@@ -51,12 +56,52 @@ export class InvitingRegisterComponent implements OnInit {
   constructor(
     private fb: UntypedFormBuilder,
     private router: Router,
-    private apolloService: ApolloService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private httpService: HttpService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
-    
+    this.token = this.activatedRoute.snapshot.queryParams['token'];
+    this.code = this.activatedRoute.snapshot.queryParams['code'];
+
+    if (this.token && this.code) {
+      this.loading = true;
+      this.httpService
+        .post('companymember', {
+          token: encodeURIComponent(this.token),
+          code: encodeURIComponent(this.code),
+        })
+        .then((res) => {
+          this.loading = false;
+          if (!res.error) {
+            this.formValues['email'].setValue(res.data[0].email);
+            this.toastr.info(
+              '<img src="' +
+                res.data[0].avatar +
+                '"  class = "avatar-md rounded-circle me-1-1" /><b>' +
+                res.data[0].firstName +
+                ' ' +
+                res.data[0].lastName +
+                '</b> has invited you to the "' +
+                res.data[0].companyname +
+                '" team.',
+              '',
+              {
+                timeOut: 20000,
+                enableHtml: true,
+              }
+            );
+            this.companyName = res.data[0].companyname;
+          } else {
+            this.error = res.message;
+          }
+        })
+        .catch((error) => {
+          this.loading = false;
+          this.error = error;
+        });
+    }
   }
 
   /**
@@ -76,24 +121,29 @@ export class InvitingRegisterComponent implements OnInit {
   onSubmit(): void {
     this.formSubmitted = true;
 
-    this.ajaxRequest.fire();
-
-    // if (this.signUpForm.valid) {
-    //   this.loading = true;
-    //   this.apolloService
-    //     .mutate(SignupStep1, {
-    //       email: this.formValues['email'].value,
-    //       password: this.formValues['password'].value,
-    //     })
-    //     .then((res) => {
-    //       const result = res.user_account_add;
-
-    //       this.loading = false;
-    //     })
-    //     .catch((error) => {
-    //       this.error = error;
-    //     });
-    // }
+    if (this.InvitingsignUpForm.valid) {
+      this.loading = true;
+      this.httpService
+        .post('signupmember', {
+          token: encodeURIComponent(this.token),
+          code: encodeURIComponent(this.code),
+          firstname: this.formValues['firstname'].value,
+          lastname: this.formValues['lastname'].value,
+          password: this.formValues['password'].value,
+        })
+        .then((res) => {
+          this.loading = false;
+          if (!res.error) {
+            this.router.navigate(['auth/login?company=' + this.companyName]);
+            console.log(res);
+          } else {
+            this.error = res.message;
+          }
+        })
+        .catch((error) => {
+          this.loading = false;
+          this.error = error;
+        });
+    }
   }
-
 }

@@ -10,6 +10,7 @@ export interface Column {
   formatter: (a: any) => any | string;
   sort?: boolean;
   width?: number;
+  action?(v1,v2):void
 }
 
 @Component({
@@ -88,6 +89,11 @@ export class AdvancedTableComponent implements OnInit, AfterViewChecked {
   }
 
 
+
+  asdf(item){
+    item.action;
+  }
+
   /**
    * sorts column
    * @param param0 column name,sort direction
@@ -154,8 +160,6 @@ export class AdvancedTableComponent implements OnInit, AfterViewChecked {
     this.isSelected[index] = !this.isSelected[index];
     this.selectAll = (this.isSelected.filter(x => x === true).length === this.tableData.length);
   }
-
-
 
 
 }

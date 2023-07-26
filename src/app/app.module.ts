@@ -35,7 +35,7 @@ import { createApollo } from './core/constants/apolloFactory';
       provide: APOLLO_OPTIONS,
       useFactory: createApollo,
       deps: [HttpLink],
-    }
+    },
   ],
   bootstrap: [AppComponent],
 })
