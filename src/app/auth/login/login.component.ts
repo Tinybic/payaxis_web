@@ -30,9 +30,10 @@ export class LoginComponent implements OnInit {
   loading: boolean = false;
   user: SocialUser;
   loggedIn: boolean;
+  title: string = 'Log in';
 
   constructor(
-    private route: ActivatedRoute,
+    private activatedRoute: ActivatedRoute,
     private router: Router,
     private httpService: HttpService,
     private fb: UntypedFormBuilder,
@@ -41,10 +42,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     // get return url from route parameters or default to '/'
-    this.returnUrl =
-      this.route.snapshot.queryParams['returnUrl'] || this.returnUrl;
-
-  
+    const company = this.activatedRoute.snapshot.queryParams['company'];
+    if (company) this.title = 'Join the "' + company + '" team';
   }
 
   /**

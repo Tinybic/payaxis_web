@@ -40,6 +40,7 @@ export class InfoComponent implements OnInit {
   mobile: string = '';
   revision: number = 1;
 
+
   constructor(
     private fb: UntypedFormBuilder,
     private router: Router,

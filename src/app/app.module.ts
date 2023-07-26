@@ -15,8 +15,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { createApollo } from './core/constants/apolloFactory';
 
-
-
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -37,7 +35,7 @@ import { createApollo } from './core/constants/apolloFactory';
       provide: APOLLO_OPTIONS,
       useFactory: createApollo,
       deps: [HttpLink],
-    }
+    },
   ],
   bootstrap: [AppComponent],
 })

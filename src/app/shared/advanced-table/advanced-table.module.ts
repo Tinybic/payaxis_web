@@ -5,13 +5,14 @@ import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AdvancedTableComponent } from './advanced-table.component';
 import { NgbSortableHeaderDirective } from './sortable.directive';
-
+import { SafeHtmlPipe } from './safe-html.pipe';
 
 
 @NgModule({
   declarations: [
     AdvancedTableComponent,
-    NgbSortableHeaderDirective
+    NgbSortableHeaderDirective,
+    SafeHtmlPipe
   ],
   imports: [
     CommonModule,

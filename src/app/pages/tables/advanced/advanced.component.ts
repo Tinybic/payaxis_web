@@ -64,22 +64,6 @@ export class TableAdvancedComponent implements OnInit {
         label: 'Office',
         formatter: (record: Employee) => record.office,
         width: 180
-      },
-      {
-        name: 'age',
-        label: 'Age',
-        formatter: (record: Employee) => record.age,
-      },
-      {
-        name: 'date',
-        label: 'Date',
-        formatter: (record: Employee) => record.date,
-      },
-      {
-        name: 'salary',
-        label: 'Salary',
-        formatter: (record: Employee) => record.salary,
-
       }
     ];
   }

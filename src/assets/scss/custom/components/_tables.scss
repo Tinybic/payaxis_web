@@ -3,7 +3,9 @@
 //
 
 th {
-    font-weight: $table-head-font-weight;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.1px;
 }
 
 //Table centered (Custom)
@@ -19,6 +21,7 @@ th {
 .table-nowrap {
     th,td {
         white-space: nowrap;
+        vertical-align: middle;
     }
 }
 

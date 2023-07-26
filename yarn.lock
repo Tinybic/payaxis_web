@@ -2718,6 +2718,11 @@
   resolved "https://registry.yarnpkg.com/@types/googlemaps/-/googlemaps-3.39.12.tgz#2546b5256a6555f929e130866ee2ee72931062fc"
   integrity sha512-z1RMvlQfmsLbg5kc0dGjSHK7DL64mOCbbtqp/Le2M3ov7xPB1d+stia38hqmOXw5dPO1dL/5fscn73d0uomkbw==
 
+"@types/grecaptcha@^3.0.3":
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/@types/grecaptcha/-/grecaptcha-3.0.4.tgz#3de601f3b0cd0298faf052dd5bd62aff64c2be2e"
+  integrity sha512-7l1Y8DTGXkx/r4pwU1nMVAR+yD/QC+MCHKXAyEX/7JZhwcN1IED09aZ9vCjjkcGdhSQiu/eJqcXInpl6eEEEwg==
+
 "@types/http-errors@*":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@types/http-errors/-/http-errors-2.0.1.tgz#20172f9578b225f6c7da63446f56d4ce108d5a65"
@@ -6477,6 +6482,14 @@ ng-click-outside2@^10.0.4:
   integrity sha512-tuih4WWIFouRc/RtPn1eAm1RHn08CTPlqogvnoj5jldIQjIiPZv8SUEsPwaNQG+7nZ62+5n7sGEsqJk5TPU7ZQ==
   dependencies:
     tslib "^2.1.0"
+
+ng-recaptcha@11.0.0:
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/ng-recaptcha/-/ng-recaptcha-11.0.0.tgz#858686cd377ec42a47aa9362e230d31dcff3d982"
+  integrity sha512-DS0ESI9ODmAW2ToBU5EuizusAmGcJCmYCKGB5CYWntPQOHDEcCWLxkQ6RJrF2USLtq9vooN5KVV45pNUpmPhNw==
+  dependencies:
+    "@types/grecaptcha" "^3.0.3"
+    tslib "^2.2.0"
 
 ng-select2-component@^8.1.0:
   version "8.1.0"

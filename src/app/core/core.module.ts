@@ -5,7 +5,8 @@ import { Title } from '@angular/platform-browser';
 import { ErrorInterceptor } from './helpers/error.interceptor';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+  ],
   imports: [CommonModule],
   providers: [
     Title,

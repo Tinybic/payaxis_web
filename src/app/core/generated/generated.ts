@@ -16,6 +16,7 @@ export type Scalars = {
   avatar_String_NotNull_maxLength_512: { input: any; output: any; }
   contactNumber_String_NotNull_maxLength_20: { input: any; output: any; }
   description_String_NotNull_maxLength_512: { input: any; output: any; }
+  email_String_NotNull_maxLength_128_format_email: { input: any; output: any; }
   industry_String_NotNull_maxLength_50: { input: any; output: any; }
   mobile_String_NotNull_pattern_093093094: { input: any; output: any; }
   paymentTerms_String_NotNull_maxLength_50: { input: any; output: any; }
@@ -33,6 +34,10 @@ export type Scalars = {
 /** structure to handle table sms */
 export type Mutation = {
   __typename?: 'Mutation';
+  /** deactivate company_member */
+  company_member_deactivate: Invitememberresult;
+  /** new company_invitedmember */
+  company_member_invite: Invitememberresult;
   /** new company details */
   company_new: Comresult;
   /** update company details */
@@ -51,6 +56,19 @@ export type Mutation = {
   test1_delete?: Maybe<Scalars['Int']['output']>;
   /** mutation to update a row, 1=success, 0=not found */
   test1_update?: Maybe<Scalars['Int']['output']>;
+};
+
+
+/** structure to handle table sms */
+export type MutationCompany_Member_DeactivateArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationCompany_Member_InviteArgs = {
+  idCompany: Scalars['Int']['input'];
+  inviteMembers?: InputMaybe<Array<Invitemember>>;
 };
 
 
@@ -150,6 +168,12 @@ export type Query = {
   __typename?: 'Query';
   /** get company details for the loging user */
   company_details: Companydetails;
+  /** get company details for one company */
+  company_info: Companydetails;
+  /** get company list */
+  company_list?: Maybe<Array<Company>>;
+  /** get company members for company */
+  company_members: Companymemberresult;
   /** retrieve profile for the loging user */
   profile_info: Profile;
   /** query to retrieve an existing row */
@@ -159,8 +183,24 @@ export type Query = {
 };
 
 
+export type QueryCompany_InfoArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type QueryCompany_MembersArgs = {
+  idCompany: Scalars['Int']['input'];
+};
+
+
 export type QueryTest1_FindArgs = {
   id: Scalars['ID']['input'];
+};
+
+export type Cialist = {
+  __typename?: 'cialist';
+  id: Scalars['Int']['output'];
+  txtName: Scalars['String']['output'];
 };
 
 export type Company = {
@@ -190,12 +230,40 @@ export type Company = {
   website: Scalars['String']['output'];
 };
 
+/** structure to handle table company_member */
+export type Company_Member = {
+  __typename?: 'company_member';
+  active: Scalars['Boolean']['output'];
+  approvalAmount: Scalars['Float']['output'];
+  avatar: Scalars['String']['output'];
+  createdBy: Scalars['Int']['output'];
+  createdDate: Scalars['String']['output'];
+  firstName: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  idCompany: Scalars['Int']['output'];
+  idMasterRole: Scalars['Int']['output'];
+  idUser: Scalars['Int']['output'];
+  lastName: Scalars['String']['output'];
+  modifiedBy: Scalars['Int']['output'];
+  modifiedDate: Scalars['String']['output'];
+  revision: Scalars['Int']['output'];
+  role: Scalars['String']['output'];
+};
+
 export type Companydetails = {
   __typename?: 'companydetails';
-  comboxIndustry?: Maybe<Array<Keyvalue1>>;
-  comboxPaymentTerms?: Maybe<Array<Keyvalue2>>;
-  company?: Maybe<Company>;
+  comboxIndustry?: Maybe<Array<Industrylist>>;
+  comboxPaymentTerms?: Maybe<Array<Paymenttermslist>>;
+  company: Company;
   companyName: Scalars['String']['output'];
+};
+
+export type Companymemberresult = {
+  __typename?: 'companymemberresult';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Array<Company_Member>>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
 };
 
 /** structure to handle responses when updating information */
@@ -208,14 +276,28 @@ export type Comresult = {
 };
 
 /** structure to handle table company */
-export type Keyvalue1 = {
-  __typename?: 'keyvalue1';
+export type Industrylist = {
+  __typename?: 'industrylist';
   id: Scalars['Int']['output'];
   txtName: Scalars['String']['output'];
 };
 
-export type Keyvalue2 = {
-  __typename?: 'keyvalue2';
+export type Invitemember = {
+  approvalAmount: Scalars['Float']['input'];
+  email: Scalars['email_String_NotNull_maxLength_128_format_email']['input'];
+  idMasterRole: Scalars['Int']['input'];
+};
+
+export type Invitememberresult = {
+  __typename?: 'invitememberresult';
+  code: Scalars['Int']['output'];
+  data: Scalars['Boolean']['output'];
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Paymenttermslist = {
+  __typename?: 'paymenttermslist';
   id: Scalars['Int']['output'];
   txtName: Scalars['String']['output'];
 };

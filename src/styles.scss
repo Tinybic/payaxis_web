@@ -70,16 +70,16 @@
 }
 
 .swal2-alert-title {
-    color: #0A1629;
+    color: #202020;
     text-align: center;
-    font-size: 32px;
+    font-size: 21.33px;
     font-style: normal;
-    font-weight: 600;
-    line-height: 36px;
+    font-weight: 700;
+    line-height: 24px;
 }
 
 .swal2-alert-content {
-    color: #303742;
+    color: #202020;
     text-align: center;
     font-size: 18px;
     font-style: normal;
@@ -129,7 +129,7 @@
     border-radius: 32px;
     color: #202020;
     font-size: 16px;
-    padding: 6.5px;
+    padding: 6px;
     display: inline-block;
     line-height: 16px;
 }
@@ -150,4 +150,34 @@
     letter-spacing: 1.5px;
     text-transform: uppercase;
     color:var(--ct-link-color)
+}
+
+.cursor-pointer{
+    cursor: pointer;
+}
+
+.emailItem{
+    background-color: #E1E6EF;
+    border-radius: 4px;
+    padding: 2px 8px;
+}
+
+.swal2-styled.swal2-cancel{
+    background-color: #ffffff !important;
+    color: #2B52DD !important;
+    &:hover{
+        background-color: #ffffff !important;
+        color: #2B52DD !important;
+    }
+}
+
+.swal2-styled.swal2-confirm{
+    border-radius: 8px !important;
+}
+
+.swal2-actions{
+    justify-content: right !important;
+    flex-direction: row-reverse ;
+    width: 100% !important;
+
 }

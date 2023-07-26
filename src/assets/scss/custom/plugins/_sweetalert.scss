@@ -43,19 +43,22 @@
     }
 
     .swal2-cancel.btn-cancel {
-        background-color: $danger !important;
+        background-color:#ffffff !important;
         font-size: $font-size-base;
     }
 
     .swal2-confirm,
     .swal2-cancel {
-        margin: 0.3125em;
-        padding: 0.625em 2em;
+        padding: 12px 16px;
         font-weight: 500;
         box-shadow: none;
         font-size: $btn-font-size !important;
         &:focus {
             box-shadow: none !important;
+        }
+        &:hover {
+            box-shadow: none !important;
+            background-color: #ffffff;
         }
     }
 
