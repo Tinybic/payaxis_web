@@ -113,6 +113,27 @@ export class RegisterComponent implements OnInit {
     this.showPassword = !this.showPassword;
   }
 
+  sendVerifyCode() {
+    let that = this;
+    document.getElementById('resend').onclick = function () {
+      that.ajaxRequest.close();
+      that.httpService
+        .post('send_email_activation', {
+          email: that.formValues['email'].value,
+        })
+        .then((res) => {
+          that.loading = false;
+          if (res.error) {
+            that.error = res.message;
+          }
+        })
+        .catch((error) => {
+          that.loading = false;
+          that.error = error;
+        });
+    };
+  }
+
   /**
    * On form submit
    */
@@ -129,29 +150,18 @@ export class RegisterComponent implements OnInit {
         .then((res) => {
           this.loading = false;
           if (!res.error) {
-            this.ajaxRequest.fire();
-            let that = this;
+           
             setTimeout(() => {
-              document.getElementById('resend').onclick = function () {
-                that.ajaxRequest.close();
-                that.httpService
-                  .post('send_email_activation', {
-                    email: that.formValues['email'].value,
-                  })
-                  .then((res) => {
-                    that.loading = false;
-                    if (res.error) {
-                      that.error = res.message;
-                    }
-                  })
-                  .catch((error) => {
-                    that.loading = false;
-                    that.error = error;
-                  });
-              };
+              this.sendVerifyCode();
             }, 300);
           } else {
             this.error = res.message;
+            if (res.code == 103) {
+              this.ajaxRequest.fire();
+              setTimeout(() => {
+                this.sendVerifyCode();
+              }, 300);
+            }
           }
         })
         .catch((error) => {
