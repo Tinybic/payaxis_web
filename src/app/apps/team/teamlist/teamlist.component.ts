@@ -228,6 +228,8 @@ export class TeamlistComponent {
       } else {
         message = result.message;
       }
+      this.step = 'step1';
+      this.email = '';
       this.toastrService.info(message, '');
     });
   }
