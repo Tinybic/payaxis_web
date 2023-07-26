@@ -32,11 +32,10 @@ export class ApolloService {
       this.apollo
         .watchQuery<Query>({
           query: gql,
-          variables: para,
+          variables: para
         })
         .valueChanges.subscribe({
           next(res): any {
-            console.log(res)
             if (res.data) resolve(res.data);
             else reject(null);
           },

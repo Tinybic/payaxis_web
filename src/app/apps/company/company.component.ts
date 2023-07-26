@@ -18,6 +18,8 @@ import {
 } from 'src/app/core/gql/company';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { ToastrService } from 'ngx-toastr';
+import { EventService } from 'src/app/core/service/event.service';
+import { EventType } from 'src/app/core/constants/events';
 
 @Component({
   selector: 'app-company',
@@ -60,7 +62,8 @@ export class CompanyComponent {
 
   constructor(
     private apolloService: ApolloService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private eventService: EventService
   ) {}
 
   ngOnInit(): void {
@@ -142,6 +145,10 @@ export class CompanyComponent {
         result = res.company_update;
       } else {
         result = res.company_new;
+      }
+
+      if (!result.error) {
+        this.eventService.broadcast(EventType.CHANGE_COMPANY, true);
       }
       this.toastrService.info(result.message, '');
     });

@@ -15,6 +15,7 @@ export enum EventType {
     SHOW_RIGHT_SIDEBAR = "showRightSideBar",
     HIDE_RIGHT_SIDEBAR = "hideRightSideBar",
     CHANGE_PAGE_TITLE = "changePageTitle",
+    CHANGE_COMPANY = "changeCompany",
 }
 
 // payload type
