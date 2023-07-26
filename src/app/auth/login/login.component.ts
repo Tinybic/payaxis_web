@@ -42,8 +42,10 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     // get return url from route parameters or default to '/'
-    const company =  decodeURIComponent(this.activatedRoute.snapshot.queryParams['company']);
-    if (company) this.title = 'Join the "' + company + '" team';
+    const company = decodeURIComponent(
+      this.activatedRoute.snapshot.queryParams['company']
+    );
+    if (company != 'undefined') this.title = 'Join the "' + company + '" team';
   }
 
   /**
