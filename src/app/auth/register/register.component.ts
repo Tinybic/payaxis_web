@@ -78,14 +78,12 @@ export class RegisterComponent implements OnInit {
     if (token && code) {
       this.loading = true;
       this.httpService
-        .post(
-          'activate',{
-            token:encodeURIComponent(token),
-            code: encodeURIComponent(code)
-          })
+        .post('activate', {
+          token: encodeURIComponent(token),
+          code: encodeURIComponent(code),
+        })
         .then((res) => {
           this.loading = false;
-          console.log(res);
           if (!res.error) {
             this.ajaxRequest1.fire();
             localStorage.setItem('refreshToken', res.data.refreshToken);
@@ -115,7 +113,6 @@ export class RegisterComponent implements OnInit {
     this.showPassword = !this.showPassword;
   }
 
-
   /**
    * On form submit
    */
@@ -136,6 +133,7 @@ export class RegisterComponent implements OnInit {
             let that = this;
             setTimeout(() => {
               document.getElementById('resend').onclick = function () {
+                that.ajaxRequest.close();
                 that.httpService
                   .post('send_email_activation', {
                     email: that.formValues['email'].value,
@@ -144,7 +142,7 @@ export class RegisterComponent implements OnInit {
                     that.loading = false;
                     if (res.error) {
                       that.error = res.message;
-                    } 
+                    }
                   })
                   .catch((error) => {
                     that.loading = false;
