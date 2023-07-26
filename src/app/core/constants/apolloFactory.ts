@@ -1,7 +1,7 @@
 import { ApolloLink } from "@apollo/client/link/core/ApolloLink";
 import { setContext } from '@apollo/client/link/context'
 import { HttpLink } from 'apollo-angular/http';
-import { InMemoryCache } from '@apollo/client/core';
+import { DefaultOptions, InMemoryCache } from '@apollo/client/core';
 import { environment } from 'src/environments/environment';
 
 const uri = environment.apolloUrl;
@@ -14,8 +14,6 @@ export function createApollo(httpLink: HttpLink) {
    
     const auth = setContext((operation, context) => {
       const token = localStorage.getItem('token');
-   
-
       if (token === null) {
         return {};
       } else {
@@ -26,6 +24,17 @@ export function createApollo(httpLink: HttpLink) {
         };
       }
     });
+
+    const defaultOptions: DefaultOptions = {
+      watchQuery: {
+        fetchPolicy: 'no-cache',
+        errorPolicy: 'ignore',
+      },
+      query: {
+        fetchPolicy: 'no-cache',
+        errorPolicy: 'all',
+      },
+    }
    
     const link = ApolloLink.from([basic, auth, httpLink.create({ uri })]);
     const cache = new InMemoryCache();
@@ -33,6 +42,7 @@ export function createApollo(httpLink: HttpLink) {
     return {
       link,
       cache,
+      defaultOptions
     };
   }
   

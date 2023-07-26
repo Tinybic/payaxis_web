@@ -60,10 +60,14 @@ export class LeftSidebarComponent implements OnInit {
         this.hideMenu(); //hides leftbar on change of route
       }
     });
+    this.eventService.on(EventType.CHANGE_COMPANY).subscribe(() => {
+      this.getCompanyList();
+    });
   }
 
-  ngOnInit(): void {
-    this.initMenu();
+
+  getCompanyList(){
+    
     this.apolloService.query(company_list, {}).then((res) => {
       if (!res.company_list.error) {
         this.companyList = res.company_list.data;
@@ -73,6 +77,11 @@ export class LeftSidebarComponent implements OnInit {
         }
       }
     });
+  }
+
+  ngOnInit(): void {
+    this.initMenu();
+    this.getCompanyList();
   }
 
   selectCompanyName(id, name) {
