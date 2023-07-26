@@ -7,7 +7,6 @@ import {
   company_member_deactivate,
 } from 'src/app/core/gql/team';
 import { ApolloService } from 'src/app/core/service/apollo.service';
-import { Column } from 'src/app/shared/advanced-table/advanced-table.component';
 import { SweetAlertOptions } from 'sweetalert2';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 @Component({
@@ -22,7 +21,6 @@ export class TeamlistComponent {
   statusFilter: string = 'All';
   members = [];
   COMPANY_MEMBERS = [];
-  columns: Column[] = [];
   bgColors = [
     'bg-primary',
     'bg-secondary',
@@ -41,6 +39,7 @@ export class TeamlistComponent {
   userList = [];
   direction = 'asc';
   sortCloumn = '';
+  companyName = '';
 
   constructor(
     private apolloService: ApolloService,
@@ -59,25 +58,28 @@ export class TeamlistComponent {
   }
 
   ngOnInit(): void {
-    this.apolloService
-      .query(company_members, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
-      })
-      .then((res) => {
-        const result = res.company_members;
-        if (!result.error) {
-          this.members = result.data;
-          this.COMPANY_MEMBERS = JSON.parse(JSON.stringify(result.data));
+    this.companyName = localStorage.getItem('companyName');
+    if (localStorage.getItem('idcompany')) {
+      this.apolloService
+        .query(company_members, {
+          idCompany: parseInt(localStorage.getItem('idcompany')),
+        })
+        .then((res) => {
+          const result = res.company_members;
+          if (!result.error) {
+            this.members = result.data;
+            this.COMPANY_MEMBERS = JSON.parse(JSON.stringify(result.data));
 
-          this.allCount = result.data.length;
-          this.activeCount = result.data.filter(
-            (member) => member.active
-          ).length;
-          this.pendingCount = result.data.filter(
-            (member) => !member.active
-          ).length;
-        }
-      });
+            this.allCount = result.data.length;
+            this.activeCount = result.data.filter(
+              (member) => member.active
+            ).length;
+            this.pendingCount = result.data.filter(
+              (member) => !member.active
+            ).length;
+          }
+        });
+    }
   }
 
   public alertOption: SweetAlertOptions = {};
@@ -226,6 +228,8 @@ export class TeamlistComponent {
       } else {
         message = result.message;
       }
+      this.step = 'step1';
+      this.email = '';
       this.toastrService.info(message, '');
     });
   }

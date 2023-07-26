@@ -120,7 +120,7 @@ export class InvitingRegisterComponent implements OnInit {
    */
   onSubmit(): void {
     this.formSubmitted = true;
-
+    
     if (this.InvitingsignUpForm.valid) {
       this.loading = true;
       this.httpService
@@ -134,7 +134,7 @@ export class InvitingRegisterComponent implements OnInit {
         .then((res) => {
           this.loading = false;
           if (!res.error) {
-            this.router.navigate(['auth/login?company=' + this.companyName]);
+            this.router.navigateByUrl('auth/login?company=' + encodeURIComponent(this.companyName) );
             console.log(res);
           } else {
             this.error = res.message;
