@@ -171,7 +171,7 @@ export type Query = {
   /** get company details for one company */
   company_info: Companydetails;
   /** get company list */
-  company_list?: Maybe<Array<Company>>;
+  company_list: Companylist;
   /** get company members for company */
   company_members: Companymemberresult;
   /** retrieve profile for the loging user */
@@ -254,8 +254,16 @@ export type Companydetails = {
   __typename?: 'companydetails';
   comboxIndustry?: Maybe<Array<Industrylist>>;
   comboxPaymentTerms?: Maybe<Array<Paymenttermslist>>;
-  company: Company;
+  company?: Maybe<Company>;
   companyName: Scalars['String']['output'];
+};
+
+export type Companylist = {
+  __typename?: 'companylist';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Array<Company>>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
 };
 
 export type Companymemberresult = {

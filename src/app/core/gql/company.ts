@@ -133,4 +133,61 @@ const companyUpate = gql`
   }
 `;
 
-export { compayDetail, companyNew, companyUpate };
+const company_list = gql`
+  query company_list {
+    company_list {
+      error
+      code
+      message
+      data {
+        id
+        avatar
+        txtName
+        active
+      }
+    }
+  }
+`;
+
+const company_info = gql`
+  query company_info($id: Int!) {
+    company_info(id: $id) {
+      company {
+        id
+        revision
+        createdBy
+        createdDate
+        modifiedBy
+        modifiedDate
+        idUserOwner
+        avatar
+        txtName
+        taxId
+        idMasterCompany
+        industry
+        paymentTerms
+        website
+        txtAddress
+        suiteNumber
+        txtCity
+        txtState
+        txtZipcode
+        contactNumber
+        email
+        description
+        active
+      }
+      companyName
+      comboxIndustry {
+        id
+        txtName
+      }
+      comboxPaymentTerms {
+        id
+        txtName
+      }
+    }
+  }
+`;
+
+export { compayDetail, companyNew, companyUpate, company_list,company_info };

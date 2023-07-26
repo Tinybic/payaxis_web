@@ -5,28 +5,39 @@ import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 import { EventService } from 'src/app/core/service/event.service';
 
 // utility
-import { changeBodyAttribute, findAllParent, findMenuItem } from '../helper/utils';
+import {
+  changeBodyAttribute,
+  findAllParent,
+  findMenuItem,
+} from '../helper/utils';
 
 // types
 import { User } from 'src/app/core/models/auth.models';
 import { MenuItem } from '../models/menu.model';
-
+import { company_list } from 'src/app/core/gql/company';
 // data
 import { MENU_ITEMS } from '../config/menu-meta';
-
+import { ApolloService } from 'src/app/core/service/apollo.service';
 
 // constants
 import { EventType } from 'src/app/core/constants/events';
-import { LayoutColor, LayoutType, LayoutWidth, MenuPositions, SideBarSize, SideBarTheme, TopbarTheme } from '../config/layout.model';
-
+import {
+  LayoutColor,
+  LayoutType,
+  LayoutWidth,
+  MenuPositions,
+  SideBarSize,
+  SideBarTheme,
+  TopbarTheme,
+} from '../config/layout.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-left-sidebar',
   templateUrl: './left-sidebar.component.html',
-  styleUrls: ['./left-sidebar.component.scss']
+  styleUrls: ['./left-sidebar.component.scss'],
 })
 export class LeftSidebarComponent implements OnInit {
-
   @Input() includeUserProfile: boolean = false;
   @Input() leftbarSize!: string;
 
@@ -35,29 +46,45 @@ export class LeftSidebarComponent implements OnInit {
   loggedInUser: User | null = {};
   menuItems: MenuItem[] = [];
 
+  companyList = [];
 
-  constructor (
+  constructor(
     router: Router,
-    private eventService: EventService) {
+    private eventService: EventService,
+    private apolloService: ApolloService,
+    private toastrService: ToastrService
+  ) {
     router.events.forEach((event) => {
       if (event instanceof NavigationEnd) {
         this._activateMenu(); //actiavtes menu
         this.hideMenu(); //hides leftbar on change of route
       }
     });
-
-
   }
 
   ngOnInit(): void {
     this.initMenu();
+    this.apolloService.query(company_list, {}).then((res) => {
+      if (!res.company_list.error) {
+        this.companyList = res.company_list.data;
+        if (this.companyList.length > 0) {
+          localStorage.setItem('idcompany', this.companyList[0].id.toString());
+          localStorage.setItem('companyName', this.companyList[0].txtName);
+        }
+      }
+    });
+  }
+
+  selectCompanyName(id, name) {
+    localStorage.setItem('idcompany', id);
+    localStorage.setItem('companyName', name);
+    this.toastrService.info('Switch to Company ' + name, 'Successful');
   }
 
   ngOnChanges(): void {
     if (this.includeUserProfile) {
       changeBodyAttribute('data-sidebar-user', 'true');
-    }
-    else {
+    } else {
       changeBodyAttribute('data-sidebar-user', 'false');
     }
   }
@@ -89,11 +116,9 @@ export class LeftSidebarComponent implements OnInit {
    * activates menu
    */
   _activateMenu(): void {
-    
-    const div = document.getElementById('side-menu') ;
+    const div = document.getElementById('side-menu');
     const div1 = document.getElementById('side-menu1');
     let matchingMenuItem = null;
-
 
     if (div) {
       let items: any = div.getElementsByClassName('side-nav-link-ref');
@@ -114,19 +139,20 @@ export class LeftSidebarComponent implements OnInit {
       if (matchingMenuItem) {
         const mid = matchingMenuItem.getAttribute('data-menu-key');
         const activeMt = findMenuItem(this.menuItems, mid);
-        
-        if (activeMt) {
 
-          const matchingObjs = [activeMt['key'], ...findAllParent(this.menuItems, activeMt)];
+        if (activeMt) {
+          const matchingObjs = [
+            activeMt['key'],
+            ...findAllParent(this.menuItems, activeMt),
+          ];
 
           this.activeMenuItems = matchingObjs;
 
           this.menuItems.forEach((menu: MenuItem) => {
             menu.collapsed = !matchingObjs.includes(menu.key!);
           });
-        }
-        else if(mid == 'setting'){
-          this.activeMenuItems = ['setting']
+        } else if (mid == 'setting') {
+          this.activeMenuItems = ['setting'];
         }
       }
     }
@@ -141,14 +167,16 @@ export class LeftSidebarComponent implements OnInit {
     collapse.toggle();
     let openMenuItems: string[];
     if (!menuItem.collapsed) {
-      openMenuItems = ([menuItem['key'], ...findAllParent(this.menuItems, menuItem)]);
+      openMenuItems = [
+        menuItem['key'],
+        ...findAllParent(this.menuItems, menuItem),
+      ];
       this.menuItems.forEach((menu: MenuItem) => {
         if (!openMenuItems.includes(menu.key!)) {
           menu.collapsed = true;
         }
-      })
+      });
     }
-
   }
 
   /**
@@ -158,20 +186,19 @@ export class LeftSidebarComponent implements OnInit {
     document.body.classList.remove('sidebar-enable');
   }
 
-
   /**
-  * Change the side bar width
-  * @param type type of sidebar
-  */
- changeLeftSidebarSize(size: string): void {
-   this.leftbarSize = size;
-   this.eventService.broadcast(EventType.CHANGE_LEFTBAR_SIZE, size as SideBarSize);
-  
- }
+   * Change the side bar width
+   * @param type type of sidebar
+   */
+  changeLeftSidebarSize(size: string): void {
+    this.leftbarSize = size;
+    this.eventService.broadcast(
+      EventType.CHANGE_LEFTBAR_SIZE,
+      size as SideBarSize
+    );
+  }
 
-
- test(a: string){
-  alert(a);
- }
-  
+  test(a: string) {
+    alert(a);
+  }
 }
