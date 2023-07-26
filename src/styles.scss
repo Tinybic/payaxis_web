@@ -70,7 +70,7 @@
 }
 
 .swal2-alert-title {
-    color: #0A1629;
+    color: #202020;
     text-align: center;
     font-size: 21.33px;
     font-style: normal;
@@ -79,7 +79,7 @@
 }
 
 .swal2-alert-content {
-    color: #303742;
+    color: #202020;
     text-align: center;
     font-size: 18px;
     font-style: normal;
@@ -160,4 +160,24 @@
     background-color: #E1E6EF;
     border-radius: 4px;
     padding: 2px 8px;
+}
+
+.swal2-styled.swal2-cancel{
+    background-color: #ffffff !important;
+    color: #2B52DD !important;
+    &:hover{
+        background-color: #ffffff !important;
+        color: #2B52DD !important;
+    }
+}
+
+.swal2-styled.swal2-confirm{
+    border-radius: 8px !important;
+}
+
+.swal2-actions{
+    justify-content: right !important;
+    flex-direction: row-reverse ;
+    width: 100% !important;
+
 }

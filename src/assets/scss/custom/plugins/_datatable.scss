@@ -197,13 +197,13 @@ table.advanced-table {
 
             &.sorting_asc {
                 &:after {
-                    content: "\e842" !important;
+                    content: "\e845" !important;
                 }
             }
 
             &.sorting_desc {
                 &:after {
-                    content: "\e845" !important;
+                    content: "\e842" !important;
                 }
             }
         }

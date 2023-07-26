@@ -34,6 +34,8 @@ export type Scalars = {
 /** structure to handle table sms */
 export type Mutation = {
   __typename?: 'Mutation';
+  /** deactivate company_member */
+  company_member_deactivate: Invitememberresult;
   /** new company_invitedmember */
   company_member_invite: Invitememberresult;
   /** new company details */
@@ -54,6 +56,12 @@ export type Mutation = {
   test1_delete?: Maybe<Scalars['Int']['output']>;
   /** mutation to update a row, 1=success, 0=not found */
   test1_update?: Maybe<Scalars['Int']['output']>;
+};
+
+
+/** structure to handle table sms */
+export type MutationCompany_Member_DeactivateArgs = {
+  id: Scalars['Int']['input'];
 };
 
 

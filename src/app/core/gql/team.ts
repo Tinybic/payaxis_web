@@ -44,4 +44,15 @@ const company_member_invite = gql`
   }
 `;
 
-export { company_members, company_member_invite };
+const company_member_deactivate = gql`
+  mutation company_member_deactivate($id: Int!) {
+    company_member_deactivate(id: $id) {
+      error
+      code
+      message
+      data
+    }
+  }
+`;
+
+export { company_members, company_member_invite, company_member_deactivate };

@@ -1,11 +1,13 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { company_members, company_member_invite } from 'src/app/core/gql/team';
-import { CompanyMembers } from 'src/app/core/models/companyMember.models';
+import {
+  company_members,
+  company_member_invite,
+  company_member_deactivate,
+} from 'src/app/core/gql/team';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { Column } from 'src/app/shared/advanced-table/advanced-table.component';
-import { SortEvent } from 'src/app/shared/advanced-table/sortable.directive';
 import { SweetAlertOptions } from 'sweetalert2';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 @Component({
@@ -37,6 +39,8 @@ export class TeamlistComponent {
   step: string = 'step1';
   keywords: string = '';
   userList = [];
+  direction = 'asc';
+  sortCloumn = '';
 
   constructor(
     private apolloService: ApolloService,
@@ -72,92 +76,49 @@ export class TeamlistComponent {
           this.pendingCount = result.data.filter(
             (member) => !member.active
           ).length;
-          this.initTableCofig();
         }
       });
   }
 
-  initTableCofig(): void {
-    this.columns = [
-      {
-        name: 'firstName',
-        label: 'User',
-        formatter: (member: CompanyMembers) => {
-          let result = `<div class="d-flex flex-row">
-          <div class="me-1-1"><img src="`;
-          result += member.avatar;
-          result += `" onerror="/assets/images/users/profile.jpg" alt="user-img"
-                  title="Mat Helme" class="rounded-circle img-thumbnail avatar-md-1"></div>
-          <div>`;
-          result +=
-            '<div class="bold-600">' +
-            member.firstName +
-            '&nbsp;' +
-            member.lastName +
-            '</div>';
-          result += ` <div class="text-typeblackdeactivated">ManagerSales</div>
-          </div>
-          </div>`;
-          return result;
-        },
-      },
-      {
-        name: 'position',
-        label: 'Role',
-        formatter: (member: CompanyMembers) => member.role,
-      },
-      {
-        name: 'office',
-        label: 'Office',
-        formatter: (member: CompanyMembers) => member.approvalAmount,
-        width: 180,
-      },
-      {
-        name: 'age',
-        label: 'Status',
-        formatter: (member: CompanyMembers) => member.active,
-      },
-      {
-        name: 'action',
-        label: '',
-        formatter: (member: CompanyMembers) => {
-          let result = '';
-          result +=
-            '<i class="fe-trash-2 cursor-pointer" (click) = "deactive(' +
-            member.id +
-            ',\'' +
-            member.lastName +
-            ' ' +
-            member.lastName +
-            '\')"></i>';
-          return result;
-        },
-        action() {this.deactive(1,'asdf')}
-      },
-    ];
-  }
-
   public alertOption: SweetAlertOptions = {};
-  deactive(id, name) {
-    console.log(id);
+  deactive(id, firstName, lastName) {
     this.alertOption = {
       html:
         `<div>
-      <div class="swal2-alert-title">Deactivating the account</div>
-      <div class="swal2-alert-content">Do you want to deactivate <b>` +
-        name +
+      <div class="headline text-start">Deactivating the account</div>
+      <div class="swal2-alert-content text-start">Do you want to deactivate <b>` +
+        firstName +
+        ' ' +
+        lastName +
         `</b>?</div>
       </div>`,
       showCloseButton: true,
-      showConfirmButton: false,
-      width: 604,
+      showConfirmButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'Deactivate',
+      width: 463,
       padding: 16,
       background: '#fff',
     };
-    this.ajaxRequest.fire();
+    setTimeout(() => {
+      this.ajaxRequest.fire().then((result) => {
+        if (result.isConfirmed) {
+          this.deactiveMembers(id);
+        }
+      });
+    }, 100);
   }
 
-  deactiveMembers(id) {}
+  deactiveMembers(id) {
+    this.apolloService
+      .mutate(company_member_deactivate, { id: id })
+      .then((res) => {
+        let message = '';
+        const result = res.company_member_deactivate;
+        message = result.message;
+        this.toastrService.info(message, '');
+      });
+  }
 
   // compares two cell values
   compare(v1: string | number, v2: string | number): any {
@@ -168,15 +129,18 @@ export class TeamlistComponent {
    * Sort the table data
    * @param event column name, sort direction
    */
-  onSort(event: SortEvent): void {
-    if (event.direction === '') {
-      this.members = this.COMPANY_MEMBERS;
+  onSort(column: string): void {
+    this.sortCloumn = column;
+    if (this.direction == 'desc') {
+      this.direction = 'asc';
     } else {
-      this.members = [...this.members].sort((a, b) => {
-        const res = this.compare(a[event.column], b[event.column]);
-        return event.direction === 'asc' ? res : -res;
-      });
+      this.direction = 'desc';
     }
+
+    this.members = [...this.members].sort((a, b) => {
+      const res = this.compare(a[this.sortCloumn], b[this.sortCloumn]);
+      return this.direction === 'asc' ? res : -res;
+    });
   }
 
   searchTable() {
