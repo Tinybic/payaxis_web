@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: "https://payaxis.azurewebsites.net/api/",
-  apolloUrl :"https://payaxis.azurewebsites.net/graphql"
+  apiUrl: "http://192.168.99.18:4000/api/",
+  apolloUrl :"http://192.168.99.18:4000/graphql"
 };
 
 /*

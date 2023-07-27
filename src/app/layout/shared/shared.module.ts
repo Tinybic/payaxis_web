@@ -9,13 +9,15 @@ import { FooterComponent } from './footer/footer.component';
 import { LeftSidebarComponent } from './left-sidebar/left-sidebar.component';
 import { RightSidebarComponent } from './right-sidebar/right-sidebar.component';
 import { TopbarComponent } from './topbar/topbar.component';
+import { AvatarComponent } from 'src/app/shared/avatar/avatar.component';
 
 @NgModule({
   declarations: [
     LeftSidebarComponent,
     RightSidebarComponent,
     TopbarComponent,
-    FooterComponent
+    FooterComponent,
+    AvatarComponent,
   ],
   imports: [
     CommonModule,

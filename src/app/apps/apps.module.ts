@@ -10,9 +10,10 @@ import {
   NgbTypeaheadModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UserWelcomeComponent } from './user-welcome/user-welcome.component';
 
 @NgModule({
-  declarations: [WelcomeComponent, CompanyComponent],
+  declarations: [WelcomeComponent, CompanyComponent, UserWelcomeComponent],
   imports: [
     CommonModule,
     FormsModule,

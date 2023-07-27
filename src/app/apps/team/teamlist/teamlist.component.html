@@ -235,7 +235,7 @@
                     <td>{{item.role}}</td>
                     <td>${{item.approvalAmount}}</td>
                     <td>{{item.active?'Active':'InActive'}}</td>
-                    <td><i class=" fe-trash-2 cursor-pointer"
+                    <td><i class=" fe-trash-2 cursor-pointer" *ngIf="idUser==idUserOwner"
                             (click)="deactive(item.id,item.firstName,item.lastName)"></i></td>
                 </tr>
             </tbody>

@@ -5,12 +5,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { profile_info } from 'src/app/core/gql/user';
 // service
 import { HttpService } from 'src/app/core/service/http.service';
 import { SocialUser } from '@abacritt/angularx-social-login';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { interval, take } from 'rxjs';
+import { ApolloService } from 'src/app/core/service/apollo.service';
 
 @Component({
   selector: 'app-auth-login',
@@ -37,7 +38,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private httpService: HttpService,
     private fb: UntypedFormBuilder,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private apolloService: ApolloService
   ) {}
 
   ngOnInit(): void {
@@ -76,18 +78,41 @@ export class LoginComponent implements OnInit {
           password: this.formValues['password'].value,
         })
         .then((res) => {
-          this.loading = false;
+          
           if (!res.error) {
             localStorage.setItem('refreshToken', res.data.refreshToken);
             localStorage.setItem('token', res.data.token);
             if (res.code == 113) {
               this.router.navigate(['auth/info']);
             } else {
-              this.router.navigate(['apps/welcome']);
+
+                this.apolloService.query(profile_info, {}).then((res) => {
+                  if (!res.profile_info.error) {
+                    const result = res.profile_info.data;
+                    localStorage.setItem('firstName', result.firstName);
+                    localStorage.setItem('lastName', result.lastName);
+                    localStorage.setItem('memberyn', result.memberyn.toString());
+                    localStorage.setItem('id', result.id.toString());
+                    localStorage.setItem('avatar', result.avatar);
+                    if(result.memberyn){
+                      this.router.navigate(['apps/user-welcome']);
+                    }
+                    else{
+                      this.router.navigate(['apps/welcome']);
+                    }
+                  }
+                  this.loading = false;
+                });
+
+
+
+             
             }
           } else if (res.code == 112) {
+            this.loading = false;
             this.openmodal();
           } else {
+            this.loading = false;
             this.error = res.message;
           }
         })
