@@ -46,7 +46,7 @@
 
             <div class="ms-2 sidebar-hr"></div>
 
-            <div style="display: flex; flex-direction: column-reverse; height: calc(100vh - 470px);">
+            <div class="companyList">
                 <div class="mt-1-1 cursor-pointer" *ngFor="let item of companyList"
                     (click)="selectCompanyName(item.id,item.txtName,item.idUserOwner)">
                     <app-avatar [color]="'#2B52DD'" [url] = "item.avatar" [companyName] = "item.txtName"  [size]="40" alt="user-img" class="ms-2"></app-avatar>
