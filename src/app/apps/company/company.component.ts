@@ -38,6 +38,8 @@ export class CompanyComponent {
   typeaheadModel: any;
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
+  focus1$ = new Subject<string>();
+  click1$ = new Subject<string>();
 
   companyName: string = '';
 
@@ -112,18 +114,27 @@ export class CompanyComponent {
 
   searchIndustry: OperatorFunction<string, readonly string[]> = (
     text$: Observable<string>
-  ) =>
-    text$.pipe(
+  ) =>{
+    const debouncedText$ = text$.pipe(
       debounceTime(200),
-      distinctUntilChanged(),
+      distinctUntilChanged()
+    );
+    const clicksWithClosedPopup$ = this.click1$.pipe(
+      filter(() => !this.instance.isPopupOpen())
+    );
+    const inputFocus$ = this.focus1$;
+
+    return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
       map((term) =>
-        term.length < 1
-          ? []
-          : this.industryNameList
-              .filter((v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1)
-              .slice(0, 5)
+        (term === ''
+          ? this.industryNameList
+          : this.industryNameList.filter(
+              (v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1
+            )
+        ).slice(0, 5)
       )
     );
+  };
 
   setIndustry(event) {
     for (let item of this.industryList) {

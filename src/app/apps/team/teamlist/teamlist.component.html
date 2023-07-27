@@ -212,20 +212,30 @@
             <thead>
                 <tr>
                     <th class="row_select"><input class="form-check" type="checkbox" /></th>
-                    <th class="sortable" [ngClass]="{'sorting_asc':sortCloumn == 'firstName' && direction == 'asc','sorting_desc':sortCloumn == 'firstName' && direction == 'desc'}" (click) = "onSort('firstName')">User</th>
-                    <th class="sortable" [ngClass]="{'sorting_asc':sortCloumn == 'role' && direction == 'asc','sorting_desc':sortCloumn == 'role' && direction == 'desc'}" (click) = "onSort('role')">Role</th>
-                    <th class="sortable" [ngClass]="{'sorting_asc':sortCloumn == 'approvalAmount' && direction == 'asc','sorting_desc':sortCloumn == 'approvalAmount' && direction == 'desc'}" (click) = "onSort('approvalAmount')">Approval amount</th>
-                    <th class="sortable" [ngClass]="{'sorting_asc':sortCloumn == 'active' && direction == 'asc','sorting_desc':sortCloumn == 'active' && direction == 'desc'}" (click) = "onSort('active')">Status</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortCloumn == 'firstName' && direction == 'asc','sorting_desc':sortCloumn == 'firstName' && direction == 'desc'}"
+                        (click)="onSort('firstName')">User</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortCloumn == 'role' && direction == 'asc','sorting_desc':sortCloumn == 'role' && direction == 'desc'}"
+                        (click)="onSort('role')">Role</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortCloumn == 'approvalAmount' && direction == 'asc','sorting_desc':sortCloumn == 'approvalAmount' && direction == 'desc'}"
+                        (click)="onSort('approvalAmount')">Approval amount</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortCloumn == 'active' && direction == 'asc','sorting_desc':sortCloumn == 'active' && direction == 'desc'}"
+                        (click)="onSort('active')">Status</th>
                     <th>&nbsp;</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of members">
+                <tr *ngFor="let item of members; let i = index">
                     <td><input class="form-check" type="checkbox" /></td>
                     <td>
                         <div class="d-flex flex-row">
-                            <div class="me-1-1"><img src="{{item.avatar}}" alt="user-img" title="Mat Helme"
-                                    class="rounded-circle img-thumbnail avatar-md-1"></div>
+                            <div class="me-1-1">
+                                <app-avatar [bgColor]="bgColors[i % 6]" [url]="item.avatar" [firstName]="item.firstName"
+                                    [lastName]="item.lastName" [size]="32" alt="user-img"></app-avatar>
+                            </div>
                             <div>
                                 <div class="bold-600">{{item.firstName}}&nbsp;{{item.lastName}}</div>
                                 <div class="text-typeblackdeactivated">ManagerSales</div>
@@ -261,18 +271,17 @@
 
             <div class="bottomButton">
                 <div>
-                    <button class="btn btn-primary" [disabled]="email.length == 0"
-                        (click)="step1()">Next</button>
+                    <button class="btn btn-primary" [disabled]="email.length == 0" (click)="step1()">Next</button>
                 </div>
                 <div>
-                    <button class="btn btn-outline-primary mt-1-1" 
+                    <button class="btn btn-outline-primary mt-1-1"
                         (click)="modal.dismiss('Cross click')">Cancel</button>
                 </div>
             </div>
         </div>
 
         <!--end step 1-->
-        <div *ngIf="step =='step2'"  class="formContainer">
+        <div *ngIf="step =='step2'" class="formContainer">
             <div class="emaillistInfo">
                 <div class="emailItem mt-1-1 ms-1-1 d-inline-block" *ngFor="let item of emailList; let i = index">
                     {{item}}<i class="fe-x ms-1-1 bg-white cursor-pointer rounded-circle" (click)="deleteEmail(i)"></i>
@@ -281,18 +290,17 @@
 
             <div class="bottomButton">
                 <div>
-                    <button class="btn btn-primary" [disabled]="emailList.length == 0"
-                        (click)="step2()">Next</button>
+                    <button class="btn btn-primary" [disabled]="emailList.length == 0" (click)="step2()">Next</button>
                 </div>
                 <div>
-                    <button class="btn btn-outline-primary mt-1-1" 
+                    <button class="btn btn-outline-primary mt-1-1"
                         (click)="step = 'step1' ;modal.dismiss('Cross click')">Cancel</button>
                 </div>
             </div>
         </div>
         <!--end step 2-->
 
-        <div *ngIf="step =='step3'"  class="formContainer">
+        <div *ngIf="step =='step3'" class="formContainer">
             <div class="row mt-1-1" *ngFor="let item of userList; let i = index">
                 <div class="col-md-1">
                     <div [ngClass]="bgColors[i % 6]" class=" rounded-circle"

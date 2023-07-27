@@ -72,7 +72,9 @@
                     <div class="col-md-6">
                         <label class="form-label" i18n>Industry</label>
                         <input id="txtindustry" type="text" class="form-control form-select position-relative" 
-                                [ngbTypeahead]="searchIndustry" (selectItem)="setIndustry($event)" [(ngModel)]="company.industry" placeholder="Enter the industry or sector in which the company operates" />
+                                [ngbTypeahead]="searchIndustry" (selectItem)="setIndustry($event)" [(ngModel)]="company.industry" 
+                                (focus)="focus1$.next($any($event).target.value)"
+                                placeholder="Enter the industry or sector in which the company operates" />
                     </div>
                     <div class="col-md-6">
                         <label class="form-label" i18n>Payment Terms</label>

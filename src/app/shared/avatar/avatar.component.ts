@@ -11,7 +11,7 @@ export class AvatarComponent {
   @Input() lastName: string = '';
   @Input() url: string = '';
   @Input() size: number = 32;
-  @Input() color: string = '#2B52DD';
+  @Input() bgColor: string = 'bg-primary';
   @Input() companyName: string = '';
 
   companyNameText = "";
