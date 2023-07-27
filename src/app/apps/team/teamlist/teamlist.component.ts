@@ -48,6 +48,8 @@ export class TeamlistComponent {
   approvalAmount = APPROVALAMOUNT;
   editFlag: boolean = false;
   edit=[];
+  approvalAmountFilter = 'Approval Amount';
+  roleFilter = 'Approval';
 
   constructor(
     private apolloService: ApolloService,
@@ -123,6 +125,26 @@ export class TeamlistComponent {
       this.members = this.members.filter((member) => !member.active);
     }
   }
+
+  changeRoleFilter(filter: string) {
+    this.roleFilter = filter;
+    this.members = this.COMPANY_MEMBERS;
+    if (filter == 'View Only') {
+      this.members = this.members.filter((member) => member.role == 'View Only');
+    } else if (filter == 'Create & Edit') {
+      this.members = this.members.filter((member) => member.role == 'Create & Edit');
+    }
+  }
+
+  changeapprovalAmountFilter(filter: string) {
+    this.approvalAmountFilter = filter;
+    this.members = this.COMPANY_MEMBERS;
+    if (filter != 'All') {
+      this.members = this.members.filter((member) => member.approvalAmount == filter);
+    }
+  }
+
+
 
   ngOnInit(): void {
     this.idUser = localStorage.getItem('id');
