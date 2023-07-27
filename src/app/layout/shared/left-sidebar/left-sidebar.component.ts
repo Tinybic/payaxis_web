@@ -45,7 +45,9 @@ export class LeftSidebarComponent implements OnInit {
   activeMenuItems: string[] = [];
   loggedInUser: User | null = {};
   menuItems: MenuItem[] = [];
-
+  userAvatar:string = localStorage.getItem('avatar');
+  firstName:string = localStorage.getItem('firstName');
+  lastName: string = localStorage.getItem('lastName');
   companyList = [];
 
   constructor(
@@ -65,28 +67,30 @@ export class LeftSidebarComponent implements OnInit {
     });
   }
 
-
-  getCompanyList(){
-    
+  getCompanyList() {
     this.apolloService.query(company_list, {}).then((res) => {
       if (!res.company_list.error) {
         this.companyList = res.company_list.data;
         if (this.companyList.length > 0) {
           localStorage.setItem('idcompany', this.companyList[0].id.toString());
           localStorage.setItem('companyName', this.companyList[0].txtName);
+          localStorage.setItem('idUserOwner',this.companyList[0].idUserOwner);
         }
       }
     });
   }
+
+ 
 
   ngOnInit(): void {
     this.initMenu();
     this.getCompanyList();
   }
 
-  selectCompanyName(id, name) {
+  selectCompanyName(id, name, idUserOwner) {
     localStorage.setItem('idcompany', id);
     localStorage.setItem('companyName', name);
+    localStorage.setItem('idUserOwner',idUserOwner);
     this.toastrService.info('Switch to Company ' + name, 'Successful');
   }
 
@@ -207,7 +211,4 @@ export class LeftSidebarComponent implements OnInit {
     );
   }
 
-  test(a: string) {
-    alert(a);
-  }
 }

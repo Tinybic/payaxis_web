@@ -27,10 +27,6 @@ const routes: Routes = [
     loadChildren: () => import('./icons/icons.module').then(m => m.IconsModule)
   },
   {
-    path: 'tables',
-    loadChildren: () => import('./tables/tables.module').then(m => m.TablesModule)
-  },
-  {
     path: 'charts',
     loadChildren: () => import('./charts/charts.module').then(m => m.ChartModule)
   },

@@ -40,7 +40,6 @@ export class InfoComponent implements OnInit {
   mobile: string = '';
   revision: number = 1;
 
-
   constructor(
     private fb: UntypedFormBuilder,
     private router: Router,
@@ -56,19 +55,27 @@ export class InfoComponent implements OnInit {
         this.loading = false;
 
         const result = res.profile_info;
-        if (!result.active) {
-          this.formValues['firstname'].setValue(result.firstName);
-          this.formValues['lastname'].setValue(result.lastName);
-          this.formValues['companyName'].setValue(result.companyName);
-          this.formValues['phone'].setValue(result.mobile);
-          this.formValues['f2_auth'].setValue(result.twofa);
-          this.revision = result.revision;
-        } else {
-          this.toastr.info(
-            'This account has been activated. Please log in.',
-            'Account information update.'
-          );
-          this.router.navigate(['auth/login']);
+
+        if (!result.error) {
+          if (!result.data.active) {
+            this.formValues['firstname'].setValue(result.data.firstName);
+            this.formValues['lastname'].setValue(result.data.lastName);
+            this.formValues['companyName'].setValue(result.data.companyName);
+            this.formValues['phone'].setValue(result.data.mobile);
+            this.formValues['f2_auth'].setValue(result.data.twofa);
+            this.revision = result.data.revision;
+          } else {
+            localStorage.setItem('firstName',result.data.firstName);
+            localStorage.setItem('lastName',result.data.lastName);
+            localStorage.setItem('memberyn',result.data.memberyn.toString());
+            localStorage.setItem('id',result.data.id.toString());
+            localStorage.setItem('avatar',result.data.avatar);
+            this.toastr.info(
+              'This account has been activated. Please log in.',
+              'Account information update.'
+            );
+            this.router.navigate(['auth/login']);
+          }
         }
       })
       .catch((err) => {

@@ -235,7 +235,7 @@
                     <td>{{item.role}}</td>
                     <td>${{item.approvalAmount}}</td>
                     <td>{{item.active?'Active':'InActive'}}</td>
-                    <td><i class=" fe-trash-2 cursor-pointer"
+                    <td><i class=" fe-trash-2 cursor-pointer" *ngIf="idUser==idUserOwner"
                             (click)="deactive(item.id,item.firstName,item.lastName)"></i></td>
                 </tr>
             </tbody>
@@ -251,48 +251,48 @@
 
 <ng-template #inviteMember let-modal>
     <div class="modal-body">
-        <div class="headline mt-1-1 mb-1-1">Invite Members to {{companyName}}</div>
+        <div class="headline mt-1-1 mb-1-1">Invite Members to [{{companyName}}]</div>
 
-        <div *ngIf="step =='step1'" style="position: relative; background-color: #fff; padding: 16px; height: 696px; ">
+        <div *ngIf="step =='step1'" class="formContainer">
             <div>
                 <input class="form-control" [(ngModel)]="email" type="email" multiple
                     placeholder="Email, separate with comma" />
             </div>
 
-            <div style="position: absolute; bottom: 24px;">
+            <div class="bottomButton">
                 <div>
-                    <button class="btn btn-primary" style="width: 445px;" [disabled]="email.length == 0"
+                    <button class="btn btn-primary" [disabled]="email.length == 0"
                         (click)="step1()">Next</button>
                 </div>
                 <div>
-                    <button class="btn btn-outline-primary mt-1-1" style="width: 445px;"
+                    <button class="btn btn-outline-primary mt-1-1" 
                         (click)="modal.dismiss('Cross click')">Cancel</button>
                 </div>
             </div>
         </div>
 
         <!--end step 1-->
-        <div *ngIf="step =='step2'" style="position: relative; background-color: #fff; padding: 16px; height: 696px; ">
-            <div style="border: 1px solid #2B52DD; border-radius: 8px; padding: 4px 16px 12px 8px">
+        <div *ngIf="step =='step2'"  class="formContainer">
+            <div class="emaillistInfo">
                 <div class="emailItem mt-1-1 ms-1-1 d-inline-block" *ngFor="let item of emailList; let i = index">
                     {{item}}<i class="fe-x ms-1-1 bg-white cursor-pointer rounded-circle" (click)="deleteEmail(i)"></i>
                 </div>
             </div>
 
-            <div style="position: absolute; bottom: 24px;">
+            <div class="bottomButton">
                 <div>
-                    <button class="btn btn-primary" style="width: 445px;" [disabled]="emailList.length == 0"
+                    <button class="btn btn-primary" [disabled]="emailList.length == 0"
                         (click)="step2()">Next</button>
                 </div>
                 <div>
-                    <button class="btn btn-outline-primary mt-1-1" style="width: 445px;"
+                    <button class="btn btn-outline-primary mt-1-1" 
                         (click)="step = 'step1' ;modal.dismiss('Cross click')">Cancel</button>
                 </div>
             </div>
         </div>
         <!--end step 2-->
 
-        <div *ngIf="step =='step3'" style="position: relative; background-color: #fff; padding: 16px; height: 696px; ">
+        <div *ngIf="step =='step3'"  class="formContainer">
             <div class="row mt-1-1" *ngFor="let item of userList; let i = index">
                 <div class="col-md-1">
                     <div [ngClass]="bgColors[i % 6]" class=" rounded-circle"
@@ -363,12 +363,12 @@
                 </div>
             </div>
 
-            <div style="position: absolute; bottom: 24px;">
+            <div class="bottomButton">
                 <div>
-                    <button class="btn btn-primary" style="width: 445px;" (click)="send()">Send Invite</button>
+                    <button class="btn btn-primary" (click)="send()">Send Invite</button>
                 </div>
                 <div>
-                    <button class="btn btn-outline-primary mt-1-1" style="width: 445px;"
+                    <button class="btn btn-outline-primary mt-1-1"
                         (click)="step = 'step1' ;modal.dismiss('Cross click')">Cancel</button>
                 </div>
             </div>

@@ -175,7 +175,7 @@ export type Query = {
   /** get company members for company */
   company_members: Companymemberresult;
   /** retrieve profile for the loging user */
-  profile_info: Profile;
+  profile_info: Resprofile;
   /** query to retrieve an existing row */
   test1_find: Test1;
   /** query to retrieve all existing rows */
@@ -317,9 +317,10 @@ export type Profile = {
   avatar: Scalars['String']['output'];
   companyName: Scalars['String']['output'];
   firstName: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
   lastName: Scalars['String']['output'];
+  memberyn: Scalars['Boolean']['output'];
   mobile: Scalars['String']['output'];
-  password: Scalars['Int']['output'];
   revision: Scalars['Int']['output'];
   socialMedia: Scalars['Int']['output'];
   socialMediaToken: Scalars['String']['output'];
@@ -337,6 +338,14 @@ export type Response = {
   __typename?: 'response';
   code: Scalars['Int']['output'];
   data?: Maybe<Token>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Resprofile = {
+  __typename?: 'resprofile';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Profile>;
   error: Scalars['Boolean']['output'];
   message: Scalars['String']['output'];
 };

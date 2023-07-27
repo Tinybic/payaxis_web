@@ -37,8 +37,13 @@ const profile_activate = gql`
 `;
 
 const profile_info = gql`
-  query profile_info {
-    profile_info {
+query profile_info {
+  profile_info {
+    error
+    code
+    message
+    data {
+      id
       revision
       avatar
       firstName
@@ -48,10 +53,11 @@ const profile_info = gql`
       socialMedia
       socialMediaToken
       companyName
-      password
       active
+      memberyn
     }
   }
+}
 `;
 
 export { profile_2fa, profile_activate,profile_info };

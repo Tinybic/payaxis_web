@@ -1,0 +1,6 @@
+.companyList {
+    display: flex;
+    flex-direction: column-reverse;
+    height: calc(100vh - 470px);
+    transition: all 0.1s ease-out;
+}

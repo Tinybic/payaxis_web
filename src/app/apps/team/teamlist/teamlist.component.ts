@@ -40,6 +40,8 @@ export class TeamlistComponent {
   direction = 'asc';
   sortCloumn = '';
   companyName = '';
+  idUserOwner = '';
+  idUser = '';
 
   constructor(
     private apolloService: ApolloService,
@@ -58,6 +60,8 @@ export class TeamlistComponent {
   }
 
   ngOnInit(): void {
+    this.idUser = localStorage.getItem('id');
+    this.idUserOwner = localStorage.getItem('idUserOwner');
     this.companyName = localStorage.getItem('companyName');
     if (localStorage.getItem('idcompany')) {
       this.apolloService
@@ -159,7 +163,8 @@ export class TeamlistComponent {
   }
 
   inviteMembers() {
-    this.openVerticallyCentered(this.inviteMember);
+    if (this.idUser == this.idUserOwner)
+      this.openVerticallyCentered(this.inviteMember);
   }
 
   isEmail(email: string) {

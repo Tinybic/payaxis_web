@@ -144,6 +144,7 @@ const company_list = gql`
         avatar
         txtName
         active
+        idUserOwner
       }
     }
   }
