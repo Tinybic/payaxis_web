@@ -36,6 +36,8 @@ export type Mutation = {
   __typename?: 'Mutation';
   /** deactivate company_member */
   company_member_deactivate: Invitememberresult;
+  /** manage company_member access */
+  company_member_edit: Invitememberresult;
   /** new company_invitedmember */
   company_member_invite: Invitememberresult;
   /** new company details */
@@ -62,6 +64,13 @@ export type Mutation = {
 /** structure to handle table sms */
 export type MutationCompany_Member_DeactivateArgs = {
   id: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationCompany_Member_EditArgs = {
+  companymembers?: InputMaybe<Array<Companymemberaccess>>;
+  idCompany: Scalars['Int']['input'];
 };
 
 
@@ -264,6 +273,12 @@ export type Companylist = {
   data?: Maybe<Array<Company>>;
   error: Scalars['Boolean']['output'];
   message: Scalars['String']['output'];
+};
+
+export type Companymemberaccess = {
+  approvalAmount: Scalars['Float']['input'];
+  idMasterRole: Scalars['Int']['input'];
+  idcompany_member: Scalars['Int']['input'];
 };
 
 export type Companymemberresult = {

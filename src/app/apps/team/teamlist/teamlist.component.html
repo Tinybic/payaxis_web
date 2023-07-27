@@ -3,11 +3,13 @@
         Members
     </div>
     <div class="col-md-6 text-end">
-        <button class="btn btn-outline-primary"><i class="fe-edit me-1-1"></i>Edit</button>
+        <button class="btn btn-outline-primary" *ngIf="!editFlag" (click) = "startEdit()"><i class="fe-edit me-1-1"></i>Edit</button>
+        <button class="btn btn-primary"  *ngIf="editFlag" (click) = "saveEdit()">Save</button>
         <button class="btn btn-primary ms-2-1">New Bill<i class="fe-chevron-down ms-1-1"></i></button>
         <i class="fe-more-vertical- font-24 ms-2-1 cursor-pointer" (click)="inviteMembers()"></i>
     </div>
 </div>
+
 <div class="row">
     <div class="col-md-4">
         <div class="dropdown" ngbDropdown #statusDrop="ngbDropdown">
@@ -68,23 +70,7 @@
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
-                            Approval
-                        </label>
-                    </div>
-                </div>
-                <div class="mb-2">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                        <label class="form-check-label ms-1-1" for="dropdownCheck">
-                            Admin
-                        </label>
-                    </div>
-                </div>
-                <div class="mb-2">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                        <label class="form-check-label ms-1-1" for="dropdownCheck">
-                            Editor
+                            View Only
                         </label>
                     </div>
                 </div>
@@ -92,7 +78,7 @@
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
-                            Viewer
+                            Create & Edit
                         </label>
                     </div>
                 </div>
@@ -168,23 +154,7 @@
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
-                            Approval
-                        </label>
-                    </div>
-                </div>
-                <div class="mb-2">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                        <label class="form-check-label ms-1-1" for="dropdownCheck">
-                            Admin
-                        </label>
-                    </div>
-                </div>
-                <div class="mb-2">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                        <label class="form-check-label ms-1-1" for="dropdownCheck">
-                            Editor
+                            View Only
                         </label>
                     </div>
                 </div>
@@ -192,7 +162,7 @@
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
-                            Viewer
+                            Create & Edit
                         </label>
                     </div>
                 </div>
@@ -242,10 +212,16 @@
                             </div>
                         </div>
                     </td>
-                    <td>{{item.role}}</td>
-                    <td>${{item.approvalAmount}}</td>
+                    <td>
+                        <app-dropdowndata  *ngIf="editFlag && item.role != 'Owner'" [displayText]="item.role" [data] = "roleItems" (selectValue) = "editRoleValue(item,$event)"></app-dropdowndata>
+                        <span *ngIf="!editFlag || item.role == 'Owner'">{{item.role}}</span>
+                    </td>
+                    <td>
+                        <app-dropdowndata  *ngIf="editFlag && item.role != 'Owner'" [displayText]="'$'+ item.approvalAmount" [data] = "approvalAmount" (selectValue) = "editApprovalAmount(item,$event)"></app-dropdowndata>
+                        <span *ngIf="!editFlag || item.role == 'Owner'">${{item.approvalAmount}}</span>
+                    </td>
                     <td>{{item.active?'Active':'InActive'}}</td>
-                    <td><i class=" fe-trash-2 cursor-pointer" *ngIf="idUser==idUserOwner"
+                    <td><i class=" fe-trash-2 cursor-pointer" *ngIf="idUser==idUserOwner && item.role != 'Owner'"
                             (click)="deactive(item.id,item.firstName,item.lastName)"></i></td>
                 </tr>
             </tbody>
@@ -356,13 +332,13 @@
                         <div class="dropdown-menu" ngbDropdownMenu>
                             <div class="mb-2">
                                 <label class="form-check-label ms-1-1 cursor-pointer"
-                                    (click)="step3Role(item,'1','View Only'); roleDrop.close();">
+                                    (click)="step3Role(item,'2','View Only'); roleDrop.close();">
                                     View Only
                                 </label>
                             </div>
                             <div class="mb-2">
                                 <label class="form-check-label ms-1-1 cursor-pointer"
-                                    (click)="step3Role(item,'2','Create & Edit'); roleDrop.close();">
+                                    (click)="step3Role(item,'3','Create & Edit'); roleDrop.close();">
                                     Create & Edit
                                 </label>
                             </div>

@@ -5,7 +5,9 @@ import {
   company_members,
   company_member_invite,
   company_member_deactivate,
+  company_member_edit,
 } from 'src/app/core/gql/team';
+import { ROLEITEMS, APPROVALAMOUNT } from 'src/app/core/constants/members';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { SweetAlertOptions } from 'sweetalert2';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
@@ -42,12 +44,75 @@ export class TeamlistComponent {
   companyName = '';
   idUserOwner = '';
   idUser = '';
+  roleItems = ROLEITEMS;
+  approvalAmount = APPROVALAMOUNT;
+  editFlag: boolean = false;
+  edit=[];
 
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
     private toastrService: ToastrService
   ) {}
+
+
+
+  startEdit(){
+    this.editFlag = true;
+  }
+
+
+  editRoleValue(item,value){
+    item.idMasterRole = value.id;
+    item.role = value.text;
+    this.pushEditArray(item);
+  }
+
+  editApprovalAmount(item,value){
+    item.approvalAmount = value.id;
+    this.pushEditArray(item);
+  }
+
+  pushEditArray(info){
+    let item = this.edit.find(item=>item.id == info.id);
+    if(item){
+      item = info;
+    }
+    else{
+      this.edit.push(info);
+    }
+  }
+
+
+  saveEdit(){
+    const members = this.edit.map((item) => {
+      return Object.assign(
+        {},
+        {
+          idcompany_member: item.id,
+          idMasterRole: item.idMasterRole,
+          approvalAmount: item.approvalAmount,
+        }
+      );
+    });
+
+    const data = {
+      idCompany: parseInt(localStorage.getItem('idcompany')),
+      companymembers:members
+    }
+    this.apolloService.mutate(company_member_edit, data).then((res) => {
+      let message = '';
+      const result = res.company_member_edit;
+      if (!result.error) {
+        message = this.edit.length + ' members has been update';
+      } else {
+        message = result.message;
+      }
+      this.edit = [];
+      this.editFlag = false;
+      this.toastrService.info(message, '');
+    });
+  }
 
   changeStatusFilter(filter: string) {
     this.statusFilter = filter;

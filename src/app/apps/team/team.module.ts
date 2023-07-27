@@ -6,6 +6,7 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { AvatarModule } from 'src/app/shared/avatar/avatar.module';
+import { DropdowndataModule } from 'src/app/shared/dropdowndata/dropdowndata.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { AvatarModule } from 'src/app/shared/avatar/avatar.module';
     TeamRoutingModule,
     NgbDropdownModule,
     SweetAlert2Module,
-    AvatarModule
+    AvatarModule,
+    DropdowndataModule
   ]
 })
 export class TeamModule { }
