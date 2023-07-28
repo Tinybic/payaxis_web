@@ -191,4 +191,18 @@ const company_info = gql`
   }
 `;
 
-export { compayDetail, companyNew, companyUpate, company_list,company_info };
+const company_roles = gql`
+query company_roles {
+  company_roles {
+    error
+    code
+    message
+    data {
+      id
+      txtName
+    }
+  }
+}
+`;
+
+export { compayDetail, companyNew, companyUpate, company_list,company_info,company_roles };

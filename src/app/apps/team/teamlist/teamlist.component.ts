@@ -11,6 +11,7 @@ import { ROLEITEMS, APPROVALAMOUNT } from 'src/app/core/constants/members';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { SweetAlertOptions } from 'sweetalert2';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
+import { company_roles } from 'src/app/core/gql/company';
 @Component({
   selector: 'app-teamlist',
   templateUrl: './teamlist.component.html',
@@ -34,6 +35,7 @@ export class TeamlistComponent {
   allCount: number = 0;
   activeCount: number = 0;
   pendingCount: number = 0;
+  showCount: number = 0;
   email: string = '';
   emailList = [];
   step: string = 'step1';
@@ -44,10 +46,10 @@ export class TeamlistComponent {
   companyName = '';
   idUserOwner = '';
   idUser = '';
-  roleItems = ROLEITEMS;
+  roleItems = [];
   approvalAmount = APPROVALAMOUNT;
   editFlag: boolean = false;
-  edit=[];
+  edit = [];
   approvalAmountFilter = 'Approval Amount';
   roleFilter = 'Approval';
 
@@ -57,36 +59,31 @@ export class TeamlistComponent {
     private toastrService: ToastrService
   ) {}
 
-
-
-  startEdit(){
+  startEdit() {
     this.editFlag = true;
   }
 
-
-  editRoleValue(item,value){
+  editRoleValue(item, value) {
     item.idMasterRole = value.id;
     item.role = value.text;
     this.pushEditArray(item);
   }
 
-  editApprovalAmount(item,value){
+  editApprovalAmount(item, value) {
     item.approvalAmount = value.id;
     this.pushEditArray(item);
   }
 
-  pushEditArray(info){
-    let item = this.edit.find(item=>item.id == info.id);
-    if(item){
+  pushEditArray(info) {
+    let item = this.edit.find((item) => item.id == info.id);
+    if (item) {
       item = info;
-    }
-    else{
+    } else {
       this.edit.push(info);
     }
   }
 
-
-  saveEdit(){
+  saveEdit() {
     const members = this.edit.map((item) => {
       return Object.assign(
         {},
@@ -100,8 +97,8 @@ export class TeamlistComponent {
 
     const data = {
       idCompany: parseInt(localStorage.getItem('idcompany')),
-      companymembers:members
-    }
+      companymembers: members,
+    };
     this.apolloService.mutate(company_member_edit, data).then((res) => {
       let message = '';
       const result = res.company_member_edit;
@@ -119,37 +116,57 @@ export class TeamlistComponent {
   changeStatusFilter(filter: string) {
     this.statusFilter = filter;
     this.members = this.COMPANY_MEMBERS;
+    this.showCount = this.allCount;
     if (filter == 'Active') {
       this.members = this.members.filter((member) => member.active);
+      this.showCount = this.activeCount;
     } else if (filter == 'Pending') {
       this.members = this.members.filter((member) => !member.active);
+      this.showCount = this.pendingCount;
     }
   }
 
   changeRoleFilter(filter: string) {
     this.roleFilter = filter;
     this.members = this.COMPANY_MEMBERS;
-    if (filter == 'View Only') {
-      this.members = this.members.filter((member) => member.role == 'View Only');
-    } else if (filter == 'Create & Edit') {
-      this.members = this.members.filter((member) => member.role == 'Create & Edit');
-    }
+    if (filter != 'All') {
+      this.members = this.members.filter(
+        (member) => member.role == filter
+      );
+    } 
   }
 
   changeapprovalAmountFilter(filter: string) {
     this.approvalAmountFilter = filter;
     this.members = this.COMPANY_MEMBERS;
     if (filter != 'All') {
-      this.members = this.members.filter((member) => member.approvalAmount == filter);
+      this.members = this.members.filter(
+        (member) => member.approvalAmount == filter
+      );
     }
   }
-
-
 
   ngOnInit(): void {
     this.idUser = localStorage.getItem('id');
     this.idUserOwner = localStorage.getItem('idUserOwner');
     this.companyName = localStorage.getItem('companyName');
+
+    this.apolloService.query(company_roles, {}).then((res) => {
+      const result = res.company_roles;
+      if (!result.error) {
+        result.data.splice(0,1);
+        this.roleItems = result.data.map((item) => {
+          return Object.assign(
+            {},
+            {
+              id: item.id,
+              text: item.txtName
+            }
+          );
+        });
+      }
+    });
+
     if (localStorage.getItem('idcompany')) {
       this.apolloService
         .query(company_members, {
@@ -168,6 +185,7 @@ export class TeamlistComponent {
             this.pendingCount = result.data.filter(
               (member) => !member.active
             ).length;
+            this.showCount=this.allCount;
           }
         });
     }
@@ -285,13 +303,13 @@ export class TeamlistComponent {
     if (this.userList.length > 0) this.step = 'step3';
   }
 
-  step3Approval(item, select, selectText) {
-    item.approvalAmount = parseFloat(select);
-    item.approvalAmountText = selectText;
+  step3Approval(item, event) {
+    item.approvalAmount = event.id;
+    item.approvalAmountText = event.text;
   }
-  step3Role(item, idrole, role) {
-    item.idMasterRole = parseInt(idrole);
-    item.role = role;
+  step3Role(item, event) {
+    item.idMasterRole = event.id;
+    item.role = event.text;
   }
 
   send() {

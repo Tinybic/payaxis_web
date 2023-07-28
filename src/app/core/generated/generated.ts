@@ -183,6 +183,8 @@ export type Query = {
   company_list: Companylist;
   /** get company members for company */
   company_members: Companymemberresult;
+  /** get company members for company */
+  company_roles: Companyrolesresult;
   /** retrieve profile for the loging user */
   profile_info: Resprofile;
   /** query to retrieve an existing row */
@@ -285,6 +287,20 @@ export type Companymemberresult = {
   __typename?: 'companymemberresult';
   code: Scalars['Int']['output'];
   data?: Maybe<Array<Company_Member>>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Companyroles = {
+  __typename?: 'companyroles';
+  id: Scalars['Int']['output'];
+  txtName: Scalars['String']['output'];
+};
+
+export type Companyrolesresult = {
+  __typename?: 'companyrolesresult';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Array<Companyroles>>;
   error: Scalars['Boolean']['output'];
   message: Scalars['String']['output'];
 };

@@ -9,6 +9,7 @@ import { DropDwonItem } from 'src/app/core/constants/members';
 export class DropdowndataComponent {
   @Input() displayText: string = '';
   @Input() data = [];
+  @Input() color = 'text-black';
   @Output() selectValue = new EventEmitter<DropDwonItem>();
 
   changeStatus(id, text) {
