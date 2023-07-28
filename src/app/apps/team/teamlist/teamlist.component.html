@@ -14,7 +14,7 @@
     <div class="col-md-4">
         <div class="dropdown" ngbDropdown #statusDrop="ngbDropdown">
             <a href="javascript:void(0)" class="bold-600 font-20 text-black line-60"
-                ngbDropdownToggle>{{statusFilter}}({{allCount}}) <i class=" fe-chevron-down"></i></a>
+                ngbDropdownToggle>{{statusFilter}}({{showCount}}) <i class=" fe-chevron-down"></i></a>
             <div class="dropdown-menu" ngbDropdownMenu>
                 <div class="mb-2" ngbDropdownItem>
                     <div class="form-check">
@@ -67,21 +67,12 @@
                         </label>
                     </div>
                 </div>
-                <div class="mb-2" ngbDropdownItem>
+                <div class="mb-2" ngbDropdownItem *ngFor="let item of roleItems">
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck" [checked]="roleFilter=='View Only'"
-                        (change)="changeRoleFilter('View Only');">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck" [checked]="roleFilter==item.text"
+                        (change)="changeRoleFilter(item.text);">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
-                            View Only
-                        </label>
-                    </div>
-                </div>
-                <div ngbDropdownItem>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck" [checked]="roleFilter=='Create & Edit'"
-                        (change)="changeRoleFilter('Create & Edit');">
-                        <label class="form-check-label ms-1-1" for="dropdownCheck">
-                            Create & Edit
+                            {{item.text}}
                         </label>
                     </div>
                 </div>

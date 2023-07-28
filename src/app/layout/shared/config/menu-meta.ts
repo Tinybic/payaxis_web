@@ -19,7 +19,7 @@ const MENU_ITEMS: MenuItem[] = [
   }, 
   {
     key: 'forms',
-    label: 'Forms',
+    label: 'Vendors',
     isTitle: false,
     icon: 'fe-briefcase',
     collapsed: true,

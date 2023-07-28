@@ -11,6 +11,7 @@ import { ROLEITEMS, APPROVALAMOUNT } from 'src/app/core/constants/members';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { SweetAlertOptions } from 'sweetalert2';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
+import { company_roles } from 'src/app/core/gql/company';
 @Component({
   selector: 'app-teamlist',
   templateUrl: './teamlist.component.html',
@@ -34,6 +35,7 @@ export class TeamlistComponent {
   allCount: number = 0;
   activeCount: number = 0;
   pendingCount: number = 0;
+  showCount: number = 0;
   email: string = '';
   emailList = [];
   step: string = 'step1';
@@ -44,7 +46,7 @@ export class TeamlistComponent {
   companyName = '';
   idUserOwner = '';
   idUser = '';
-  roleItems = ROLEITEMS;
+  roleItems = [];
   approvalAmount = APPROVALAMOUNT;
   editFlag: boolean = false;
   edit = [];
@@ -114,25 +116,24 @@ export class TeamlistComponent {
   changeStatusFilter(filter: string) {
     this.statusFilter = filter;
     this.members = this.COMPANY_MEMBERS;
+    this.showCount = this.allCount;
     if (filter == 'Active') {
       this.members = this.members.filter((member) => member.active);
+      this.showCount = this.activeCount;
     } else if (filter == 'Pending') {
       this.members = this.members.filter((member) => !member.active);
+      this.showCount = this.pendingCount;
     }
   }
 
   changeRoleFilter(filter: string) {
     this.roleFilter = filter;
     this.members = this.COMPANY_MEMBERS;
-    if (filter == 'View Only') {
+    if (filter != 'All') {
       this.members = this.members.filter(
-        (member) => member.role == 'View Only'
+        (member) => member.role == filter
       );
-    } else if (filter == 'Create & Edit') {
-      this.members = this.members.filter(
-        (member) => member.role == 'Create & Edit'
-      );
-    }
+    } 
   }
 
   changeapprovalAmountFilter(filter: string) {
@@ -149,6 +150,23 @@ export class TeamlistComponent {
     this.idUser = localStorage.getItem('id');
     this.idUserOwner = localStorage.getItem('idUserOwner');
     this.companyName = localStorage.getItem('companyName');
+
+    this.apolloService.query(company_roles, {}).then((res) => {
+      const result = res.company_roles;
+      if (!result.error) {
+        result.data.splice(0,1);
+        this.roleItems = result.data.map((item) => {
+          return Object.assign(
+            {},
+            {
+              id: item.id,
+              text: item.txtName
+            }
+          );
+        });
+      }
+    });
+
     if (localStorage.getItem('idcompany')) {
       this.apolloService
         .query(company_members, {
@@ -167,6 +185,7 @@ export class TeamlistComponent {
             this.pendingCount = result.data.filter(
               (member) => !member.active
             ).length;
+            this.showCount=this.allCount;
           }
         });
     }

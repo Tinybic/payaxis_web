@@ -11,9 +11,9 @@ export class AvatarComponent {
   @Input() lastName: string = '';
   @Input() url: string = '';
   @Input() size: number = 32;
-  @Input() bgColor: string = 'bg-primary';
+  @Input() bgColor: string = 'bg-white';
   @Input() companyName: string = '';
-
+  @Input() color:string = 'text-primary';
   companyNameText = "";
   constructor(){
 
