@@ -16,30 +16,30 @@
             <a href="javascript:void(0)" class="bold-600 font-20 text-black line-60"
                 ngbDropdownToggle>{{statusFilter}}({{allCount}}) <i class=" fe-chevron-down"></i></a>
             <div class="dropdown-menu" ngbDropdownMenu>
-                <div class="mb-2">
+                <div class="mb-2" ngbDropdownItem>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" name="statusFilter"
                             [checked]="statusFilter=='All'"
-                            (change)="changeStatusFilter('All');$event.stopPropagation(); statusDrop.close();">
+                            (change)="changeStatusFilter('All');">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             All({{allCount}})
                         </label>
                     </div>
                 </div>
-                <div class="mb-2">
+                <div class="mb-2" ngbDropdownItem>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" [checked]="statusFilter=='Active'"
-                            (change)="changeStatusFilter('Active');$event.stopPropagation(); statusDrop.close();"
+                            (change)="changeStatusFilter('Active');"
                             name="statusFilter">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             Active({{activeCount}})
                         </label>
                     </div>
                 </div>
-                <div>
+                <div ngbDropdownItem>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" [checked]="statusFilter=='Pending'"
-                            (change)="changeStatusFilter('Pending');$event.stopPropagation(); statusDrop.close();"
+                            (change)="changeStatusFilter('Pending');"
                             name="statusFilter">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             Pending({{pendingCount}})
@@ -51,35 +51,35 @@
     </div>
     <div class="col-md-8 text-end mt-2-1">
 
-        <div class="dropdown" ngbDropdown>
+        <div class="dropdown" ngbDropdown #roleDrop="ngbDropdown">
             <a class="dropdow-outline" href="javascript:void(0)" ngbDropdownToggle>
                 <i class="fe-user font-16 me-1-1"></i>
                 {{roleFilter}}
                 <i class="fe-chevron-down font-16 ms-1-1"></i>
             </a>
             <div class="dropdown-menu" ngbDropdownMenu>
-                <div class="mb-2">
+                <div class="mb-2" ngbDropdownItem>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck" [checked]="roleFilter=='All'"
-                        (change)="changeRoleFilter('All');$event.stopPropagation(); statusDrop.close();">
+                        (change)="changeRoleFilter('All');">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             ALL
                         </label>
                     </div>
                 </div>
-                <div class="mb-2">
+                <div class="mb-2" ngbDropdownItem>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck" [checked]="roleFilter=='View Only'"
-                        (change)="changeRoleFilter('View Only');$event.stopPropagation(); statusDrop.close();">
+                        (change)="changeRoleFilter('View Only');">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             View Only
                         </label>
                     </div>
                 </div>
-                <div>
+                <div ngbDropdownItem>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck" [checked]="roleFilter=='Create & Edit'"
-                        (change)="changeRoleFilter('Create & Edit');$event.stopPropagation(); statusDrop.close();">
+                        (change)="changeRoleFilter('Create & Edit');">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             Create & Edit
                         </label>
@@ -138,62 +138,62 @@
             </div>
         </div>
         <!--end filter 2-->
-        <div class="dropdown ms-1-1" ngbDropdown>
+        <div class="dropdown ms-1-1" ngbDropdown  #approvalDrop="ngbDropdown">
             <a class="dropdow-outline" href="javascript:void(0)" ngbDropdownToggle>
                 <i class="fe-dollar-sign font-16 me-1-1"></i>
                 {{approvalAmountFilter}}
                 <i class="fe-chevron-down font-16 ms-1-1"></i>
             </a>
             <div class="dropdown-menu" ngbDropdownMenu>
-                <div class="mb-2">
+                <div class="mb-2" ngbDropdownItem>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck"  [checked]="approvalAmountFilter=='All'"
-                        (change)="changeapprovalAmountFilter('All');$event.stopPropagation(); statusDrop.close();">
+                        (change)="changeapprovalAmountFilter('All');">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             ALL
                         </label>
                     </div>
                 </div>
-                <div class="mb-2">
+                <div class="mb-2" ngbDropdownItem>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck" [checked]="approvalAmountFilter=='1000'"
-                        (change)="changeapprovalAmountFilter('1000');$event.stopPropagation(); statusDrop.close();">
+                        (change)="changeapprovalAmountFilter('1000');">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             $1,000
                         </label>
                     </div>
                 </div>
-                <div class="mb-2">
+                <div class="mb-2" ngbDropdownItem>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck" [checked]="approvalAmountFilter=='2000'"
-                        (change)="changeapprovalAmountFilter('2000');$event.stopPropagation(); statusDrop.close();">
+                        (change)="changeapprovalAmountFilter('2000');">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             $2,000
                         </label>
                     </div>
                 </div>
-                <div class="mb-2">
+                <div class="mb-2" ngbDropdownItem>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck" [checked]="approvalAmountFilter=='5000'"
-                        (change)="changeapprovalAmountFilter('5000');$event.stopPropagation(); statusDrop.close();">
+                        (change)="changeapprovalAmountFilter('5000');">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             $5,000
                         </label>
                     </div>
                 </div>
-                <div class="mb-2">
+                <div class="mb-2" ngbDropdownItem>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck" [checked]="approvalAmountFilter=='7500'"
-                        (change)="changeapprovalAmountFilter('7500');$event.stopPropagation(); statusDrop.close();">
+                        (change)="changeapprovalAmountFilter('7500');">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             $7,500
                         </label>
                     </div>
                 </div>
-                <div>
+                <div ngbDropdownItem> 
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck" [checked]="approvalAmountFilter=='10000'"
-                        (change)="changeapprovalAmountFilter('10000');$event.stopPropagation(); statusDrop.close();">
+                        (change)="changeapprovalAmountFilter('10000');">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             $10,000
                         </label>
@@ -318,65 +318,11 @@
                     </div>
                 </div>
                 <div class="col-md-4 line-32 overflow-hidden">{{item.email}}</div>
-                <div class="col-md-4 text-end">
-                    <div class="dropdown" ngbDropdown #myDrop="ngbDropdown">
-                        <div style="background-color: #F1F3F9; border-radius: 8px; padding: 0px 8px"
-                            class="bold-600 text-primary font-12 line-32 cursor-pointer dropdown-toggle"
-                            ngbDropdownToggle>{{item.approvalAmountText}}<i class="fe-chevron-down ms-1-1 font-16"></i>
-                        </div>
-                        <div class="dropdown-menu" ngbDropdownMenu>
-                            <div class="mb-2">
-                                <label class="form-check-label ms-1-1 cursor-pointer"
-                                    (click)="step3Approval(item,'1000','$1,000');$event.stopPropagation(); myDrop.close();">
-                                    $1,000
-                                </label>
-                            </div>
-                            <div class="mb-2">
-                                <label class="form-check-label ms-1-1 cursor-pointer"
-                                    (click)="step3Approval(item,'2000','$2,000');$event.stopPropagation(); myDrop.close();">
-                                    $2,000
-                                </label>
-                            </div>
-                            <div class="mb-2">
-                                <label class="form-check-label ms-1-1 cursor-pointer"
-                                    (click)="step3Approval(item,'5000','$5,000');$event.stopPropagation(); myDrop.close();">
-                                    $5,000
-                                </label>
-                            </div>
-                            <div class="mb-2">
-                                <label class="form-check-label ms-1-1 cursor-pointer"
-                                    (click)="step3Approval(item,'7500','$7,500');$event.stopPropagation(); myDrop.close();">
-                                    $7,500
-                                </label>
-                            </div>
-                            <div>
-                                <label class="form-check-label ms-1-1 cursor-pointer"
-                                    (click)="step3Approval(item,'10000','$10,000 +');$event.stopPropagation(); myDrop.close();">
-                                    $10,000 +
-                                </label>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col-md-4 text-end subtitle-2-600 line-32 ">
+                    <app-dropdowndata  [displayText]="item.approvalAmountText" [data] = "approvalAmount" [color]="'text-primary'" (selectValue) = "step3Approval(item,$event)"></app-dropdowndata>
                 </div>
-                <div class="col-md-3 text-end">
-                    <div class="dropdown" ngbDropdown #roleDrop="ngbDropdown">
-                        <div class="bold-600 line-32 cursor-pointer" ngbDropdownToggle>{{item.role}}<i
-                                class="fe-chevron-down ms-1-1 font-16"></i></div>
-                        <div class="dropdown-menu" ngbDropdownMenu>
-                            <div class="mb-2">
-                                <label class="form-check-label ms-1-1 cursor-pointer"
-                                    (click)="step3Role(item,'2','View Only'); roleDrop.close();">
-                                    View Only
-                                </label>
-                            </div>
-                            <div class="mb-2">
-                                <label class="form-check-label ms-1-1 cursor-pointer"
-                                    (click)="step3Role(item,'3','Create & Edit'); roleDrop.close();">
-                                    Create & Edit
-                                </label>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col-md-3 text-end subtitle-2-600 line-32">
+                    <app-dropdowndata [displayText]="item.role" [data] = "roleItems" (selectValue) = "step3Role(item,$event)"></app-dropdowndata>
                 </div>
             </div>
 

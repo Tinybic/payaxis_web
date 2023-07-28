@@ -1,10 +1,10 @@
-<div class="dropdown d-inline-block" ngbDropdown #statusDrop="ngbDropdown">
-    <a href="javascript:void(0)" class="text-black" ngbDropdownToggle>{{displayText}}<i
-            class="fe-chevron-down ms-1-1"></i></a>
+<div class="dropdown d-inline-block" ngbDropdown>
+    <a href="javascript:void(0)" [ngClass]="color" ngbDropdownToggle>{{displayText}}<i
+            class="fe-chevron-down ms-1-1" [ngClass]="color"></i></a>
     <div class="dropdown-menu" ngbDropdownMenu>
         <div class="mb-2" *ngFor="let item of data">
-            <label (click)="changeStatus(item.id,item.text);$event.stopPropagation(); statusDrop.close();"
-                class="cursor-pointer form-check-label ms-1-1" for="dropdownCheck">
+            <label (click)="changeStatus(item.id,item.text);"
+                class="cursor-pointer form-check-label ms-1-1" ngbDropdownItem>
                 {{item.text}}
             </label>
         </div>
