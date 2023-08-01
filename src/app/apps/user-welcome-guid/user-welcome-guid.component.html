@@ -1,0 +1,300 @@
+<div class="row">
+    <div class="col-md-6">
+        <div class="headline">123 Main Unit #1A</div>
+        <div class="subtitle-2-500">123 Main Street, Houston, TX, 77001</div>
+    </div>
+    <div class="col-md-6 text-end">
+        <button class="btn btn-outline-primary"><i class="fe-edit me-1-1"></i>Edit</button>
+        <button class="btn btn-primary ms-2-1">New Bill<i class="fe-chevron-down ms-1-1"></i></button>
+        <i class="fe-more-vertical- font-24 ms-2-1 v-middle"></i>
+    </div>
+</div>
+<div class="row">
+    <div class="col" style="margin-top: 10px;">
+        <button class="btn btn-bg-primary">Budget</button>
+        <button class="btn btn-outline-surface">Bills</button>
+        <button class="btn btn-outline-surface">Vendors</button>
+        <button class="btn btn-outline-surface">Team</button>
+    </div>
+</div>
+<div class="row mt-40">
+    <div class="col-md-6">
+        <div class="widget-16">
+            <div class="row">
+                <div class="col">
+                    <div class="subtitle-2-500-16">Used</div>
+                    <div class="subtitle-2-500-24 mt-2-1">$38,190 <span class="subtitle-2-500-16">23%</span></div>
+                </div>
+                <div class="col-md-auto">
+                    <div class="subtitle-2-500-16">Left</div>
+                    <div class="subtitle-2-500-24 mt-2-1">$116,810</div>
+                </div>
+            </div>
+            <div>
+                <ngb-progressbar type="success" [value]="12" height="8px" style="margin-top: 21px;"></ngb-progressbar>
+            </div>
+            <hr style="margin: 27px 0;"/>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="subtitle-2-500-16">Total</div>
+                    <div class="subtitle-2-500-20 mt-2-1">$155,000</div>
+                </div>
+                <div class="col-md-4">
+                    <div class="subtitle-2-500-16">Sq. Ft.</div>
+                    <div class="subtitle-2-500-20 mt-2-1">$1.89</div>
+                </div>
+                <div class="col-md-4">
+                    <div class="subtitle-2-500-16">Account</div>
+                    <div class="subtitle-2-500-20 mt-2-1">Chase Bank
+                        <span class="subtitle-2-400-20">1234</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="widget-16">
+                    <div class="subtitle-2-500-16">Owed</div>
+                    <div class="subtitle-2-500-24 mt-2-1">$38,189</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="widget-16">
+                    <div class="subtitle-2-500-16">Overdue</div>
+                    <div class="subtitle-2-500-24 mt-2-1">$1537
+                        <div class="badge position-absolute bg-danger rounded-pill badge-20 subtitle-2-500-12 text-center">
+                            4
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 16px;">
+            <div class="col-md-6">
+                <div class="widget-16">
+                    <div class="subtitle-2-500-16">Due in 7 days</div>
+                    <div class="subtitle-2-500-24 mt-2-1">$2,890
+                        <div class="badge position-absolute bg-warning rounded-pill badge-20 subtitle-2-500-12 text-center">
+                            3
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="widget-16">
+                    <div class="subtitle-2-500-16" style="color: #215EA9">Apr 7 - May 7
+                        <img src="assets/images/welcome/inverted-triangle.svg"
+                             style="width: 10px;margin-top: -2px;margin-left: 4px;"/></div>
+                    <div class="subtitle-2-500-24 mt-2-1">$293.01
+                        <div class="badge bg-primary position-absolute rounded-pill badge-20 subtitle-2-500-12 text-center">
+                            1
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-40">
+    <div class="col-md-6">
+        <div class="headline">Budgets</div>
+    </div>
+    <div class="col-md-6 text-end">
+        <div class="row">
+            <div class="col offset-2">
+                <div class="bg-white text-start position-relative budgets-search">
+                    <i class="fe-search font-16 position-absolute" style="left: 16px;top:12px"></i>
+                    <input class="form-control-sm search-text" type="text" placeholder="Search..." aria-label="search">
+                </div>
+            </div>
+            <div class="col-md-auto" style="padding-top: 12px">
+                <i class="fe-filter font-16" style="color: #215EA9"></i>
+            </div>
+            <div class="col-md-auto" style="padding-top: 4px;">
+                <button class="btn bg-primary text-white" style="padding: 5px 16px;"><i
+                        class="fe-plus me-1-1 font-14 v-middle"></i>Add Cost Code
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-40">
+    <div class="col">
+        <div class="widget-16" style="padding: 16px;">
+            <div class="row">
+                <div class="col col-md-6 subtitle-2-600-20">
+                    Plumbing
+                </div>
+                <div class="col col-md-6 text-end">
+                    $1,537
+                    <div class="badge bg-danger rounded-pill badge-20 subtitle-2-500-12 text-center"
+                         style="margin-top: -2px">3
+                    </div>
+                </div>
+            </div>
+            <ngb-progressbar type="success" [value]="12" height="8px" style="margin: 12px 0;"></ngb-progressbar>
+            <div class="row">
+                <div class="col col-md-6 subtitle-2-500-12">
+                    <span style="color: #202020CC;">Used</span>
+                    <span style="color: #202020;padding: 0 5px;">$12,380</span>
+                    <span style="color: #2020207F">12%</span>
+                </div>
+                <div class="col col-md-6 text-end subtitle-2-500-12">
+                    <span style="color: #202020CC;padding-right: 5px;">Left</span>$10,080
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="widget-16" style="padding: 16px;">
+            <div class="row">
+                <div class="col col-md-6 subtitle-2-600-20">
+                    Floor
+                </div>
+                <div class="col col-md-6 text-end">
+                    $1,537
+                    <div class="badge bg-primary rounded-pill badge-20 subtitle-2-500-12 text-center"
+                         style="margin-top: -2px">4
+                    </div>
+                </div>
+            </div>
+            <ngb-progressbar type="success" [value]="12" height="8px" style="margin: 12px 0;"></ngb-progressbar>
+            <div class="row">
+                <div class="col col-md-6 subtitle-2-500-12">
+                    <span style="color: #202020CC;">Used</span>
+                    <span style="color: #202020;padding: 0 5px;">$12,380</span>
+                    <span style="color: #2020207F">12%</span>
+                </div>
+                <div class="col col-md-6 text-end subtitle-2-500-12">
+                    <span style="color: #202020CC;padding-right: 5px;">Left</span>$27,900
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="widget-16" style="padding: 16px;">
+            <div class="row">
+                <div class="col col-md-6 subtitle-2-600-20">
+                    Paint
+                </div>
+                <div class="col col-md-6 text-end">
+                    $1,537
+                    <div class="badge bg-danger rounded-pill badge-20 subtitle-2-500-12 text-center"
+                         style="margin-top: -2px">3
+                    </div>
+                </div>
+            </div>
+            <ngb-progressbar type="success" [value]="12" height="8px" style="margin: 12px 0;"></ngb-progressbar>
+            <div class="row">
+                <div class="col col-md-6 subtitle-2-500-12">
+                    <span style="color: #202020CC;">Used</span>
+                    <span style="color: #202020;padding: 0 5px;">$12,380</span>
+                    <span style="color: #2020207F">12%</span>
+                </div>
+                <div class="col col-md-6 text-end subtitle-2-500-12">
+                    <span style="color: #202020CC;padding-right: 5px;">Left</span>$6,200
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="widget-16" style="padding: 16px;">
+            <div class="row">
+                <div class="col col-md-6 subtitle-2-600-20">
+                    Landscape
+                </div>
+                <div class="col col-md-6 text-end">
+                    $1,537
+                    <div class="badge bg-warning rounded-pill badge-20 subtitle-2-500-12 text-center"
+                         style="margin-top: -2px">1
+                    </div>
+                </div>
+            </div>
+            <ngb-progressbar type="success" [value]="12" height="8px" style="margin: 12px 0;"></ngb-progressbar>
+            <div class="row">
+                <div class="col col-md-6 subtitle-2-500-12">
+                    <span style="color: #202020CC;">Used</span>
+                    <span style="color: #202020;padding: 0 5px;">$12,380</span>
+                    <span style="color: #2020207F">12%</span>
+                </div>
+                <div class="col col-md-6 text-end subtitle-2-500-12">
+                    <span style="color: #202020CC;padding-right: 5px;">Left</span>$4,650
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="widget-16" style="padding: 16px;">
+            <div class="row">
+                <div class="col col-md-6 subtitle-2-600-20">
+                    Farming
+                </div>
+                <div class="col col-md-6 text-end">
+                    $1,537
+                    <div class="badge bg-warning rounded-pill badge-20 subtitle-2-500-12 text-center"
+                         style="margin-top: -2px">1
+                    </div>
+                </div>
+            </div>
+            <ngb-progressbar type="success" [value]="12" height="8px" style="margin: 12px 0;"></ngb-progressbar>
+            <div class="row">
+                <div class="col col-md-6 subtitle-2-500-12">
+                    <span style="color: #202020CC;">Used</span>
+                    <span style="color: #202020;padding: 0 5px;">$12,380</span>
+                    <span style="color: #2020207F">12%</span>
+                </div>
+                <div class="col col-md-6 text-end subtitle-2-500-12">
+                    <span style="color: #202020CC;padding-right: 5px;">Left</span>$10,850
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="currentTourStep < 6" class="guid-tour-container">
+    <!-- 164+24   32+64  76 44-->
+    <div *ngIf="currentTourStep==0" class="tour-budget">
+        <div class="tour-budget-container subtitle-2-800">Budget</div>
+    </div>
+    <div *ngIf="currentTourStep==1" class="tour-bills">
+        <div class="tour-bills-container subtitle-2-800">Bills</div>
+    </div>
+    <div *ngIf="currentTourStep==2" class="tour-vendors-team">
+        <div class="tour-vendors-team-container subtitle-2-800">Vendors</div>
+        <div class="tour-vendors-team-container subtitle-2-800">Team</div>
+    </div>
+    <div style="position:absolute; top: {{currentTour.top}};left: {{currentTour.left}};">
+        <div *ngIf="currentTourStep < 3" class="tour-top-triangle"></div>
+        <div *ngIf="currentTourStep > 2" class="tour-left-triangle"></div>
+        <div class="tour-content" style="height: {{currentTour.height}};">
+            <div class="headline-24">{{currentTour.title}}</div>
+            <div class="text-1" style="margin-top: 16px;">
+                {{currentTour.content}}
+            </div>
+            <div style="margin-top: 16px;">
+                <div style="float:left;padding: 8px 0;">
+                    <div *ngFor="let _ of [].constructor(6);let i=index" class="{{i==currentTourStep ? 'tour-dot-primary':'tour-dot-grey'}}"></div>
+                </div>
+                <button class="btn btn-primary" (click)="nextStep()" style="float: right;padding: 8px 16px;">{{currentTour.buttonText}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #niceWorkModal let-modal>
+    <div class="modal-body" style="padding: 40px 30px;" ngbAutofocus>
+        <div class="text-center">
+            <img src="assets/images/logo_bg.png">
+        </div>
+        <div class="headline text-center" style="padding-top: 40px;padding-bottom: 16px;" i18n>Nice work!
+        </div>
+        <div class="text-1 text-center" i18n>
+            Now you know the main things of our platform. But that's not all. We have many more handy features, just start working and have fun.
+        </div>
+        <div class="d-grid" style="margin-top: 40px;">
+            <button class="btn btn-primary" (click)="getStarted()" i18n>Let's get started</button>
+        </div>
+    </div>
+</ng-template>
