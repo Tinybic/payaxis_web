@@ -182,6 +182,15 @@
 
 }
 
+
 .dropdown-item{
     padding: 0px !important;
+}
+
+.modal-backdrop {
+    background-color: rgba(0, 0, 0) !important;
+}
+
+.modal-backdrop.show {
+    opacity: 0.25 !important;
 }

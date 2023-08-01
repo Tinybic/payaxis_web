@@ -1,4 +1,4 @@
-// 
+//
 // type.scss
 //
 
@@ -19,6 +19,15 @@ h6 {
     color: #{$typeblackprimary};
     font-weight: $font-weight-normal;
 }
+
+.bg-primary {
+    background-color: $primary;
+}
+
+.text-white{
+    color: $white;
+}
+
 
 .bold-700 {
     font-weight: 700;
@@ -81,6 +90,14 @@ h6 {
     font-weight: 700;
     line-height: 40px;
 }
+
+.headline-24{
+    font-size: 21.33px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+}
+
 .text-blackprimary{
     color:#202020;
 }
@@ -241,9 +258,59 @@ h6 {
     letter-spacing: 0.1px;
 }
 
+.subtitle-2-400-20 {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.subtitle-2-500 {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.1px;
+}
+
+.subtitle-2-500-12 {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 12px;
+}
+
+.subtitle-2-500-16 {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 16px;
+}
+
+.subtitle-2-500-20 {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 20px;
+}
+
+.subtitle-2-500-24 {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 24px;
+}
+
 .subtitle-2-600 {
     font-size: 12px;
     font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0.1px;
+}
+
+.subtitle-2-600-20 {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+}
+
+.subtitle-2-800 {
+    font-size: 12px;
+    font-weight: 800;
     line-height: 24px;
     letter-spacing: 0.1px;
 }
@@ -258,6 +325,14 @@ h6 {
     font-weight: 400;
     line-height: 24px;
     letter-spacing: 0.5px;
+}
+
+.search-text{
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0px;
+    text-align: left;
 }
 
 del {
