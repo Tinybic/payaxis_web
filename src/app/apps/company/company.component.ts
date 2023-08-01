@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import {
   Observable,
@@ -16,11 +16,12 @@ import {
   companyNew,
   companyUpate,
 } from 'src/app/core/gql/company';
+import { get_file_url, getNewFileName } from 'src/app/core/gql/file';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { ToastrService } from 'ngx-toastr';
 import { EventService } from 'src/app/core/service/event.service';
 import { EventType } from 'src/app/core/constants/events';
-
+import { HttpService } from 'src/app/core/service/http.service';
 @Component({
   selector: 'app-company',
   templateUrl: './company.component.html',
@@ -28,6 +29,9 @@ import { EventType } from 'src/app/core/constants/events';
 })
 export class CompanyComponent {
   @ViewChild('instance', { static: true }) instance!: NgbTypeahead;
+  @ViewChild('fileInput', { static: false })
+  fileInput: ElementRef<HTMLInputElement>;
+
   tabs2: number = 2;
   formatter = (result: string) => result.toUpperCase();
 
@@ -40,7 +44,7 @@ export class CompanyComponent {
   click$ = new Subject<string>();
   focus1$ = new Subject<string>();
   click1$ = new Subject<string>();
-
+  uploadUrl = '';
   companyName: string = '';
 
   company = {
@@ -65,7 +69,8 @@ export class CompanyComponent {
   constructor(
     private apolloService: ApolloService,
     private toastrService: ToastrService,
-    private eventService: EventService
+    private eventService: EventService,
+    private httpService: HttpService
   ) {}
 
   ngOnInit(): void {
@@ -114,7 +119,7 @@ export class CompanyComponent {
 
   searchIndustry: OperatorFunction<string, readonly string[]> = (
     text$: Observable<string>
-  ) =>{
+  ) => {
     const debouncedText$ = text$.pipe(
       debounceTime(200),
       distinctUntilChanged()
@@ -167,5 +172,27 @@ export class CompanyComponent {
 
   dropdownSelect(item) {
     this.company.paymentTerms = item;
+  }
+
+  onSelected(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const fileName = getNewFileName(file.name);
+      file.filename = fileName;
+      this.apolloService
+        .query(get_file_url, { fileName: fileName, folder: 'avatarcompany' })
+        .then((res) => {
+          if (!res.get_file_url.error) {
+            this.uploadUrl = res.get_file_url.data;
+            this.httpService.put(this.uploadUrl, file).then((res) => {
+              this.company.avatar = this.uploadUrl.split('?')[0];
+            });
+          }
+        });
+    }
+  }
+
+  showFileDialog(): void {
+    this.fileInput.nativeElement.click();
   }
 }
