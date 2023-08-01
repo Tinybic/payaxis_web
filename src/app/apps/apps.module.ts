@@ -11,6 +11,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserWelcomeComponent } from './user-welcome/user-welcome.component';
+import { AvatarModule } from '../shared/avatar/avatar.module';
 
 @NgModule({
   declarations: [WelcomeComponent, CompanyComponent, UserWelcomeComponent],
@@ -22,6 +23,7 @@ import { UserWelcomeComponent } from './user-welcome/user-welcome.component';
     NgbTypeaheadModule,
     AppsRoutingModule,
     NgbDropdownModule,
+    AvatarModule
   ],
 })
 export class AppsModule {}

@@ -185,6 +185,8 @@ export type Query = {
   company_members: Companymemberresult;
   /** get company members for company */
   company_roles: Companyrolesresult;
+  /** get url for a new file */
+  get_file_url: FileResponse;
   /** retrieve profile for the loging user */
   profile_info: Resprofile;
   /** query to retrieve an existing row */
@@ -201,6 +203,11 @@ export type QueryCompany_InfoArgs = {
 
 export type QueryCompany_MembersArgs = {
   idCompany: Scalars['Int']['input'];
+};
+
+
+export type QueryGet_File_UrlArgs = {
+  fileName: Scalars['String']['input'];
 };
 
 
@@ -310,6 +317,15 @@ export type Comresult = {
   __typename?: 'comresult';
   code: Scalars['Int']['output'];
   data?: Maybe<Residrevision>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+/** structure to handle table company_member */
+export type FileResponse = {
+  __typename?: 'fileResponse';
+  code: Scalars['Int']['output'];
+  data: Scalars['String']['output'];
   error: Scalars['Boolean']['output'];
   message: Scalars['String']['output'];
 };
