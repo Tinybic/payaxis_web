@@ -4,91 +4,104 @@
 
 // Title text within header
 .modal-title {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 
-.modal-443{
-    max-width: 443px !important;
+.modal-443 {
+  max-width: 443px !important;
 }
 
-.modal-337{
-    max-width: 337px !important;
+.modal-337 {
+  max-width: 337px !important;
 }
 
-.modal-530{
-    max-width: 530px !important;
+.modal-530 {
+  max-width: 530px !important;
 }
+
 // Modal full width
 .modal-full-width {
-    width: 95%;
-    max-width: none;
+  width: 95%;
+  max-width: none;
 }
 
 // Modal Positions
 .modal-top {
-    margin: 0 auto;
+  margin: 0 auto;
 }
 
 // Right Modal
 .modal-right {
-    position: absolute;
-    right: 0;
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    height: 100%;
-    margin: 0;
-    background-color: $modal-content-bg;
-    align-content: center;
-    transform: translate(25%, 0) !important;
+  position: absolute;
+  right: 0;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  height: 100%;
+  margin: 0;
+  background-color: $modal-content-bg;
+  align-content: center;
+  transform: translate(25%, 0) !important;
 
-    button.btn-close {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        z-index: 1;
-    }
+  button.btn-close {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1;
+  }
 }
 
 .modal {
-    &.show {
-        .modal-right,
-        .modal-left {
-            transform: translate(0, 0) !important;
-        }
+  &.show {
+    .modal-right,
+    .modal-left {
+      transform: translate(0, 0) !important;
     }
+  }
 }
 
 // Bottom modal
 .modal-bottom {
-    display: flex;
-    flex-flow: column nowrap;
-    -ms-flex-pack: end;
-    justify-content: flex-end;
-    height: 100%;
-    margin: 0 auto;
-    align-content: center;
+  display: flex;
+  flex-flow: column nowrap;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  height: 100%;
+  margin: 0 auto;
+  align-content: center;
 }
 
 // Colored modal header
 .modal-colored-header {
-    color: $white;
-    border-radius: 0;
+  color: $white;
+  border-radius: 0;
 
-    .btn-close {
-        color: $white !important;
-    }
+  .btn-close {
+    color: $white !important;
+  }
 }
 
 .modal-filled {
-    color: $white;
+  color: $white;
 
-    .modal-content {
-        background-color: inherit;
-    }
+  .modal-content {
+    background-color: inherit;
+  }
 }
 
-.modal-dialog{
-    max-width: 650px;
+.modal-dialog {
+  max-width: 650px;
+}
+
+
+.centerModal {
+  padding-left: 164px;
+
+  .modal-dialog {
+    width: 446px;
+    .modal-content{
+      border-radius: 8px;
+    }
+  }
 }
