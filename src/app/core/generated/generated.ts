@@ -36,6 +36,8 @@ export type Mutation = {
   __typename?: 'Mutation';
   /** deactivate company_member */
   company_member_deactivate: Invitememberresult;
+  /** manage company_member access */
+  company_member_edit: Invitememberresult;
   /** new company_invitedmember */
   company_member_invite: Invitememberresult;
   /** new company details */
@@ -62,6 +64,13 @@ export type Mutation = {
 /** structure to handle table sms */
 export type MutationCompany_Member_DeactivateArgs = {
   id: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationCompany_Member_EditArgs = {
+  companymembers?: InputMaybe<Array<Companymemberaccess>>;
+  idCompany: Scalars['Int']['input'];
 };
 
 
@@ -174,6 +183,10 @@ export type Query = {
   company_list: Companylist;
   /** get company members for company */
   company_members: Companymemberresult;
+  /** get company members for company */
+  company_roles: Companyrolesresult;
+  /** get url for a new file */
+  get_file_url: FileResponse;
   /** retrieve profile for the loging user */
   profile_info: Resprofile;
   /** query to retrieve an existing row */
@@ -190,6 +203,11 @@ export type QueryCompany_InfoArgs = {
 
 export type QueryCompany_MembersArgs = {
   idCompany: Scalars['Int']['input'];
+};
+
+
+export type QueryGet_File_UrlArgs = {
+  fileName: Scalars['String']['input'];
 };
 
 
@@ -266,10 +284,30 @@ export type Companylist = {
   message: Scalars['String']['output'];
 };
 
+export type Companymemberaccess = {
+  approvalAmount: Scalars['Float']['input'];
+  idMasterRole: Scalars['Int']['input'];
+  idcompany_member: Scalars['Int']['input'];
+};
+
 export type Companymemberresult = {
   __typename?: 'companymemberresult';
   code: Scalars['Int']['output'];
   data?: Maybe<Array<Company_Member>>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Companyroles = {
+  __typename?: 'companyroles';
+  id: Scalars['Int']['output'];
+  txtName: Scalars['String']['output'];
+};
+
+export type Companyrolesresult = {
+  __typename?: 'companyrolesresult';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Array<Companyroles>>;
   error: Scalars['Boolean']['output'];
   message: Scalars['String']['output'];
 };
@@ -279,6 +317,15 @@ export type Comresult = {
   __typename?: 'comresult';
   code: Scalars['Int']['output'];
   data?: Maybe<Residrevision>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+/** structure to handle table company_member */
+export type FileResponse = {
+  __typename?: 'fileResponse';
+  code: Scalars['Int']['output'];
+  data: Scalars['String']['output'];
   error: Scalars['Boolean']['output'];
   message: Scalars['String']['output'];
 };

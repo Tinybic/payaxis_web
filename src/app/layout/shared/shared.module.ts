@@ -9,7 +9,7 @@ import { FooterComponent } from './footer/footer.component';
 import { LeftSidebarComponent } from './left-sidebar/left-sidebar.component';
 import { RightSidebarComponent } from './right-sidebar/right-sidebar.component';
 import { TopbarComponent } from './topbar/topbar.component';
-import { AvatarComponent } from 'src/app/shared/avatar/avatar.component';
+import { AvatarModule } from 'src/app/shared/avatar/avatar.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +17,6 @@ import { AvatarComponent } from 'src/app/shared/avatar/avatar.component';
     RightSidebarComponent,
     TopbarComponent,
     FooterComponent,
-    AvatarComponent,
   ],
   imports: [
     CommonModule,
@@ -28,6 +27,7 @@ import { AvatarComponent } from 'src/app/shared/avatar/avatar.component';
     NgbCollapseModule,
     NgbDropdownModule,
     NgbAlertModule,
+    AvatarModule
   ],
   exports: [
     LeftSidebarComponent,

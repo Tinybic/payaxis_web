@@ -46,12 +46,13 @@
                         Company Details
                     </div>
                     <div class="col-md-6 d-flex flex-row-reverse">
-                        <div class="upload-icon cursor-pointer">
+                        <div class="upload-icon cursor-pointer" (click) = "showFileDialog()">
                             <i class="fe-upload-cloud font-24"></i>
-                            <input type="file" class="invisible"/>
+                            <input type="file" id="logoFile" #fileInput accept="image/*" (change)="onSelected($event)" class="invisible"/>
                         </div>
                         <div class="me-2 pt-2 upload-text">
-                            upload<br /> your LOGO
+                            <span *ngIf="!company.avatar">upload<br /> your LOGO</span>
+                            <app-avatar *ngIf="company.avatar" [url] = "company.avatar" [companyName] = "company.txtName"  [size]="40" alt="user-img" class="ms-2"></app-avatar>
                         </div>
                     </div>
                     
@@ -72,7 +73,9 @@
                     <div class="col-md-6">
                         <label class="form-label" i18n>Industry</label>
                         <input id="txtindustry" type="text" class="form-control form-select position-relative" 
-                                [ngbTypeahead]="searchIndustry" (selectItem)="setIndustry($event)" [(ngModel)]="company.industry" placeholder="Enter the industry or sector in which the company operates" />
+                                [ngbTypeahead]="searchIndustry" (selectItem)="setIndustry($event)" [(ngModel)]="company.industry" 
+                                (focus)="focus1$.next($any($event).target.value)"
+                                placeholder="Enter the industry or sector in which the company operates" />
                     </div>
                     <div class="col-md-6">
                         <label class="form-label" i18n>Payment Terms</label>

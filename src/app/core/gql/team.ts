@@ -55,4 +55,15 @@ const company_member_deactivate = gql`
   }
 `;
 
-export { company_members, company_member_invite, company_member_deactivate };
+const company_member_edit = gql`
+mutation company_member_edit($idCompany: Int!, $companymembers: [companymemberaccess!]) {
+  company_member_edit(idCompany: $idCompany, companymembers: $companymembers) {
+    error
+    code
+    message
+    data
+  }
+}
+`;
+
+export { company_members, company_member_invite, company_member_deactivate,company_member_edit };
