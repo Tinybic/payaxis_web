@@ -11,16 +11,12 @@ import {
   NgbProgressbarModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { UserWelcomeComponent } from './user-welcome/user-welcome.component';
-import { UserWelcomeGuidComponent } from './user-welcome-guid/user-welcome-guid.component';
 import { AvatarModule } from '../shared/avatar/avatar.module';
 
 @NgModule({
     declarations: [
         WelcomeComponent,
         CompanyComponent,
-        UserWelcomeComponent,
-        UserWelcomeGuidComponent
     ], imports: [
         CommonModule,
         FormsModule,
