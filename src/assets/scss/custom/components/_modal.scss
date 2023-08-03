@@ -6,12 +6,10 @@
 .modal-title {
   margin-top: 0;
 }
-.modal-content{
-    height: 100%;
-}
 
-.modal-443 {
-  max-width: 443px !important;
+
+.modal-443{
+    max-width: 443px !important;
 }
 
 .modal-337 {
@@ -35,16 +33,16 @@
 
 // Right Modal
 .modal-right {
-  position: absolute;
-  right: 0;
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: center;
-  height: 100%;
-  margin: 0;
-  background-color: $modal-content-bg;
-  align-content: center;
-  transform: translate(25%, 0) !important;
+    position: absolute;
+    right: 0;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    height: 100%;
+    margin: 0;
+    background-color: $modal-content-bg;
+    align-content: center;
+    transform: translate(25%, 0) !important;
 
   button.btn-close {
     position: fixed;
