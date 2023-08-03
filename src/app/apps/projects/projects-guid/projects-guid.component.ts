@@ -35,7 +35,7 @@ export class ProjectsGuidComponent {
     
     tourList = [{
         target: 'Budget',
-        top: '180px',
+        top: '212px',
         left: '178px',
         height: '184px',
         title: 'Project Navigation',
@@ -45,7 +45,7 @@ export class ProjectsGuidComponent {
     },
         {
             target: 'Bills',
-            top: '180px',
+            top: '212px',
             left: '264px',
             height: '232px',
             title: 'Project Bills',
@@ -55,7 +55,7 @@ export class ProjectsGuidComponent {
         },
         {
             target: 'Vendors&Team',
-            top: '180px',
+            top: '212px',
             left: '332px',
             height: '232px',
             title: 'Users Profile',

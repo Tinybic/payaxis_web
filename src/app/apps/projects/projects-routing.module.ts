@@ -7,7 +7,7 @@ const routes: Routes = [{
     path: '',
     component: ProjectsComponent
 },{
-    path: 'projects-guid',
+    path: 'guid',
     component: ProjectsGuidComponent
 }];
 

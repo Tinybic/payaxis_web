@@ -64,6 +64,6 @@ export class ProjectsComponent implements OnInit {
     
     goNext(){
         this.modalService.dismissAll();
-        this.router.navigate(['apps/projects/projects-guid']);
+        this.router.navigate(['apps/projects/guid']);
     }
 }
