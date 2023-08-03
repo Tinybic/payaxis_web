@@ -15,6 +15,7 @@ import {
   compayDetail,
   companyNew,
   companyUpate,
+  company_info,
 } from 'src/app/core/gql/company';
 import { get_file_url, getNewFileName } from 'src/app/core/gql/file';
 import { ApolloService } from 'src/app/core/service/apollo.service';
@@ -76,8 +77,18 @@ export class CompanyComponent {
   ngOnInit(): void {
     this.statesList = STATES;
 
-    this.apolloService.query(compayDetail, {}).then((res) => {
-      const result = res.company_details;
+    let gql = compayDetail;
+    let data = {};
+    if (localStorage.getItem('idcompany')) {
+      gql = company_info;
+      data = { id: parseInt(localStorage.getItem('idcompany')) };
+    }
+
+    this.apolloService.query(gql, data).then((res) => {
+      let result = res.company_details;
+      if (gql == company_info) {
+        result = res.company_info;
+      }
       this.industryList = result.comboxIndustry;
       this.industryNameList = result.comboxIndustry.map(
         ({ txtName }) => txtName
