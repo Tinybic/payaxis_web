@@ -65,7 +65,7 @@ export class TeamlistComponent {
   ) {}
 
   startEdit() {
-    this.editFlag = true;
+    if (this.idUser == this.idUserOwner) this.editFlag = true;
   }
 
   editRoleValue(item, value) {
@@ -365,7 +365,7 @@ export class TeamlistComponent {
 
   send() {
     this.modalService.dismissAll();
-    this.userList = this.userList.filter(item => !item.memberyn);
+    this.userList = this.userList.filter((item) => !item.memberyn);
     console.log(this.userList);
     const inviteMembers = this.userList.map((item) => {
       return Object.assign(

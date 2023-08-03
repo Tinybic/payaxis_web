@@ -51,7 +51,7 @@ export class LeftSidebarComponent implements OnInit {
   companyList = [];
 
   constructor(
-    router: Router,
+    private router: Router,
     private eventService: EventService,
     private apolloService: ApolloService,
     private toastrService: ToastrService
@@ -92,6 +92,7 @@ export class LeftSidebarComponent implements OnInit {
     localStorage.setItem('companyName', name);
     localStorage.setItem('idUserOwner',idUserOwner);
     this.toastrService.info('Switch to Company ' + name, 'Successful');
+    this.router.navigate(['apps/company'])
   }
 
   ngOnChanges(): void {
