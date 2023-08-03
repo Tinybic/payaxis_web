@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { CompanyComponent } from './company/company.component';
+import { CostcodeComponent } from './costcode/costcode.component';
 
 const routes: Routes = [
   { path: 'projects', loadChildren: () => import('./projects/projects.module').then(m => m.ProjectsModule) },
@@ -13,6 +14,10 @@ const routes: Routes = [
   {
     path: 'company',
     component: CompanyComponent
+  },
+  {
+    path: 'costcode',
+    component: CostcodeComponent
   }
 ];
 

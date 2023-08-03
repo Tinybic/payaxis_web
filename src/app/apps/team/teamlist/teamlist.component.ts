@@ -6,16 +6,21 @@ import {
   company_member_invite,
   company_member_deactivate,
   company_member_edit,
+  companymember_emails,
 } from 'src/app/core/gql/team';
 import { ROLEITEMS, APPROVALAMOUNT } from 'src/app/core/constants/members';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { SweetAlertOptions } from 'sweetalert2';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { company_roles } from 'src/app/core/gql/company';
+import { FormControl } from '@angular/forms';
 @Component({
   selector: 'app-teamlist',
   templateUrl: './teamlist.component.html',
-  styleUrls: ['./teamlist.component.scss'],
+  styleUrls: [
+    './teamlist.component.scss',
+    '../../../../assets/scss/custom/structure/_foundation-themes.scss',
+  ],
 })
 export class TeamlistComponent {
   @ViewChild('inviteMember') inviteMember: any;
@@ -64,7 +69,7 @@ export class TeamlistComponent {
   }
 
   editRoleValue(item, value) {
-    item.idMasterRole = value.id;
+    item.idRole = value.id;
     item.role = value.text;
     this.pushEditArray(item);
   }
@@ -89,8 +94,9 @@ export class TeamlistComponent {
         {},
         {
           idcompany_member: item.id,
-          idMasterRole: item.idMasterRole,
+          idRole: item.idRole,
           approvalAmount: item.approvalAmount,
+          revision: item.revision,
         }
       );
     });
@@ -110,6 +116,7 @@ export class TeamlistComponent {
       this.edit = [];
       this.editFlag = false;
       this.toastrService.info(message, '');
+      this.getCompanyMembers();
     });
   }
 
@@ -130,10 +137,8 @@ export class TeamlistComponent {
     this.roleFilter = filter;
     this.members = this.COMPANY_MEMBERS;
     if (filter != 'All') {
-      this.members = this.members.filter(
-        (member) => member.role == filter
-      );
-    } 
+      this.members = this.members.filter((member) => member.role == filter);
+    }
   }
 
   changeapprovalAmountFilter(filter: string) {
@@ -151,22 +156,30 @@ export class TeamlistComponent {
     this.idUserOwner = localStorage.getItem('idUserOwner');
     this.companyName = localStorage.getItem('companyName');
 
-    this.apolloService.query(company_roles, {}).then((res) => {
-      const result = res.company_roles;
-      if (!result.error) {
-        result.data.splice(0,1);
-        this.roleItems = result.data.map((item) => {
-          return Object.assign(
-            {},
-            {
-              id: item.id,
-              text: item.txtName
-            }
-          );
-        });
-      }
-    });
+    this.apolloService
+      .query(company_roles, {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
+      })
+      .then((res) => {
+        const result = res.company_roles;
+        if (!result.error) {
+          result.data.splice(0, 1);
+          this.roleItems = result.data.map((item) => {
+            return Object.assign(
+              {},
+              {
+                id: item.idRole,
+                text: item.txtName,
+              }
+            );
+          });
+        }
+      });
 
+    this.getCompanyMembers();
+  }
+
+  getCompanyMembers() {
     if (localStorage.getItem('idcompany')) {
       this.apolloService
         .query(company_members, {
@@ -185,14 +198,14 @@ export class TeamlistComponent {
             this.pendingCount = result.data.filter(
               (member) => !member.active
             ).length;
-            this.showCount=this.allCount;
+            this.showCount = this.allCount;
           }
         });
     }
   }
 
   public alertOption: SweetAlertOptions = {};
-  deactive(id, firstName, lastName) {
+  deactive(id, firstName, lastName, revision) {
     this.alertOption = {
       html:
         `<div>
@@ -214,15 +227,15 @@ export class TeamlistComponent {
     setTimeout(() => {
       this.ajaxRequest.fire().then((result) => {
         if (result.isConfirmed) {
-          this.deactiveMembers(id);
+          this.deactiveMembers(id, revision);
         }
       });
     }, 100);
   }
 
-  deactiveMembers(id) {
+  deactiveMembers(id, revision) {
     this.apolloService
-      .mutate(company_member_deactivate, { id: id })
+      .mutate(company_member_deactivate, { id: id, revision: revision })
       .then((res) => {
         let message = '';
         const result = res.company_member_deactivate;
@@ -281,10 +294,48 @@ export class TeamlistComponent {
     this.emailList.splice(index, 1);
   }
 
+  public validators = [this.must_be_email];
+  public errorMessages = {
+    must_be_email: 'Enter valid email adress!',
+  };
+  private must_be_email(control: FormControl) {
+    var EMAIL_REGEXP =
+      /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
+    if (
+      control.value != '' &&
+      (control.value.length <= 5 || !EMAIL_REGEXP.test(control.value))
+    ) {
+      return { must_be_email: true };
+    }
+    return null;
+  }
+
   step1() {
-    this.emailList = this.email.split(',');
-    this.emailList = this.emailList.filter((email) => this.isEmail(email));
-    if (this.emailList.length > 0) this.step = 'step2';
+    let data = [];
+    this.emailList.forEach((item) => {
+      data.push(item.value);
+    });
+    this.apolloService
+      .query(companymember_emails, {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
+        emaillist: data,
+      })
+      .then((res) => {
+        if (!res.companymember_emails.error) {
+          res.companymember_emails.data.forEach((item) => {
+            this.userList.push({
+              email: item.email,
+              memberyn: item.memberyn,
+              idRole: 0,
+              role: 'View Only',
+              approvalAmount: 0,
+              approvalAmountText: 'Approval Limit',
+            });
+          });
+
+          this.step = 'step3';
+        }
+      });
   }
 
   step2() {
@@ -293,7 +344,7 @@ export class TeamlistComponent {
     this.emailList.forEach((item) => {
       this.userList.push({
         email: item,
-        idMasterRole: 0,
+        idRole: 0,
         role: 'View Only',
         approvalAmount: 0,
         approvalAmountText: 'Approval Limit',
@@ -308,18 +359,20 @@ export class TeamlistComponent {
     item.approvalAmountText = event.text;
   }
   step3Role(item, event) {
-    item.idMasterRole = event.id;
+    item.idRole = event.id;
     item.role = event.text;
   }
 
   send() {
     this.modalService.dismissAll();
+    this.userList = this.userList.filter(item => !item.memberyn);
+    console.log(this.userList);
     const inviteMembers = this.userList.map((item) => {
       return Object.assign(
         {},
         {
           email: item.email,
-          idMasterRole: item.idMasterRole,
+          idRole: item.idRole,
           approvalAmount: item.approvalAmount,
         }
       );

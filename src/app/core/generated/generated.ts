@@ -14,7 +14,9 @@ export type Scalars = {
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
   avatar_String_NotNull_maxLength_512: { input: any; output: any; }
+  category_String_NotNull_maxLength_50: { input: any; output: any; }
   contactNumber_String_NotNull_maxLength_20: { input: any; output: any; }
+  costCode_String_NotNull_maxLength_15: { input: any; output: any; }
   description_String_NotNull_maxLength_512: { input: any; output: any; }
   email_String_NotNull_maxLength_128_format_email: { input: any; output: any; }
   industry_String_NotNull_maxLength_50: { input: any; output: any; }
@@ -26,10 +28,19 @@ export type Scalars = {
   txtCity_String_NotNull_maxLength_80: { input: any; output: any; }
   txtName_String_NotNull_maxLength_128: { input: any; output: any; }
   txtName_String_NotNull_maxLength_128_format_email: { input: any; output: any; }
+  txtNotes_String_NotNull_maxLength_512: { input: any; output: any; }
   txtState_String_NotNull_maxLength_80: { input: any; output: any; }
   txtZipcode_String_NotNull_maxLength_10: { input: any; output: any; }
   website_String_NotNull_maxLength_180: { input: any; output: any; }
 };
+
+/** structure to handle table company_member */
+export enum Folder {
+  Avatarcompany = 'avatarcompany',
+  Avataruser = 'avataruser',
+  Bills = 'bills',
+  Files = 'files'
+}
 
 /** structure to handle table sms */
 export type Mutation = {
@@ -44,6 +55,14 @@ export type Mutation = {
   company_new: Comresult;
   /** update company details */
   company_update: Comresult;
+  /** import company_costcode from QuickBooks */
+  companycostcode_import: Costcoderesult;
+  /** import company_costcode from CSV */
+  companycostcode_importcsv: Costcoderesult;
+  /** new company_costcode */
+  companycostcode_new: Costcoderesult;
+  /** update company_costcode */
+  companycostcode_update: Costcoderesult;
   /** to activate the user profile */
   profile_2fa?: Maybe<Scalars['Boolean']['output']>;
   /** to activate the user profile */
@@ -64,6 +83,7 @@ export type Mutation = {
 /** structure to handle table sms */
 export type MutationCompany_Member_DeactivateArgs = {
   id: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
 };
 
 
@@ -118,6 +138,40 @@ export type MutationCompany_UpdateArgs = {
   txtState: Scalars['txtState_String_NotNull_maxLength_80']['input'];
   txtZipcode: Scalars['txtZipcode_String_NotNull_maxLength_10']['input'];
   website: Scalars['website_String_NotNull_maxLength_180']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationCompanycostcode_ImportArgs = {
+  idCompany: Scalars['Int']['input'];
+  importCostcodes?: InputMaybe<Array<Importcostcode>>;
+};
+
+
+/** structure to handle table sms */
+export type MutationCompanycostcode_ImportcsvArgs = {
+  dataCSV: Scalars['String']['input'];
+  idCompany: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationCompanycostcode_NewArgs = {
+  category: Scalars['category_String_NotNull_maxLength_50']['input'];
+  costCode: Scalars['costCode_String_NotNull_maxLength_15']['input'];
+  idCompany: Scalars['Int']['input'];
+  txtName: Scalars['txtName_String_NotNull_maxLength_128']['input'];
+  txtNotes: Scalars['txtNotes_String_NotNull_maxLength_512']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationCompanycostcode_UpdateArgs = {
+  category: Scalars['category_String_NotNull_maxLength_50']['input'];
+  id: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+  txtName: Scalars['txtName_String_NotNull_maxLength_128']['input'];
+  txtNotes: Scalars['txtNotes_String_NotNull_maxLength_512']['input'];
 };
 
 
@@ -185,6 +239,12 @@ export type Query = {
   company_members: Companymemberresult;
   /** get company members for company */
   company_roles: Companyrolesresult;
+  /** get company_category list */
+  companycategory_list: Companycategorylist;
+  /** get company_costcode list */
+  companycostcode_list: Companycostcodelist;
+  /** get company members email */
+  companymember_emails: Companyemailsresult;
   /** get url for a new file */
   get_file_url: FileResponse;
   /** retrieve profile for the loging user */
@@ -206,8 +266,30 @@ export type QueryCompany_MembersArgs = {
 };
 
 
+export type QueryCompany_RolesArgs = {
+  idCompany: Scalars['Int']['input'];
+};
+
+
+export type QueryCompanycategory_ListArgs = {
+  idCompany: Scalars['Int']['input'];
+};
+
+
+export type QueryCompanycostcode_ListArgs = {
+  idCompany: Scalars['Int']['input'];
+};
+
+
+export type QueryCompanymember_EmailsArgs = {
+  emaillist?: InputMaybe<Array<Scalars['String']['input']>>;
+  idCompany: Scalars['Int']['input'];
+};
+
+
 export type QueryGet_File_UrlArgs = {
   fileName: Scalars['String']['input'];
+  folder?: InputMaybe<Folder>;
 };
 
 
@@ -248,6 +330,38 @@ export type Company = {
   website: Scalars['String']['output'];
 };
 
+export type Company_Category = {
+  __typename?: 'company_category';
+  active: Scalars['Boolean']['output'];
+  costcodelist?: Maybe<Array<Maybe<Company_Costcode>>>;
+  createdBy: Scalars['Int']['output'];
+  createdDate: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  idCategory: Scalars['Int']['output'];
+  idCompany: Scalars['Int']['output'];
+  modifiedBy: Scalars['Int']['output'];
+  modifiedDate: Scalars['String']['output'];
+  revision: Scalars['Int']['output'];
+  txtName: Scalars['String']['output'];
+};
+
+/** structure to handle table company_costcode */
+export type Company_Costcode = {
+  __typename?: 'company_costcode';
+  active: Scalars['Boolean']['output'];
+  category: Scalars['String']['output'];
+  costCode: Scalars['String']['output'];
+  createdBy: Scalars['Int']['output'];
+  createdDate: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  idCompany: Scalars['Int']['output'];
+  modifiedBy: Scalars['Int']['output'];
+  modifiedDate: Scalars['String']['output'];
+  revision: Scalars['Int']['output'];
+  txtName: Scalars['String']['output'];
+  txtNotes: Scalars['String']['output'];
+};
+
 /** structure to handle table company_member */
 export type Company_Member = {
   __typename?: 'company_member';
@@ -259,7 +373,7 @@ export type Company_Member = {
   firstName: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   idCompany: Scalars['Int']['output'];
-  idMasterRole: Scalars['Int']['output'];
+  idRole: Scalars['Int']['output'];
   idUser: Scalars['Int']['output'];
   lastName: Scalars['String']['output'];
   modifiedBy: Scalars['Int']['output'];
@@ -268,12 +382,56 @@ export type Company_Member = {
   role: Scalars['String']['output'];
 };
 
+export type Company_Role = {
+  __typename?: 'company_role';
+  active: Scalars['Boolean']['output'];
+  createdBy: Scalars['Int']['output'];
+  createdDate: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  idCompany: Scalars['Int']['output'];
+  idRole: Scalars['Int']['output'];
+  modifiedBy: Scalars['Int']['output'];
+  modifiedDate: Scalars['String']['output'];
+  revision: Scalars['Int']['output'];
+  txtName: Scalars['String']['output'];
+};
+
+export type Companycategorylist = {
+  __typename?: 'companycategorylist';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Array<Company_Category>>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Companycostcodelist = {
+  __typename?: 'companycostcodelist';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Array<Company_Category>>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
 export type Companydetails = {
   __typename?: 'companydetails';
   comboxIndustry?: Maybe<Array<Industrylist>>;
   comboxPaymentTerms?: Maybe<Array<Paymenttermslist>>;
   company?: Maybe<Company>;
   companyName: Scalars['String']['output'];
+};
+
+export type Companyemails = {
+  __typename?: 'companyemails';
+  email: Scalars['String']['output'];
+  memberyn: Scalars['Boolean']['output'];
+};
+
+export type Companyemailsresult = {
+  __typename?: 'companyemailsresult';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Array<Companyemails>>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
 };
 
 export type Companylist = {
@@ -286,8 +444,9 @@ export type Companylist = {
 
 export type Companymemberaccess = {
   approvalAmount: Scalars['Float']['input'];
-  idMasterRole: Scalars['Int']['input'];
+  idRole: Scalars['Int']['input'];
   idcompany_member: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
 };
 
 export type Companymemberresult = {
@@ -298,16 +457,10 @@ export type Companymemberresult = {
   message: Scalars['String']['output'];
 };
 
-export type Companyroles = {
-  __typename?: 'companyroles';
-  id: Scalars['Int']['output'];
-  txtName: Scalars['String']['output'];
-};
-
 export type Companyrolesresult = {
   __typename?: 'companyrolesresult';
   code: Scalars['Int']['output'];
-  data?: Maybe<Array<Companyroles>>;
+  data?: Maybe<Array<Company_Role>>;
   error: Scalars['Boolean']['output'];
   message: Scalars['String']['output'];
 };
@@ -321,13 +474,34 @@ export type Comresult = {
   message: Scalars['String']['output'];
 };
 
-/** structure to handle table company_member */
+export type Costcodeidrevision = {
+  __typename?: 'costcodeidrevision';
+  id: Scalars['Int']['output'];
+  revision: Scalars['Int']['output'];
+};
+
+/** structure to handle responses when updating information */
+export type Costcoderesult = {
+  __typename?: 'costcoderesult';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Costcodeidrevision>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
 export type FileResponse = {
   __typename?: 'fileResponse';
   code: Scalars['Int']['output'];
   data: Scalars['String']['output'];
   error: Scalars['Boolean']['output'];
   message: Scalars['String']['output'];
+};
+
+export type Importcostcode = {
+  category: Scalars['category_String_NotNull_maxLength_50']['input'];
+  costCode: Scalars['costCode_String_NotNull_maxLength_15']['input'];
+  txtName: Scalars['txtName_String_NotNull_maxLength_128']['input'];
+  txtNotes: Scalars['txtNotes_String_NotNull_maxLength_512']['input'];
 };
 
 /** structure to handle table company */
@@ -340,7 +514,7 @@ export type Industrylist = {
 export type Invitemember = {
   approvalAmount: Scalars['Float']['input'];
   email: Scalars['email_String_NotNull_maxLength_128_format_email']['input'];
-  idMasterRole: Scalars['Int']['input'];
+  idRole: Scalars['Int']['input'];
 };
 
 export type Invitememberresult = {

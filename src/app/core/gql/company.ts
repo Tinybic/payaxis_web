@@ -192,17 +192,18 @@ const company_info = gql`
 `;
 
 const company_roles = gql`
-query company_roles {
-  company_roles {
+query company_roles($idCompany: Int!) {
+  company_roles(idCompany: $idCompany) {
     error
     code
     message
     data {
-      id
+      idRole
       txtName
     }
   }
 }
+
 `;
 
 export { compayDetail, companyNew, companyUpate, company_list,company_info,company_roles };

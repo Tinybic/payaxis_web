@@ -192,7 +192,7 @@
         </div>
         <!--end filter 3-->
         <div class="d-inline-block ms-1-1">
-            <input class="form-control form-search" type="text" placeholder="Search here" [(ngModel)]="keywords"
+            <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords"
                 (keyup.enter)="searchTable()" />
         </div>
         <!-- end search-->
@@ -247,7 +247,7 @@
                     </td>
                     <td>{{item.active?'Active':'InActive'}}</td>
                     <td><i class=" fe-trash-2 cursor-pointer" *ngIf="idUser==idUserOwner && item.role != 'Owner'"
-                            (click)="deactive(item.id,item.firstName,item.lastName)"></i></td>
+                            (click)="deactive(item.id,item.firstName,item.lastName,item.revision)"></i></td>
                 </tr>
             </tbody>
             <tfoot style="height: 16px;">
@@ -266,23 +266,21 @@
 
         <div *ngIf="step =='step1'" class="formContainer">
             <div>
-                <input class="form-control" [(ngModel)]="email" type="email" multiple
-                    placeholder="Email, separate with comma" />
+                <tag-input [validators]="validators" [addOnBlur]="true" [theme]="'foundation-theme'" [separatorKeys]="[',',' ']" [(ngModel)]='emailList' placeholder = "add email" secondaryPlaceholder="Email, separate with comma" ></tag-input>
             </div>
-
             <div class="bottomButton">
                 <div>
-                    <button class="btn btn-primary" [disabled]="email.length == 0" (click)="step1()">Next</button>
+                    <button class="btn btn-primary" [disabled]="emailList.length == 0" (click)="step1()">Next</button>
                 </div>
                 <div>
                     <button class="btn btn-outline-primary mt-1-1"
-                        (click)="modal.dismiss('Cross click')">Cancel</button>
+                        (click)="modal.dismiss('step1 click')">Cancel</button>
                 </div>
             </div>
         </div>
 
         <!--end step 1-->
-        <div *ngIf="step =='step2'" class="formContainer">
+        <!-- <div *ngIf="step =='step2'" class="formContainer">
             <div class="emaillistInfo">
                 <div class="emailItem mt-1-1 ms-1-1 d-inline-block" *ngFor="let item of emailList; let i = index">
                     {{item}}<i class="fe-x ms-1-1 bg-white cursor-pointer rounded-circle" (click)="deleteEmail(i)"></i>
@@ -295,10 +293,10 @@
                 </div>
                 <div>
                     <button class="btn btn-outline-primary mt-1-1"
-                        (click)="step = 'step1' ;modal.dismiss('Cross click')">Cancel</button>
+                        (click)="step = 'step1' ;modal.dismiss('step2 click')">Cancel</button>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!--end step 2-->
 
         <div *ngIf="step =='step3'" class="formContainer">
@@ -309,14 +307,17 @@
                         <i class="fe-user text-white  font-16"></i>
                     </div>
                 </div>
-                <div class="col-md-4 line-32 overflow-hidden">{{item.email}}</div>
+                <div class="col-md-4 line-32 overflow-hidden">
+                     <span *ngIf="!item.memberyn">{{item.email}}</span>
+                     <del *ngIf="item.memberyn">{{item.email}}</del>
+                </div>
                 <div class="col-md-4 text-end subtitle-2-600 line-32 ">
-                    <div style="background-color: #F8F9FC;border-radius: 8px;display: inline-block;padding: 0px 8px;">
+                    <div *ngIf="!item.memberyn" style="background-color: #F8F9FC;border-radius: 8px;display: inline-block;padding: 0px 8px;">
                         <app-dropdowndata [displayText]="item.approvalAmountText" [data]="approvalAmount"
                             [color]="'text-primary'" (selectValue)="step3Approval(item,$event)"></app-dropdowndata>
                     </div>
                 </div>
-                <div class="col-md-3 text-end subtitle-2-600 line-32">
+                <div *ngIf="!item.memberyn" class="col-md-3 text-end subtitle-2-600 line-32">
                     <app-dropdowndata [displayText]="item.role" [data]="roleItems"
                         (selectValue)="step3Role(item,$event)"></app-dropdowndata>
                 </div>
@@ -328,7 +329,7 @@
                 </div>
                 <div>
                     <button class="btn btn-outline-primary mt-1-1"
-                        (click)="step = 'step1' ;modal.dismiss('Cross click')">Cancel</button>
+                        (click)="step = 'step1' ;modal.dismiss('step3 click')">Cancel</button>
                 </div>
             </div>
         </div>
