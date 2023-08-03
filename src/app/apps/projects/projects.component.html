@@ -1,2 +1,38 @@
-projects
-<!-- end row -->
+<div class="row mt-2-1">
+    <div class="col-md-6">
+        <div class="headline-28">Projects</div>
+        <div class="subtitle-2-500"></div>
+    </div>
+    <div class="col-md-6 text-end">
+        <button class="btn btn-outline-primary btn-text-12" style="padding: 10px 24px;"><i class="fe-edit me-1-1 font-16"></i>Edit</button>
+        <button class="btn btn-primary mx-2-1 btn-text-12" style="padding: 9px 24px;">New Bill<i class="fe-chevron-down ms-1-1 font-16"></i></button>
+        <i class="fe-more-vertical- font-16 mx-2-1 v-middle"></i>
+    </div>
+</div>
+<div *ngIf="projects.length > 0" class="container p-v-40">
+    <div class="row justify-content-md-center">
+        <div class="col-md-4 text-center">
+            <img src="assets/images/welcome/noprojects.svg">
+            <div class="Subtitle-1 text-optional">
+                No Projects...
+            </div>
+        </div>
+    </div>
+    <ng-template #joinUsModal let-modal>
+        <div class="modal-body" style="padding: 40px 30px;" ngbAutofocus>
+            <div class="text-center">
+                <img src="assets/images/logo_bg.png">
+            </div>
+            <div class="headline text-center" style="padding-top: 40px;padding-bottom: 16px;" i18n>Great you join us!
+            </div>
+            <div class="text-1 text-center" i18n>
+                We will provide you with the main items of the platform for fast and easy start.
+            </div>
+            <div class="d-grid" style="margin-top: 40px;">
+                <button class="btn btn-primary" (click)="goNext()" i18n>Let's go</button>
+            </div>
+        </div>
+    </ng-template>
+</div>
+
+
