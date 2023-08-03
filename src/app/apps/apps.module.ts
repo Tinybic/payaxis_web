@@ -12,22 +12,27 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AvatarModule } from '../shared/avatar/avatar.module';
+import { CostcodeComponent } from './costcode/costcode.component';
+import { DropdowndataModule } from '../shared/dropdowndata/dropdowndata.module';
 
 @NgModule({
-    declarations: [
-        WelcomeComponent,
-        CompanyComponent,
-    ], imports: [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        NgbNavModule,
-        NgbTypeaheadModule,
-        AppsRoutingModule,
-        NgbDropdownModule,
-        NgbProgressbarModule,
-        JoyrideModule,
-        AvatarModule
-    ],
+  declarations: [
+    WelcomeComponent,
+    CompanyComponent,
+    CostcodeComponent,
+  ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgbNavModule,
+    NgbTypeaheadModule,
+    AppsRoutingModule,
+    NgbDropdownModule,
+    AvatarModule,
+    DropdowndataModule,
+    NgbProgressbarModule,
+    JoyrideModule,
+  ],
 })
 export class AppsModule {}

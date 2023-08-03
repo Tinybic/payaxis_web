@@ -18,13 +18,27 @@ const company_members = gql`
         avatar
         idUser
         idCompany
-        idMasterRole
+        idRole
         role
         approvalAmount
         active
       }
     }
   }
+`;
+
+const companymember_emails= gql`
+query companymember_emails($idCompany: Int!, $emaillist: [String!]) {
+  companymember_emails(idCompany: $idCompany, emaillist: $emaillist) {
+    error
+    code
+    message
+    data {
+      email
+      memberyn
+    }
+  }
+}
 `;
 
 const company_member_invite = gql`
@@ -45,8 +59,8 @@ const company_member_invite = gql`
 `;
 
 const company_member_deactivate = gql`
-  mutation company_member_deactivate($id: Int!) {
-    company_member_deactivate(id: $id) {
+  mutation company_member_deactivate($id: Int!, $revision: Int!) {
+    company_member_deactivate(id: $id, revision: $revision) {
       error
       code
       message
@@ -56,14 +70,26 @@ const company_member_deactivate = gql`
 `;
 
 const company_member_edit = gql`
-mutation company_member_edit($idCompany: Int!, $companymembers: [companymemberaccess!]) {
-  company_member_edit(idCompany: $idCompany, companymembers: $companymembers) {
-    error
-    code
-    message
-    data
+  mutation company_member_edit(
+    $idCompany: Int!
+    $companymembers: [companymemberaccess!]
+  ) {
+    company_member_edit(
+      idCompany: $idCompany
+      companymembers: $companymembers
+    ) {
+      error
+      code
+      message
+      data
+    }
   }
-}
 `;
 
-export { company_members, company_member_invite, company_member_deactivate,company_member_edit };
+export {
+  company_members,
+  company_member_invite,
+  company_member_deactivate,
+  company_member_edit,
+  companymember_emails
+};

@@ -1,0 +1,151 @@
+<div class="row">
+    <div class="col-md-6 headline">
+        My Company
+    </div>
+    <div class="col-md-6 text-end">
+
+        <div ngbDropdown class="d-inline-block">
+            <button class="btn btn-outline-primary" ngbDropdownToggle><i class="fe-upload me-1-1"></i>Import Cost
+                Code</button>
+
+            <input id="csvupload" type="file" (change)="importCostCodeFromCSV($event)" accept=".csv" class="d-none" />
+            <div ngbDropdownMenu style="width: 225px;">
+                <div class="line-32 bold-600 cursor-pointer" ngbDropdownItem>Import from QuickBooks <img
+                        class="float-end mt-1" src="/assets/images/icon/qb.png" /></div>
+                <div class="line-32 bold-600 cursor-pointer" ngbDropdownItem
+                    onclick="document.getElementById('csvupload').click()">Import from CSV <img class="float-end mt-1"
+                        src="/assets/images/icon/csv.png" /></div>
+            </div>
+        </div>
+
+
+        <button class="btn btn-primary ms-2-1" (click)="add()"><i class="fe-plus-square me-1-1"></i>Cost Code</button>
+        <i class="fe-more-vertical- font-24 ms-2-1"></i>
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col-md-5 ">
+        <ul ngbNav #nav2="ngbNav" [(activeId)]="tab1" class="nav-pills navtab-bg nav-justified">
+            <li [ngbNavItem]="1">
+                <a routerLink="../company" ngbNavLink>
+                    Profile
+                </a>
+
+            </li>
+            <li [ngbNavItem]="2">
+                <a ngbNavLink>
+                    Company Details
+                </a>
+
+            </li>
+            <li [ngbNavItem]="3">
+                <a ngbNavLink>
+                    Payment Accounts
+                </a>
+
+            </li>
+            <li [ngbNavItem]="4">
+                <a ngbNavLink>
+                    Cost Codes
+                </a>
+
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="row mt-40 justify-content-md-center">
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-body">
+                <div class="row headline">
+                    <div class="col-md-4">
+                        Cost Codes (0)
+                    </div>
+                    <div class="col-md-8 text-end">
+                        <button class="btn btn-primary"><i class="fe-plus-square me-1-1"></i>New category</button>
+                        <div class="d-inline-block ms-2-1">
+                            <input class="form-control form-search" type="search" placeholder="Search here" />
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngFor="let item of costCodeList">
+                    <div class="categoryTitle mb-1-1" *ngIf="item.costcodelist.length>0">
+                        {{item.txtName}}
+                    </div>
+                    <div class="costcodeItem mb-2-1" *ngFor="let costcode of item.costcodelist">
+                        <div class="row">
+                            <div class="col-md-8 Paragraph-1 bold-600 ">
+                                {{costcode.txtName}}
+                            </div>
+                            <div class="col-md-4 text-end">
+                                <i class="fe-external-link font-16 text-primary cursor-pointer"></i>
+                                <i class="fe-x font-16 text-danger ms-1-1 cursor-pointer"></i>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 Subtitle-3">
+                                {{costcode.txtNotes}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<ng-template #addcostcode let-modal>
+    <div class="modal-body" style="width: 540px;display: flex; flex-direction: column;">
+        <div style="flex: 1;">
+            <div class="headline">Cost Code</div>
+            <div class="row mt-2-1">
+                <div class="col-md-12">
+                    <label class="form-label" i18n>Name</label>
+                    <input class="form-control" type="text" id="name" required i18n-placeholder placeholder="Enter Name"
+                        [(ngModel)]="costcode.txtName" />
+                </div>
+            </div>
+            <div class="row mt-2-1">
+                <div class="col-md-12">
+                    <label class="form-label" i18n>Code</label>
+                    <input class="form-control" type="text" id="costCode" required i18n-placeholder
+                        placeholder="ex. 100.100.102" [(ngModel)]="costcode.costCode" />
+                </div>
+            </div>
+            <div class="row mt-2-1">
+                <div class="col-md-12">
+                    <label class="form-label" i18n>Class</label>
+                    <div ngbDropdown class="mt-sm-0 mt-2">
+                        <input class="form-select position-relative" type="text" id="Class" i18n-placeholder
+                            placeholder="Class" [(ngModel)]="costcode.category" ngbDropdownToggle />
+
+                        <div ngbDropdownMenu aria-labelledby="paymentTerms">
+                            <a href="javascript:void(0)" *ngFor="let item of this.costCodeClassList"
+                                (click)="SetClass(item)" ngbDropdownItem>{{item.txtName}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2-1">
+                <div class="col-md-12">
+                    <label class="form-label" i18n>Notes</label>
+                    <input class="form-control" type="text" id="name" required i18n-placeholder
+                        placeholder="Additional notes..." [(ngModel)]="costcode.txtNotes" />
+                </div>
+            </div>
+        </div>
+        <div style="height: 105px;">
+            <div class="row">
+                <div class="col-md-12 d-grid">
+                    <button class="btn btn-primary" (click)="createCostCode()">Create</button>
+                </div>
+            </div>
+            <div class="row mt-2-1">
+                <div class="col-md-12 d-grid">
+                    <button class="btn btn-outline-primary" (click)="modal.dismiss()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
