@@ -164,6 +164,7 @@ export class CompanyComponent {
       }
 
       if (!result.error) {
+        this.company.id = result.data.id;
         this.eventService.broadcast(EventType.CHANGE_COMPANY, true);
       }
       this.toastrService.info(result.message, '');
