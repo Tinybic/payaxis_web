@@ -1,0 +1,81 @@
+@import "../../../../../node_modules/ngx-chips/core/styles/core/_core.scss";
+
+$foundation-primary: #E1E6EF;
+$foundation-primary-dark: darken($foundation-primary, 10%);
+
+// this is the container's theme
+$foundation-theme: (
+);
+
+// this is the tag's theme
+$foundation-tag-theme: (
+    background: $foundation-primary,
+    background-focused: $foundation-primary,
+    background-active: $foundation-primary,
+    background-hover: $foundation-primary,
+    color: #202020,
+    color-hover: #202020,
+    border-radius: 4px,
+    padding:2px 8px,
+    
+);
+
+// this is the delete icon's theme
+$foundation-icon-theme: (
+    fill: #202020,
+    fill-focus: #202020,
+    transition: all 0.35s,
+    height: 16px,
+    width: 16px,
+);
+
+// apply theme to the container
+::ng-deep tag-input .ng2-tag-input.foundation-theme {
+    border: 1px solid #2B52DD !important;
+    border-radius: 8px;
+    @include tag-input-theme($foundation-theme);
+}
+
+// apply theme to the tags
+::ng-deep tag-input .ng2-tag-input.foundation-theme tag {
+    font-family:'Inter', sans-serif;
+    font-size: 12px;
+    line-height: 16px;
+    height: 20px;
+    margin:0.5rem 0.5rem 0rem 0.5rem;
+    letter-spacing: 0.05px;
+    @include tag-theme($foundation-tag-theme);
+}
+
+// apply theme to the delete icon
+::ng-deep tag-input .ng2-tag-input.foundation-theme tag delete-icon {
+    background-color: #ffffff;
+    border-radius: 16px;
+    margin-left: 8px;
+    @include icon-theme($foundation-icon-theme);
+}
+
+
+::ng-deep tag-input .ng2-tag-input.foundation-theme tag delete-icon {
+    background-color: #ffffff;
+    border-radius: 16px;
+    margin-left: 8px;
+    @include icon-theme($foundation-icon-theme);
+}
+::ng-deep tag-input .ng2-tag-input.foundation-theme tag delete-icon:hover {
+    transform:scale(1)
+}
+
+::ng-deep tag-input .ng2-tag-input__text-input{
+    font-size: 12px !important;
+    font-family:'Inter', sans-serif !important;
+}
+
+
+::ng-deep tag-input .ng2-tag-input.foundation-theme tag delete-icon svg{
+    height: 16px;
+}
+
+::ng-deep tag-input .ng2-tag-input.ng2-tag-input--focused{
+    border-bottom: 0px;
+}

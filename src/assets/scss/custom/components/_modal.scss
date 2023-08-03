@@ -6,7 +6,9 @@
 .modal-title {
     margin-top: 0;
 }
-
+.modal-content{
+    height: 100%;
+}
 
 .modal-443{
     max-width: 443px !important;
@@ -36,7 +38,6 @@
     right: 0;
     display: flex;
     flex-flow: column nowrap;
-    justify-content: center;
     height: 100%;
     margin: 0;
     background-color: $modal-content-bg;

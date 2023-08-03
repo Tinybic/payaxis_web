@@ -12,9 +12,11 @@ import {
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserWelcomeComponent } from './user-welcome/user-welcome.component';
 import { AvatarModule } from '../shared/avatar/avatar.module';
+import { CostcodeComponent } from './costcode/costcode.component';
+import { DropdowndataModule } from '../shared/dropdowndata/dropdowndata.module';
 
 @NgModule({
-  declarations: [WelcomeComponent, CompanyComponent, UserWelcomeComponent],
+  declarations: [WelcomeComponent, CompanyComponent, UserWelcomeComponent, CostcodeComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -23,7 +25,8 @@ import { AvatarModule } from '../shared/avatar/avatar.module';
     NgbTypeaheadModule,
     AppsRoutingModule,
     NgbDropdownModule,
-    AvatarModule
+    AvatarModule,
+    DropdowndataModule
   ],
 })
 export class AppsModule {}

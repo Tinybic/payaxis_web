@@ -13,6 +13,7 @@ $variable-prefix: "ct-";
 //Fonts
 @import "custom/fonts/fonts";
 
+@import "custom/structure/foundation-themes";
 @import "./node_modules/bootstrap/scss/functions";
 @import "./node_modules/bootstrap/scss/variables";
 
