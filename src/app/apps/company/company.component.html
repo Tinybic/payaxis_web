@@ -46,7 +46,7 @@
                         Company Details
                     </div>
                     <div class="col-md-6 d-flex flex-row-reverse">
-                        <div class="upload-icon cursor-pointer" (click) = "showFileDialog()" style="opacity: {{company.avatar ? 1 : 0}}">
+                        <div class="upload-icon cursor-pointer" (click) = "showFileDialog()" style="opacity: {{company.avatar ? 0 : 1}}">
                             <i class="fe-upload-cloud font-24"></i>
                             <input type="file" id="logoFile" #fileInput accept="image/*" (change)="onSelected($event)" class="invisible"/>
                         </div>
