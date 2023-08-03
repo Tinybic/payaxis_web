@@ -16,7 +16,7 @@ import { CostcodeComponent } from './costcode/costcode.component';
 import { DropdowndataModule } from '../shared/dropdowndata/dropdowndata.module';
 
 @NgModule({
-  declarations: [WelcomeComponent, CompanyComponent, UserWelcomeComponent],
+  declarations: [WelcomeComponent, CompanyComponent, CostcodeComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -25,7 +25,10 @@ import { DropdowndataModule } from '../shared/dropdowndata/dropdowndata.module';
     NgbTypeaheadModule,
     AppsRoutingModule,
     NgbDropdownModule,
-    AvatarModule
+    NgbProgressbarModule,
+    JoyrideModule,
+    AvatarModule,
+    DropdowndataModule,
   ],
 })
 export class AppsModule {}
