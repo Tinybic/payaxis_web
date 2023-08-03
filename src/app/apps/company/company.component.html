@@ -46,13 +46,13 @@
                         Company Details
                     </div>
                     <div class="col-md-6 d-flex flex-row-reverse">
-                        <div class="upload-icon cursor-pointer" (click) = "showFileDialog()">
+                        <div class="upload-icon cursor-pointer" (click) = "showFileDialog()" style="opacity: {{company.avatar ? 1 : 0}}">
                             <i class="fe-upload-cloud font-24"></i>
                             <input type="file" id="logoFile" #fileInput accept="image/*" (change)="onSelected($event)" class="invisible"/>
                         </div>
                         <div class="me-2 pt-2 upload-text">
                             <span *ngIf="!company.avatar">upload<br /> your LOGO</span>
-                            <app-avatar *ngIf="company.avatar" [url] = "company.avatar" [companyName] = "company.txtName"  [size]="40" alt="user-img" class="ms-2"></app-avatar>
+                            <app-avatar *ngIf="company.avatar" [url] = "company.avatar" [companyName] = "company.txtName"  [size]="56" alt="user-img" class="ms-2" style="position: absolute;top: 24px;right: 24px;pointer-events: none;"></app-avatar>
                         </div>
                     </div>
                     
@@ -72,8 +72,8 @@
                 <div class="row mt-2-1">
                     <div class="col-md-6">
                         <label class="form-label" i18n>Industry</label>
-                        <input id="txtindustry" type="text" class="form-control form-select position-relative" 
-                                [ngbTypeahead]="searchIndustry" (selectItem)="setIndustry($event)" [(ngModel)]="company.industry" 
+                        <input id="txtindustry" type="text" class="form-control form-select position-relative"
+                                [ngbTypeahead]="searchIndustry" (selectItem)="setIndustry($event)" [(ngModel)]="company.industry"
                                 (focus)="focus1$.next($any($event).target.value)"
                                 placeholder="Enter the industry or sector in which the company operates" />
                     </div>
@@ -123,7 +123,7 @@
                     </div>
                     <div class="col-md-5">
                         <label class="form-label" i18n>State</label>
-                        <input id="txtState" type="text" class="form-select position-relative" 
+                        <input id="txtState" type="text" class="form-select position-relative"
                                 [ngbTypeahead]="searchState" (focus)="focus$.next($any($event).target.value)" placeholder="State"
                                 (click)="click$.next($any($event).target.value)" #instance="ngbTypeahead"  [(ngModel)]="company.txtState"/>
                     </div>
