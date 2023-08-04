@@ -285,6 +285,13 @@ export class TeamlistComponent {
       this.openVerticallyCentered(this.inviteMember);
   }
 
+  cancelModal(){
+    this.modalService.dismissAll();
+    this.emailList = [];
+    this.step = 'step1';
+  }
+
+
   isEmail(email: string) {
     const expression: RegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
     return expression.test(email);
@@ -345,7 +352,7 @@ export class TeamlistComponent {
       this.userList.push({
         email: item,
         idRole: 0,
-        role: 'View Only',
+        role: this.roleItems[0].text,
         approvalAmount: 0,
         approvalAmountText: 'Approval Limit',
       });
