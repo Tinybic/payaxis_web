@@ -2,9 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   UntypedFormBuilder,
   UntypedFormGroup,
-  Validators,
+  Validators
 } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { SweetAlertOptions } from 'sweetalert2';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 // service
@@ -16,23 +17,33 @@ import { PasswordValidator } from 'src/app/core/helpers/password.validator';
 @Component({
   selector: 'app-auth-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
+  styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
   @ViewChild('ajaxRequest') ajaxRequest!: SwalComponent;
   @ViewChild('ajaxRequest1') ajaxRequest1!: SwalComponent;
-
+  @ViewChild('resendModal') resendModal: NgbModalRef;
+  
   signUpForm: UntypedFormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, PasswordValidator.strong]],
-    acceptTerms: [false, Validators.requiredTrue],
+    email: ['',
+      [Validators.required,
+        Validators.email]],
+    password: ['',
+      [Validators.required,
+        PasswordValidator.strong]],
+    acceptTerms: [false,
+      Validators.requiredTrue]
   });
-
+  
   formSubmitted: boolean = false;
   showPassword: boolean = false;
   loading: boolean = false;
   error: string = '';
-
+  countDown: number = 1000;
+  resend: string = 'initial';
+  intervalResend: any;
+  
+  
   public alertOption: SweetAlertOptions = {
     html: `<div>
     <div class="swal2-alert-title">A verification email have been sent to you.</div>
@@ -43,9 +54,9 @@ export class RegisterComponent implements OnInit {
     showConfirmButton: false,
     width: 604,
     padding: 16,
-    background: '#fff',
+    background: '#fff'
   };
-
+  
   public successAlertOption: SweetAlertOptions = {
     html: `<div style="overflow: hidden">
     <div class="swal2-alert-title">Verification confirmed</div>
@@ -61,113 +72,131 @@ export class RegisterComponent implements OnInit {
     showConfirmButton: false,
     width: 604,
     padding: 16,
-    background: '#fff',
+    background: '#fff'
   };
-
+  
   constructor(
     private fb: UntypedFormBuilder,
     private router: Router,
     private httpService: HttpService,
-    private activatedRoute: ActivatedRoute
-  ) {}
-
-  ngOnInit(): void {
+    private activatedRoute: ActivatedRoute,
+    private modalService: NgbModal
+  ){}
+  
+  ngOnInit(): void{
     const token = this.activatedRoute.snapshot.queryParams['token'];
     const code = this.activatedRoute.snapshot.queryParams['code'];
-
-    if (token && code) {
+    
+    if(token && code){
       this.loading = true;
-      this.httpService
-        .post('activate', {
-          token: encodeURIComponent(token),
-          code: encodeURIComponent(code),
-        })
-        .then((res) => {
-          this.loading = false;
-          if (!res.error) {
-            this.ajaxRequest1.fire();
-            localStorage.setItem('refreshToken', res.data.refreshToken);
-            localStorage.setItem('token', res.data.token);
-            setTimeout(() => {
-              this.router.navigate(['auth/info']);
-            }, 3000);
-          } else {
-            this.error = res.message;
-          }
-        })
-        .catch((error) => {
-          this.loading = false;
-          this.error = error;
-        });
+      this.httpService.post('activate', {
+        token: encodeURIComponent(token),
+        code: encodeURIComponent(code)
+      }).then((res) => {
+        this.loading = false;
+        if(!res.error){
+          this.ajaxRequest1.fire();
+          localStorage.setItem('refreshToken', res.data.refreshToken);
+          localStorage.setItem('token', res.data.token);
+          setTimeout(() => {
+            this.router.navigate(['auth/info']);
+          }, 3000);
+        } else{
+          this.error = res.message;
+        }
+      }).catch((error) => {
+        this.loading = false;
+        this.error = error;
+      });
     }
   }
-
+  
   /**
    * convenience getter for easy access to form fields
    */
-  get formValues() {
+  get formValues(){
     return this.signUpForm.controls;
   }
-
-  inputShowPassword() {
+  
+  inputShowPassword(){
     this.showPassword = !this.showPassword;
   }
-
-  sendVerifyCode() {
-    let that = this;
-    document.getElementById('resend').onclick = function () {
-      that.ajaxRequest.close();
-      that.httpService
-        .post('send_email_activation', {
-          email: that.formValues['email'].value,
-        })
-        .then((res) => {
-          that.loading = false;
-          if (res.error) {
-            that.error = res.message;
-          }
-        })
-        .catch((error) => {
-          that.loading = false;
-          that.error = error;
-        });
-    };
+  
+  setResendInterval(){
+    if(this.intervalResend){
+      clearInterval(this.intervalResend);
+    }
+    this.countDown = 60;
+    this.resend = 'Resend code in 01:00';
+    this.intervalResend = setInterval(() => {
+      this.countDown--;
+      if(this.countDown == -1){
+        this.resend = 'Resend';
+        clearInterval(this.intervalResend)
+      } else if(this.countDown < 10){
+        this.resend = 'Resend code in 00:' + '0' + this.countDown;
+      } else{
+        this.resend = 'Resend code in 00:' + this.countDown;
+      }
+    }, 1000)
   }
-
+  
+  sendVerifyCode(){
+    if((this.countDown === 1000 && this.resend === 'initial') || (this.countDown === -1 && this.resend === 'Resend code in 00:00')){
+      this.setResendInterval();
+      this.httpService.post('send_email_activation', {
+        email: this.formValues['email'].value
+      }).then((res) => {
+        this.loading = false;
+        if(res.error){
+          this.error = res.message;
+        }
+      }).catch((error) => {
+        this.loading = false;
+        this.error = error;
+      });
+    }
+  }
+  
+  openResendModal(){
+    this.modalService.open(this.resendModal, {
+      backdrop: 'static',
+      centered: true
+    })
+    this.sendVerifyCode();
+  }
+  
   /**
    * On form submit
    */
-  onSubmit(): void {
+  onSubmit(): void{
     this.formSubmitted = true;
-
-    if (this.signUpForm.valid) {
+    
+    if(this.signUpForm.valid){
       this.loading = true;
-      this.httpService
-        .post('signup', {
-          email: this.formValues['email'].value,
-          password: this.formValues['password'].value,
-        })
-        .then((res) => {
-          this.loading = false;
-          if (!res.error) {
-           
-            setTimeout(() => {
-              this.sendVerifyCode();
-            }, 300);
-          } else {
-            this.error = res.message;
-            if (res.code == 103) {
-              this.ajaxRequest.fire();
-              setTimeout(() => {
-                this.sendVerifyCode();
-              }, 300);
-            }
+      this.httpService.post('signup', {
+        email: this.formValues['email'].value,
+        password: this.formValues['password'].value
+      }).then((res) => {
+        this.loading = false;
+        this.countDown = 1000;
+        this.resend = 'initial'
+        if(!res.error){
+          this.openResendModal();
+        } else{
+          this.error = res.message;
+          if(res.code == 103){
+            this.openResendModal();
           }
-        })
-        .catch((error) => {
-          this.loading = false;
-          this.error = error;
-        });
+        }
+      }).catch((error) => {
+        this.loading = false;
+        this.error = error;
+      });
     }
+  }
+  
+  ngOnDestroy(){
+    clearInterval(this.intervalResend);
   }
 }
