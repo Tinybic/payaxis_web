@@ -92,7 +92,11 @@
 
 .modal-dialog {
   max-width: 650px;
+  .modal-content{
+    border-radius: 8px;
+  }
 }
+
 
 
 .centerModal {
