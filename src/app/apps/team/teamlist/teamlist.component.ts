@@ -329,13 +329,14 @@ export class TeamlistComponent {
       })
       .then((res) => {
         if (!res.companymember_emails.error) {
+          console.log(this.roleItems);
           res.companymember_emails.data.forEach((item) => {
             this.userList.push({
               email: item.email,
               memberyn: item.memberyn,
               idRole: 0,
-              role: 'View Only',
-              approvalAmount: 0,
+              role: this.roleItems[0].text,
+              approvalAmount: this.roleItems[0].id,
               approvalAmountText: 'Approval Limit',
             });
           });
@@ -345,21 +346,7 @@ export class TeamlistComponent {
       });
   }
 
-  step2() {
-    this.userList = [];
-
-    this.emailList.forEach((item) => {
-      this.userList.push({
-        email: item,
-        idRole: 0,
-        role: this.roleItems[0].text,
-        approvalAmount: 0,
-        approvalAmountText: 'Approval Limit',
-      });
-    });
-
-    if (this.userList.length > 0) this.step = 'step3';
-  }
+  
 
   step3Approval(item, event) {
     item.approvalAmount = event.id;

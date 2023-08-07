@@ -7,6 +7,7 @@ import { CostcodeComponent } from './costcode/costcode.component';
 const routes: Routes = [
   { path: 'projects', loadChildren: () => import('./projects/projects.module').then(m => m.ProjectsModule) },
   { path: 'team', loadChildren: () => import('./team/team.module').then(m => m.TeamModule) },
+  { path: 'vendor', loadChildren: () => import('./vendor/vendor.module').then(m => m.VendorModule) },
   {
     path: 'welcome',
     component: WelcomeComponent

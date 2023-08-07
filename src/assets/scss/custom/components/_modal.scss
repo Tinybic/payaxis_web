@@ -19,7 +19,9 @@
 .modal-530 {
   max-width: 530px !important;
 }
-
+.modal-90vw {
+  max-width: 90vw !important;
+}
 // Modal full width
 .modal-full-width {
   width: 95%;
@@ -37,7 +39,6 @@
     right: 0;
     display: flex;
     flex-flow: column nowrap;
-    justify-content: center;
     height: 100%;
     margin: 0;
     background-color: $modal-content-bg;

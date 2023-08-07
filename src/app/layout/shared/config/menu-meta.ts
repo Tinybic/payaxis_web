@@ -10,7 +10,7 @@ const MENU_ITEMS: MenuItem[] = [
     collapsed: true,
     url: '/apps/projects',
   },{
-    key: 'icons',
+    key: 'bill',
     label: 'Bills',
     isTitle: false,
     icon: 'fe-file-text',
@@ -18,12 +18,12 @@ const MENU_ITEMS: MenuItem[] = [
     url: '/icons/feather',
   }, 
   {
-    key: 'forms',
+    key: 'vendor',
     label: 'Vendors',
     isTitle: false,
     icon: 'fe-briefcase',
     collapsed: true,
-    url: '/forms/basic',
+    url: '/apps/vendor',
   },
   {
     key: 'team',

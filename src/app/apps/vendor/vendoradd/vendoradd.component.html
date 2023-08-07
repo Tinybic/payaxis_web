@@ -1,0 +1,190 @@
+<div class="row">
+    <div class="col-md-12">
+        <i class="fe-chevron-left"></i>
+        <span class="bold-500">All Vendors</span> / <span class="bold-800 text-primary">{{vendor.vendorName}}</span>
+    </div>
+</div>
+<div class="row mt-1-1">
+    <div class="col-md-6">
+        <span class="headline">{{vendor.vendorName}}</span> <span class="draft ms-1-1">Draft</span>
+    </div>
+    <div class="col-md-6 text-end">
+        <button class="btn btn-outline-primary ms-2-1" (click)="cancel()">Cancel</button>
+        <button class="btn btn-primary ms-2-1" (click)="save()">Save</button>
+        <i class="fe-more-vertical- font-24 ms-2-1"></i>
+    </div>
+</div>
+<div class="row mt-1-1">
+    <div class="col-md-5">
+        <ul ngbNav #nav2="ngbNav" [(activeId)]="tabs1" class="nav-pills navtab-bg nav-justified">
+            <li [ngbNavItem]="1">
+                <a ngbNavLink>
+                    Details
+                </a>
+
+            </li>
+            <li [ngbNavItem]="2">
+                <a ngbNavLink>
+                    Contacts
+                </a>
+
+            </li>
+            <li [ngbNavItem]="3">
+                <a ngbNavLink>
+                    Orders
+                </a>
+
+            </li>
+            <li [ngbNavItem]="4">
+                <a ngbNavLink>
+                    Payment
+                </a>
+
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="card  mt-2-1">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12 headline">
+                Vendor Details
+            </div>
+        </div>
+        <div class="row mt-1-1">
+            <div class="col-md-6">
+                <label class="form-label" i18n>Vendor Name</label>
+                <input class="form-control" type="text" id="vendorName" [(ngModel)]="vendor.vendorName" required
+                    i18n-placeholder placeholder="Vendor Name" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label" i18n>Type</label>
+                <input class="form-control" type="text" id="vendorType" [(ngModel)]="vendor.vendorType" required
+                    i18n-placeholder placeholder="Type" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label" i18n>Cost Code</label>
+                <div class="dropdown" ngbDropdown>
+                    <input class="form-select" type="text" id="vendorcostcodes" [(ngModel)]="vendorcostcodesText"
+                        required i18n-placeholder placeholder="Cost Code" ngbDropdownToggle />
+                    <div  style="max-height: 300px; overflow-y: auto;" class="dropdown-menu" aria-labelledby="vendorcostcodes" ngbDropdownMenu>
+                        <div>
+                            <input type="search" class="form-control form-search" />
+                        </div>
+                        <div *ngFor = "let item of costCodeList">
+                            <div style="color: #215EA9; font-weight: 600; margin-bottom: 8px; margin-top: 8px;" *ngIf="item.costcodelist.length>0">
+                                {{item.txtName}}
+                            </div>
+                            <div class="mb-1" *ngFor="let costcode of item.costcodelist">
+                                <div>
+                                    <input type="checkbox" class="form-check-input" (change)="costCodeSelect($event,costcode)" id="dropdownCheck">
+                                    <label class="form-check-label ms-1-1" for="dropdownCheck">
+                                        {{costcode.txtName}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row mt-2-1">
+            <div class="col-md-3">
+                <label class="form-label" i18n>Primary Contact</label>
+                <input class="form-control" type="text" id="primaryContact" [(ngModel)]="vendor.primaryContact" required
+                    i18n-placeholder placeholder="Contact Name" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label" i18n>Email</label>
+                <input class="form-control" type="text" id="email" [(ngModel)]="vendor.email" required i18n-placeholder
+                    placeholder="Email" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label" i18n>Phone</label>
+                <input class="form-control" type="text" id="phone" [(ngModel)]="vendor.phone" required i18n-placeholder
+                    placeholder="Phone number" />
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label" i18n>Website</label>
+                <input class="form-control" type="text" id="website" [(ngModel)]="vendor.website" required
+                    i18n-placeholder placeholder="Website" />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 headline">
+                        Vendor Location
+                    </div>
+                </div>
+                <div class="row mt-1-1">
+                    <div class="col-md-8">
+                        <label class="form-label" i18n>Street Address</label>
+                        <input class="form-control" type="text" id="txtAddress" [(ngModel)]="vendor.txtAddress" required
+                            i18n-placeholder placeholder="Street Address" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" i18n>Apt,suite,etc</label>
+                        <input class="form-control" type="text" id="suiteNumber" [(ngModel)]="vendor.suiteNumber"
+                            required i18n-placeholder placeholder="Apt,suite,etc" />
+                    </div>
+                </div>
+                <div class="row mt-2-1">
+                    <div class="col-md-4">
+                        <label class="form-label" i18n>City</label>
+                        <input class="form-control" type="text" id="txtCity" [(ngModel)]="vendor.txtCity" required
+                            i18n-placeholder placeholder="City" />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" i18n>State</label>
+                            <input id="txtState" type="text" class="form-select position-relative"
+                                [ngbTypeahead]="searchState" (focus)="focus$.next($any($event).target.value)" placeholder="State"
+                                (click)="click$.next($any($event).target.value)" #instance="ngbTypeahead"  [(ngModel)]="vendor.txtState"/>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label" i18n>Zip Code</label>
+                        <input class="form-control" type="text" id="txtZipcode" [(ngModel)]="vendor.txtZipcode" required
+                            i18n-placeholder placeholder="Zip Code" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 headline">
+                        Contracts
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <button class="btn btn-outline-primary ms-2-1" style="padding: 8px 16px;"
+                            onclick="document.getElementById('contractsUpload').click()"><i
+                                class="fe-plus-square me-1-1"></i>Upload Contract</button>
+                        <input type="file" class="d-none" id="contractsUpload" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <span class="text-typeblackdeactivated">No Conrtacts added yet</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #inviteVendor let-modal>
+<div></div>
+</ng-template>

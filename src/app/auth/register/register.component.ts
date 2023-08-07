@@ -150,7 +150,7 @@ export class RegisterComponent implements OnInit {
         .then((res) => {
           this.loading = false;
           if (!res.error) {
-           
+            this.ajaxRequest.fire();
             setTimeout(() => {
               this.sendVerifyCode();
             }, 300);

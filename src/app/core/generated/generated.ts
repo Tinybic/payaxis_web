@@ -18,10 +18,15 @@ export type Scalars = {
   contactNumber_String_NotNull_maxLength_20: { input: any; output: any; }
   costCode_String_NotNull_maxLength_15: { input: any; output: any; }
   description_String_NotNull_maxLength_512: { input: any; output: any; }
-  email_String_NotNull_maxLength_128_format_email: { input: any; output: any; }
+  email_String_NotNull_maxLength_180_format_email: { input: any; output: any; }
+  fileName_String_NotNull_maxLength_128: { input: any; output: any; }
+  fileType_String_NotNull_maxLength_15: { input: any; output: any; }
+  fileUrl_String_NotNull_maxLength_512: { input: any; output: any; }
   industry_String_NotNull_maxLength_50: { input: any; output: any; }
   mobile_String_NotNull_pattern_093093094: { input: any; output: any; }
   paymentTerms_String_NotNull_maxLength_50: { input: any; output: any; }
+  phone_String_NotNull_maxLength_20: { input: any; output: any; }
+  primaryContact_String_NotNull_maxLength_50: { input: any; output: any; }
   suiteNumber_String_NotNull_maxLength_30: { input: any; output: any; }
   taxId_String_NotNull_maxLength_50: { input: any; output: any; }
   txtAddress_String_NotNull_maxLength_80: { input: any; output: any; }
@@ -31,6 +36,8 @@ export type Scalars = {
   txtNotes_String_NotNull_maxLength_512: { input: any; output: any; }
   txtState_String_NotNull_maxLength_80: { input: any; output: any; }
   txtZipcode_String_NotNull_maxLength_10: { input: any; output: any; }
+  vendorName_String_NotNull_maxLength_128: { input: any; output: any; }
+  vendorType_String_NotNull_maxLength_50: { input: any; output: any; }
   website_String_NotNull_maxLength_180: { input: any; output: any; }
 };
 
@@ -77,6 +84,12 @@ export type Mutation = {
   test1_delete?: Maybe<Scalars['Int']['output']>;
   /** mutation to update a row, 1=success, 0=not found */
   test1_update?: Maybe<Scalars['Int']['output']>;
+  /** delete vendor_contract */
+  vendor_contract_delete: Vendordeleteresult;
+  /** new vendor_account */
+  vendor_new: Vendorupdateresult;
+  /** update vendor_account */
+  vendor_update: Vendorupdateresult;
 };
 
 
@@ -227,6 +240,52 @@ export type MutationTest1_UpdateArgs = {
   txtName: Scalars['String']['input'];
 };
 
+
+/** structure to handle table sms */
+export type MutationVendor_Contract_DeleteArgs = {
+  idVendor_contract: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationVendor_NewArgs = {
+  email: Scalars['email_String_NotNull_maxLength_180_format_email']['input'];
+  idCompany: Scalars['Int']['input'];
+  phone: Scalars['phone_String_NotNull_maxLength_20']['input'];
+  primaryContact: Scalars['primaryContact_String_NotNull_maxLength_50']['input'];
+  suiteNumber: Scalars['suiteNumber_String_NotNull_maxLength_30']['input'];
+  txtAddress: Scalars['txtAddress_String_NotNull_maxLength_80']['input'];
+  txtCity: Scalars['txtCity_String_NotNull_maxLength_80']['input'];
+  txtState: Scalars['txtState_String_NotNull_maxLength_80']['input'];
+  txtZipcode: Scalars['txtZipcode_String_NotNull_maxLength_10']['input'];
+  vendorName: Scalars['vendorName_String_NotNull_maxLength_128']['input'];
+  vendorType: Scalars['vendorType_String_NotNull_maxLength_50']['input'];
+  vendorcontracts?: InputMaybe<Array<Vendorcontract>>;
+  vendorcostcodes?: InputMaybe<Array<Vendorcostcode>>;
+  website: Scalars['website_String_NotNull_maxLength_180']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationVendor_UpdateArgs = {
+  email: Scalars['email_String_NotNull_maxLength_180_format_email']['input'];
+  id: Scalars['Int']['input'];
+  phone: Scalars['phone_String_NotNull_maxLength_20']['input'];
+  primaryContact: Scalars['primaryContact_String_NotNull_maxLength_50']['input'];
+  revision: Scalars['Int']['input'];
+  suiteNumber: Scalars['suiteNumber_String_NotNull_maxLength_30']['input'];
+  txtAddress: Scalars['txtAddress_String_NotNull_maxLength_80']['input'];
+  txtCity: Scalars['txtCity_String_NotNull_maxLength_80']['input'];
+  txtState: Scalars['txtState_String_NotNull_maxLength_80']['input'];
+  txtZipcode: Scalars['txtZipcode_String_NotNull_maxLength_10']['input'];
+  vendorName: Scalars['vendorName_String_NotNull_maxLength_128']['input'];
+  vendorType: Scalars['vendorType_String_NotNull_maxLength_50']['input'];
+  vendorcontracts?: InputMaybe<Array<Vendorcontract>>;
+  vendorcostcodes?: InputMaybe<Array<Vendorcostcode>>;
+  website: Scalars['website_String_NotNull_maxLength_180']['input'];
+};
+
 export type Query = {
   __typename?: 'Query';
   /** get company details for the loging user */
@@ -253,6 +312,10 @@ export type Query = {
   test1_find: Test1;
   /** query to retrieve all existing rows */
   test1_findall: Array<Maybe<Test1>>;
+  /** get vendor info for one vendor */
+  vendor_info: Vendorinforesult;
+  /** get vendor list */
+  vendor_list: Vendorlist;
 };
 
 
@@ -295,6 +358,16 @@ export type QueryGet_File_UrlArgs = {
 
 export type QueryTest1_FindArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type QueryVendor_InfoArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type QueryVendor_ListArgs = {
+  idCompany: Scalars['Int']['input'];
 };
 
 export type Cialist = {
@@ -513,7 +586,7 @@ export type Industrylist = {
 
 export type Invitemember = {
   approvalAmount: Scalars['Float']['input'];
-  email: Scalars['email_String_NotNull_maxLength_128_format_email']['input'];
+  email: Scalars['email_String_NotNull_maxLength_180_format_email']['input'];
   idRole: Scalars['Int']['input'];
 };
 
@@ -585,4 +658,115 @@ export type Token = {
   __typename?: 'token';
   refreshToken: Scalars['String']['output'];
   token: Scalars['String']['output'];
+};
+
+/** structure to handle table vendor_account */
+export type Vendor_Account = {
+  __typename?: 'vendor_account';
+  active: Scalars['Boolean']['output'];
+  createdBy: Scalars['Int']['output'];
+  createdDate: Scalars['String']['output'];
+  email: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  idCompany: Scalars['Int']['output'];
+  modifiedBy: Scalars['Int']['output'];
+  modifiedDate: Scalars['String']['output'];
+  phone: Scalars['String']['output'];
+  primaryContact: Scalars['String']['output'];
+  revision: Scalars['Int']['output'];
+  suiteNumber: Scalars['String']['output'];
+  txtAddress: Scalars['String']['output'];
+  txtCity: Scalars['String']['output'];
+  txtState: Scalars['String']['output'];
+  txtZipcode: Scalars['String']['output'];
+  vendorName: Scalars['String']['output'];
+  vendorType: Scalars['String']['output'];
+  website: Scalars['String']['output'];
+};
+
+export type Vendor_Contract = {
+  __typename?: 'vendor_contract';
+  active: Scalars['Boolean']['output'];
+  createdBy: Scalars['Int']['output'];
+  createdDate: Scalars['String']['output'];
+  fileName: Scalars['String']['output'];
+  fileSize: Scalars['Int']['output'];
+  fileType: Scalars['String']['output'];
+  fileUrl: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  idVendor: Scalars['Int']['output'];
+  modifiedBy: Scalars['Int']['output'];
+  modifiedDate: Scalars['String']['output'];
+  revision: Scalars['Int']['output'];
+};
+
+export type Vendor_Costcode = {
+  __typename?: 'vendor_costcode';
+  active: Scalars['Boolean']['output'];
+  costCode: Scalars['String']['output'];
+  createdBy: Scalars['Int']['output'];
+  createdDate: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  idCompany: Scalars['Int']['output'];
+  idVendor: Scalars['Int']['output'];
+  modifiedBy: Scalars['Int']['output'];
+  modifiedDate: Scalars['String']['output'];
+  revision: Scalars['Int']['output'];
+};
+
+export type Vendorcontract = {
+  fileName: Scalars['fileName_String_NotNull_maxLength_128']['input'];
+  fileSize: Scalars['Int']['input'];
+  fileType: Scalars['fileType_String_NotNull_maxLength_15']['input'];
+  fileUrl: Scalars['fileUrl_String_NotNull_maxLength_512']['input'];
+};
+
+export type Vendorcostcode = {
+  costCode: Scalars['costCode_String_NotNull_maxLength_15']['input'];
+  idCompany: Scalars['Int']['input'];
+};
+
+export type Vendordeleteresult = {
+  __typename?: 'vendordeleteresult';
+  code: Scalars['Int']['output'];
+  data: Scalars['Boolean']['output'];
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Vendoridrevision = {
+  __typename?: 'vendoridrevision';
+  id: Scalars['Int']['output'];
+  revision: Scalars['Int']['output'];
+};
+
+export type Vendorinfo = {
+  __typename?: 'vendorinfo';
+  vendor: Vendor_Account;
+  vendorcontracts?: Maybe<Array<Vendor_Contract>>;
+  vendorcostcodes?: Maybe<Array<Vendor_Costcode>>;
+};
+
+export type Vendorinforesult = {
+  __typename?: 'vendorinforesult';
+  code: Scalars['Int']['output'];
+  data: Vendorinfo;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Vendorlist = {
+  __typename?: 'vendorlist';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Array<Vendor_Account>>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Vendorupdateresult = {
+  __typename?: 'vendorupdateresult';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Vendoridrevision>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
 };

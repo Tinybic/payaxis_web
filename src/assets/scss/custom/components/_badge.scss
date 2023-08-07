@@ -26,28 +26,42 @@
 
 @each $color,
 $value in $theme-colors {
+
     // Lighten badge (soft)
     .badge-soft-#{$color} {
         @include badge-variant-light($value);
     }
+
     // Outline badge
     .badge-outline-#{$color} {
         @include badge-variant-outline($value);
     }
 }
 
+.draft {
+    color: #60A5FA;
+    text-align: center;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0.1px;
+}
 
 // dark mode
 body[data-layout-color="dark"] {
-    @each $color, $value in $dark-theme-colors {
+
+    @each $color,
+    $value in $dark-theme-colors {
+
         // Lighten badge (soft)
         .badge-soft-#{$color} {
             @include badge-variant-light($value);
         }
+
         // Outline badge
         .badge-outline-#{$color} {
             @include badge-variant-outline($value);
         }
     }
 }
-
