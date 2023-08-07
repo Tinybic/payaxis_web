@@ -20,7 +20,6 @@ import { PasswordValidator } from 'src/app/core/helpers/password.validator';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  @ViewChild('ajaxRequest') ajaxRequest!: SwalComponent;
   @ViewChild('ajaxRequest1') ajaxRequest1!: SwalComponent;
   @ViewChild('resendModal') resendModal: NgbModalRef;
   
@@ -42,20 +41,6 @@ export class RegisterComponent implements OnInit {
   countDown: number = 1000;
   resend: string = 'initial';
   intervalResend: any;
-  
-  
-  public alertOption: SweetAlertOptions = {
-    html: `<div>
-    <div class="swal2-alert-title">A verification email have been sent to you.</div>
-    <div class="swal2-alert-content">Please, check the email</div>
-    <div class="swal2-alert-link" id="resend">Resend<div>
-    </div>`,
-    showCloseButton: true,
-    showConfirmButton: false,
-    width: 604,
-    padding: 16,
-    background: '#fff'
-  };
   
   public successAlertOption: SweetAlertOptions = {
     html: `<div style="overflow: hidden">
@@ -142,7 +127,7 @@ export class RegisterComponent implements OnInit {
   }
   
   sendVerifyCode(){
-    if((this.countDown === 1000 && this.resend === 'initial') || (this.countDown === -1 && this.resend === 'Resend code in 00:00')){
+    if((this.countDown === 1000 && this.resend === 'initial') || (this.countDown === -1 && this.resend === 'Resend')){
       this.setResendInterval();
       this.httpService.post('send_email_activation', {
         email: this.formValues['email'].value
@@ -159,6 +144,8 @@ export class RegisterComponent implements OnInit {
   }
   
   openResendModal(){
+    this.countDown = 1000;
+    this.resend = 'initial'
     this.modalService.open(this.resendModal, {
       backdrop: 'static',
       centered: true
@@ -179,8 +166,6 @@ export class RegisterComponent implements OnInit {
         password: this.formValues['password'].value
       }).then((res) => {
         this.loading = false;
-        this.countDown = 1000;
-        this.resend = 'initial'
         if(!res.error){
           this.openResendModal();
         } else{
