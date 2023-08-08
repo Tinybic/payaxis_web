@@ -1,0 +1,152 @@
+<div class="row">
+    <div class="col-md-6 headline">
+        Vendors
+    </div>
+    <div class="col-md-6 text-end">
+        <button class="btn btn-link"><i class="fe-mail me-1-1"></i>Invite</button>
+        <button class="btn btn-outline-primary ms-2-1"><i class="fe-upload me-1-1"></i>Import<i
+                class="fe-chevron-down ms-1-1"></i></button>
+        <button class="btn btn-outline-primary ms-2-1"><i class="fe-download me-1-1"></i>Export<i
+                class="fe-chevron-down ms-1-1"></i></button>
+        <button class="btn btn-primary ms-2-1" (click)="openAddModal()">New Vendor</button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <span class="font-20 bold-600">12 Vendors</span>
+
+        <div class="d-inline-block dropdown ms-1-1" ngbDropdown>
+            <a class="dropdow-outline" href="javascript:void(0)" ngbDropdownToggle>
+                Status
+                <b>4 selected</b>
+                <i class="fe-chevron-down font-16 ms-1-1"></i>
+            </a>
+            <div class="dropdown-menu" ngbDropdownMenu>
+                <div class="mb-2">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                            ALL
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                            Approval
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                            Admin
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                            Editor
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                            Viewer
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-4 text-end mt-2-1">
+        <div class="d-inline-block ms-1-1">
+            <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords"
+                (keyup.enter)="searchTable()" />
+        </div>
+        <!-- end search-->
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-md-12">
+        <table class="advanced-table">
+            <thead>
+                <tr>
+                    <th class="row_select"><input class="form-check" type="checkbox" /></th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortCloumn == 'firstName' && direction == 'asc','sorting_desc':sortCloumn == 'firstName' && direction == 'desc'}"
+                        (click)="onSort('firstName')">Name</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortCloumn == 'role' && direction == 'asc','sorting_desc':sortCloumn == 'role' && direction == 'desc'}"
+                        (click)="onSort('role')">Status</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortCloumn == 'approvalAmount' && direction == 'asc','sorting_desc':sortCloumn == 'approvalAmount' && direction == 'desc'}"
+                        (click)="onSort('approvalAmount')">Total Due</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortCloumn == 'active' && direction == 'asc','sorting_desc':sortCloumn == 'active' && direction == 'desc'}"
+                        (click)="onSort('active')">Total Invoices Past Due</th>
+                    <th>Last payment</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of vendorlist; let i = index">
+                    <td><input class="form-check" type="checkbox" /></td>
+                    <td>
+                        <div class="d-flex flex-row">
+                            {{item.vendorName}}
+                        </div>
+                    </td>
+                    <td>
+
+                    </td>
+                    <td>
+
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="vendorlist.length==0" class="bg-white">
+                <tr>
+                    <td colspan="6" class="text-center">
+                        <div class="Paragraph-1 text-typeblackdeactivated bold-600  mt-40 ">No Vendors added yet</div>
+                        <div class="Paragraph-2 text-typeblackdeactivated mt-1-1">Create new vendor in a few clicks
+                        </div>
+                        <div class="mt-1-1"> <button class="btn btn-primary ms-2-1" (click)="openAddModal()"><i
+                                    class="fe-plus-square me-1-1"></i>New Vendor</button></div>
+
+                        <div class="Paragraph-2 text-typeblackdeactivated mt-40 ">or import items from the file</div>
+
+                        <div class="d-flex justify-content-around importContain mb-3">
+                            <div class="importDiv">
+                                <img class="mt-2-1" src="/assets/images/icon/qb.png" />
+                                <div class="text-primary bold-600 mt-2-1">Import from QuickBooks</div>
+                            </div>
+                            <div class="importDiv">
+                                <img class="mt-2-1" src="/assets/images/icon/csv.png" />
+                                <div class="text-primary bold-600 mt-2-1">Import from CSV</div>
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot style="height: 16px;">
+                <tr>
+                    <td colspan="6">&nbsp;</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<ng-template #inviteVendor let-modal>
+    <app-vendoradd style="width: 90vw; padding:32px; background-color: #F8F9FC; height: 99vh; overflow-y: auto;"></app-vendoradd>
+</ng-template>

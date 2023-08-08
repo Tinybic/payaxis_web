@@ -1,0 +1,33 @@
+.card-body{
+    padding: 16px;
+    border-radius: 16px;
+}
+.modal-bg{
+    background-color: #F8F9FC !important;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #E5E7EB; 
+    border-radius:4px;
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #9CA3AF; 
+    border-radius:4px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+
+  .dropdown-item{
+    padding-left: 0px;
+  }

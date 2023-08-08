@@ -14,7 +14,6 @@ import { CodeInputModule } from 'angular-code-input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { createApollo } from './core/constants/apolloFactory';
-
 @NgModule({
   declarations: [AppComponent],
   imports: [
