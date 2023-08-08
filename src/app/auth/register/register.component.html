@@ -1,16 +1,16 @@
 <app-default-layout>
-
+    
     <div class="text-center mb-3">
         <h5 i18n>Create an account</h5>
         <h6>WELCOME to the comfort management space </h6>
     </div>
     <div style="display: flex" class="mb-3">
         <div class="otherLogin">
-            <img src="assets/images/Google.png" alt="" />
+            <img src="assets/images/Google.png" alt=""/>
             <span class="ms-1-1">Log in with Google</span>
         </div>
         <div class="otherLogin ms-2-1">
-            <img src="assets/images/apple.png" alt="" />
+            <img src="assets/images/apple.png" alt=""/>
             Log in with Apple
         </div>
     </div>
@@ -25,55 +25,58 @@
         <div class="mb-2-1">
             <label for="emailaddress" class="form-label" i18n>Email</label>
             <input class="form-control mb-1-1" type="email" id="emailaddress" required i18n-placeholder
-                placeholder="Enter Email" formControlName="email"
-                [ngClass]="{'is-invalid':formSubmitted && formValues['email'].invalid}" />
-            <small *ngIf="!(formSubmitted && formValues['email'].invalid)" id="emailHelp" class="form-text text-muted">A verification email will be sent to you to verify your
+                   placeholder="Enter Email" formControlName="email"
+                   [ngClass]="{'is-invalid':formSubmitted && formValues['email'].invalid}"/>
+            <small *ngIf="!(formSubmitted && formValues['email'].invalid)" id="emailHelp" class="form-text text-muted">A
+                verification email will be sent to you to verify your
                 address</small>
             <div *ngIf="formSubmitted && formValues['email'].invalid">
-
+                
                 <div *ngIf="formValues['email'].errors?.['required']" i18n>
-                   <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter email
+                    <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter email
                 </div>
                 <div *ngIf="formValues['email'].errors?.['email']" i18n>
                     <i class="fe-alert-triangle invalid-feedback-icon"></i> Email must be a valid Email Address
                 </div>
-
+            
             </div>
         </div>
-
+        
         <div class="mb-2-1" style="position: relative;">
             <label for="password" class="form-label" i18n>Password</label>
-
+            
             <input class="form-control" type="password" required i18n-placeholder id="password"
-                placeholder="Enter Password" formControlName="password" *ngIf="!showPassword"
-                [ngClass]="{'is-invalid':formSubmitted && formValues['password'].invalid}" />
+                   placeholder="Enter Password" formControlName="password" *ngIf="!showPassword"
+                   [ngClass]="{'is-invalid':formSubmitted && formValues['password'].invalid}"/>
             <input class="form-control" type="text" required i18n-placeholder id="password" placeholder="Enter Password"
-                formControlName="password" *ngIf="showPassword"
-                [ngClass]="{'is-invalid':formSubmitted && formValues['password'].invalid}" />
+                   formControlName="password" *ngIf="showPassword"
+                   [ngClass]="{'is-invalid':formSubmitted && formValues['password'].invalid}"/>
             <i class="fe-eye-off passwordIcon"
-                *ngIf="!(formSubmitted && formValues['password'].invalid) && !showPassword "
-                (click)="inputShowPassword()"></i>
+               *ngIf="!(formSubmitted && formValues['password'].invalid) && !showPassword "
+               (click)="inputShowPassword()"></i>
             <i class="fe-eye passwordIcon hide"
-                *ngIf="!(formSubmitted && formValues['password'].invalid)&& showPassword  "
-                (click)="inputShowPassword()"></i>
+               *ngIf="!(formSubmitted && formValues['password'].invalid)&& showPassword  "
+               (click)="inputShowPassword()"></i>
             <div *ngIf="formSubmitted && formValues['password'].invalid " class="invalid-feedback">
-
+                
                 <div *ngIf="formValues['password'].errors?.['required']" i18n>
                     <i class="fe-alert-triangle invalid-feedback-icon"></i> Password is required.
                 </div>
-                <div *ngIf="!formValues['password'].errors?.['required'] && formValues['password'].errors?.['strong']" i18n>
-                    <i class="fe-alert-triangle invalid-feedback-icon"></i> The password needs to include uppercase, lowercase, and numeric characters.
+                <div *ngIf="!formValues['password'].errors?.['required'] && formValues['password'].errors?.['strong']"
+                     i18n>
+                    <i class="fe-alert-triangle invalid-feedback-icon"></i> The password needs to include uppercase,
+                    lowercase, and numeric characters.
                 </div>
             </div>
         </div>
         <div class="mb-3">
             <div class="form-check">
                 <input type="checkbox" class="form-check-input me-1-1" id="invalidCheck" required
-                    formControlName="acceptTerms"
-                    [ngClass]="{ 'is-invalid': formSubmitted && formValues['acceptTerms'].invalid }">
-                <label class="form-check-label" for="checkbox-signup" i18n>I agree to all the <a
+                       formControlName="acceptTerms"
+                       [ngClass]="{ 'is-invalid': formSubmitted && formValues['acceptTerms'].invalid }">
+                <label class="form-check-label" for="invalidCheck" i18n>I agree to all the <a
                         href="javascript: void(0);">Terms</a> and <a href="javascript: void(0);">Privacy
-                        policy</a></label>
+                    policy</a></label>
                 <div *ngIf="formSubmitted && formValues['acceptTerms'].invalid" class="invalid-feedback">
                     <i class="fe-alert-triangle invalid-feedback-icon"></i> You must agree before submitting.
                 </div>
@@ -81,15 +84,28 @@
         </div>
         <div class="mb-3 d-grid text-center auth-button">
             <button class="btn btn-primary  mb-2-1" type="submit" i18n>Create account</button>
-
+            
             <span i18n>
                 Already have account?
                 <a routerLink="../login">Sign In</a>
             </span>
         </div>
-
-        <swal #ajaxRequest [swalOptions]="alertOption"></swal>
+        
         <swal #ajaxRequest1 [swalOptions]="successAlertOption"></swal>
     </form>
+    
+    <ng-template #resendModal>
+        <div class="modal-body">
+            <div class="mt-2-1 headline-24 text-center">
+                A verification email have been sent to you.
+            </div>
+            <div class="mt-2-1 subtitle-2-500-18 text-center">
+                Please, check the email
+            </div>
+            <div class="mt-5-1 text-center">
+                <button class="btn btn-link" (click)="countDown == -1 && sendVerifyCode()" style="opacity: {{countDown == -1 ? '1': '0.6'}}">{{resend}}</button>
+            </div>
+        </div>
+    </ng-template>
 
 </app-default-layout>
