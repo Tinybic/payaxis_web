@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { NgbModal, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { companycostcode_list } from 'src/app/core/gql/costcode';
 import { ApolloService } from 'src/app/core/service/apollo.service';
@@ -29,11 +29,15 @@ import { RtlScrollAxisType } from '@angular/cdk/platform';
   styleUrls: ['./vendoradd.component.scss'],
 })
 export class VendoraddComponent {
+  @Input() params;
+  @Input() public idvendor: number;
+  
   @ViewChild('cancelModal') cancelModal: any;
   @ViewChild('deleteModal') deleteModal: any;
+  @ViewChild('inviteVendor') inviteVendor: any;
   
   @ViewChild('instance', { static: true }) instance!: NgbTypeahead;
-  @Input() public idvendor: number;
+
   tabs1 = 1;
   vendor = {
     idCompany: 0,
@@ -73,8 +77,9 @@ export class VendoraddComponent {
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
+    private activeModal: NgbActiveModal,
     private toastrService: ToastrService,
-    private httpService: HttpService
+    private httpService: HttpService,
   ) {}
 
   ngOnInit(): void {

@@ -1,0 +1,156 @@
+<div class="row mt-3-1">
+    <div class="col-md-8 d-flex align-items-center">
+        <div class="font-20 bold-600">No Contacts</div>
+        
+        <div *ngIf="false" class="d-inline-block dropdown ms-1-1" ngbDropdown>
+            <a class="dropdow-outline" href="javascript:void(0)" ngbDropdownToggle>
+                Status
+                <b>4 selected</b>
+                <i class="fe-chevron-down font-16 ms-1-1"></i>
+            </a>
+            <div class="dropdown-menu" ngbDropdownMenu>
+                <div class="mb-2">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="all">
+                        <label class="form-check-label ms-1-1" for="all">
+                            ALL
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="approval">
+                        <label class="form-check-label ms-1-1" for="approval">
+                            Approval
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="admin">
+                        <label class="form-check-label ms-1-1" for="admin">
+                            Admin
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="editor">
+                        <label class="form-check-label ms-1-1" for="editor">
+                            Editor
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="viewer">
+                        <label class="form-check-label ms-1-1" for="viewer">
+                            Viewer
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+    <div class="col-md-4 text-end">
+        <div class="d-inline-block ms-1-1">
+            <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords"
+                   (keyup.enter)="searchTable()"/>
+        </div>
+        <!-- end search-->
+        <button class="btn btn-outline-primary ms-2-1 btn-text-12" (click)="openVendorContact(0)"
+                style="margin-top: -1px;padding: 8px 16px;"><i
+                class="fe-plus-square me-1-1" style="vertical-align: bottom;"></i>Add Contact
+        </button>
+    </div>
+</div>
+<div class="mt-3" style="height: calc(100% - 240px);">
+    <table class="advanced-table">
+        <thead>
+        <tr>
+            <th class="sortable"
+                [ngClass]="{'sorting_asc':sortCloumn == 'contactName' && direction == 'asc','sorting_desc':sortCloumn == 'contactName' && direction == 'desc'}"
+                (click)="onSort('contactName')">Name
+            </th>
+            <th class="sortable"
+                [ngClass]="{'sorting_asc':sortCloumn == 'email' && direction == 'asc','sorting_desc':sortCloumn == 'email' && direction == 'desc'}"
+                (click)="onSort('email')">Email
+            </th>
+            <th class="sortable"
+                [ngClass]="{'sorting_asc':sortCloumn == 'phone' && direction == 'asc','sorting_desc':sortCloumn == 'phone' && direction == 'desc'}"
+                (click)="onSort('phone')">Phone
+            </th>
+            <th class="sortable"
+                [ngClass]="{'sorting_asc':sortCloumn == 'Notes' && direction == 'asc','sorting_desc':sortCloumn == 'Notes' && direction == 'desc'}"
+                (click)="onSort('active')">Notes
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of vendorContacts; let i = index">
+            <td>
+                <div class="d-flex flex-row">
+                    {{item.contactName}}
+                </div>
+            </td>
+            <td>
+                <div class="d-flex flex-row">
+                    {{item.email}}
+                </div>
+            </td>
+            <td>
+                <div class="d-flex flex-row">
+                    {{item.phone}}
+                </div>
+            </td>
+            <td>
+                <div class="d-flex flex-row">
+                    {{item.notes}}
+                </div>
+            </td>
+            <td>
+                <i class="fe-edit" (click)="$event.stopPropagation();openVendorContact(item.id)"
+                   style="cursor: pointer;"></i>
+                <i class="fe-trash-2 ms-1-1" (click)="$event.stopPropagation();openDeleteVendorContact(i)"
+                   style="cursor: pointer;"></i>
+            </td>
+        </tr>
+        </tbody>
+        <tbody *ngIf="vendorContacts.length==0" class="bg-white">
+        <tr>
+            <td colspan="5" class="text-center">
+                <div class="Paragraph-1 text-typeblackdeactivated bold-600  mt-40 ">No Contacts added yet</div>
+                <div class="Paragraph-2 text-typeblackdeactivated mt-1-1">Create new order in a few clicks
+                </div>
+                <div class="mt-1-1">
+                    <button class="btn btn-outline-primary ms-2-1 btn-text-12" (click)="openVendorContact(0)"><i
+                            class="fe-plus-square me-1-1" style="vertical-align: bottom;"></i>Add Contact
+                    </button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+        <tfoot style="height: 16px;">
+        <tr>
+            <td colspan="5">&nbsp;</td>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+
+<ng-template #addVendorContactModal let-modal>
+    <app-add-vendor-contact [params]={vendorContactParams} [modalRef]={modalRef}></app-add-vendor-contact>
+</ng-template>
+
+<ng-template #deleteVendorContactModal let-modal>
+    <div class="modal-body" style="padding: 16px 24px;" >
+        <div class="headline-24">Deleting contact</div>
+        <div class="Subtitle-1-400 mt-3-1 text-start">Bessie Cooper contact will be deleted.</div>
+        <div class="text-end">
+            <button class="btn btn-link-primary text-primary" (click)="cancel()" style="padding: 12px 40px;">Cancel</button>
+            <button class="btn btn-primary" (click)="confirm()" style="padding: 12px 30px;">Confirm</button>
+        </div>
+    </div>
+</ng-template>

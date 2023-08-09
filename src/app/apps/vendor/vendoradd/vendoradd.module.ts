@@ -2,15 +2,23 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { VendoraddComponent } from './vendoradd.component';
 import {
+  NgbAlertModule,
   NgbDropdownModule,
   NgbModalModule,
   NgbNavModule,
-  NgbTypeaheadModule,
+  NgbTypeaheadModule
 } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { VendorContactsComponent } from "../vendor-contacts/vendor-contacts.component";
+import { AddVendorContactComponent } from "../add-vendor-contact/add-vendor-contact.component";
+
 
 @NgModule({
-  declarations: [VendoraddComponent],
+  declarations: [
+    VendoraddComponent,
+    VendorContactsComponent,
+    AddVendorContactComponent,
+  ],
   imports: [
     CommonModule,
     NgbDropdownModule,
@@ -18,7 +26,10 @@ import { FormsModule } from '@angular/forms';
     NgbNavModule,
     NgbModalModule,
     NgbTypeaheadModule,
+    NgbAlertModule,
+    ReactiveFormsModule
   ],
-  exports: [VendoraddComponent],
+  exports: [VendoraddComponent]
 })
-export class VendoraddModule {}
+export class VendoraddModule {
+}

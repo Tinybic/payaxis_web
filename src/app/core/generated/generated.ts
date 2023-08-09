@@ -15,6 +15,7 @@ export type Scalars = {
   Float: { input: number; output: number; }
   avatar_String_NotNull_maxLength_512: { input: any; output: any; }
   category_String_NotNull_maxLength_50: { input: any; output: any; }
+  contactName_String_NotNull_maxLength_128: { input: any; output: any; }
   contactNumber_String_NotNull_maxLength_20: { input: any; output: any; }
   costCode_String_NotNull_maxLength_15: { input: any; output: any; }
   description_String_NotNull_maxLength_512: { input: any; output: any; }
@@ -24,6 +25,7 @@ export type Scalars = {
   fileUrl_String_NotNull_maxLength_512: { input: any; output: any; }
   industry_String_NotNull_maxLength_50: { input: any; output: any; }
   mobile_String_NotNull_pattern_093093094: { input: any; output: any; }
+  notes_String_NotNull_maxLength_250: { input: any; output: any; }
   paymentTerms_String_NotNull_maxLength_50: { input: any; output: any; }
   phone_String_NotNull_maxLength_20: { input: any; output: any; }
   primaryContact_String_NotNull_maxLength_50: { input: any; output: any; }
@@ -84,12 +86,20 @@ export type Mutation = {
   test1_delete?: Maybe<Scalars['Int']['output']>;
   /** mutation to update a row, 1=success, 0=not found */
   test1_update?: Maybe<Scalars['Int']['output']>;
+  /** archive vendor_account */
+  vendor_archive: Vendordeleteresult;
+  /** deactivate vendor_contract */
+  vendor_contact_deactivate: Vendordeactivateeresult;
   /** delete vendor_contract */
   vendor_contract_delete: Vendordeleteresult;
   /** new vendor_account */
   vendor_new: Vendorupdateresult;
   /** update vendor_account */
   vendor_update: Vendorupdateresult;
+  /** new vendor_contact */
+  vendorcontact_new: Vendorcontactresult;
+  /** update vendor_contact */
+  vendorcontact_update: Vendorcontactresult;
 };
 
 
@@ -242,6 +252,20 @@ export type MutationTest1_UpdateArgs = {
 
 
 /** structure to handle table sms */
+export type MutationVendor_ArchiveArgs = {
+  id: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationVendor_Contact_DeactivateArgs = {
+  idVendor_contact: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
 export type MutationVendor_Contract_DeleteArgs = {
   idVendor_contract: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
@@ -286,6 +310,27 @@ export type MutationVendor_UpdateArgs = {
   website: Scalars['website_String_NotNull_maxLength_180']['input'];
 };
 
+
+/** structure to handle table sms */
+export type MutationVendorcontact_NewArgs = {
+  contactName: Scalars['contactName_String_NotNull_maxLength_128']['input'];
+  email: Scalars['email_String_NotNull_maxLength_180_format_email']['input'];
+  idVendor: Scalars['Int']['input'];
+  notes: Scalars['notes_String_NotNull_maxLength_250']['input'];
+  phone: Scalars['phone_String_NotNull_maxLength_20']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationVendorcontact_UpdateArgs = {
+  contactName: Scalars['contactName_String_NotNull_maxLength_128']['input'];
+  email: Scalars['email_String_NotNull_maxLength_180_format_email']['input'];
+  id: Scalars['Int']['input'];
+  notes: Scalars['notes_String_NotNull_maxLength_250']['input'];
+  phone: Scalars['phone_String_NotNull_maxLength_20']['input'];
+  revision: Scalars['Int']['input'];
+};
+
 export type Query = {
   __typename?: 'Query';
   /** get company details for the loging user */
@@ -316,6 +361,10 @@ export type Query = {
   vendor_info: Vendorinforesult;
   /** get vendor list */
   vendor_list: Vendorlist;
+  /** get vendor contact info */
+  vendorcontact_info: Vendorcontactinforesult;
+  /** get vendor_contact list */
+  vendorcontact_list: Vendorcontactlist;
 };
 
 
@@ -368,6 +417,16 @@ export type QueryVendor_InfoArgs = {
 
 export type QueryVendor_ListArgs = {
   idCompany: Scalars['Int']['input'];
+};
+
+
+export type QueryVendorcontact_InfoArgs = {
+  idVendor_contact: Scalars['Int']['input'];
+};
+
+
+export type QueryVendorcontact_ListArgs = {
+  idVendor: Scalars['Int']['input'];
 };
 
 export type Cialist = {
@@ -674,6 +733,7 @@ export type Vendor_Account = {
   phone: Scalars['String']['output'];
   primaryContact: Scalars['String']['output'];
   revision: Scalars['Int']['output'];
+  status: Scalars['String']['output'];
   suiteNumber: Scalars['String']['output'];
   txtAddress: Scalars['String']['output'];
   txtCity: Scalars['String']['output'];
@@ -682,6 +742,23 @@ export type Vendor_Account = {
   vendorName: Scalars['String']['output'];
   vendorType: Scalars['String']['output'];
   website: Scalars['String']['output'];
+};
+
+/** structure to handle table vendor_contact */
+export type Vendor_Contact = {
+  __typename?: 'vendor_contact';
+  active: Scalars['Boolean']['output'];
+  contactName: Scalars['String']['output'];
+  createdBy: Scalars['Int']['output'];
+  createdDate: Scalars['String']['output'];
+  email: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  idVendor: Scalars['Int']['output'];
+  modifiedBy: Scalars['Int']['output'];
+  modifiedDate: Scalars['String']['output'];
+  notes: Scalars['String']['output'];
+  phone: Scalars['String']['output'];
+  revision: Scalars['Int']['output'];
 };
 
 export type Vendor_Contract = {
@@ -712,6 +789,37 @@ export type Vendor_Costcode = {
   modifiedBy: Scalars['Int']['output'];
   modifiedDate: Scalars['String']['output'];
   revision: Scalars['Int']['output'];
+  txtName: Scalars['String']['output'];
+};
+
+export type Vendorcontactidrevision = {
+  __typename?: 'vendorcontactidrevision';
+  id: Scalars['Int']['output'];
+  revision: Scalars['Int']['output'];
+};
+
+export type Vendorcontactinforesult = {
+  __typename?: 'vendorcontactinforesult';
+  code: Scalars['Int']['output'];
+  data: Vendor_Contact;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Vendorcontactlist = {
+  __typename?: 'vendorcontactlist';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Array<Vendor_Contact>>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Vendorcontactresult = {
+  __typename?: 'vendorcontactresult';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Vendorcontactidrevision>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
 };
 
 export type Vendorcontract = {
@@ -724,6 +832,14 @@ export type Vendorcontract = {
 export type Vendorcostcode = {
   costCode: Scalars['costCode_String_NotNull_maxLength_15']['input'];
   idCompany: Scalars['Int']['input'];
+};
+
+export type Vendordeactivateeresult = {
+  __typename?: 'vendordeactivateeresult';
+  code: Scalars['Int']['output'];
+  data: Scalars['Boolean']['output'];
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
 };
 
 export type Vendordeleteresult = {

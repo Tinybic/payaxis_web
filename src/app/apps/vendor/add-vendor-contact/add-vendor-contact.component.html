@@ -1,0 +1,117 @@
+<div class="modal-body modal-form-control" style="padding: 32px 24px 24px;">
+    <div class="headline-24">New Contact for [Vendor Name]</div>
+    
+    
+    <div class="mt-2-1 p-2-1">
+        <form [formGroup]="addVendorContactForm" (ngSubmit)="onSubmit()">
+            <ngb-alert [dismissible]="false" type="danger" *ngIf="error">
+                {{ error }}
+            </ngb-alert>
+            <div class="row">
+                <div class="col">
+                    <label class="form-label" for="name" i18n>Name</label>
+                    <input class="form-control"
+                           type="text"
+                           id="name"
+                           formControlName="name"
+                           required
+                           i18n-placeholder placeholder="Contact Name"
+                           [ngClass]="{'is-invalid':formValues['name'].invalid && (formValues['name'].dirty || formValues['name'].touched)}"/>
+                    <div *ngIf="formValues['name'].invalid && (formValues['name'].dirty || formValues['name'].touched)">
+                        <div *ngIf="formValues['name'].errors?.['required']" i18n>
+                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter contact name
+                        </div>
+                        <div *ngIf="formValues['name'].errors?.['maxlength']" i18n>
+                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Contact Name must be exceed 128
+                            letters
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col pt-2-1">
+                    <label class="form-label" for="email" i18n>Email</label>
+                    <input class="form-control"
+                           type="email"
+                           id="email"
+                           required
+                           i18n-placeholder
+                           formControlName="email"
+                           placeholder="Contact Email"
+                           [ngClass]="{'is-invalid': formValues['email'].invalid && (formValues['email'].dirty || formValues['email'].touched)}"/>
+                    
+                    <div *ngIf="formValues['email'].invalid && (formValues['email'].dirty || formValues['email'].touched)">
+                        <div *ngIf="formValues['email'].errors?.['required']" i18n>
+                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter contact email
+                        </div>
+                        <div *ngIf="formValues['email'].errors?.['email']" i18n>
+                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Email must be a valid Email Address
+                        </div>
+                        <div *ngIf="formValues['email'].errors?.['maxlength']" i18n>
+                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Email must be exceed 180 letters
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col pt-2-1">
+                    <label class="form-label" for="phone" i18n>Phone</label>
+                    <input class="form-control"
+                           type="text"
+                           id="phone"
+                           required
+                           i18n-placeholder
+                           placeholder="Contact Phone"
+                           formControlName="phone"
+                           [ngClass]="{'is-invalid': formValues['phone'].invalid && (formValues['phone'].dirty || formValues['phone'].touched)}"/>
+                    
+                    
+                    <div *ngIf="formValues['phone'].invalid && (formValues['phone'].dirty || formValues['phone'].touched)">
+                        <div *ngIf="formValues['phone'].errors?.['required']" i18n>
+                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter contact phone
+                        </div>
+                        <div *ngIf="formValues['phone'].errors?.['pattern']" i18n>
+                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Phone number must be a valid phone
+                            number
+                        </div>
+                        <div *ngIf="formValues['phone'].errors?.['maxlength']" i18n>
+                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Phone number must be exceed 20
+                            letters
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col pt-2-1">
+                    <div>
+                        <label class="form-label" for="notes" i18n>Notes </label>
+                        <div class="label-tips" style="float:right;color: #818791;">Optional</div>
+                    </div>
+                    <textarea id="notes"
+                              class="form-control"
+                              rows="4"
+                              formControlName="notes"
+                              [ngClass]="{'is-invalid': formValues['notes'].invalid && (formValues['notes'].dirty || formValues['notes'].touched)}"></textarea>
+                    <div *ngIf="formValues['notes'].errors?.['maxlength'] && (formValues['notes'].dirty || formValues['notes'].touched)"
+                         i18n>
+                        <i class="fe-alert-triangle invalid-feedback-icon"></i>
+                        Character limit exceeded
+                    </div>
+                    <label class="mt-1-1 label-tips" style="color: #202020cc;">250 symbols left</label>
+                </div>
+            </div>
+            
+            
+            <div class="button-list d-grid" style="margin-top: calc(100% - 95px);">
+                <button class="btn btn-primary d-grid" type="submit" [disabled]="addVendorContactForm.invalid">{{idcontact > 0 ? 'Save' : 'Create'}}
+                </button>
+                <button class="btn btn-outline-primary d-grid" (click)="closeModal($event)">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div class="modal-x" (click)="modalRef.modalRef.dismiss()">
+    <i class="fe-x"></i>
+</div>

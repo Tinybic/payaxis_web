@@ -8,12 +8,17 @@
 }
 
 
+.modal-337 {
+  max-width: 337px !important;
+}
+
+
 .modal-443{
     max-width: 443px !important;
 }
 
-.modal-337 {
-  max-width: 337px !important;
+.modal-483{
+  width: 483px;
 }
 
 .modal-530 {
@@ -108,5 +113,13 @@
     .modal-content{
       border-radius: 8px;
     }
+  }
+}
+
+
+.modal-body.modal-form-control{
+  .form-control{
+    line-height: 16px;
+    color: #202020;
   }
 }

@@ -6,6 +6,7 @@ import { VendorRoutingModule } from './vendor-routing.module';
 import { NgbDropdownModule,  NgbModalModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { VendoraddModule } from './vendoradd/vendoradd.module';
 
+
 @NgModule({
   declarations: [
     VendorlistComponent
@@ -17,7 +18,7 @@ import { VendoraddModule } from './vendoradd/vendoradd.module';
     VendorRoutingModule,
     NgbDropdownModule,
     NgbModalModule,
-    VendoraddModule
+    VendoraddModule,
   ]
 })
 export class VendorModule { }
