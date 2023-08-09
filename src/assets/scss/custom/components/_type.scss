@@ -170,12 +170,24 @@ h6 {
   margin-top: 2.5rem;
 }
 
+.mt-40{
+  margin-top: 40px;
+}
+
 .pt-2-1 {
     padding-top: 1rem !important;
 }
 
+.p-2-1{
+  padding: 1rem;
+}
+
 .padding-12-24 {
   padding: 12px 24px;
+}
+
+.padding-12-16 {
+  padding: 12px 16px;
 }
 
 // Font sizes (Custom)
@@ -391,6 +403,14 @@ h6 {
     line-height: 16px;
     letter-spacing: 0px;
     text-align: left;
+}
+
+.label-tips{
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0.4px;
+  text-align: right;
 }
 
 del {

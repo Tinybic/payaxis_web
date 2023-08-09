@@ -25,242 +25,212 @@
     </div>
 </div>
 <div class="row mt-1-1">
-    <div class="col-md-5">
+    <div class="col">
         <ul ngbNav #nav2="ngbNav" [(activeId)]="tabs1" class="nav-pills navtab-bg nav-justified">
             <li [ngbNavItem]="1">
                 <a ngbNavLink>
                     Details
                 </a>
-
+                <ng-template ngbNavContent>
+                    <div class="card  mt-2-1">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12 headline">
+                                    Vendor Details
+                                </div>
+                            </div>
+                            <div class="row mt-1-1">
+                                <div class="col-md-6">
+                                    <label class="form-label" i18n>Vendor Name</label>
+                                    <input class="form-control" type="text" id="vendorName" [(ngModel)]="vendor.vendorName" required
+                                           i18n-placeholder placeholder="Vendor Name"
+                                           [ngClass]="{'is-invalid':vendorError.vendorName}"/>
+                                    <div *ngIf="vendorError.vendorName" class="invalid-feedback">
+                                        <div i18n>
+                                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter vendor Name
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label" i18n>Type</label>
+                                    <input class="form-control" type="text" id="vendorType" [(ngModel)]="vendor.vendorType" required
+                                           i18n-placeholder placeholder="Type"/>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label" i18n>Cost Code</label>
+                                    <div class="dropdown" ngbDropdown>
+                                        <input class="form-select" type="text" id="vendorcostcodes" [(ngModel)]="vendorcostcodesText"
+                                               required i18n-placeholder placeholder="Cost Code" ngbDropdownToggle/>
+                                        <div style="max-height: 300px; overflow-y: auto;" class="dropdown-menu"
+                                             aria-labelledby="vendorcostcodes" ngbDropdownMenu>
+                                            <div>
+                                                <input type="search" class="form-control form-search"/>
+                                            </div>
+                                            <div *ngFor="let item of costCodeList">
+                                                <div style="color: #215EA9; font-weight: 600; margin-bottom: 8px; margin-top: 8px;"
+                                                     *ngIf="item.costcodelist.length>0">
+                                                    {{item.txtName}}
+                                                </div>
+                                                <div class="mb-1" *ngFor="let costcode of item.costcodelist">
+                                                    <div>
+                                                        <input type="checkbox" class="form-check-input"
+                                                               (change)="costCodeSelect($event,costcode)" id="dropdownCheck">
+                                                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                                                            {{costcode.txtName}}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                        
+                                        </div>
+                                    </div>
+                
+                                </div>
+                            </div>
+                            <div class="row mt-2-1">
+                                <div class="col-md-3">
+                                    <label class="form-label" i18n>Primary Contact</label>
+                                    <input class="form-control" type="text" id="primaryContact" [(ngModel)]="vendor.primaryContact"
+                                           required
+                                           i18n-placeholder placeholder="Contact Name"
+                                           [ngClass]="{'is-invalid':vendorError.primaryContact}"/>
+                                    <div *ngIf="vendorError.primaryContact" class="invalid-feedback">
+                                        <div i18n>
+                                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter contact Name
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label" i18n>Email</label>
+                                    <input class="form-control" type="text" id="email" [(ngModel)]="vendor.email" required
+                                           i18n-placeholder
+                                           placeholder="Email" [ngClass]="{'is-invalid':vendorError.email}"/>
+                                    <div *ngIf="vendorError.email" class="invalid-feedback">
+                                        <div i18n>
+                                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter email
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label" i18n>Phone</label>
+                                    <input class="form-control" type="text" id="phone" [(ngModel)]="vendor.phone" required
+                                           i18n-placeholder
+                                           placeholder="Phone number"/>
+                                </div>
+                
+                                <div class="col-md-3">
+                                    <label class="form-label" i18n>Website</label>
+                                    <input class="form-control" type="text" id="website" [(ngModel)]="vendor.website" required
+                                           i18n-placeholder placeholder="Website"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-12 headline">
+                                            Vendor Location
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1-1">
+                                        <div class="col-md-8">
+                                            <label class="form-label" i18n>Street Address</label>
+                                            <input class="form-control" type="text" id="txtAddress" [(ngModel)]="vendor.txtAddress"
+                                                   required
+                                                   i18n-placeholder placeholder="Street Address"/>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" i18n>Apt,suite,etc</label>
+                                            <input class="form-control" type="text" id="suiteNumber" [(ngModel)]="vendor.suiteNumber"
+                                                   required i18n-placeholder placeholder="Apt,suite,etc"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2-1">
+                                        <div class="col-md-4">
+                                            <label class="form-label" i18n>City</label>
+                                            <input class="form-control" type="text" id="txtCity" [(ngModel)]="vendor.txtCity" required
+                                                   i18n-placeholder placeholder="City"/>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" i18n>State</label>
+                                            <input id="txtState" type="text" class="form-select position-relative"
+                                                   [ngbTypeahead]="searchState" (focus)="focus$.next($any($event).target.value)"
+                                                   placeholder="State" (click)="click$.next($any($event).target.value)"
+                                                   #instance="ngbTypeahead" [(ngModel)]="vendor.txtState"/>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" i18n>Zip Code</label>
+                                            <input class="form-control" type="text" id="txtZipcode" [(ngModel)]="vendor.txtZipcode"
+                                                   required
+                                                   i18n-placeholder placeholder="Zip Code"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6 headline">
+                                            Contracts
+                                        </div>
+                                        <div class="col-md-6 text-end">
+                                            <button class="btn btn-outline-primary ms-2-1" style="padding: 8px 16px;"
+                                                    onclick="document.getElementById('contractsUpload').click()"><i
+                                                    class="fe-plus-square me-1-1"></i>Upload Contract
+                                            </button>
+                                            <input type="file" (change)="uploadContract($event)" class="d-none" id="contractsUpload"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6" *ngFor="let item of vendor.vendorcontracts; let i = index">
+                                            <div style="padding: 8px 16px; border-radius: 8px; border:1px solid #E1E6EF">
+                                                <img src="/assets/images/icon/pdf.png" style="height: 24px;"/>
+                                                &nbsp;&nbsp;
+                                                <span class="bold-600">{{item.fileName}}</span>
+                                                <i class="fe-x float-end text-danger cursor-pointer" (click)="fileDelete(i)"></i>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="vendor.vendorcontracts.length==0" class="col-md-12">
+                                            <span class="text-typeblackdeactivated">No Conrtacts added yet</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
             </li>
             <li [ngbNavItem]="2">
                 <a ngbNavLink>
                     Contacts
                 </a>
-
+                <ng-template ngbNavContent>
+                    <app-vendor-contacts [params]={idvendor}></app-vendor-contacts>
+                </ng-template>
             </li>
             <li [ngbNavItem]="3">
                 <a ngbNavLink>
                     Orders
                 </a>
-
+            
             </li>
             <li [ngbNavItem]="4">
                 <a ngbNavLink>
                     Payment
                 </a>
-
+            
             </li>
         </ul>
-    </div>
-</div>
-<div class="card  mt-2-1">
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-12 headline">
-                Vendor Details
-            </div>
-        </div>
-        <div class="row mt-1-1">
-            <div class="col-md-6">
-                <label class="form-label" i18n>Vendor Name</label>
-                <input autofocus class="form-control" type="text" id="vendorName" [(ngModel)]="vendor.vendorName"
-                    required i18n-placeholder placeholder="Vendor Name"
-                    [ngClass]="{'is-invalid':vendorError.vendorName}" />
-                <div *ngIf="vendorError.vendorName" class="invalid-feedback">
-                    <div i18n>
-                        <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter vendor Name
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <label class="form-label" i18n>Type</label>
-                <input class="form-control" type="text" id="vendorType" [(ngModel)]="vendor.vendorType" required
-                    i18n-placeholder placeholder="Type" />
-            </div>
-            <div class="col-md-3">
-                <label class="form-label" i18n>Cost Code</label>
-                <div class="dropdown" ngbDropdown>
-                    <input class="form-select" type="text" id="vendorcostcodes" [(ngModel)]="vendorcostcodesText"
-                        required i18n-placeholder placeholder="Cost Code" ngbDropdownToggle />
-                    <div style="max-height: 300px; overflow-y: auto;" class="dropdown-menu"
-                        aria-labelledby="vendorcostcodes" ngbDropdownMenu>
-                        <div>
-                            <input type="search" class="form-control form-search" [(ngModel)]="keywords"
-                                (keyup)="costCodeFilter()" />
-                        </div>
-                        <div *ngFor="let item of costCodeList">
-                            <div style="color: #215EA9; font-weight: 600; margin-bottom: 8px; margin-top: 8px;"
-                                *ngIf="item.costcodelist.length>0">
-                                {{item.txtName}}
-                            </div>
-                            <div class="mb-1" *ngFor="let costcode of item.costcodelist">
-                                <div>
-                                    <input type="checkbox" class="form-check-input"
-                                        [checked]="setCostCodeSelect(costcode.costCode)"
-                                        (change)="costCodeSelect($event,costcode)" id="dropdownCheck">
-                                    <label class="form-check-label ms-1-1" for="dropdownCheck">
-                                        {{costcode.txtName}}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        <div class="row mt-2-1">
-            <div class="col-md-3">
-                <label class="form-label" i18n>Primary Contact</label>
-                <input class="form-control" type="text" id="primaryContact" [(ngModel)]="vendor.primaryContact" required
-                    i18n-placeholder placeholder="Contact Name" [ngClass]="{'is-invalid':vendorError.primaryContact}" />
-                <div *ngIf="vendorError.primaryContact" class="invalid-feedback">
-                    <div i18n>
-                        <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter contact Name
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <label class="form-label" i18n>Email</label>
-                <input class="form-control" type="text" id="email" [(ngModel)]="vendor.email" required i18n-placeholder
-                    placeholder="Email" [ngClass]="{'is-invalid':vendorError.email}" />
-                <div *ngIf="vendorError.email" class="invalid-feedback">
-                    <div i18n>
-                        <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter email
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <label class="form-label" i18n>Phone</label>
-                <input class="form-control" type="text" id="phone" [(ngModel)]="vendor.phone" required i18n-placeholder
-                    placeholder="Phone number" />
-            </div>
-
-            <div class="col-md-3">
-                <label class="form-label" i18n>Website</label>
-                <input class="form-control" type="text" id="website" [(ngModel)]="vendor.website" required
-                    i18n-placeholder placeholder="Website" />
-            </div>
-        </div>
+    
+        <div [ngbNavOutlet]="nav2" class="mb-0 b-0 pt-0"></div>
     </div>
 </div>
 
 
 
 
-<div class="row">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12 headline">
-                        Vendor Location
-                    </div>
-                </div>
-                <div class="row mt-1-1">
-                    <div class="col-md-8">
-                        <label class="form-label" i18n>Street Address</label>
-                        <input class="form-control" type="text" id="txtAddress" [(ngModel)]="vendor.txtAddress" required
-                            i18n-placeholder placeholder="Street Address" />
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label" i18n>Apt,suite,etc</label>
-                        <input class="form-control" type="text" id="suiteNumber" [(ngModel)]="vendor.suiteNumber"
-                            required i18n-placeholder placeholder="Apt,suite,etc" />
-                    </div>
-                </div>
-                <div class="row mt-2-1">
-                    <div class="col-md-4">
-                        <label class="form-label" i18n>City</label>
-                        <input class="form-control" type="text" id="txtCity" [(ngModel)]="vendor.txtCity" required
-                            i18n-placeholder placeholder="City" />
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label" i18n>State</label>
-                        <input id="txtState" type="text" class="form-select position-relative"
-                            [ngbTypeahead]="searchState" (focus)="focus$.next($any($event).target.value)"
-                            placeholder="State" (click)="click$.next($any($event).target.value)"
-                            #instance="ngbTypeahead" [(ngModel)]="vendor.txtState" />
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label" i18n>Zip Code</label>
-                        <input class="form-control" type="text" id="txtZipcode" [(ngModel)]="vendor.txtZipcode" required
-                            i18n-placeholder placeholder="Zip Code" />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6 headline">
-                        Files
-                    </div>
-                    <div class="col-md-6 text-end">
-                        <button class="btn btn-outline-primary ms-2-1" style="padding: 8px 16px;"
-                            onclick="document.getElementById('contractsUpload').click()"><i
-                                class="fe-plus-square me-1-1"></i>Upload File</button>
-                        <input type="file" (change)="uploadContract($event)" class="d-none" id="contractsUpload" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 mt-1-1" *ngFor="let item of vendor.vendorcontracts; let i = index">
-                        <div style="padding: 8px 16px; border-radius: 8px; border:1px solid #E1E6EF">
-                            <img src="/assets/images/icon/{{item.fileType}}.png" style="height: 24px;"
-                                onerror="javascript:this.src='/assets/images/icon/dat.png';" />
-                            &nbsp;&nbsp;
-                            <span class="bold-600">{{item.fileName}}</span>
-                            <i class="fe-x float-end text-danger cursor-pointer" (click)="openDeleteModal(i,item)"></i>
-                        </div>
-                    </div>
-                    <div *ngIf="vendor.vendorcontracts.length==0" class="col-md-12">
-                        <span class="text-typeblackdeactivated">No Files added yet</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<ng-template #cancelModal let-modal>
-    <div style="padding: 16px 24px; border-radius: 8px;">
-        <div class="swal2-alert-title text-start">Close without saving</div>
-        <div class="swal2-alert-content text-start">Do you want to close the page? All changes will not be saved.</div>
-
-        <div class="d-flex justify-content-between mt-3">
-            <div class="swal2-alert-link mt-0 line-40 cursor-pointer" (click)="cancelBack()">
-                Cancel
-            </div>
-            <div>
-                <button class="btn btn-outline-primary" (click)="cancelClose()">Close without saving</button>
-                <button class="btn btn-primary ms-2-1" (click)="save()">Save an Close</button>
-            </div>
-        </div>
-
-    </div>
-</ng-template>
-
-<ng-template #deleteModal let-modal>
-    <div style="padding: 16px 24px; border-radius: 8px;">
-        <div class="headline text-start">Delete the files</div>
-        <div class="swal2-alert-content text-start">
-            Do you want to delete this files ?
-        </div>
-        <div class="d-flex justify-content-between mt-3">
-            <div class="swal2-alert-link mt-0 line-40 cursor-pointer" (click)="cancelDelete()">
-                Cancel
-            </div>
-            <div>
-                <button class="btn btn-primary ms-2-1" (click)="fileDelete()">Yes</button>
-            </div>
-        </div>
-    </div>
-</ng-template>
-
-<div class="modal-x" (click)="cancel()">
-    <i class="fe-x"></i>
-</div>

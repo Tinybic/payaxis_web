@@ -8,7 +8,7 @@
                 class="fe-chevron-down ms-1-1"></i></button>
         <button class="btn btn-outline-primary ms-2-1"><i class="fe-download me-1-1"></i>Export<i
                 class="fe-chevron-down ms-1-1"></i></button>
-        <button class="btn btn-primary ms-2-1" (click)="openAddModal()">New Vendor</button>
+        <button class="btn btn-primary ms-2-1" (click)="openAddModal(0)">New Vendor</button>
     </div>
 </div>
 
@@ -95,7 +95,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of vendorlist; let i = index">
+                <tr *ngFor="let item of vendorlist; let i = index" (click)="openAddModal(item.id)" style="cursor: pointer;">
                     <td><input class="form-check" type="checkbox" /></td>
                     <td>
                         <div class="d-flex flex-row bold-600 cursor-pointer" (click) = "openEditModal(item.id)">
@@ -118,7 +118,7 @@
                         <div class="Paragraph-1 text-typeblackdeactivated bold-600  mt-40 ">No Vendors added yet</div>
                         <div class="Paragraph-2 text-typeblackdeactivated mt-1-1">Create new vendor in a few clicks
                         </div>
-                        <div class="mt-1-1"> <button class="btn btn-primary ms-2-1" (click)="openAddModal()"><i
+                        <div class="mt-1-1"> <button class="btn btn-primary ms-2-1" (click)="openAddModal(0)"><i
                                     class="fe-plus-square me-1-1"></i>New Vendor</button></div>
 
                         <div class="Paragraph-2 text-typeblackdeactivated mt-40 ">or import items from the file</div>
@@ -148,4 +148,3 @@
 <ng-template #inviteVendor let-modal>
     <app-vendoradd style="width: calc(100vw - 216px); padding:32px; background-color: #F8F9FC; height: 99vh; overflow-y: auto;" [idvendor] = "idvendor"></app-vendoradd>
 </ng-template>
-
