@@ -102,10 +102,10 @@
             </div>
             
             
-            <div class="button-list d-grid" style="margin-top: calc(100% - 95px);">
-                <button class="btn btn-primary d-grid" type="submit" [disabled]="addVendorContactForm.invalid">{{idcontact > 0 ? 'Save' : 'Create'}}
+            <div class="d-grid" style="width: calc(100% - 48px);position: fixed;bottom: 24px;right: 24px;">
+                <button class="btn btn-primary mb-1-1" type="submit" [disabled]="addVendorContactForm.invalid">{{idcontact > 0 ? 'Save' : 'Create'}}
                 </button>
-                <button class="btn btn-outline-primary d-grid" (click)="closeModal($event)">Cancel</button>
+                <button class="btn btn-outline-primary" (click)="closeModal($event)">Cancel</button>
             </div>
         </form>
     </div>
