@@ -29,13 +29,14 @@ export class VendorlistComponent {
   }
 
   getVendorList() {
-    ;
     if (parseInt(localStorage.getItem('idcompany')) != 0) {
       this.apolloService
-        .query(vendor_list, { idCompany: parseInt(localStorage.getItem('idcompany')) })
+        .query(vendor_list, {
+          idCompany: parseInt(localStorage.getItem('idcompany')),
+        })
         .then((res) => {
           const result = res.vendor_list;
-          
+
           if (!result.error) {
             this.vendorlist = result.data;
             this.VENDOR_LIST = JSON.parse(JSON.stringify(result.data));
@@ -44,13 +45,10 @@ export class VendorlistComponent {
     }
   }
 
-
   searchTable() {
-
     this.vendorlist = this.VENDOR_LIST;
-    this.vendorlist = this.vendorlist.filter(
-      (vendor) =>
-      vendor.vendorName.toLowerCase().includes(this.keywords.toLowerCase()) 
+    this.vendorlist = this.vendorlist.filter((vendor) =>
+      vendor.vendorName.toLowerCase().includes(this.keywords.toLowerCase())
     );
   }
   compare(v1: string | number, v2: string | number): any {
@@ -69,25 +67,32 @@ export class VendorlistComponent {
       const res = this.compare(a[this.sortCloumn], b[this.sortCloumn]);
       return this.direction === 'asc' ? res : -res;
     });
-
   }
-
+  modalRef;
   openAddModal() {
     this.idvendor = 0;
-    this.modalService.open(this.inviteVendor, {
+    this.modalRef = this.modalService.open(this.inviteVendor, {
       modalDialogClass: 'modal-right',
       size: '90vw',
       centered: true,
     });
+
+    this.modalRef.result.then(
+      (res) => {
+        console.log('CloseButton', res);
+      },
+      (dismiss) => {
+        this.getVendorList();
+      }
+    );
   }
 
-  openEditModal(id){
+  openEditModal(id) {
     this.idvendor = id;
     this.modalService.open(this.inviteVendor, {
       modalDialogClass: 'modal-right',
       size: '90vw',
       centered: true,
     });
-   
   }
 }

@@ -214,14 +214,14 @@ export class VendoraddComponent {
               this.vendor.vendorcontracts.push({
                 fileName: file.name,
                 fileSize: file.size,
-                fileType: file.name.substring(file.name.lastIndexOf('.') + 1),
+                fileType: file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase(),
                 fileUrl: this.uploadUrl.split('?')[0],
               });
 
               this.vendorcontractstemp.push({
                 fileName: file.name,
                 fileSize: file.size,
-                fileType: file.name.substring(file.name.lastIndexOf('.') + 1),
+                fileType: file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase(),
                 fileUrl: this.uploadUrl.split('?')[0],
               });
             });
