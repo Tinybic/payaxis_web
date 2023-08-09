@@ -18,7 +18,7 @@
             <span ngbDropdownToggle><i class="fe-more-vertical- font-24 cursor-pointer"></i></span>
             <div class="dropdown-menu" ngbDropdownMenu>
                 <div class="text-danger" ngbDropdownItem>
-                   <i class="fe-trash-2 ms-1-1"></i> Archive Vendor
+                    <i class="fe-trash-2 ms-1-1"></i> Archive Vendor
                 </div>
             </div>
         </div>
@@ -64,8 +64,9 @@
         <div class="row mt-1-1">
             <div class="col-md-6">
                 <label class="form-label" i18n>Vendor Name</label>
-                <input autofocus class="form-control" type="text" id="vendorName" [(ngModel)]="vendor.vendorName" required
-                    i18n-placeholder placeholder="Vendor Name" [ngClass]="{'is-invalid':vendorError.vendorName}" />
+                <input autofocus class="form-control" type="text" id="vendorName" [(ngModel)]="vendor.vendorName"
+                    required i18n-placeholder placeholder="Vendor Name"
+                    [ngClass]="{'is-invalid':vendorError.vendorName}" />
                 <div *ngIf="vendorError.vendorName" class="invalid-feedback">
                     <div i18n>
                         <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter vendor Name
@@ -259,3 +260,7 @@
         </div>
     </div>
 </ng-template>
+
+<div class="modal-x" (click)="cancel()">
+    <i class="fe-x"></i>
+</div>
