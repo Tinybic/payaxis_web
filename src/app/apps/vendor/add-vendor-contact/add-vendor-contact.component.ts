@@ -114,7 +114,7 @@ export class AddVendorContactComponent {
   
   closeModal(e){
     e.preventDefault();
-    this.modalRef.modalRef.close('close');
+    this.modalRef.modalRef.dismiss();
   }
   
 }
