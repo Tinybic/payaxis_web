@@ -48,6 +48,14 @@ $value in $theme-colors {
     letter-spacing: 0.1px;
 }
 
+.activeTag {
+    background-image: url('/assets/images/tagbg.png');
+    background-color: #86EFAC;
+    border-radius: 8px;
+    border: 1px solid #22C55E;
+    padding: 2px 8px
+}
+
 // dark mode
 body[data-layout-color="dark"] {
 

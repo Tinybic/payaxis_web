@@ -16,7 +16,8 @@ export class VendorlistComponent {
   direction = '';
   sortCloumn = '';
   vendorlist = [];
-
+  VENDOR_LIST = [];
+  idvendor = 0;
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
@@ -34,23 +35,59 @@ export class VendorlistComponent {
         .query(vendor_list, { idCompany: parseInt(localStorage.getItem('idcompany')) })
         .then((res) => {
           const result = res.vendor_list;
+          
           if (!result.error) {
             this.vendorlist = result.data;
+            this.VENDOR_LIST = JSON.parse(JSON.stringify(result.data));
           }
         });
     }
   }
 
 
-  searchTable() {}
+  searchTable() {
 
-  onSort(column) {}
+    this.vendorlist = this.VENDOR_LIST;
+    this.vendorlist = this.vendorlist.filter(
+      (vendor) =>
+      vendor.vendorName.toLowerCase().includes(this.keywords.toLowerCase()) 
+    );
+  }
+  compare(v1: string | number, v2: string | number): any {
+    return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
+  }
+
+  onSort(column) {
+    this.sortCloumn = column;
+    if (this.direction == 'desc') {
+      this.direction = 'asc';
+    } else {
+      this.direction = 'desc';
+    }
+
+    this.vendorlist = [...this.vendorlist].sort((a, b) => {
+      const res = this.compare(a[this.sortCloumn], b[this.sortCloumn]);
+      return this.direction === 'asc' ? res : -res;
+    });
+
+  }
 
   openAddModal() {
+    this.idvendor = 0;
     this.modalService.open(this.inviteVendor, {
       modalDialogClass: 'modal-right',
       size: '90vw',
       centered: true,
     });
+  }
+
+  openEditModal(id){
+    this.idvendor = id;
+    this.modalService.open(this.inviteVendor, {
+      modalDialogClass: 'modal-right',
+      size: '90vw',
+      centered: true,
+    });
+   
   }
 }

@@ -1,9 +1,14 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { NgbModal, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { companycostcode_list } from 'src/app/core/gql/costcode';
 import { ApolloService } from 'src/app/core/service/apollo.service';
-import { vendor_new, vendor_update } from 'src/app/core/gql/vendor';
+import {
+  vendor_contract_delete,
+  vendor_info,
+  vendor_new,
+  vendor_update,
+} from 'src/app/core/gql/vendor';
 import {
   Observable,
   OperatorFunction,
@@ -17,15 +22,18 @@ import {
 import { STATES } from 'src/app/pages/forms/forms-advanced/data';
 import { getNewFileName, get_file_url } from 'src/app/core/gql/file';
 import { HttpService } from 'src/app/core/service/http.service';
+import { RtlScrollAxisType } from '@angular/cdk/platform';
 @Component({
   selector: 'app-vendoradd',
   templateUrl: './vendoradd.component.html',
   styleUrls: ['./vendoradd.component.scss'],
 })
 export class VendoraddComponent {
-  @ViewChild('inviteVendor') inviteVendor: any;
+  @ViewChild('cancelModal') cancelModal: any;
+  @ViewChild('deleteModal') deleteModal: any;
+  
   @ViewChild('instance', { static: true }) instance!: NgbTypeahead;
-
+  @Input() public idvendor: number;
   tabs1 = 1;
   vendor = {
     idCompany: 0,
@@ -43,16 +51,19 @@ export class VendoraddComponent {
     vendorcostcodes: [],
     vendorcontracts: [],
   };
+
+  vendorcontractstemp = [];
   vendorError = {
     vendorName: false,
     primaryContact: false,
     email: false,
   };
-
+  keywords = '';
   id = 0;
   revision = 0;
 
   costCodeList = [];
+  COSTCODE_LIST = [];
   fileList = [];
   vendorcostcodesText = '';
   statesList = [];
@@ -69,6 +80,39 @@ export class VendoraddComponent {
   ngOnInit(): void {
     this.statesList = STATES;
     this.getCostCodeList();
+    this.getVendorInfo();
+  }
+
+  getVendorInfo() {
+    if (this.idvendor != 0) {
+      this.apolloService
+        .query(vendor_info, { id: this.idvendor })
+        .then((res) => {
+          const result = res.vendor_info;
+          if (!result.error) {
+            this.revision = result.data.vendor.revision;
+            this.vendor = {
+              idCompany: result.data.vendor.idCompany,
+              vendorName: result.data.vendor.vendorName,
+              vendorType: result.data.vendor.vendorType,
+              primaryContact: result.data.vendor.primaryContact,
+              email: result.data.vendor.email,
+              phone: result.data.vendor.phone,
+              website: result.data.vendor.website,
+              txtAddress: result.data.vendor.txtAddress,
+              suiteNumber: result.data.vendor.suiteNumber,
+              txtCity: result.data.vendor.txtCity,
+              txtState: result.data.vendor.txtState,
+              txtZipcode: result.data.vendor.txtZipcode,
+              vendorcostcodes: [],
+              vendorcontracts: result.data.vendorcontracts,
+            };
+            result.data.vendorcostcodes.forEach((item) => {
+              this.costCodeSelect({ currentTarget: { checked: true } }, item);
+            });
+          }
+        });
+    }
   }
 
   getCostCodeList() {
@@ -80,9 +124,30 @@ export class VendoraddComponent {
           const result = res.companycostcode_list;
           if (!result.error) {
             this.costCodeList = result.data;
+            this.COSTCODE_LIST = JSON.parse(JSON.stringify(result.data));
           }
         });
     }
+  }
+
+  costCodeFilter() {
+    this.costCodeList = this.COSTCODE_LIST;
+    this.costCodeList = this.costCodeList.filter((costcode) => {
+      costcode.costcodelist = costcode.costcodelist.filter((item) =>
+        item.txtName.toLowerCase().includes(this.keywords.toLowerCase())
+      );
+      return costcode;
+    });
+  }
+
+  setCostCodeSelect(costcode) {
+    let result = false;
+    this.vendor.vendorcostcodes.forEach((item) => {
+      if (item.costCode == costcode) {
+        result = true;
+      }
+    });
+    return result;
   }
 
   removeCostCode(item) {
@@ -95,7 +160,6 @@ export class VendoraddComponent {
   }
 
   costCodeSelect(event, item) {
-    console.log(event.currentTarget.checked);
     if (event.currentTarget.checked) {
       this.vendorcostcodesText += item.txtName + ', ';
       this.vendor.vendorcostcodes.push({
@@ -153,6 +217,13 @@ export class VendoraddComponent {
                 fileType: file.name.substring(file.name.lastIndexOf('.') + 1),
                 fileUrl: this.uploadUrl.split('?')[0],
               });
+
+              this.vendorcontractstemp.push({
+                fileName: file.name,
+                fileSize: file.size,
+                fileType: file.name.substring(file.name.lastIndexOf('.') + 1),
+                fileUrl: this.uploadUrl.split('?')[0],
+              });
             });
           }
         });
@@ -160,6 +231,9 @@ export class VendoraddComponent {
   }
 
   save() {
+    try {
+      this.cancelRef.close();
+    } catch {}
     this.vendorError = {
       vendorName: this.vendor.vendorName.trim().length == 0 ? true : false,
       primaryContact:
@@ -174,10 +248,10 @@ export class VendoraddComponent {
     ) {
       let gql = vendor_new;
       let data = {};
-      if (this.id > 0) {
+      if (this.idvendor > 0) {
         gql = vendor_update;
         data = {
-          id: this.id,
+          id: this.idvendor,
           revision: this.revision,
           idCompany: this.vendor.idCompany,
           vendorName: this.vendor.vendorName,
@@ -192,7 +266,7 @@ export class VendoraddComponent {
           txtState: this.vendor.txtState,
           txtZipcode: this.vendor.txtZipcode,
           vendorcostcodes: this.vendor.vendorcostcodes,
-          vendorcontracts: this.vendor.vendorcontracts,
+          vendorcontracts: this.vendorcontractstemp,
         };
       } else {
         data = this.vendor;
@@ -200,15 +274,17 @@ export class VendoraddComponent {
 
       this.apolloService.mutate(gql, data).then((res) => {
         let result;
-        if (this.id > 0) {
-          result = res.company_update;
+        let message = '';
+        if (this.idvendor > 0) {
+          result = res.vendor_update;
+          message = 'Vendor was updated successfully';
         } else {
           result = res.vendor_new;
+          message = 'Vendor was created successfully';
         }
-        let message = '';
+
         if (!result.error) {
-          message = 'Save success';
-          this.id = result.data.id;
+          this.idvendor = result.data.id;
           this.revision = result.data.revision;
           //this.modalService.dismissAll();
         } else {
@@ -219,11 +295,63 @@ export class VendoraddComponent {
     }
   }
 
+  cancelRef;
+
   cancel() {
+    this.cancelRef = this.modalService.open(this.cancelModal, {
+      size: '443',
+      centered: true,
+    });
+  }
+
+  cancelClose() {
     this.modalService.dismissAll();
   }
 
-  fileDelete(index) {
+  cancelBack() {
+    this.cancelRef.close();
+  }
+
+  deleteRef;
+  deleteIndex = 0;
+  deleteItem;
+  openDeleteModal(i,item){
+    this.deleteIndex =i;
+    this.deleteItem = item;
+    this.deleteRef = this.modalService.open(this.deleteModal, {
+      size: '443',
+      centered: true,
+    });
+  }
+
+  cancelDelete(){
+    this.deleteRef.close();
+  }
+
+  fileDelete() {
+    let index= this.deleteIndex;
+    let item = this.deleteItem;
     this.vendor.vendorcontracts.splice(index, 1);
+
+    for (var i = 0; i < this.vendorcontractstemp.length; i++) {
+      if (item.fileUrl == this.vendorcontractstemp[i].fileUrl) {
+        this.vendorcontractstemp.splice(i, 1);
+      }
+    }
+
+    if (item.id) {
+      this.apolloService
+        .mutate(vendor_contract_delete, {
+          idVendor_contract: item.id,
+          revision: item.revision,
+        })
+        .then((res) => {
+          let result = res.vendor_contract_delete;
+          if (result.error) {
+            this.toastrService.info(result.message, '');
+          }
+        });
+    }
+    this.deleteRef.close();
   }
 }
