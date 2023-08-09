@@ -1,7 +1,7 @@
 <div class="row">
-    <div class="col-md-6 headline">
+    <h5 class="col-md-6 bold-700 text-black">
         Vendors
-    </div>
+    </h5>
     <div class="col-md-6 text-end">
         <button class="btn btn-link"><i class="fe-mail me-1-1"></i>Invite</button>
         <button class="btn btn-outline-primary ms-2-1"><i class="fe-upload me-1-1"></i>Import<i
@@ -12,9 +12,9 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row mt-2-1">
     <div class="col-md-8">
-        <span class="font-20 bold-600">12 Vendors</span>
+        <span class="font-20 bold-600">{{vendorlist.length}} Vendors</span>
 
         <div class="d-inline-block dropdown ms-1-1" ngbDropdown>
             <a class="dropdow-outline" href="javascript:void(0)" ngbDropdownToggle>
@@ -24,43 +24,41 @@
             </a>
             <div class="dropdown-menu" ngbDropdownMenu>
                 <div class="mb-2">
-                    <div class="form-check">
+                    <div class="form-check text-center">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                        <label class="form-check-label ms-1-1" for="dropdownCheck">
-                            ALL
+                        <label class="form-check-label ms-1-1 bold-600" for="dropdownCheck">
+                            Active
                         </label>
                     </div>
                 </div>
                 <div class="mb-2">
-                    <div class="form-check">
+                    <div class="form-check text-center">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                        <img src = "/assets/images/icon/open.png" style="height: 24px;" />
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <div class="form-check text-center">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
-                            Approval
+                            <img src = "/assets/images/icon/Overdue.png" style="height: 24px;" />
                         </label>
                     </div>
                 </div>
                 <div class="mb-2">
-                    <div class="form-check">
+                    <div class="form-check text-center">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                        <label class="form-check-label ms-1-1" for="dropdownCheck">
-                            Admin
-                        </label>
-                    </div>
-                </div>
-                <div class="mb-2">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                        <label class="form-check-label ms-1-1" for="dropdownCheck">
-                            Editor
+                        <label class="form-check-label ms-1-1 bold-600 text-info" for="dropdownCheck">
+                            Draft
                         </label>
                     </div>
                 </div>
                 <div>
-                    <div class="form-check">
+                    <div class="form-check text-center">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                        <label class="form-check-label ms-1-1" for="dropdownCheck">
-                            Viewer
-                        </label>
+                        <div class="d-inline-block text-blackprimary-op-50 " style="background-color: #E1E6EF; border-radius: 8px; padding: 2px 8px;">
+                            Archived
+                        </div>
                     </div>
                 </div>
             </div>
@@ -70,7 +68,7 @@
     <div class="col-md-4 text-end mt-2-1">
         <div class="d-inline-block ms-1-1">
             <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords"
-                (keyup.enter)="searchTable()" />
+                (keyup)="searchTable()" />
         </div>
         <!-- end search-->
     </div>
@@ -82,8 +80,8 @@
                 <tr>
                     <th class="row_select"><input class="form-check" type="checkbox" /></th>
                     <th class="sortable"
-                        [ngClass]="{'sorting_asc':sortCloumn == 'firstName' && direction == 'asc','sorting_desc':sortCloumn == 'firstName' && direction == 'desc'}"
-                        (click)="onSort('firstName')">Name</th>
+                        [ngClass]="{'sorting_asc':sortCloumn == 'vendorName' && direction == 'asc','sorting_desc':sortCloumn == 'vendorName' && direction == 'desc'}"
+                        (click)="onSort('vendorName')">Name</th>
                     <th class="sortable"
                         [ngClass]="{'sorting_asc':sortCloumn == 'role' && direction == 'asc','sorting_desc':sortCloumn == 'role' && direction == 'desc'}"
                         (click)="onSort('role')">Status</th>
@@ -100,7 +98,7 @@
                 <tr *ngFor="let item of vendorlist; let i = index">
                     <td><input class="form-check" type="checkbox" /></td>
                     <td>
-                        <div class="d-flex flex-row">
+                        <div class="d-flex flex-row bold-600 cursor-pointer" (click) = "openEditModal(item.id)">
                             {{item.vendorName}}
                         </div>
                     </td>
@@ -148,5 +146,6 @@
     </div>
 </div>
 <ng-template #inviteVendor let-modal>
-    <app-vendoradd style="width: 90vw; padding:32px; background-color: #F8F9FC; height: 99vh; overflow-y: auto;"></app-vendoradd>
+    <app-vendoradd style="width: 90vw; padding:32px; background-color: #F8F9FC; height: 99vh; overflow-y: auto;" [idvendor] = "idvendor"></app-vendoradd>
 </ng-template>
+

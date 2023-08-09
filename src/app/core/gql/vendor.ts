@@ -45,34 +45,49 @@ const vendor_new = gql`
 `;
 
 const vendor_update = gql`
-mutation vendor_update($id: Int!, $revision: Int!, $vendorName: vendorName_String_NotNull_maxLength_128!, $vendorType: vendorType_String_NotNull_maxLength_50!, $primaryContact: primaryContact_String_NotNull_maxLength_50!, $email: email_String_NotNull_maxLength_180_format_email!, $phone: phone_String_NotNull_maxLength_20!, $website: website_String_NotNull_maxLength_180!, $txtAddress: txtAddress_String_NotNull_maxLength_80!, $suiteNumber: suiteNumber_String_NotNull_maxLength_30!, $txtCity: txtCity_String_NotNull_maxLength_80!, $txtState: txtState_String_NotNull_maxLength_80!, $txtZipcode: txtZipcode_String_NotNull_maxLength_10!, $vendorcostcodes: [vendorcostcode!], $vendorcontracts: [vendorcontract!]) {
-  vendor_update(
-    id: $id
-    revision: $revision
-    vendorName: $vendorName
-    vendorType: $vendorType
-    primaryContact: $primaryContact
-    email: $email
-    phone: $phone
-    website: $website
-    txtAddress: $txtAddress
-    suiteNumber: $suiteNumber
-    txtCity: $txtCity
-    txtState: $txtState
-    txtZipcode: $txtZipcode
-    vendorcostcodes: $vendorcostcodes
-    vendorcontracts: $vendorcontracts
+  mutation vendor_update(
+    $id: Int!
+    $revision: Int!
+    $vendorName: vendorName_String_NotNull_maxLength_128!
+    $vendorType: vendorType_String_NotNull_maxLength_50!
+    $primaryContact: primaryContact_String_NotNull_maxLength_50!
+    $email: email_String_NotNull_maxLength_180_format_email!
+    $phone: phone_String_NotNull_maxLength_20!
+    $website: website_String_NotNull_maxLength_180!
+    $txtAddress: txtAddress_String_NotNull_maxLength_80!
+    $suiteNumber: suiteNumber_String_NotNull_maxLength_30!
+    $txtCity: txtCity_String_NotNull_maxLength_80!
+    $txtState: txtState_String_NotNull_maxLength_80!
+    $txtZipcode: txtZipcode_String_NotNull_maxLength_10!
+    $vendorcostcodes: [vendorcostcode!]
+    $vendorcontracts: [vendorcontract!]
   ) {
-    error
-    code
-    message
-    data {
-      id
-      revision
+    vendor_update(
+      id: $id
+      revision: $revision
+      vendorName: $vendorName
+      vendorType: $vendorType
+      primaryContact: $primaryContact
+      email: $email
+      phone: $phone
+      website: $website
+      txtAddress: $txtAddress
+      suiteNumber: $suiteNumber
+      txtCity: $txtCity
+      txtState: $txtState
+      txtZipcode: $txtZipcode
+      vendorcostcodes: $vendorcostcodes
+      vendorcontracts: $vendorcontracts
+    ) {
+      error
+      code
+      message
+      data {
+        id
+        revision
+      }
     }
   }
-}
-
 `;
 
 const vendor_list = gql`
@@ -89,4 +104,70 @@ const vendor_list = gql`
   }
 `;
 
-export { vendor_new, vendor_list, vendor_update };
+const vendor_info = gql`
+  query vendor_info($id: Int!) {
+    vendor_info(id: $id) {
+      error
+      code
+      message
+      data {
+        vendor {
+          id
+          revision
+          vendorName
+          vendorType
+          primaryContact
+          idCompany
+          email
+          phone
+          website
+          txtAddress
+          suiteNumber
+          txtCity
+          txtState
+          txtZipcode
+          active
+        }
+        vendorcostcodes {
+          id
+          revision
+          idVendor
+          costCode
+          txtName
+          active
+        }
+        vendorcontracts {
+          id
+          revision
+          fileName
+          fileSize
+          fileType
+          fileUrl
+          active
+        }
+      }
+    }
+  }
+`;
+
+const vendor_contract_delete = gql`
+  mutation vendor_contract_delete($idVendor_contract: Int!, $revision: Int!) {
+    vendor_contract_delete(
+      idVendor_contract: $idVendor_contract
+      revision: $revision
+    ) {
+      error
+      code
+      message
+      data
+    }
+  }
+`;
+
+export {
+  vendor_new,
+  vendor_list,
+  vendor_update,
+  vendor_info,
+  vendor_contract_delete,
+};
