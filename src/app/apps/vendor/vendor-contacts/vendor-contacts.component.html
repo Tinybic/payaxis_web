@@ -1,6 +1,6 @@
 <div class="row mt-3-1">
     <div class="col-md-8 d-flex align-items-center">
-        <div class="font-20 bold-600">No Contacts</div>
+        <div class="font-20 bold-600">{{vendorContacts.length === 1 ? ' 1 Contact' : vendorContacts.length + ' Contacts'}}</div>
         
         <div *ngIf="false" class="d-inline-block dropdown ms-1-1" ngbDropdown>
             <a class="dropdow-outline" href="javascript:void(0)" ngbDropdownToggle>

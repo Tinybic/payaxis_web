@@ -1,5 +1,5 @@
 <div class="modal-body modal-form-control" style="padding: 32px 24px 24px;">
-    <div class="headline-24">New Contact for [Vendor Name]</div>
+    <div class="headline-24">{{idcontact > 0 ? 'Edit Contact' : 'New Contact for ['+vendorName+']'}} </div>
     
     
     <div class="mt-2-1 p-2-1">
@@ -91,13 +91,15 @@
                               class="form-control"
                               rows="4"
                               formControlName="notes"
+                              (input)="notesChange()"
+                              maxlength="250"
                               [ngClass]="{'is-invalid': formValues['notes'].invalid && (formValues['notes'].dirty || formValues['notes'].touched)}"></textarea>
                     <div *ngIf="formValues['notes'].errors?.['maxlength'] && (formValues['notes'].dirty || formValues['notes'].touched)"
                          i18n>
                         <i class="fe-alert-triangle invalid-feedback-icon"></i>
                         Character limit exceeded
                     </div>
-                    <label class="mt-1-1 label-tips" style="color: #202020cc;">250 symbols left</label>
+                    <label class="mt-1-1 label-tips" style="color: #202020cc;">{{250 - formValues['notes'].value.length}} characters remaining</label>
                 </div>
             </div>
             
