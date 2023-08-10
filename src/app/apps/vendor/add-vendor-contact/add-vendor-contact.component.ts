@@ -6,7 +6,7 @@ import {
 } from '@angular/forms';
 import { ApolloService } from "../../../core/service/apollo.service";
 import { ToastrService } from "ngx-toastr";
-import { vendorcontact_info, vendorcontact_new, vendorcontact_update } from 'src/app/core/gql/vendorContacts'
+import { vendorcontact_info, vendorcontact_new, vendorcontact_update } from 'src/app/core/gql/vendor-contacts'
 
 @Component({
   selector: 'app-add-vendor-contact',

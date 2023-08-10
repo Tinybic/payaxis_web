@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { companycostcode_list } from 'src/app/core/gql/costcode';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import {
-  vendor_contract_delete,
+  vendor_file_delete,
   vendor_info,
   vendor_new,
   vendor_update,
@@ -53,10 +53,10 @@ export class VendoraddComponent {
     txtState: '',
     txtZipcode: '',
     vendorcostcodes: [],
-    vendorcontracts: [],
+    vendorfiles: [],
   };
 
-  vendorcontractstemp = [];
+  vendorfilestemp = [];
   vendorError = {
     vendorName: false,
     primaryContact: false,
@@ -110,7 +110,7 @@ export class VendoraddComponent {
               txtState: result.data.vendor.txtState,
               txtZipcode: result.data.vendor.txtZipcode,
               vendorcostcodes: [],
-              vendorcontracts: result.data.vendorcontracts,
+              vendorfiles: result.data.vendorfiles,
             };
             result.data.vendorcostcodes.forEach((item) => {
               this.costCodeSelect({ currentTarget: { checked: true } }, item);
@@ -205,7 +205,7 @@ export class VendoraddComponent {
   };
 
   uploadUrl = '';
-  uploadContract(event) {
+  uploadFile(event) {
     const file = event.target.files[0];
     if (file) {
       const fileName = getNewFileName(file.name);
@@ -216,14 +216,14 @@ export class VendoraddComponent {
           if (!res.get_file_url.error) {
             this.uploadUrl = res.get_file_url.data;
             this.httpService.put(this.uploadUrl, file).then((res) => {
-              this.vendor.vendorcontracts.push({
+              this.vendor.vendorfiles.push({
                 fileName: file.name,
                 fileSize: file.size,
                 fileType: file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase(),
                 fileUrl: this.uploadUrl.split('?')[0],
               });
 
-              this.vendorcontractstemp.push({
+              this.vendorfilestemp.push({
                 fileName: file.name,
                 fileSize: file.size,
                 fileType: file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase(),
@@ -271,7 +271,7 @@ export class VendoraddComponent {
           txtState: this.vendor.txtState,
           txtZipcode: this.vendor.txtZipcode,
           vendorcostcodes: this.vendor.vendorcostcodes,
-          vendorcontracts: this.vendorcontractstemp,
+          vendorfiles: this.vendorfilestemp,
         };
       } else {
         data = this.vendor;
@@ -336,22 +336,22 @@ export class VendoraddComponent {
   fileDelete() {
     let index= this.deleteIndex;
     let item = this.deleteItem;
-    this.vendor.vendorcontracts.splice(index, 1);
+    this.vendor.vendorfiles.splice(index, 1);
 
-    for (var i = 0; i < this.vendorcontractstemp.length; i++) {
-      if (item.fileUrl == this.vendorcontractstemp[i].fileUrl) {
-        this.vendorcontractstemp.splice(i, 1);
+    for (var i = 0; i < this.vendorfilestemp.length; i++) {
+      if (item.fileUrl == this.vendorfilestemp[i].fileUrl) {
+        this.vendorfilestemp.splice(i, 1);
       }
     }
 
     if (item.id) {
       this.apolloService
-        .mutate(vendor_contract_delete, {
-          idVendor_contract: item.id,
+        .mutate(vendor_file_delete, {
+          idVendor_file: item.id,
           revision: item.revision,
         })
         .then((res) => {
-          let result = res.vendor_contract_delete;
+          let result = res.vendor_file_delete;
           if (result.error) {
             this.toastrService.info(result.message, '');
           }

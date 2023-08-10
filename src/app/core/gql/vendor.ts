@@ -15,7 +15,7 @@ const vendor_new = gql`
     $txtState: txtState_String_NotNull_maxLength_80!
     $txtZipcode: txtZipcode_String_NotNull_maxLength_10!
     $vendorcostcodes: [vendorcostcode!]
-    $vendorcontracts: [vendorcontract!]
+    $vendorfiles: [vendorfile!]
   ) {
     vendor_new(
       idCompany: $idCompany
@@ -31,7 +31,7 @@ const vendor_new = gql`
       txtState: $txtState
       txtZipcode: $txtZipcode
       vendorcostcodes: $vendorcostcodes
-      vendorcontracts: $vendorcontracts
+      vendorfiles: $vendorfiles
     ) {
       error
       code
@@ -60,7 +60,7 @@ const vendor_update = gql`
     $txtState: txtState_String_NotNull_maxLength_80!
     $txtZipcode: txtZipcode_String_NotNull_maxLength_10!
     $vendorcostcodes: [vendorcostcode!]
-    $vendorcontracts: [vendorcontract!]
+    $vendorfiles: [vendorfile!]
   ) {
     vendor_update(
       id: $id
@@ -77,7 +77,7 @@ const vendor_update = gql`
       txtState: $txtState
       txtZipcode: $txtZipcode
       vendorcostcodes: $vendorcostcodes
-      vendorcontracts: $vendorcontracts
+      vendorfiles: $vendorfiles
     ) {
       error
       code
@@ -136,7 +136,7 @@ const vendor_info = gql`
           txtName
           active
         }
-        vendorcontracts {
+        vendorfiles {
           id
           revision
           fileName
@@ -150,10 +150,10 @@ const vendor_info = gql`
   }
 `;
 
-const vendor_contract_delete = gql`
-  mutation vendor_contract_delete($idVendor_contract: Int!, $revision: Int!) {
-    vendor_contract_delete(
-      idVendor_contract: $idVendor_contract
+const vendor_file_delete = gql`
+  mutation vendor_file_delete($idVendor_file: Int!, $revision: Int!) {
+    vendor_file_delete(
+      idVendor_file: $idVendor_file
       revision: $revision
     ) {
       error
@@ -169,5 +169,5 @@ export {
   vendor_list,
   vendor_update,
   vendor_info,
-  vendor_contract_delete,
+  vendor_file_delete,
 };

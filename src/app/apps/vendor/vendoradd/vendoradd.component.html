@@ -195,16 +195,16 @@
                                         </div>
                                         <div class="col-md-6 text-end">
                                             <button class="btn btn-outline-primary ms-2-1" style="padding: 8px 16px;"
-                                                    onclick="document.getElementById('contractsUpload').click()"><i
+                                                    onclick="document.getElementById('filesUpload').click()"><i
                                                     class="fe-plus-square me-1-1"></i>Upload File
                                             </button>
-                                            <input type="file" (change)="uploadContract($event)" class="d-none"
-                                                   id="contractsUpload"/>
+                                            <input type="file" (change)="uploadFile($event)" class="d-none"
+                                                   id="filesUpload"/>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6 mt-1-1"
-                                             *ngFor="let item of vendor.vendorcontracts; let i = index">
+                                             *ngFor="let item of vendor.vendorfiles; let i = index">
                                             <div style="padding: 8px 16px; border-radius: 8px; border:1px solid #E1E6EF">
                                                 <img src="/assets/images/icon/{{item.fileType}}.png"
                                                      style="height: 24px;"
@@ -215,7 +215,7 @@
                                                    (click)="openDeleteModal(i,item)"></i>
                                             </div>
                                         </div>
-                                        <div *ngIf="vendor.vendorcontracts.length==0" class="col-md-12">
+                                        <div *ngIf="vendor.vendorfiles.length==0" class="col-md-12">
                                             <span class="text-typeblackdeactivated">No Files added yet</span>
                                         </div>
                                     </div>
