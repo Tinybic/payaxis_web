@@ -27,6 +27,7 @@ export class AddVendorContactComponent {
   error: string = '';
   idvendor = 0;
   idcontact = 0;
+  vendorName = '';
   revision = 0;
   
   addVendorContactForm: UntypedFormGroup = this.fb.group({
@@ -56,6 +57,7 @@ export class AddVendorContactComponent {
   ngOnInit(): void{
     this.idvendor = this.params.vendorContactParams.idvendor;
     this.idcontact = this.params.vendorContactParams.idcontact;
+    this.vendorName = this.params.vendorContactParams.vendorName;
     if(this.idcontact > 0){
       this.getVendorContacts();
     }
@@ -82,6 +84,9 @@ export class AddVendorContactComponent {
     })
   }
   
+  notesChange(){
+    console.log('**************', this.formValues['notes'].value.length);
+  }
   
   onSubmit(){
     if(this.addVendorContactForm.valid){

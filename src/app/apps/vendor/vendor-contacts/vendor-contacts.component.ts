@@ -28,7 +28,8 @@ export class VendorContactsComponent {
   vendorContacts: Vendor_Contact[] = [];
   vendorContactParams = {
     idvendor: 0,
-    idcontact: 0
+    idcontact: 0,
+    vendorName: ''
   }
   
   
@@ -37,7 +38,6 @@ export class VendorContactsComponent {
     private modalService: NgbModal,
     public  activeModal: NgbActiveModal,
     private toastrService: ToastrService,
-    private httpService: HttpService
   ){}
   
   ngOnInit(): void{
@@ -70,12 +70,13 @@ export class VendorContactsComponent {
     this.modalRef.result.then((result) => {
       this.getVendorContacts();
     }, (reason) => {
-      console.log('=======', reason);
+      console.log(reason);
     })
     
     this.vendorContactParams = {
       idvendor: this.idvendor,
-      idcontact: idcontact
+      idcontact: idcontact,
+      vendorName: this.params.vendor.vendorName
     }
   }
   
