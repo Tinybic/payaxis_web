@@ -99,6 +99,7 @@ const vendor_list = gql`
       data {
         id
         vendorName
+        status
       }
     }
   }
@@ -164,10 +165,22 @@ const vendor_file_delete = gql`
   }
 `;
 
+const vendor_archive = gql`
+mutation vendor_archive($id: Int!, $revision: Int!) {
+  vendor_archive(id: $id, revision: $revision) {
+    error
+    code
+    message
+    data
+  }
+}
+`;
+
 export {
   vendor_new,
   vendor_list,
   vendor_update,
   vendor_info,
   vendor_file_delete,
+  vendor_archive,
 };

@@ -38,7 +38,7 @@ $value in $theme-colors {
     }
 }
 
-.draft {
+.DraftTag {
     color: #60A5FA;
     text-align: center;
     font-size: 12px;
@@ -54,6 +54,13 @@ $value in $theme-colors {
     border-radius: 8px;
     border: 1px solid #22C55E;
     padding: 2px 8px
+}
+
+.ArchivedTag {
+    background-color: #E1E6EF;
+    border-radius: 8px;
+    padding: 2px 8px;
+    color: #20202080;
 }
 
 // dark mode

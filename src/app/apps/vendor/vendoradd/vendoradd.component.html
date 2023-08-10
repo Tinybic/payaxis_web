@@ -17,7 +17,7 @@
         <div class="d-inline-block dropdown ms-1-1" ngbDropdown>
             <span ngbDropdownToggle><i class="fe-more-vertical- font-24 cursor-pointer"></i></span>
             <div class="dropdown-menu" ngbDropdownMenu>
-                <div class="text-danger" ngbDropdownItem>
+                <div class="text-danger cursor-pointer" ngbDropdownItem (click) = "openArchiveModal()">
                     <i class="fe-trash-2 ms-1-1"></i> Archive Vendor
                 </div>
             </div>
@@ -287,6 +287,25 @@
         </div>
     </div>
 </ng-template>
+
+<ng-template #archiveModal let-modal>
+    <div style="padding: 16px 24px; border-radius: 8px;">
+        <div class="headline text-start">Archive the vendor</div>
+        <div class="swal2-alert-content text-start">
+            Do you want to archive this vendor?
+        </div>
+        <div class="d-flex justify-content-between mt-3">
+            <div class="swal2-alert-link mt-0 line-40 cursor-pointer" (click)="cancelArchive()">
+                Cancel
+            </div>
+            <div>
+                <button class="btn btn-primary ms-2-1" (click)="vendor_archive()">Yes</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+
 
 <div class="modal-x" (click)="cancel()">
     <i class="fe-x"></i>
