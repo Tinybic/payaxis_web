@@ -3,7 +3,7 @@ import { ApolloService } from "../../../core/service/apollo.service";
 import { NgbActiveModal, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { HttpService } from "../../../core/service/http.service";
-import { vendorcontact_list, vendorcontract_delete } from 'src/app/core/gql/vendorContacts';
+import { vendorcontact_list, vendor_contact_deactivate } from 'src/app/core/gql/vendor-contacts';
 import { Vendor_Contact } from 'src/app/core/generated/generated';
 
 
@@ -81,11 +81,11 @@ export class VendorContactsComponent {
   
   
   deleteVendorContact(i){
-    this.apolloService.mutate(vendorcontract_delete,{
-      idVendor_contract: this.vendorContacts[i].id,
+    this.apolloService.mutate(vendor_contact_deactivate,{
+      idVendor_contact: this.vendorContacts[i].id,
       revision: this.vendorContacts[i].revision
     }).then((res) => {
-      const result = res.vendor_contract_delete;
+      const result = res.vendor_contact_deactivate;
       if(!result.error){
         this.toastrService.success('Delete success', '');
         this.vendorContacts.splice(i, 1);
@@ -100,6 +100,7 @@ export class VendorContactsComponent {
   openDeleteVendorContact(i){
     this.deleteModalRef = this.modalService.open(this.deleteVendorContactModal, {
       centered: true,
+      size: '483',
       backdrop: 'static'
     })
     this.deleteModalRef.result.then((result) => {

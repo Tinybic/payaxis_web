@@ -97,10 +97,10 @@ mutation vendorcontact_update(
 }
 `
 
-const vendorcontract_delete = gql`
-mutation vendor_contract_delete($idVendor_contract: Int!, $revision: Int!) {
-  vendor_contract_delete(
-    idVendor_contract: $idVendor_contract
+const vendor_contact_deactivate = gql`
+mutation vendor_contact_deactivate($idVendor_contact: Int!, $revision: Int!) {
+  vendor_contact_deactivate(
+    idVendor_contact: $idVendor_contact
     revision: $revision
   ) {
     error
@@ -112,4 +112,4 @@ mutation vendor_contract_delete($idVendor_contract: Int!, $revision: Int!) {
 `
 
 
-export { vendorcontact_list, vendorcontact_info, vendorcontact_new, vendorcontact_update, vendorcontract_delete };
+export { vendorcontact_list, vendorcontact_info, vendorcontact_new, vendorcontact_update, vendor_contact_deactivate };
