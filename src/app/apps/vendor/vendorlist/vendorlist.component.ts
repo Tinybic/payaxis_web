@@ -79,7 +79,7 @@ export class VendorlistComponent {
 
     this.modalRef.result.then(
       (res) => {
-        console.log('CloseButton', res);
+        this.getVendorList();
       },
       (dismiss) => {
         this.getVendorList();
@@ -89,10 +89,19 @@ export class VendorlistComponent {
 
   openEditModal(id) {
     this.idvendor = id;
-    this.modalService.open(this.inviteVendor, {
+    this.modalRef = this.modalService.open(this.inviteVendor, {
       modalDialogClass: 'modal-right',
       size: '90vw',
       centered: true,
     });
+
+    this.modalRef.result.then(
+      (res) => {
+        this.getVendorList();
+      },
+      (dismiss) => {
+        this.getVendorList();
+      }
+    );
   }
 }

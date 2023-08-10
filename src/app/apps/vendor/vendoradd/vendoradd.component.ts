@@ -1,5 +1,9 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { NgbActiveModal, NgbModal, NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbActiveModal,
+  NgbModal,
+  NgbTypeahead,
+} from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { companycostcode_list } from 'src/app/core/gql/costcode';
 import { ApolloService } from 'src/app/core/service/apollo.service';
@@ -8,6 +12,7 @@ import {
   vendor_info,
   vendor_new,
   vendor_update,
+  vendor_archive,
 } from 'src/app/core/gql/vendor';
 import {
   Observable,
@@ -31,11 +36,11 @@ import { RtlScrollAxisType } from '@angular/cdk/platform';
 export class VendoraddComponent {
   @Input() params;
   @Input() public idvendor: number;
-  
+
   @ViewChild('cancelModal') cancelModal: any;
   @ViewChild('deleteModal') deleteModal: any;
   @ViewChild('inviteVendor') inviteVendor: any;
-  
+  @ViewChild('archiveModal') archiveModal: any;
   @ViewChild('instance', { static: true }) instance!: NgbTypeahead;
 
   tabs1 = 1;
@@ -55,6 +60,7 @@ export class VendoraddComponent {
     vendorcostcodes: [],
     vendorfiles: [],
   };
+  vendorTemp;
 
   vendorfilestemp = [];
   vendorError = {
@@ -79,7 +85,7 @@ export class VendoraddComponent {
     private modalService: NgbModal,
     private activeModal: NgbActiveModal,
     private toastrService: ToastrService,
-    private httpService: HttpService,
+    private httpService: HttpService
   ) {}
 
   ngOnInit(): void {
@@ -115,6 +121,7 @@ export class VendoraddComponent {
             result.data.vendorcostcodes.forEach((item) => {
               this.costCodeSelect({ currentTarget: { checked: true } }, item);
             });
+            this.vendorTemp = JSON.parse(JSON.stringify(this.vendor));
           }
         });
     }
@@ -219,14 +226,18 @@ export class VendoraddComponent {
               this.vendor.vendorfiles.push({
                 fileName: file.name,
                 fileSize: file.size,
-                fileType: file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase(),
+                fileType: file.name
+                  .substring(file.name.lastIndexOf('.') + 1)
+                  .toLowerCase(),
                 fileUrl: this.uploadUrl.split('?')[0],
               });
 
               this.vendorfilestemp.push({
                 fileName: file.name,
                 fileSize: file.size,
-                fileType: file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase(),
+                fileType: file.name
+                  .substring(file.name.lastIndexOf('.') + 1)
+                  .toLowerCase(),
                 fileUrl: this.uploadUrl.split('?')[0],
               });
             });
@@ -303,10 +314,33 @@ export class VendoraddComponent {
   cancelRef;
 
   cancel() {
-    this.cancelRef = this.modalService.open(this.cancelModal, {
-      size: '443',
-      centered: true,
-    });
+    if (
+      (this.idvendor == 0 &&
+        (this.vendor.vendorName.length > 0 ||
+          this.vendor.primaryContact.length > 0 ||
+          this.vendor.email.length > 0)) ||
+      (this.idvendor > 0 &&
+        (this.vendor.vendorName != this.vendorTemp.vendorName ||
+          this.vendor.vendorType != this.vendorTemp.vendorType ||
+          this.vendor.primaryContact != this.vendorTemp.primaryContact ||
+          this.vendor.email != this.vendorTemp.email ||
+          this.vendor.phone != this.vendorTemp.phone ||
+          this.vendor.website != this.vendorTemp.website ||
+          this.vendor.txtAddress != this.vendorTemp.txtAddress ||
+          this.vendor.suiteNumber != this.vendorTemp.suiteNumber ||
+          this.vendor.txtCity != this.vendorTemp.txtCity ||
+          this.vendor.txtState != this.vendorTemp.txtState ||
+          this.vendor.txtZipcode != this.vendorTemp.txtZipcode ||
+          JSON.stringify(this.vendor.vendorcostcodes) !=
+            JSON.stringify(this.vendorTemp.vendorcostcodes)))
+    ) {
+      this.cancelRef = this.modalService.open(this.cancelModal, {
+        size: '443',
+        centered: true,
+      });
+    } else {
+      this.modalService.dismissAll();
+    }
   }
 
   cancelClose() {
@@ -320,8 +354,8 @@ export class VendoraddComponent {
   deleteRef;
   deleteIndex = 0;
   deleteItem;
-  openDeleteModal(i,item){
-    this.deleteIndex =i;
+  openDeleteModal(i, item) {
+    this.deleteIndex = i;
     this.deleteItem = item;
     this.deleteRef = this.modalService.open(this.deleteModal, {
       size: '443',
@@ -329,12 +363,12 @@ export class VendoraddComponent {
     });
   }
 
-  cancelDelete(){
+  cancelDelete() {
     this.deleteRef.close();
   }
 
   fileDelete() {
-    let index= this.deleteIndex;
+    let index = this.deleteIndex;
     let item = this.deleteItem;
     this.vendor.vendorfiles.splice(index, 1);
 
@@ -358,5 +392,39 @@ export class VendoraddComponent {
         });
     }
     this.deleteRef.close();
+  }
+
+  archiveRef;
+  openArchiveModal() {
+    this.archiveRef = this.deleteRef = this.modalService.open(
+      this.archiveModal,
+      {
+        size: '443',
+        centered: true,
+      }
+    );
+  }
+
+  cancelArchive() {
+    this.archiveRef.close();
+  }
+
+  vendor_archive() {
+    if (this.idvendor > 0 && this.revision > 0) {
+      this.apolloService
+        .mutate(vendor_archive, {
+          id: this.idvendor,
+          revision: this.revision,
+        })
+        .then((res) => {
+          let result = res.vendor_archive;
+          if (result.error) {
+            this.toastrService.info(result.message, '');
+          } else {
+            this.modalService.dismissAll();
+          }
+        });
+    }
+    this.archiveRef.close();
   }
 }
