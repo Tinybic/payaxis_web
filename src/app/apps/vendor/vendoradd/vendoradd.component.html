@@ -1,17 +1,17 @@
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 d-flex align-items-center">
         <i class="fe-chevron-left"></i>
         <span class="bold-500">All Vendors</span> / <span class="bold-800 text-primary">{{vendor.vendorName}}</span>
     </div>
 </div>
 <div class="row mt-1-1">
     <div class="col-md-6 d-flex align-items-center" style="padding-top: 2px;padding-bottom: 2px;">
-        <span class="headline">{{vendor.vendorName}}</span>
+        <span class="headline" style="line-height: 44px;">{{vendor.vendorName}}&nbsp;</span>
         <div class="d-inline-block ms-1-1 activeTag">
             Active
         </div>
     </div>
-    <div *ngIf="activeNav == 1" class="col-md-6 text-end">
+    <div *ngIf="tabs1 == 1" class="col-md-6 text-end">
         <button class="btn btn-outline-primary ms-2-1" (click)="cancel()">Cancel</button>
         <button class="btn btn-primary ms-2-1" (click)="save()">Save</button>
         <div class="d-inline-block dropdown ms-1-1" ngbDropdown>
@@ -26,7 +26,7 @@
 </div>
 <div class="row mt-1-1">
     <div class="col">
-        <ul ngbNav #nav2="ngbNav" [(activeId)]="tabs1" (navChange)="onNavChange($event)" class="nav-pills navtab-bg ">
+        <ul ngbNav #nav2="ngbNav" [(activeId)]="tabs1"  class="nav-pills navtab-bg ">
             <li [ngbNavItem]="1">
                 <a ngbNavLink>
                     Details
@@ -123,7 +123,7 @@
                                 <div class="col-md-3">
                                     <label class="form-label" i18n>Phone</label>
                                     <input class="form-control" type="text" id="phone" [(ngModel)]="vendor.phone"
-                                           required i18n-placeholder
+                                           required i18n-placeholder mask="(000) 000-0000"
                                            placeholder="Phone number"/>
                                 </div>
                                 
