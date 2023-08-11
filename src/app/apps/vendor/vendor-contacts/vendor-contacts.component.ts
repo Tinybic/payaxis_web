@@ -2,9 +2,9 @@ import { Component, Input, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ApolloService } from "../../../core/service/apollo.service";
 import { NgbActiveModal, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
+import { HttpService } from "../../../core/service/http.service";
 import { vendorcontact_list, vendor_contact_deactivate } from 'src/app/core/gql/vendor-contacts';
 import { Vendor_Contact } from 'src/app/core/generated/generated';
-import { GlobalFunctionsService } from "../../../services/global-functions.service";
 
 
 @Component({
@@ -36,9 +36,8 @@ export class VendorContactsComponent {
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
-    public activeModal: NgbActiveModal,
+    public  activeModal: NgbActiveModal,
     private toastrService: ToastrService,
-    private globalFuns: GlobalFunctionsService
   ){}
   
   ngOnInit(): void{
@@ -56,16 +55,9 @@ export class VendorContactsComponent {
   }
   
   
-  filterTable = (contact: any) => {
-    return contact.contactName.includes(this.keywords) || contact.email.includes(this.keywords) || contact.phone.includes(this.keywords) || contact.notes.includes(this.keywords)
-  }
+  searchTable(){}
   
-  onSort(column){
-    this.sortCloumn = column;
-    const result = this.globalFuns.onSort(this.vendorContacts, this.sortCloumn, this.direction);
-    this.vendorContacts = result.newArray;
-    this.direction = result.direction;
-  }
+  onSort(column){}
   
   openVendorContact(idcontact){
     this.modalRef = this.modalService.open(this.addVendorContactModal, {
@@ -90,7 +82,7 @@ export class VendorContactsComponent {
   
   
   deleteVendorContact(i){
-    this.apolloService.mutate(vendor_contact_deactivate, {
+    this.apolloService.mutate(vendor_contact_deactivate,{
       idVendor_contact: this.vendorContacts[i].id,
       revision: this.vendorContacts[i].revision
     }).then((res) => {
@@ -98,7 +90,7 @@ export class VendorContactsComponent {
       if(!result.error){
         this.toastrService.success('Delete success', '');
         this.vendorContacts.splice(i, 1);
-      } else{
+      }else{
         this.toastrService.error(result.message, '');
       }
     }).catch((error) => {

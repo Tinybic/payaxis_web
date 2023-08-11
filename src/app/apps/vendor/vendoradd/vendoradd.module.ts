@@ -11,15 +11,13 @@ import {
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { VendorContactsComponent } from "../vendor-contacts/vendor-contacts.component";
 import { AddVendorContactComponent } from "../add-vendor-contact/add-vendor-contact.component";
-import { CallbackPipe } from "../../callback.pipe";
-import { provideNgxMask, NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
+
 
 @NgModule({
   declarations: [
     VendoraddComponent,
     VendorContactsComponent,
     AddVendorContactComponent,
-    CallbackPipe
   ],
   imports: [
     CommonModule,
@@ -29,14 +27,9 @@ import { provideNgxMask, NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
     NgbModalModule,
     NgbTypeaheadModule,
     NgbAlertModule,
-    ReactiveFormsModule,
-    NgxMaskDirective,
-    NgxMaskPipe,
+    ReactiveFormsModule
   ],
-  exports: [VendoraddComponent],
-  providers:[
-    provideNgxMask()
-  ]
+  exports: [VendoraddComponent]
 })
 export class VendoraddModule {
 }

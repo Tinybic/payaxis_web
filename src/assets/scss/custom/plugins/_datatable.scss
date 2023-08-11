@@ -3,252 +3,248 @@
 //
 
 .dataTables_wrapper.container-fluid {
-  padding: 0;
+    padding: 0;
 }
 
 .dataTables_wrapper {
-  .dataTables_filter {
-    text-align: right !important;
+    .dataTables_filter {
+        text-align: right !important;
 
-    input {
-      margin-left: 0.5em !important;
-      margin-right: 0 !important;
+        input {
+            margin-left: 0.5em !important;
+            margin-right: 0 !important;
+        }
     }
-  }
 }
 
 table.dataTable {
-  border: 1px solid #73B2FF;
-  border-radius: 16px;
-  border-collapse: separate;
-  border-spacing: 0;
-  width: 100%;
+    border: 1px solid #73B2FF;
+    border-radius: 16px;
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
 
-  tbody {
-    // Multi select table
+    tbody {
+        // Multi select table
 
-    > tr.selected,
-    > tr > .selected {
-      background-color: $primary;
+        >tr.selected,
+        >tr>.selected {
+            background-color: $primary;
 
-      td {
-        border-color: $primary;
-      }
+            td {
+                border-color: $primary;
+            }
+        }
+
+        td {
+            &:focus {
+                outline: none !important;
+            }
+        }
+
+        // Key Tables
+        th.focus,
+        td.focus {
+            outline: 2px solid $primary !important;
+            outline-offset: -1px;
+            color: $primary;
+            background-color: rgba($primary, 0.15);
+        }
     }
-
-    td {
-      &:focus {
-        outline: none !important;
-      }
-    }
-
-    // Key Tables
-    th.focus,
-    td.focus {
-      outline: 2px solid $primary !important;
-      outline-offset: -1px;
-      color: $primary;
-      background-color: rgba($primary, 0.15);
-    }
-  }
 }
 
 .dataTables_info {
-  font-weight: $font-weight-semibold;
+    font-weight: $font-weight-semibold;
 }
 
 // Responsive data table
 table.dataTable.dtr-inline.collapsed {
-  > tbody {
-    > tr[role="row"] {
+    >tbody {
+        >tr[role="row"] {
 
-      > td,
-      > th {
-        &:first-child {
-          &:before {
-            box-shadow: $box-shadow-lg;
-            background-color: $success !important;
-            // top: $table-cell-padding-y;
-          }
+            >td,
+            >th {
+                &:first-child {
+                    &:before {
+                        box-shadow: $box-shadow-lg;
+                        background-color: $success !important;
+                        // top: $table-cell-padding-y;
+                    }
+                }
+            }
         }
-      }
-    }
 
-    > tr.parent {
+        >tr.parent {
 
-      > td,
-      > th {
-        &:first-child {
-          &:before {
-            background-color: $danger;
-            top: $table-cell-padding-y;
-          }
+            >td,
+            >th {
+                &:first-child {
+                    &:before {
+                        background-color: $danger;
+                        top: $table-cell-padding-y;
+                    }
+                }
+            }
         }
-      }
     }
-  }
 }
 
 // Data Table copy button
 div.dt-button-info {
-  background-color: $primary;
-  border: none;
-  color: $white;
-  box-shadow: none;
-  border-radius: 3px;
-  text-align: center;
-  z-index: 21;
-
-  h2 {
-    border-bottom: none;
-    background-color: rgba($white, 0.2);
+    background-color: $primary;
+    border: none;
     color: $white;
-  }
+    box-shadow: none;
+    border-radius: 3px;
+    text-align: center;
+    z-index: 21;
+
+    h2 {
+        border-bottom: none;
+        background-color: rgba($white, 0.2);
+        color: $white;
+    }
 }
 
 @include media-breakpoint-down(md) {
 
-  li.paginate_button.previous,
-  li.paginate_button.next {
-    display: inline-block;
-    font-size: 1.5rem;
-  }
-
-  li.paginate_button {
-    display: none;
-  }
-
-  .dataTables_paginate {
-    ul {
-      text-align: center;
-      display: block;
-      margin: $spacer 0 0 !important;
+    li.paginate_button.previous,
+    li.paginate_button.next {
+        display: inline-block;
+        font-size: 1.5rem;
     }
-  }
 
-  div.dt-buttons {
-    display: inline-table;
-    margin-bottom: $spacer;
-  }
+    li.paginate_button {
+        display: none;
+    }
+
+    .dataTables_paginate {
+        ul {
+            text-align: center;
+            display: block;
+            margin: $spacer 0 0 !important;
+        }
+    }
+
+    div.dt-buttons {
+        display: inline-table;
+        margin-bottom: $spacer;
+    }
 }
 
 table {
-  &.dataTable {
-    & > thead {
+    &.dataTable {
+        &>thead {
 
-      .sorting:before,
-      .sorting:after,
-      .sorting_asc:before,
-      .sorting_asc:after,
-      .sorting_desc:before,
-      .sorting_desc:after,
-      .sorting_asc_disabled:before,
-      .sorting_asc_disabled:after,
-      .sorting_desc_disabled:before,
-      .sorting_desc_disabled:after {
-        bottom: 1em;
-      }
+            .sorting:before,
+            .sorting:after,
+            .sorting_asc:before,
+            .sorting_asc:after,
+            .sorting_desc:before,
+            .sorting_desc:after,
+            .sorting_asc_disabled:before,
+            .sorting_asc_disabled:after,
+            .sorting_desc_disabled:before,
+            .sorting_desc_disabled:after {
+                bottom: 1em;
+            }
+        }
     }
-  }
 }
 
 // custom css
 table.advanced-table {
-  border: 1px solid #73B2FF;
-  border-radius: 16px;
-  border-collapse: separate;
-  border-spacing: 0;
-  width: 100%;
+    border: 1px solid #73B2FF;
+    border-radius: 16px;
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
 
-  &.no-border {
-    border: none;
-  }
+    // Change icons view
+    thead {
+        background-color: #064088;
+        color: #fff;
 
-  // Change icons view
-  thead {
-    background-color: #064088;
-    color: #fff;
+        th {
+            position: relative;
+            cursor: pointer;
+            padding: 12px 16px;
 
-    th {
-      position: relative;
-      cursor: pointer;
-      padding: 12px 16px;
+            &.row_select {
+                width: 45px;
+                max-width: 55px !important;
+            }
 
-      &.row_select {
-        width: 45px;
-        max-width: 55px !important;
-      }
+            &:first-child {
+                border-top-left-radius: 16px;
+                width: 48px
+            }
 
-      &:first-child {
-        border-top-left-radius: 16px;
-        width: 48px
-      }
+            &:last-child {
+                border-top-right-radius: 16px;
+            }
 
-      &:last-child {
-        border-top-right-radius: 16px;
-      }
+            &.sortable {
 
-      &.sortable {
+                &:after {
+                    font-family: "feather" !important;
+                    margin-left: 8px;
+                    content: '\e842';
+                    opacity: 1;
+                    font-weight: 400;
+                }
+            }
 
-        &:after {
-          font-family: "feather" !important;
-          margin-left: 8px;
-          content: '\e842';
-          opacity: 1;
-          font-weight: 400;
+            &.sorting_asc {
+                &:after {
+                    content: "\e845" !important;
+                }
+            }
+
+            &.sorting_desc {
+                &:after {
+                    content: "\e842" !important;
+                }
+            }
         }
-      }
-
-      &.sorting_asc {
-        &:after {
-          content: "\e845" !important;
-        }
-      }
-
-      &.sorting_desc {
-        &:after {
-          content: "\e842" !important;
-        }
-      }
-    }
-  }
-
-  tbody {
-
-    // Select table
-    tr.selected,
-    > tr > .selected {
-      background-color: #{map-get($grays, "100")};
-
-      // td {
-      //     border-color: $primary;
-      // }
     }
 
-    td {
-      border-bottom: 1px solid #E1E6EF;
-      padding: 12px 16px;
+    tbody {
 
-      &:focus {
-        outline: none !important;
-      }
+        // Select table
+        tr.selected,
+        >tr>.selected {
+            background-color: #{map-get($grays, "100")};
+
+            // td {
+            //     border-color: $primary;
+            // }
+        }
+
+        td {
+            border-bottom: 1px solid #E1E6EF;
+            padding: 12px 16px;
+
+            &:focus {
+                outline: none !important;
+            }
+        }
     }
-  }
 }
 
 body[data-layout-color="dark"] {
-  table.advanced-table {
-    tbody {
+    table.advanced-table {
+        tbody {
 
-      // Select table
-      tr.selected,
-      > tr > .selected {
-        background-color: #{map-get($dark-grays, "100")};
+            // Select table
+            tr.selected,
+            >tr>.selected {
+                background-color: #{map-get($dark-grays, "100")};
 
-        // td {
-        //     border-color: $primary;
-        // }
-      }
+                // td {
+                //     border-color: $primary;
+                // }
+            }
+        }
     }
-  }
 }
