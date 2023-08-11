@@ -5,19 +5,19 @@
     </div>
 </div>
 <div class="row mt-1-1">
-    <div class="col-md-6">
+    <div class="col-md-6 d-flex align-items-center" style="padding-top: 2px;padding-bottom: 2px;">
         <span class="headline">{{vendor.vendorName}}</span>
         <div class="d-inline-block ms-1-1 activeTag">
             Active
         </div>
     </div>
-    <div class="col-md-6 text-end">
+    <div *ngIf="activeNav == 1" class="col-md-6 text-end">
         <button class="btn btn-outline-primary ms-2-1" (click)="cancel()">Cancel</button>
         <button class="btn btn-primary ms-2-1" (click)="save()">Save</button>
         <div class="d-inline-block dropdown ms-1-1" ngbDropdown>
             <span ngbDropdownToggle><i class="fe-more-vertical- font-24 cursor-pointer"></i></span>
             <div class="dropdown-menu" ngbDropdownMenu>
-                <div class="text-danger cursor-pointer" ngbDropdownItem (click) = "openArchiveModal()">
+                <div class="text-danger cursor-pointer" ngbDropdownItem (click)="openArchiveModal()">
                     <i class="fe-trash-2 ms-1-1"></i> Archive Vendor
                 </div>
             </div>
@@ -26,7 +26,7 @@
 </div>
 <div class="row mt-1-1">
     <div class="col">
-        <ul ngbNav #nav2="ngbNav" [(activeId)]="tabs1" class="nav-pills navtab-bg " >
+        <ul ngbNav #nav2="ngbNav" [(activeId)]="tabs1" (navChange)="onNavChange($event)" class="nav-pills navtab-bg ">
             <li [ngbNavItem]="1">
                 <a ngbNavLink>
                     Details
@@ -210,7 +210,8 @@
                                                      style="height: 24px; width: 24px;"
                                                      onerror="javascript:this.src='/assets/images/icon/dat.png';"/>
                                                 &nbsp;&nbsp;
-                                                <div class="bold-600" style="flex: 1;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;line-height: 24px;">{{item.fileName}}</div>
+                                                <div class="bold-600"
+                                                     style="flex: 1;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;line-height: 24px;">{{item.fileName}}</div>
                                                 <i class="fe-x float-end text-danger cursor-pointer line-24"
                                                    (click)="openDeleteModal(i,item)"></i>
                                             </div>
@@ -304,7 +305,6 @@
         </div>
     </div>
 </ng-template>
-
 
 
 <div class="modal-x" (click)="cancel()">
