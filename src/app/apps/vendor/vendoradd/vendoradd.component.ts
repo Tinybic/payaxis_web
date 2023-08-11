@@ -83,8 +83,7 @@ export class VendoraddComponent {
   statesList = [];
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
-  
-  activeNav = 1;
+
 
   constructor(
     private apolloService: ApolloService,
@@ -308,6 +307,7 @@ export class VendoraddComponent {
         if (!result.error) {
           this.idvendor = result.data.id;
           this.revision = result.data.revision;
+          this.vendorTemp = JSON.parse(JSON.stringify(data));
           //this.modalService.dismissAll();
         } else {
           message = result.message;
@@ -434,7 +434,4 @@ export class VendoraddComponent {
     this.archiveRef.close();
   }
   
-  onNavChange(changeEvent: NgbNavChangeEvent) {
-    this.activeNav = changeEvent.nextId;
-  }
 }
