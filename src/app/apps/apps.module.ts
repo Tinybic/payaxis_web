@@ -14,10 +14,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AvatarModule } from '../shared/avatar/avatar.module';
 import { CostcodeComponent } from './costcode/costcode.component';
 import { DropdowndataModule } from '../shared/dropdowndata/dropdowndata.module';
-import { CallbackPipe } from "./callback.pipe";
 
 @NgModule({
-  declarations: [WelcomeComponent, CompanyComponent, CostcodeComponent, CallbackPipe],
+  declarations: [WelcomeComponent, CompanyComponent, CostcodeComponent],
   imports: [
     CommonModule,
     FormsModule,
