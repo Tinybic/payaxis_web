@@ -28,6 +28,10 @@ import { STATES } from 'src/app/pages/forms/forms-advanced/data';
 import { getNewFileName, get_file_url } from 'src/app/core/gql/file';
 import { HttpService } from 'src/app/core/service/http.service';
 import { RtlScrollAxisType } from '@angular/cdk/platform';
+import { NgbNavChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+
+
+
 @Component({
   selector: 'app-vendoradd',
   templateUrl: './vendoradd.component.html',
@@ -79,6 +83,8 @@ export class VendoraddComponent {
   statesList = [];
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
+  
+  activeNav = 1;
 
   constructor(
     private apolloService: ApolloService,
@@ -426,5 +432,9 @@ export class VendoraddComponent {
         });
     }
     this.archiveRef.close();
+  }
+  
+  onNavChange(changeEvent: NgbNavChangeEvent) {
+    this.activeNav = changeEvent.nextId;
   }
 }
