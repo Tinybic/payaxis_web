@@ -57,7 +57,8 @@ export class VendorContactsComponent {
   
   
   filterTable = (contact: any) => {
-    return contact.contactName.includes(this.keywords) || contact.email.includes(this.keywords) || contact.phone.includes(this.keywords) || contact.notes.includes(this.keywords)
+    let values = Object.values(contact);
+    return values.some(v => v.toString().toLowerCase().includes(this.keywords.toLowerCase()));
   }
   
   onSort(column){
