@@ -28,7 +28,6 @@ import { STATES } from 'src/app/pages/forms/forms-advanced/data';
 import { getNewFileName, get_file_url } from 'src/app/core/gql/file';
 import { HttpService } from 'src/app/core/service/http.service';
 import { RtlScrollAxisType } from '@angular/cdk/platform';
-import { NgbNavChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 
 
 
