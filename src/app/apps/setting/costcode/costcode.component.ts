@@ -24,6 +24,8 @@ export class CostcodeComponent {
   @ViewChild('addcategory') addcategory: any;
   @ViewChild('deletecategory') deletecategory: any;
   @ViewChild('deletecostcode') deletecostcode: any;
+  @ViewChild('cancelcostcode') cancelcostcode: any;
+  @ViewChild('cancelcategory') cancelcategory: any;
 
   keywords = '';
   direction = '';
@@ -84,11 +86,13 @@ export class CostcodeComponent {
     this.costcode.category = event.txtName;
     this.costcode.idcategory = event.id;
   }
+
   onSort(event) {}
   searchTable() {}
 
+  categoryListRef;
   openCategoryEditModal() {
-    this.modalService.open(this.categorylist, {
+    this.categoryListRef = this.modalService.open(this.categorylist, {
       modalDialogClass: 'modal-right',
       size: '530',
       centered: true,
@@ -223,13 +227,44 @@ export class CostcodeComponent {
       });
   }
 
+  cancelCostCodeCategoryRef;
+  openCancelCategory() {
+    if (this.costCodeCateGoryNewList.length == 0) {
+      this.categoryListRef.close();
+    } else {
+      this.cancelCostCodeCategoryRef = this.modalService.open(
+        this.cancelcategory,
+        {
+          size: '530',
+          centered: true,
+        }
+      );
+    }
+  }
+
+  cancelCategory() {
+    this.cancelCostCodeCategoryRef.close();
+  }
+
+  closeCancelCategory() {
+    this.cancelCostCodeCategoryRef.close();
+    this.categoryListRef.close();
+  }
+
+  SaveCancelCategory() {
+    this.cancelCostCodeCategoryRef.close();
+    this.saveCostCodeCategory();
+  }
+
   addmodalref;
+  costcodeButtonText = 'Create';
   openAddModal() {
     this.addmodalref = this.modalService.open(this.addcostcode, {
       modalDialogClass: 'modal-right',
       size: '530',
       centered: true,
     });
+    this.costcodeButtonText = 'Create';
   }
 
   createCostCode() {
@@ -311,6 +346,15 @@ export class CostcodeComponent {
       });
   }
 
+  costcodetemp = {
+    txtName: '',
+    category: '',
+    idcategory: 0,
+    revision: 0,
+    txtNotes: '',
+    costCode: '',
+  };
+
   updateCostCode(item) {
     this.costcode.txtName = item.txtName;
     this.costcode.category = item.category;
@@ -319,6 +363,51 @@ export class CostcodeComponent {
     this.costcode.txtNotes = item.txtNotes;
     this.costcode.costCode = item.costCode;
     this.costcode.id = item.id;
+    this.costcodeButtonText = 'Save changes';
+
+    this.costcodetemp.txtName = item.txtName;
+    this.costcodetemp.category = item.category;
+    this.costcodetemp.idcategory = item.idcategory;
+    this.costcodetemp.revision = item.revision;
+    this.costcodetemp.txtNotes = item.txtNotes;
+    this.costcodetemp.costCode = item.costCode;
     this.openAddModal();
+  }
+
+  cancelCostCodeRef;
+  openCancelCostCode() {
+    console.log();
+    if (
+      (this.costcode.id == 0 &&
+        this.costcode.txtName.length == 0 &&
+        this.costcode.costCode.length == 0) ||
+      (this.costcode.id > 0 &&
+        this.costcodetemp.txtName == this.costcode.txtName &&
+        this.costcodetemp.category == this.costcode.category &&
+        this.costcodetemp.idcategory == this.costcode.idcategory &&
+        this.costcodetemp.txtNotes == this.costcode.txtNotes &&
+        this.costcodetemp.costCode == this.costcode.costCode)
+    ) {
+      this.addmodalref.close();
+    } else {
+      this.cancelCostCodeRef = this.modalService.open(this.cancelcostcode, {
+        size: '530',
+        centered: true,
+      });
+    }
+  }
+
+  cancelCostCode() {
+    this.cancelCostCodeRef.close();
+  }
+
+  closeCancelCostCode() {
+    this.cancelCostCodeRef.close();
+    this.addmodalref.close();
+  }
+
+  SaveCancelCostCode() {
+    this.cancelCostCodeRef.close();
+    this.createCostCode();
   }
 }

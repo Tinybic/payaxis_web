@@ -32,7 +32,8 @@
                         [ngClass]="{'sorting_asc':sortCloumn == 'vendorName' && direction == 'asc','sorting_desc':sortCloumn == 'vendorName' && direction == 'desc'}"
                         (click)="onSort('vendorName')">
                         Category
-                        <span class="text-info ms-1-1" (click)="openCategoryEditModal()"><i class="fe-edit-1"></i> Edit Categories</span>
+                        <span class="text-info ms-1-1" (click)="openCategoryEditModal()"><i class="fe-edit-1"></i> Edit
+                            Categories</span>
                     </th>
                     <th class="sortable"
                         [ngClass]="{'sorting_asc':sortCloumn == 'status' && direction == 'asc','sorting_desc':sortCloumn == 'status' && direction == 'desc'}"
@@ -47,7 +48,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="cursor-pointer" *ngFor="let item of costcodelist; let i = index" (click) = "updateCostCode(item)">
+                <tr class="cursor-pointer" *ngFor="let item of costcodelist; let i = index"
+                    (click)="updateCostCode(item)">
                     <td><input class="form-check" type="checkbox" /></td>
                     <td>
                         {{item.category}}
@@ -61,7 +63,7 @@
                     <td> {{item.costCode}}</td>
                     <td>
                         <i class="fe-edit-1"></i>&nbsp;
-                        <i class="fe-trash-2 cursor-pointer" (click) = "confirmDeleteCostCode(i,item.txtName)"></i>
+                        <i class="fe-trash-2 cursor-pointer" (click)="confirmDeleteCostCode(i,item.txtName)"></i>
                     </td>
                 </tr>
             </tbody>
@@ -121,7 +123,8 @@
             <div class="row mt-2-1">
                 <div class="col-md-12">
                     <label class="form-label" i18n>Category</label>
-                    <div class="d-inline-block float-end text-primary line-24 cursor-pointer" (click)="openCategoryEditModal()"><i class="fe-plus-square"></i> Create New Category</div>
+                    <div class="d-inline-block float-end text-primary line-24 cursor-pointer"
+                        (click)="openCategoryEditModal()"><i class="fe-plus-square"></i> Create New Category</div>
                     <div ngbDropdown class="mt-sm-0 mt-2">
                         <input class="form-select position-relative" type="text" id="Class" i18n-placeholder
                             placeholder="Class" [(ngModel)]="costcode.category" ngbDropdownToggle />
@@ -145,12 +148,13 @@
         <div style="height: 105px;">
             <div class="row">
                 <div class="col-md-12 d-grid">
-                    <button class="btn btn-primary" (click)="createCostCode()"  [disabled] = "costcode.txtName.length ==0">Create</button>
+                    <button class="btn btn-primary" (click)="createCostCode()"
+                        [disabled]="costcode.txtName.length ==0">Create</button>
                 </div>
             </div>
             <div class="row mt-2-1">
                 <div class="col-md-12 d-grid">
-                    <button class="btn btn-outline-primary" (click)="modal.dismiss()">Cancel</button>
+                    <button class="btn btn-outline-primary" (click)="openCancelCostCode()">Cancel</button>
                 </div>
             </div>
         </div>
@@ -169,19 +173,21 @@
                 </div>
             </div>
             <div class="row mt-2-1" *ngFor="let item of costCodeCategoryList; let i = index">
-                <div class="col-md-10" *ngIf="!item.edit" (click) = "modifyCostCodeCategory(i)">
+                <div class="col-md-10" *ngIf="!item.edit" (click)="modifyCostCodeCategory(i)">
                     <span class="bold-600">{{item.txtName}}</span> {{item.costcodecount}}
                 </div>
                 <div class="col-md-10" *ngIf="item.edit">
-                    <input class="form-control" type="text" id="itemname" required i18n-placeholder placeholder="Enter Name"
-                        [(ngModel)]="item.txtName" />
+                    <input class="form-control" type="text" id="itemname" required i18n-placeholder
+                        placeholder="Enter Name" [(ngModel)]="item.txtName" />
                 </div>
                 <div class="col-md-2 text-end">
                     <i *ngIf="!item.edit" class="fe-trash-2 cursor-pointer text-primary"
                         (click)="confirmDeleteCostCodeCategory(i,item.txtName,item.costcodecount)"></i>
-                    <i *ngIf="item.edit" class="fe-check text-success line-40 cursor-pointer" (click) = "updateCostCodeCategory(i)"></i>
+                    <i *ngIf="item.edit" class="fe-check text-success line-40 cursor-pointer"
+                        (click)="updateCostCodeCategory(i)"></i>
                     &nbsp;&nbsp;
-                    <i *ngIf="item.edit" class="fe-x text-danger line-40 cursor-pointer" (click) = "cancelModifyCostCodeCategory(i)"></i>
+                    <i *ngIf="item.edit" class="fe-x text-danger line-40 cursor-pointer"
+                        (click)="cancelModifyCostCodeCategory(i)"></i>
                 </div>
             </div>
         </div>
@@ -193,7 +199,7 @@
             </div>
             <div class="row mt-2-1">
                 <div class="col-md-12 d-grid">
-                    <button class="btn btn-outline-primary" (click)="modal.dismiss()">Cancel</button>
+                    <button class="btn btn-outline-primary" (click)="openCancelCategory()">Cancel</button>
                 </div>
             </div>
         </div>
@@ -215,7 +221,8 @@
         <div style="height: 105px;">
             <div class="row">
                 <div class="col-md-12 d-grid">
-                    <button class="btn btn-primary" (click)="createCostCodeCategory()" [disabled] = "costcodeCategoryName.length ==0" >Create</button>
+                    <button class="btn btn-primary" (click)="createCostCodeCategory()"
+                        [disabled]="costcodeCategoryName.length ==0">Create</button>
                 </div>
             </div>
             <div class="row mt-2-1">
@@ -226,7 +233,6 @@
         </div>
     </div>
 </ng-template>
-
 
 <ng-template #deletecategory let-modal>
     <div class="modal-body">
@@ -245,8 +251,6 @@
     </div>
 </ng-template>
 
-
-
 <ng-template #deletecostcode let-modal>
     <div class="modal-body">
         <div class="headline text-start">Deleting Cost Code</div>
@@ -259,6 +263,40 @@
             </div>
             <div>
                 <button class="btn btn-primary ms-2-1" (click)="deleteCostCode()">Confirm</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #cancelcostcode let-modal>
+    <div style="padding: 16px 24px; border-radius: 8px;">
+        <div class="swal2-alert-title text-start">Close without saving</div>
+        <div class="swal2-alert-content text-start">Do you want to close the page? All changes will not be saved.</div>
+
+        <div class="d-flex justify-content-between mt-3">
+            <div class="swal2-alert-link mt-0 line-40 cursor-pointer" (click) = "cancelCostCode()">
+                Cancel
+            </div>
+            <div>
+                <button class="btn btn-outline-primary" (click) = "closeCancelCostCode()">Close without saving</button>
+                <button class="btn btn-primary ms-2-1" (click) = "SaveCancelCostCode()">Save an Close</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #cancelcategory let-modal>
+    <div style="padding: 16px 24px; border-radius: 8px;">
+        <div class="swal2-alert-title text-start">Close without saving</div>
+        <div class="swal2-alert-content text-start">Do you want to close the page? All changes will not be saved.</div>
+
+        <div class="d-flex justify-content-between mt-3">
+            <div class="swal2-alert-link mt-0 line-40 cursor-pointer" (click) = "cancelCategory()">  
+                Cancel
+            </div>
+            <div>
+                <button class="btn btn-outline-primary" (click) = "closeCancelCategory()">Close without saving</button>
+                <button class="btn btn-primary ms-2-1" (click) = "SaveCancelCategory()">Save an Close</button>
             </div>
         </div>
     </div>
