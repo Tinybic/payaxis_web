@@ -64,6 +64,14 @@ export type Mutation = {
   company_new: Comresult;
   /** update company details */
   company_update: Comresult;
+  /** deactivate company_category */
+  companycategory_deactivate: Costcodedeactivateeresult;
+  /** new company_category */
+  companycategory_new: Costcodedeactivateeresult;
+  /** update company_category */
+  companycategory_update: Costcoderesult;
+  /** deactivate company_costcode */
+  companycostcode_deactivate: Costcodedeactivateeresult;
   /** import company_costcode from QuickBooks */
   companycostcode_import: Costcoderesult;
   /** import company_costcode from CSV */
@@ -165,6 +173,35 @@ export type MutationCompany_UpdateArgs = {
 
 
 /** structure to handle table sms */
+export type MutationCompanycategory_DeactivateArgs = {
+  idCompany_category: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationCompanycategory_NewArgs = {
+  companycategories?: InputMaybe<Array<Companycategory>>;
+  idCompany: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationCompanycategory_UpdateArgs = {
+  id: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+  txtName: Scalars['txtName_String_NotNull_maxLength_128']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationCompanycostcode_DeactivateArgs = {
+  idCompany_costcode: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
 export type MutationCompanycostcode_ImportArgs = {
   idCompany: Scalars['Int']['input'];
   importCostcodes?: InputMaybe<Array<Importcostcode>>;
@@ -180,9 +217,9 @@ export type MutationCompanycostcode_ImportcsvArgs = {
 
 /** structure to handle table sms */
 export type MutationCompanycostcode_NewArgs = {
-  category: Scalars['category_String_NotNull_maxLength_50']['input'];
   costCode: Scalars['costCode_String_NotNull_maxLength_15']['input'];
   idCompany: Scalars['Int']['input'];
+  idcategory: Scalars['Int']['input'];
   txtName: Scalars['txtName_String_NotNull_maxLength_128']['input'];
   txtNotes: Scalars['txtNotes_String_NotNull_maxLength_512']['input'];
 };
@@ -190,8 +227,8 @@ export type MutationCompanycostcode_NewArgs = {
 
 /** structure to handle table sms */
 export type MutationCompanycostcode_UpdateArgs = {
-  category: Scalars['category_String_NotNull_maxLength_50']['input'];
   id: Scalars['Int']['input'];
+  idcategory: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
   txtName: Scalars['txtName_String_NotNull_maxLength_128']['input'];
   txtNotes: Scalars['txtNotes_String_NotNull_maxLength_512']['input'];
@@ -465,11 +502,10 @@ export type Company = {
 export type Company_Category = {
   __typename?: 'company_category';
   active: Scalars['Boolean']['output'];
-  costcodelist?: Maybe<Array<Maybe<Company_Costcode>>>;
+  costcodecount: Scalars['Int']['output'];
   createdBy: Scalars['Int']['output'];
   createdDate: Scalars['String']['output'];
   id: Scalars['Int']['output'];
-  idCategory: Scalars['Int']['output'];
   idCompany: Scalars['Int']['output'];
   modifiedBy: Scalars['Int']['output'];
   modifiedDate: Scalars['String']['output'];
@@ -487,6 +523,7 @@ export type Company_Costcode = {
   createdDate: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   idCompany: Scalars['Int']['output'];
+  idcategory: Scalars['Int']['output'];
   modifiedBy: Scalars['Int']['output'];
   modifiedDate: Scalars['String']['output'];
   revision: Scalars['Int']['output'];
@@ -528,6 +565,10 @@ export type Company_Role = {
   txtName: Scalars['String']['output'];
 };
 
+export type Companycategory = {
+  txtName: Scalars['txtName_String_NotNull_maxLength_128']['input'];
+};
+
 export type Companycategorylist = {
   __typename?: 'companycategorylist';
   code: Scalars['Int']['output'];
@@ -539,7 +580,7 @@ export type Companycategorylist = {
 export type Companycostcodelist = {
   __typename?: 'companycostcodelist';
   code: Scalars['Int']['output'];
-  data?: Maybe<Array<Company_Category>>;
+  data?: Maybe<Array<Company_Costcode>>;
   error: Scalars['Boolean']['output'];
   message: Scalars['String']['output'];
 };
@@ -606,13 +647,20 @@ export type Comresult = {
   message: Scalars['String']['output'];
 };
 
+export type Costcodedeactivateeresult = {
+  __typename?: 'costcodedeactivateeresult';
+  code: Scalars['Int']['output'];
+  data: Scalars['Boolean']['output'];
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
 export type Costcodeidrevision = {
   __typename?: 'costcodeidrevision';
   id: Scalars['Int']['output'];
   revision: Scalars['Int']['output'];
 };
 
-/** structure to handle responses when updating information */
 export type Costcoderesult = {
   __typename?: 'costcoderesult';
   code: Scalars['Int']['output'];
