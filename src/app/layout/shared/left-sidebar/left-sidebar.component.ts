@@ -92,7 +92,7 @@ export class LeftSidebarComponent implements OnInit {
     localStorage.setItem('companyName', name);
     localStorage.setItem('idUserOwner',idUserOwner);
     this.toastrService.info('Switch to Company ' + name, 'Successful');
-    this.router.navigate(['apps/company'])
+    this.router.navigate(['apps/setting'])
   }
 
   ngOnChanges(): void {
