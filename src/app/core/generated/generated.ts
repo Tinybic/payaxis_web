@@ -70,6 +70,8 @@ export type Mutation = {
   companycategory_new: Costcodedeactivateeresult;
   /** update company_category */
   companycategory_update: Costcoderesult;
+  /** activate company_costcode */
+  companycostcode_activate: Costcodedeactivateeresult;
   /** deactivate company_costcode */
   companycostcode_deactivate: Costcodedeactivateeresult;
   /** import company_costcode from QuickBooks */
@@ -191,6 +193,13 @@ export type MutationCompanycategory_UpdateArgs = {
   id: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
   txtName: Scalars['txtName_String_NotNull_maxLength_128']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationCompanycostcode_ActivateArgs = {
+  idCompany_costcode: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
 };
 
 
@@ -370,6 +379,8 @@ export type MutationVendorcontact_UpdateArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  /** get category-costcode list */
+  categorycostcode_list: Companycategorylist;
   /** get company details for the loging user */
   company_details: Companydetails;
   /** get company details for one company */
@@ -402,6 +413,11 @@ export type Query = {
   vendorcontact_info: Vendorcontactinforesult;
   /** get vendor_contact list */
   vendorcontact_list: Vendorcontactlist;
+};
+
+
+export type QueryCategorycostcode_ListArgs = {
+  idCompany: Scalars['Int']['input'];
 };
 
 
@@ -503,6 +519,7 @@ export type Company_Category = {
   __typename?: 'company_category';
   active: Scalars['Boolean']['output'];
   costcodecount: Scalars['Int']['output'];
+  costcodelist?: Maybe<Array<Maybe<Company_Costcode>>>;
   createdBy: Scalars['Int']['output'];
   createdDate: Scalars['String']['output'];
   id: Scalars['Int']['output'];

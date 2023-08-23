@@ -5,19 +5,44 @@
     </div>
     <div class="col-md-6 text-end">
         <div class="d-inline-block form-check form-switch line-24  me-2-1">
-            <input type="checkbox" id="customSwitch1" class="form-check-input me-1-1" checked="checked" />
+            <input type="checkbox" id="customSwitch1" class="form-check-input me-1-1" [(ngModel)]="showArchived" />
             <label for="customSwitch1" class="form-check-label align-middle">Show Archived</label>
         </div>
         <div class="d-inline-block">
-            <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords"
-                (keyup)="searchTable()" />
+            <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords" />
         </div>
         <div class="d-inline-block">
-            <button class="btn btn-outline-primary ms-2-1"><i class="fe-upload me-1-1"></i>Import<i
-                    class="fe-chevron-down ms-1-1"></i></button>
-            <button class="btn btn-outline-primary ms-2-1"><i class="fe-download me-1-1"></i>Export<i
-                    class="fe-chevron-down ms-1-1"></i></button>
-            <button class="btn btn-primary ms-2-1" (click)="openAddModal()"><i class="fe-plus-square me-1-1"></i>New
+
+            <div ngbDropdown class="d-inline-block  ms-2-1">
+                <button class="btn btn-outline-primary" ngbDropdownToggle><i class="fe-upload me-1-1"></i>Import<i
+                        class="fe-chevron-down ms-1-1"></i></button>
+
+                <input id="csvupload" type="file" (change)="importCostCodeFromCSV($event)" accept=".csv"
+                    class="d-none" />
+                <div ngbDropdownMenu style="width: 255px; padding: 0;">
+                    <div class="line-32 bold-600 cursor-pointer" ngbDropdownItem>Import from QuickBooks <img
+                            class="float-end mt-1" src="/assets/images/icon/qb.png" /></div>
+                    <div class="line-32 bold-600 cursor-pointer" ngbDropdownItem
+                        onclick="document.getElementById('csvupload').click()">Import from CSV <img
+                            class="float-end mt-1" src="/assets/images/icon/csv.png" /></div>
+                </div>
+            </div>
+
+            <div ngbDropdown class="d-inline-block  ms-2-1">
+                <button class="btn btn-outline-primary" ngbDropdownToggle><i class="fe-download me-1-1"></i>Export<i
+                        class="fe-chevron-down ms-1-1"></i></button>
+
+                <div ngbDropdownMenu style="width: 255px; padding: 0;">
+                    <div class="line-32 bold-600 cursor-pointer" ngbDropdownItem>Export to QuickBooks <img
+                            class="float-end mt-1" src="/assets/images/icon/qb.png" /></div>
+                    <div class="line-32 bold-600 cursor-pointer" ngbDropdownItem>Export to CSV <img
+                            class="float-end mt-1" src="/assets/images/icon/csv.png" /></div>
+                    <div class="line-32 bold-600 cursor-pointer" ngbDropdownItem>Export CSV Template <img
+                            class="float-end mt-1" src="/assets/images/icon/csv.png" /></div>
+                </div>
+            </div>
+
+            <button class="btn btn-primary ms-2-1" (click)="openAddModal('Create')"><i class="fe-plus-square me-1-1"></i>New
                 Cost Code</button>
         </div>
     </div>
@@ -28,30 +53,31 @@
             <thead>
                 <tr>
                     <th class="row_select"><input class="form-check" type="checkbox" /></th>
-                    <th class="sortable"
-                        [ngClass]="{'sorting_asc':sortCloumn == 'vendorName' && direction == 'asc','sorting_desc':sortCloumn == 'vendorName' && direction == 'desc'}"
-                        (click)="onSort('vendorName')">
+                    <th style="width: 120px;" class="sortable"
+                        [ngClass]="{'sorting_asc':sortCloumn == 'category' && direction == 'asc','sorting_desc':sortCloumn == 'category' && direction == 'desc'}"
+                        (click)="onSort('category')">
                         Category
+                    </th>
+                    <th>
                         <span class="text-info ms-1-1" (click)="openCategoryEditModal()"><i class="fe-edit-1"></i> Edit
                             Categories</span>
                     </th>
                     <th class="sortable"
-                        [ngClass]="{'sorting_asc':sortCloumn == 'status' && direction == 'asc','sorting_desc':sortCloumn == 'status' && direction == 'desc'}"
-                        (click)="onSort('status')">Name</th>
+                        [ngClass]="{'sorting_asc':sortCloumn == 'txtName' && direction == 'asc','sorting_desc':sortCloumn == 'txtName' && direction == 'desc'}"
+                        (click)="onSort('txtName')">Name</th>
                     <th class="sortable"
-                        [ngClass]="{'sorting_asc':sortCloumn == 'approvalAmount' && direction == 'asc','sorting_desc':sortCloumn == 'approvalAmount' && direction == 'desc'}"
-                        (click)="onSort('approvalAmount')">Description</th>
+                        [ngClass]="{'sorting_asc':sortCloumn == 'txtNotes' && direction == 'asc','sorting_desc':sortCloumn == 'txtNotes' && direction == 'desc'}"
+                        (click)="onSort('txtNotes')">Description</th>
                     <th class="sortable"
-                        [ngClass]="{'sorting_asc':sortCloumn == 'active' && direction == 'asc','sorting_desc':sortCloumn == 'active' && direction == 'desc'}"
-                        (click)="onSort('active')">Code</th>
+                        [ngClass]="{'sorting_asc':sortCloumn == 'costCode' && direction == 'asc','sorting_desc':sortCloumn == 'costCode' && direction == 'desc'}"
+                        (click)="onSort('costCode')">Code</th>
                     <th>&nbsp;</th>
                 </tr>
             </thead>
             <tbody>
-                <tr class="cursor-pointer" *ngFor="let item of costcodelist; let i = index"
-                    (click)="updateCostCode(item)">
+                <tr class="cursor-pointer" *ngFor="let item of costcodelist | callback: filterTable; let i = index">
                     <td><input class="form-check" type="checkbox" /></td>
-                    <td>
+                    <td colspan="2">
                         {{item.category}}
                     </td>
                     <td>
@@ -60,21 +86,29 @@
                     <td>
                         {{item.txtNotes}}
                     </td>
-                    <td> {{item.costCode}}</td>
+                    <td> {{item.costCode}}
+                    </td>
                     <td>
-                        <i class="fe-edit-1"></i>&nbsp;
-                        <i class="fe-trash-2 cursor-pointer" (click)="confirmDeleteCostCode(i,item.txtName)"></i>
+                        <div *ngIf="!item.active" class="d-inline-block ArchivedTag">
+                            Archived
+                        </div>
+                        <div *ngIf="item.active" style="width: 66px; display: inline-block;">
+
+                        </div>
+                        <i class="fe-edit-1 ms-3" (click)="updateCostCode(item)"></i>&nbsp;
+                        <i *ngIf="item.active" class="fe-trash-2 cursor-pointer" (click)="confirmDeleteCostCode(i,item.txtName,$event)"></i>
+                        <i *ngIf="!item.active" class="fe-refresh-ccw cursor-pointer" (click) = "activeCostCode(item)"></i>
                     </td>
                 </tr>
             </tbody>
             <tbody *ngIf="costcodelist.length==0" class="bg-white">
                 <tr>
-                    <td colspan="6" class="text-center">
+                    <td colspan="7" class="text-center">
                         <div class="Paragraph-1 text-typeblackdeactivated bold-600  mt-40 ">No Cost Codes added yet
                         </div>
                         <div class="Paragraph-2 text-typeblackdeactivated mt-1-1">Create new cost code in a few clicks
                         </div>
-                        <div class="mt-1-1"> <button class="btn btn-primary ms-2-1" (click)="openAddModal()"><i
+                        <div class="mt-1-1"> <button class="btn btn-primary ms-2-1" (click)="openAddModal('Create')"><i
                                     class="fe-plus-square me-1-1"></i>New Cost Code</button></div>
 
                         <div class="Paragraph-2 text-typeblackdeactivated mt-40 ">or import items from the file</div>
@@ -95,7 +129,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="6">&nbsp;</td>
+                    <td colspan="7">&nbsp;</td>
                 </tr>
             </tfoot>
         </table>
@@ -110,14 +144,23 @@
                 <div class="col-md-12">
                     <label class="form-label" i18n>Name</label>
                     <input class="form-control" type="text" id="name" required i18n-placeholder placeholder="Enter Name"
-                        [(ngModel)]="costcode.txtName" />
+                        [(ngModel)]="costcode.txtName" [ngClass]="{'is-invalid':costcodeError.txtName}" />
+                    <div *ngIf="costcodeError.txtName" class="invalid-feedback" i18n>
+                        <i class="fe-alert-triangle invalid-feedback-icon"></i>
+                        Name required
+                    </div>
                 </div>
             </div>
             <div class="row mt-2-1">
                 <div class="col-md-12">
                     <label class="form-label" i18n>Code</label>
                     <input class="form-control" type="text" id="costCode" required i18n-placeholder
-                        placeholder="ex. 100.100.102" [(ngModel)]="costcode.costCode" />
+                        placeholder="ex. 100.100.102" [(ngModel)]="costcode.costCode"
+                        [ngClass]="{'is-invalid':costcodeError.costCode}" />
+                    <div *ngIf="costcodeError.costCode" class="invalid-feedback" i18n>
+                        <i class="fe-alert-triangle invalid-feedback-icon"></i>
+                        Code required
+                    </div>
                 </div>
             </div>
             <div class="row mt-2-1">
@@ -127,12 +170,17 @@
                         (click)="openCategoryEditModal()"><i class="fe-plus-square"></i> Create New Category</div>
                     <div ngbDropdown class="mt-sm-0 mt-2">
                         <input class="form-select position-relative" type="text" id="Class" i18n-placeholder
-                            placeholder="Class" [(ngModel)]="costcode.category" ngbDropdownToggle />
+                            placeholder="Class" [(ngModel)]="costcode.category"
+                            [ngClass]="{'is-invalid':costcodeError.idcategory}" ngbDropdownToggle />
 
                         <div ngbDropdownMenu aria-labelledby="paymentTerms">
                             <a href="javascript:void(0)" *ngFor="let item of this.costCodeCategoryList"
                                 (click)="SetClass(item)" ngbDropdownItem>{{item.txtName}}</a>
                         </div>
+                    </div>
+                    <div *ngIf="costcodeError.idcategory" class="mt-1" i18n>
+                        <i class="fe-alert-triangle invalid-feedback-icon"></i>
+                        Category required
                     </div>
                 </div>
             </div>
@@ -140,8 +188,9 @@
                 <div class="col-md-12">
                     <label class="form-label" i18n>Description</label>
                     <span class="float-end text-optional">Optional</span>
-                    <input class="form-control" type="text" id="name" required i18n-placeholder
-                        placeholder="Additional notes..." [(ngModel)]="costcode.txtNotes" />
+                    <textarea class="form-control" type="text" id="name" required i18n-placeholder rows="5"
+                        placeholder="Additional notes..." [(ngModel)]="costcode.txtNotes" maxlength="250"></textarea>
+                    <div class="mt-1-1 caption400">{{250 - costcode.txtNotes.length}} symbols left</div>
                 </div>
             </div>
         </div>
@@ -149,7 +198,7 @@
             <div class="row">
                 <div class="col-md-12 d-grid">
                     <button class="btn btn-primary" (click)="createCostCode()"
-                        [disabled]="costcode.txtName.length ==0">Create</button>
+                        [disabled]="costcode.txtName.length ==0">{{costcodeButtonText}}</button>
                 </div>
             </div>
             <div class="row mt-2-1">
@@ -158,6 +207,10 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="modal-x" (click)="openCancelCostCode()">
+        <i class="fe-x"></i>
     </div>
 </ng-template>
 
@@ -204,6 +257,9 @@
             </div>
         </div>
     </div>
+    <div class="modal-x" (click)="openCancelCategory()">
+        <i class="fe-x"></i>
+    </div>
 </ng-template>
 
 <ng-template #addcategory let-modal>
@@ -231,6 +287,9 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="modal-x" (click)="modal.dismiss()">
+        <i class="fe-x"></i>
     </div>
 </ng-template>
 
@@ -274,12 +333,12 @@
         <div class="swal2-alert-content text-start">Do you want to close the page? All changes will not be saved.</div>
 
         <div class="d-flex justify-content-between mt-3">
-            <div class="swal2-alert-link mt-0 line-40 cursor-pointer" (click) = "cancelCostCode()">
+            <div class="swal2-alert-link mt-0 line-40 cursor-pointer" (click)="cancelCostCode()">
                 Cancel
             </div>
             <div>
-                <button class="btn btn-outline-primary" (click) = "closeCancelCostCode()">Close without saving</button>
-                <button class="btn btn-primary ms-2-1" (click) = "SaveCancelCostCode()">Save an Close</button>
+                <button class="btn btn-outline-primary" (click)="closeCancelCostCode()">Close without saving</button>
+                <button class="btn btn-primary ms-2-1" (click)="SaveCancelCostCode()">Save an Close</button>
             </div>
         </div>
     </div>
@@ -291,12 +350,12 @@
         <div class="swal2-alert-content text-start">Do you want to close the page? All changes will not be saved.</div>
 
         <div class="d-flex justify-content-between mt-3">
-            <div class="swal2-alert-link mt-0 line-40 cursor-pointer" (click) = "cancelCategory()">  
+            <div class="swal2-alert-link mt-0 line-40 cursor-pointer" (click)="cancelCategory()">
                 Cancel
             </div>
             <div>
-                <button class="btn btn-outline-primary" (click) = "closeCancelCategory()">Close without saving</button>
-                <button class="btn btn-primary ms-2-1" (click) = "SaveCancelCategory()">Save an Close</button>
+                <button class="btn btn-outline-primary" (click)="closeCancelCategory()">Close without saving</button>
+                <button class="btn btn-primary ms-2-1" (click)="SaveCancelCategory()">Save an Close</button>
             </div>
         </div>
     </div>

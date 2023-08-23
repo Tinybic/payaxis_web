@@ -24,7 +24,7 @@ h6 {
     background-color: $primary;
 }
 
-.text-white{
+.text-white {
     color: $white;
 }
 
@@ -94,27 +94,27 @@ h6 {
     line-height: 40px;
 }
 
-.headline-24{
+.headline-24 {
     font-size: 21.33px;
     font-style: normal;
     font-weight: 700;
     line-height: 24px;
 }
 
-.headline-28{
-  font-size: 28px;
-  font-weight: 700;
-  line-height: 32px;
-  letter-spacing: -0.18px;
-  text-align: left;
+.headline-28 {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 32px;
+    letter-spacing: -0.18px;
+    text-align: left;
 }
 
-.text-blackprimary{
-    color:#202020;
+.text-blackprimary {
+    color: #202020;
 }
 
-.text-blackprimary-op-50{
-  color: #20202080;
+.text-blackprimary-op-50 {
+    color: #20202080;
 }
 
 // ms: margin-left;
@@ -155,39 +155,39 @@ h6 {
 }
 
 .mx-2-1 {
-  margin: 0 1rem;
+    margin: 0 1rem;
 }
 
-.mt-3-1{
-  margin-top: 1.5rem;
+.mt-3-1 {
+    margin-top: 1.5rem;
 }
 
-.mt-4-1{
-  margin-top: 2rem;
+.mt-4-1 {
+    margin-top: 2rem;
 }
 
 .mt-5-1 {
-  margin-top: 2.5rem;
+    margin-top: 2.5rem;
 }
 
-.mt-40{
-  margin-top: 40px;
+.mt-40 {
+    margin-top: 40px;
 }
 
 .pt-2-1 {
     padding-top: 1rem !important;
 }
 
-.p-2-1{
-  padding: 1rem;
+.p-2-1 {
+    padding: 1rem;
 }
 
 .padding-12-24 {
-  padding: 12px 24px;
+    padding: 12px 24px;
 }
 
 .padding-12-16 {
-  padding: 12px 16px;
+    padding: 12px 16px;
 }
 
 // Font sizes (Custom)
@@ -250,15 +250,19 @@ h6 {
 .line-40 {
     line-height: 40px !important;
 }
+
 .line-44 {
     line-height: 44px !important;
 }
+
 .line-32 {
     line-height: 32px !important;
 }
+
 .line-56 {
     line-height: 56px !important;
 }
+
 .line-60 {
     line-height: 60px !important;
 }
@@ -266,6 +270,7 @@ h6 {
 .line-24 {
     line-height: 24px !important;
 }
+
 // Font Weight
 
 .fw-medium {
@@ -298,6 +303,7 @@ h6 {
     line-height: 24px;
     letter-spacing: 0.5px;
 }
+
 .Subtitle-1-400 {
     text-align: center;
     font-size: 16px;
@@ -333,15 +339,15 @@ h6 {
 }
 
 .subtitle-2-500-16 {
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 16px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 16px;
 }
 
 .subtitle-2-500-18 {
-  font-size: 18px;
-  font-weight: 500;
-  line-height: 24px;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 24px;
 }
 
 .subtitle-2-500-20 {
@@ -381,20 +387,20 @@ h6 {
     color: #20202080;
 }
 
-.btn-text-12{
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 16px;
-  letter-spacing: 0px;
-  text-align: center;
+.btn-text-12 {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0px;
+    text-align: center;
 }
 
-.btn-text-14{
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 16px;
-  letter-spacing: 0.02em;
-  text-align: left;
+.btn-text-14 {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0.02em;
+    text-align: left;
 }
 
 .text-1 {
@@ -404,7 +410,7 @@ h6 {
     letter-spacing: 0.5px;
 }
 
-.search-text{
+.search-text {
     font-size: 12px;
     font-weight: 400;
     line-height: 16px;
@@ -412,12 +418,12 @@ h6 {
     text-align: left;
 }
 
-.label-tips{
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 16px;
-  letter-spacing: 0.4px;
-  text-align: right;
+.label-tips {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0.4px;
+    text-align: right;
 }
 
 del {
@@ -427,10 +433,19 @@ del {
 .text-optional {
     color: #20202080 !important;
 }
-.text-typeblackdeactivated{
+
+.text-typeblackdeactivated {
     color: #20202080 !important;
 }
 
+.text-caption400 {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0.4000000059604645px;
+    text-align: left;
+    color: #202020CC;
+}
 
 // dark mode
 body[data-layout-color="dark"] {

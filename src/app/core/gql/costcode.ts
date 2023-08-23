@@ -110,7 +110,10 @@ const companycostcode_update = gql`
 `;
 
 const companycategory_deactivate = gql`
-  mutation companycategory_deactivate($idCompany_category: Int!, $revision: Int!) {
+  mutation companycategory_deactivate(
+    $idCompany_category: Int!
+    $revision: Int!
+  ) {
     companycategory_deactivate(
       idCompany_category: $idCompany_category
       revision: $revision
@@ -179,6 +182,50 @@ const companycostcode_importcsv = gql`
   }
 `;
 
+const categorycostcode_list = gql`
+  query categorycostcode_list($idCompany: Int!) {
+    categorycostcode_list(idCompany: $idCompany) {
+      error
+      code
+      message
+      data {
+        id
+        revision
+        createdBy
+        createdDate
+        modifiedBy
+        modifiedDate
+        idCompany
+        txtName
+        active
+        costcodecount
+        costcodelist {
+          id
+          txtName
+          costCode
+        }
+      }
+    }
+  }
+`;
+
+const companycostcode_activate = gql`
+  mutation companycostcode_activate(
+    $idCompany_costcode: Int!
+    $revision: Int!
+  ) {
+    companycostcode_activate(
+      idCompany_costcode: $idCompany_costcode
+      revision: $revision
+    ) {
+      error
+      code
+      message
+      data
+    }
+  }
+`;
+
 export {
   companycategory_list,
   companycategory_new,
@@ -189,4 +236,6 @@ export {
   companycostcode_deactivate,
   companycostcode_list,
   companycostcode_importcsv,
+  categorycostcode_list,
+  companycostcode_activate,
 };

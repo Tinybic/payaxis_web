@@ -6,12 +6,15 @@ import {
   companycategory_list,
   companycategory_new,
   companycategory_update,
+  companycostcode_activate,
   companycostcode_deactivate,
+  companycostcode_importcsv,
   companycostcode_list,
   companycostcode_new,
   companycostcode_update,
 } from 'src/app/core/gql/costcode';
 import { ApolloService } from 'src/app/core/service/apollo.service';
+import { GlobalFunctionsService } from 'src/app/core/service/global-functions.service';
 
 @Component({
   selector: 'app-costcode',
@@ -26,7 +29,7 @@ export class CostcodeComponent {
   @ViewChild('deletecostcode') deletecostcode: any;
   @ViewChild('cancelcostcode') cancelcostcode: any;
   @ViewChild('cancelcategory') cancelcategory: any;
-
+  showArchived = true;
   keywords = '';
   direction = '';
   sortCloumn = '';
@@ -41,13 +44,19 @@ export class CostcodeComponent {
     idcategory: 0,
     revision: 0,
   };
+  costcodeError = {
+    costCode: false,
+    txtName: false,
+    idcategory: false,
+  };
   costCodeCategoryList = [];
   costCodeCateGoryNewList = [];
 
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private globalFuns: GlobalFunctionsService
   ) {}
 
   ngOnInit(): void {
@@ -87,8 +96,31 @@ export class CostcodeComponent {
     this.costcode.idcategory = event.id;
   }
 
-  onSort(event) {}
-  searchTable() {}
+  onSort(column) {
+    this.sortCloumn = column;
+    const result = this.globalFuns.onSort(
+      this.costcodelist,
+      this.sortCloumn,
+      this.direction
+    );
+    this.costcodelist = result.newArray;
+    this.direction = result.direction;
+  }
+
+  filterTable = (costcode: any) => {
+    let values = Object.values(costcode);
+    if (this.showArchived)
+      return values.some((v) =>
+        v.toString().toLowerCase().includes(this.keywords.toLowerCase())
+      );
+    else {
+      return (
+        values.some((v) =>
+          v.toString().toLowerCase().includes(this.keywords.toLowerCase())
+        ) && costcode.active
+      );
+    }
+  };
 
   categoryListRef;
   openCategoryEditModal() {
@@ -209,22 +241,28 @@ export class CostcodeComponent {
   }
 
   saveCostCodeCategory() {
-    this.apolloService
-      .mutate(companycategory_new, {
-        idCompany: this.costcode.idCompany,
-        companycategories: this.costCodeCateGoryNewList,
-      })
-      .then((res) => {
-        const result = res.companycategory_new;
-        let message = '';
-        if (!result.error) {
-          message = 'Categories changed successfully';
-          this.getCostCodeCategoryList();
-        } else {
-          message = result.message;
-        }
-        this.toastrService.info(message, '');
-      });
+    if (this.costCodeCateGoryNewList.length > 0) {
+      this.apolloService
+        .mutate(companycategory_new, {
+          idCompany: this.costcode.idCompany,
+          companycategories: this.costCodeCateGoryNewList,
+        })
+        .then((res) => {
+          const result = res.companycategory_new;
+          let message = '';
+          if (!result.error) {
+            message = 'Categories changed successfully';
+            this.costCodeCateGoryNewList = [];
+            this.categoryListRef.close();
+            this.getCostCodeCategoryList();
+          } else {
+            message = result.message;
+          }
+          this.toastrService.info(message, '');
+        });
+    } else {
+      this.categoryListRef.close();
+    }
   }
 
   cancelCostCodeCategoryRef;
@@ -247,6 +285,17 @@ export class CostcodeComponent {
   }
 
   closeCancelCategory() {
+    for (let i = 0; i < this.costCodeCateGoryNewList.length; i++) {
+      for (let j = 0; j < this.costCodeCategoryList.length; j++) {
+        if (
+          this.costCodeCateGoryNewList[i].txtName ==
+          this.costCodeCategoryList[j].txtName
+        ) {
+          this.costCodeCategoryList.splice(j, 1);
+        }
+      }
+    }
+
     this.cancelCostCodeCategoryRef.close();
     this.categoryListRef.close();
   }
@@ -257,17 +306,37 @@ export class CostcodeComponent {
   }
 
   addmodalref;
-  costcodeButtonText = 'Create';
-  openAddModal() {
+  costcodeButtonText = '';
+  openAddModal(text) {
     this.addmodalref = this.modalService.open(this.addcostcode, {
       modalDialogClass: 'modal-right',
       size: '530',
       centered: true,
     });
-    this.costcodeButtonText = 'Create';
+    if (text) this.costcodeButtonText = text;
+    else this.costcodeButtonText = 'Create';
   }
 
   createCostCode() {
+    this.costcodeError = {
+      costCode: false,
+      txtName: false,
+      idcategory: false,
+    };
+
+    if (this.costcode.txtName.trim().length == 0) {
+      this.costcodeError.txtName = true;
+      return;
+    }
+    if (this.costcode.costCode.trim().length == 0) {
+      this.costcodeError.costCode = true;
+      return;
+    }
+    if (this.costcode.idcategory == 0) {
+      this.costcodeError.idcategory = true;
+      return;
+    }
+
     if (this.costcode.id == 0) {
       this.apolloService
         .mutate(companycostcode_new, {
@@ -317,13 +386,14 @@ export class CostcodeComponent {
   deleteConfirmRef;
   deleteCostcodeIndex = 0;
   deleteCostcodeMessage = '';
-  confirmDeleteCostCode(index, name) {
+  confirmDeleteCostCode(index, name, event) {
     this.deleteCostcodeIndex = index;
     this.deleteCostcodeMessage = name + ' Cost Code will be deleted.';
     this.deleteConfirmRef = this.modalService.open(this.deletecostcode, {
       size: '530',
       centered: true,
     });
+    event.stopPropagation();
   }
 
   deleteCostCode() {
@@ -337,8 +407,8 @@ export class CostcodeComponent {
         let message = '';
         if (!result.error) {
           message = 'Cost Code have been deleted';
-          this.categoryDelref.close();
-          this.costCodeCategoryList.splice(this.deleteCategoryIndex, 1);
+          this.deleteConfirmRef.close();
+          this.getCostCodeList();
         } else {
           message = result.message;
         }
@@ -363,7 +433,6 @@ export class CostcodeComponent {
     this.costcode.txtNotes = item.txtNotes;
     this.costcode.costCode = item.costCode;
     this.costcode.id = item.id;
-    this.costcodeButtonText = 'Save changes';
 
     this.costcodetemp.txtName = item.txtName;
     this.costcodetemp.category = item.category;
@@ -371,7 +440,7 @@ export class CostcodeComponent {
     this.costcodetemp.revision = item.revision;
     this.costcodetemp.txtNotes = item.txtNotes;
     this.costcodetemp.costCode = item.costCode;
-    this.openAddModal();
+    this.openAddModal('Save changes');
   }
 
   cancelCostCodeRef;
@@ -402,6 +471,23 @@ export class CostcodeComponent {
   }
 
   closeCancelCostCode() {
+    this.costcode = {
+      id: 0,
+      costCode: '',
+      txtName: '',
+      txtNotes: '',
+      category: '',
+      idCompany: 0,
+      idcategory: 0,
+      revision: 0,
+    };
+
+    this.costcodeError = {
+      costCode: false,
+      txtName: false,
+      idcategory: false,
+    };
+
     this.cancelCostCodeRef.close();
     this.addmodalref.close();
   }
@@ -409,5 +495,48 @@ export class CostcodeComponent {
   SaveCancelCostCode() {
     this.cancelCostCodeRef.close();
     this.createCostCode();
+  }
+
+  activeCostCode(item) {
+    this.apolloService
+      .mutate(companycostcode_activate, {
+        idCompany_costcode: item.id,
+        revision: item.revision,
+      })
+      .then((res) => {
+        const result = res.companycostcode_activate;
+        let message = '';
+        if (!result.error) {
+          message = 'Cost Code have been actived';
+          this.getCostCodeList();
+        } else {
+          message = result.message;
+        }
+        this.toastrService.info(message, '');
+      });
+  }
+
+  importCostCodeFromCSV(event) {
+    var reader = new FileReader();
+    reader.readAsDataURL(event.target.files[0]);
+    let that = this;
+    reader.onload = function () {
+      that.apolloService
+        .mutate(companycostcode_importcsv, {
+          idCompany: that.costcode.idCompany,
+          dataCSV: this.result,
+        })
+        .then((res) => {
+          const result = res.companycostcode_importcsv;
+          let message = '';
+          if (!result.error) {
+            message = 'Upload successful';
+          } else {
+            message = result.message;
+          }
+          that.toastrService.info(message, '');
+          that.getCostCodeList();
+        });
+    };
   }
 }
