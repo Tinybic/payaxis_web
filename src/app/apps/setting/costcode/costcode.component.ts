@@ -79,6 +79,7 @@ export class CostcodeComponent {
   }
 
   getCostCodeList() {
+    this.costcode.idCompany = parseInt(localStorage.getItem('idcompany'));
     if (this.costcode.idCompany != 0) {
       this.apolloService
         .query(companycostcode_list, { idCompany: this.costcode.idCompany })
