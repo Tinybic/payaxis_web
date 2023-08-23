@@ -356,6 +356,7 @@ export class CostcodeComponent {
           } else {
             message = result.message;
           }
+          this.clearCostcode();
           this.toastrService.info(message, '');
         });
     } else {
@@ -466,11 +467,9 @@ export class CostcodeComponent {
     }
   }
 
-  cancelCostCode() {
-    this.cancelCostCodeRef.close();
-  }
 
-  closeCancelCostCode() {
+
+  clearCostcode(){
     this.costcode = {
       id: 0,
       costCode: '',
@@ -487,6 +486,14 @@ export class CostcodeComponent {
       txtName: false,
       idcategory: false,
     };
+  }
+
+  cancelCostCode() {
+    this.cancelCostCodeRef.close();
+  }
+
+  closeCancelCostCode() {
+    this.clearCostcode();
 
     this.cancelCostCodeRef.close();
     this.addmodalref.close();
