@@ -168,6 +168,7 @@ export class CostcodeComponent {
         if (!result.error) {
           message = 'Category have been updated';
           this.costCodeCategoryList[index].edit = false;
+          this.getCostCodeList();
         } else {
           message = result.message;
         }
@@ -246,6 +247,7 @@ export class CostcodeComponent {
             message = 'Category have been deleted';
             this.categoryDelref.close();
             this.getCostCodeCategoryList();
+            this.getCostCodeList();
           } else {
             message = result.message;
           }
