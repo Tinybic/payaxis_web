@@ -257,7 +257,7 @@
                             class="fe-plus-square me-1-1"></i>Add New Category</button>
                 </div>
             </div>
-            <div class="row mt-1-1" style="border: 1px solid #E1E6EF;padding: 8px;border-radius: 8px; line-height: 24px;" *ngFor="let item of costCodeCategoryList; let i = index">
+            <div class="row mt-1-1 categorylistitem" *ngFor="let item of costCodeCategoryList; let i = index">
                 <div class="col-md-10" *ngIf="!item.edit" (click)="modifyCostCodeCategory(i)">
                     <span class="bold-600">{{item.txtName}}</span> {{item.costcodecount}}
                 </div>
