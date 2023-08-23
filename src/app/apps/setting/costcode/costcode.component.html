@@ -1,7 +1,36 @@
 <div class="row mt-2-1">
-    <div class="col-md-6 headline">
-        <span *ngIf="costcodelist.length == 0">No</span><span
-            *ngIf="costcodelist.length > 0">{{costcodelist.length}}</span> Cost Codes
+    <div class="col-md-6">
+        <div class="d-inline-block headline">
+            <span *ngIf="costcodelist.length == 0">No</span><span
+                *ngIf="costcodelist.length > 0">{{costcodelist.length}}</span> Cost Codes
+        </div>
+        <div class="dropdown d-inline-block ms-2-1" ngbDropdown #roleDrop="ngbDropdown">
+            <a class="dropdow-outline" href="javascript:void(0)" ngbDropdownToggle>
+                Category&nbsp;
+                <b>{{categoryFilter}}</b>
+                <i class="fe-chevron-down font-16 ms-1-1"></i>
+            </a>
+            <div class="dropdown-menu" ngbDropdownMenu>
+                <div class="mb-2 p-0" ngbDropdownItem>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck"
+                            [checked]="categoryFilter=='All'" (change)="changeCategoryFilter('All');">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                            ALL
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-2 p-0" ngbDropdownItem *ngFor="let item of costCodeCategoryList">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck"
+                            [checked]="categoryFilter == item.txtName" (change)="changeCategoryFilter(item.txtName);">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                            {{item.txtName}}
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="col-md-6 text-end">
         <div class="d-inline-block form-check form-switch line-24  me-2-1">
@@ -42,7 +71,8 @@
                 </div>
             </div>
 
-            <button class="btn btn-primary ms-2-1" (click)="openAddModal('Create')"><i class="fe-plus-square me-1-1"></i>New
+            <button class="btn btn-primary ms-2-1" (click)="openAddModal('Create')"><i
+                    class="fe-plus-square me-1-1"></i>New
                 Cost Code</button>
         </div>
     </div>
@@ -96,8 +126,10 @@
 
                         </div>
                         <i class="fe-edit-1 ms-3" (click)="updateCostCode(item)"></i>&nbsp;
-                        <i *ngIf="item.active" class="fe-trash-2 cursor-pointer" (click)="confirmDeleteCostCode(i,item.txtName,$event)"></i>
-                        <i *ngIf="!item.active" class="fe-refresh-ccw cursor-pointer" (click) = "activeCostCode(item)"></i>
+                        <i *ngIf="item.active" class="fe-trash-2 cursor-pointer"
+                            (click)="confirmDeleteCostCode(i,item.txtName,$event)"></i>
+                        <i *ngIf="!item.active" class="fe-refresh-ccw cursor-pointer"
+                            (click)="activeCostCode(item)"></i>
                     </td>
                 </tr>
             </tbody>
@@ -225,7 +257,7 @@
                             class="fe-plus-square me-1-1"></i>Add New Category</button>
                 </div>
             </div>
-            <div class="row mt-2-1" *ngFor="let item of costCodeCategoryList; let i = index">
+            <div class="row mt-1-1 categorylistitem" *ngFor="let item of costCodeCategoryList; let i = index">
                 <div class="col-md-10" *ngIf="!item.edit" (click)="modifyCostCodeCategory(i)">
                     <span class="bold-600">{{item.txtName}}</span> {{item.costcodecount}}
                 </div>

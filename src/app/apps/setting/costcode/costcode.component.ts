@@ -109,18 +109,19 @@ export class CostcodeComponent {
 
   filterTable = (costcode: any) => {
     let values = Object.values(costcode);
-    if (this.showArchived)
-      return values.some((v) =>
+    return (
+      values.some((v) =>
         v.toString().toLowerCase().includes(this.keywords.toLowerCase())
-      );
-    else {
-      return (
-        values.some((v) =>
-          v.toString().toLowerCase().includes(this.keywords.toLowerCase())
-        ) && costcode.active
-      );
-    }
+      ) &&
+      (costcode.active || this.showArchived) &&
+      (this.categoryFilter == 'All' || costcode.category == this.categoryFilter)
+    );
   };
+
+  categoryFilter = 'All';
+  changeCategoryFilter(name) {
+    this.categoryFilter = name;
+  }
 
   categoryListRef;
   openCategoryEditModal() {
@@ -467,9 +468,7 @@ export class CostcodeComponent {
     }
   }
 
-
-
-  clearCostcode(){
+  clearCostcode() {
     this.costcode = {
       id: 0,
       costCode: '',
@@ -514,7 +513,7 @@ export class CostcodeComponent {
         const result = res.companycostcode_activate;
         let message = '';
         if (!result.error) {
-          message = 'Cost Code have been actived';
+          message = 'Cost Code was restored';
           this.getCostCodeList();
         } else {
           message = result.message;
