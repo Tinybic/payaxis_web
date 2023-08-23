@@ -218,6 +218,7 @@ export class CostcodeComponent {
     if (this.costCodeCategoryList[this.deleteCategoryIndex].id == 0) {
       this.costCodeCategoryList.splice(this.deleteCategoryIndex, 1);
       this.deleteFromCategoryNewList(this.deleteCategoryName);
+      this.categoryDelref.close();
     } else {
       this.apolloService
         .mutate(companycategory_deactivate, {
@@ -270,6 +271,7 @@ export class CostcodeComponent {
   openCancelCategory() {
     if (this.costCodeCateGoryNewList.length == 0) {
       this.categoryListRef.close();
+      this.getCostCodeCategoryList();
     } else {
       this.cancelCostCodeCategoryRef = this.modalService.open(
         this.cancelcategory,
@@ -286,17 +288,8 @@ export class CostcodeComponent {
   }
 
   closeCancelCategory() {
-    for (let i = 0; i < this.costCodeCateGoryNewList.length; i++) {
-      for (let j = 0; j < this.costCodeCategoryList.length; j++) {
-        if (
-          this.costCodeCateGoryNewList[i].txtName ==
-          this.costCodeCategoryList[j].txtName
-        ) {
-          this.costCodeCategoryList.splice(j, 1);
-        }
-      }
-    }
-
+    this.costCodeCateGoryNewList = [];
+    this.getCostCodeCategoryList();
     this.cancelCostCodeCategoryRef.close();
     this.categoryListRef.close();
   }
@@ -358,6 +351,7 @@ export class CostcodeComponent {
             message = result.message;
           }
           this.clearCostcode();
+          this.getCostCodeCategoryList();
           this.toastrService.info(message, '');
         });
     } else {
@@ -375,7 +369,9 @@ export class CostcodeComponent {
           if (!result.error) {
             message = 'Cost Code update successfully';
             this.costcode.id = 0;
+            this.clearCostcode();
             this.getCostCodeList();
+            this.getCostCodeCategoryList();
             this.addmodalref.close();
           } else {
             message = result.message;
