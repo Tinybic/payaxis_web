@@ -164,6 +164,25 @@ table.advanced-table {
     border: none;
   }
 
+
+  tfoot{
+    background-color: #ffffff;
+    height: 16px;
+
+    td {
+      &:first-child {
+        border-bottom-left-radius: 16px;
+        width: 48px
+      }
+
+      &:last-child {
+        border-bottom-right-radius: 16px;
+      }
+    }
+  }
+
+
+
   // Change icons view
   thead {
     background-color: #064088;
@@ -228,7 +247,7 @@ table.advanced-table {
     td {
       border-bottom: 1px solid #E1E6EF;
       padding: 12px 16px;
-
+      background-color: #ffffff;
       &:focus {
         outline: none !important;
       }

@@ -5,7 +5,7 @@ import {
   NgbTypeahead,
 } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { companycostcode_list } from 'src/app/core/gql/costcode';
+import { categorycostcode_list } from 'src/app/core/gql/costcode';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import {
   vendor_file_delete,
@@ -135,9 +135,9 @@ export class VendoraddComponent {
     this.vendor.idCompany = parseInt(localStorage.getItem('idcompany'));
     if (this.vendor.idCompany != 0) {
       this.apolloService
-        .query(companycostcode_list, { idCompany: this.vendor.idCompany })
+        .query(categorycostcode_list, { idCompany: this.vendor.idCompany })
         .then((res) => {
-          const result = res.companycostcode_list;
+          const result = res.categorycostcode_list;
           if (!result.error) {
             this.costCodeList = result.data;
             this.COSTCODE_LIST = JSON.parse(JSON.stringify(result.data));

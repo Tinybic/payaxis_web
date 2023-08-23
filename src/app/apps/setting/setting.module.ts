@@ -9,6 +9,7 @@ import { RolesComponent } from './roles/roles.component';
 import { NgbDropdownModule, NgbModalModule, NgbNavModule, NgbTypeaheadModule } from '@ng-bootstrap/ng-bootstrap';
 import { AvatarModule } from 'src/app/shared/avatar/avatar.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { callbackPipeModule } from 'src/app/core/pipe/callback.module';
 
 
 
@@ -17,7 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ProfileComponent,
     CostcodeComponent,
     PaymentComponent,
-    RolesComponent,
+    RolesComponent
   ],
   imports: [
     CommonModule,
@@ -29,6 +30,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     NgbDropdownModule,
     AvatarModule,
     SettingRoutingModule,
+    callbackPipeModule
   ]
 })
 export class SettingModule { }

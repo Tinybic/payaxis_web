@@ -12,11 +12,10 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AvatarModule } from '../shared/avatar/avatar.module';
-import { CostcodeComponent } from './costcode/costcode.component';
 import { DropdowndataModule } from '../shared/dropdowndata/dropdowndata.module';
 
 @NgModule({
-  declarations: [WelcomeComponent, CompanyComponent, CostcodeComponent],
+  declarations: [WelcomeComponent, CompanyComponent],
   imports: [
     CommonModule,
     FormsModule,

@@ -4,7 +4,7 @@ import { NgbActiveModal, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { vendorcontact_list, vendor_contact_deactivate } from 'src/app/core/gql/vendor-contacts';
 import { Vendor_Contact } from 'src/app/core/generated/generated';
-import { GlobalFunctionsService } from "../../../services/global-functions.service";
+import { GlobalFunctionsService } from 'src/app/core/service/global-functions.service';
 
 
 @Component({
