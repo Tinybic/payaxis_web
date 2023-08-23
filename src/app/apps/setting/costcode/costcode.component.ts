@@ -79,6 +79,7 @@ export class CostcodeComponent {
   }
 
   getCostCodeList() {
+    this.costcode.idCompany = parseInt(localStorage.getItem('idcompany'));
     if (this.costcode.idCompany != 0) {
       this.apolloService
         .query(companycostcode_list, { idCompany: this.costcode.idCompany })
@@ -465,16 +466,13 @@ export class CostcodeComponent {
   }
 
   clearCostcode() {
-    this.costcode = {
-      id: 0,
-      costCode: '',
-      txtName: '',
-      txtNotes: '',
-      category: '',
-      idCompany: 0,
-      idcategory: 0,
-      revision: 0,
-    };
+    this.costcode.id = 0;
+    this.costcode.costCode = '';
+    this.costcode.txtName = '';
+    this.costcode.txtNotes = '';
+    this.costcode.category = '';
+    this.costcode.idcategory = 0;
+    this.costcode.revision = 0;
 
     this.costcodeError = {
       costCode: false,
