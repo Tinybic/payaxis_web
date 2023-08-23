@@ -146,7 +146,7 @@ export class CostcodeComponent {
   modifyCostCodeCategory(index) {
     if (
       this.costCodeCategoryList[index].id > 0 &&
-      this.costCodeCategoryList[index].id != 'Others'
+      this.costCodeCategoryList[index].txtName != 'Others'
     ) {
       this.costCodeCategoryList[index].edit = true;
     }
