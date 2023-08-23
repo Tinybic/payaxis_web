@@ -245,7 +245,7 @@ export class CostcodeComponent {
           if (!result.error) {
             message = 'Category have been deleted';
             this.categoryDelref.close();
-            this.costCodeCategoryList.splice(this.deleteCategoryIndex, 1);
+            this.getCostCodeCategoryList();
           } else {
             message = result.message;
           }
