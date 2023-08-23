@@ -135,6 +135,7 @@ export class CostcodeComponent {
 
   categoryAddref;
   openCategoryAddModal() {
+    this.costcodeCategoryNameError = false;
     this.categoryAddref = this.modalService.open(this.addcategory, {
       modalDialogClass: 'modal-right',
       size: '530',
@@ -143,7 +144,10 @@ export class CostcodeComponent {
   }
 
   modifyCostCodeCategory(index) {
-    if (this.costCodeCategoryList[index].id > 0) {
+    if (
+      this.costCodeCategoryList[index].id > 0 &&
+      this.costCodeCategoryList[index].id != 'Others'
+    ) {
       this.costCodeCategoryList[index].edit = true;
     }
   }
@@ -172,16 +176,23 @@ export class CostcodeComponent {
   }
 
   costcodeCategoryName = '';
-
+  costcodeCategoryNameError = false;
   createCostCodeCategory() {
-    this.costCodeCategoryList.push({
-      id: 0,
-      txtName: this.costcodeCategoryName,
-      costcodecount: 0,
-    });
-    this.costCodeCateGoryNewList.push({ txtName: this.costcodeCategoryName });
-    this.costcodeCategoryName = '';
-    this.categoryAddref.close();
+    if (
+      this.costcodeCategoryName != 'Others'
+    ) {
+      this.costCodeCategoryList.push({
+        id: 0,
+        txtName: this.costcodeCategoryName,
+        costcodecount: 0,
+      });
+      this.costCodeCateGoryNewList.push({ txtName: this.costcodeCategoryName });
+      this.costcodeCategoryName = '';
+      this.categoryAddref.close();
+    }
+    else{
+      this.costcodeCategoryNameError = true;
+    }
   }
 
   deleteFromCategoryNewList(name) {
@@ -457,6 +468,7 @@ export class CostcodeComponent {
         this.costcodetemp.costCode == this.costcode.costCode)
     ) {
       this.addmodalref.close();
+      this.clearCostcode();
     } else {
       this.cancelCostCodeRef = this.modalService.open(this.cancelcostcode, {
         size: '530',

@@ -266,7 +266,7 @@
                         placeholder="Enter Name" [(ngModel)]="item.txtName" />
                 </div>
                 <div class="col-md-2 text-end">
-                    <i *ngIf="!item.edit" class="fe-trash-2 cursor-pointer text-primary"
+                    <i *ngIf="!item.edit && item.txtName != 'Others'" class="fe-trash-2 cursor-pointer text-primary"
                         (click)="confirmDeleteCostCodeCategory(i,item.txtName,item.costcodecount)"></i>
                     <i *ngIf="item.edit" class="fe-check text-success line-40 cursor-pointer"
                         (click)="updateCostCodeCategory(i)"></i>
@@ -302,7 +302,11 @@
                 <div class="col-md-12">
                     <label class="form-label" i18n>Name</label>
                     <input class="form-control" type="text" id="name" required i18n-placeholder placeholder="Enter Name"
-                        [(ngModel)]="costcodeCategoryName" />
+                        [(ngModel)]="costcodeCategoryName" [ngClass]="{'is-invalid':costcodeCategoryNameError}" />
+                        <div *ngIf="costcodeCategoryNameError" class="mt-1" i18n>
+                            <i class="fe-alert-triangle invalid-feedback-icon"></i>
+                            Category name cannot be set to 'Others'
+                        </div>
                 </div>
             </div>
         </div>
