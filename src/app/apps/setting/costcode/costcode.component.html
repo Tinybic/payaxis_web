@@ -33,7 +33,7 @@
         </div>
     </div>
     <div class="col-md-8 text-end">
-        <div class="d-inline-block form-check form-switch line-24  me-2-1">
+        <div class="d-inline-block form-check form-switch line-24  me-2-1" *ngIf="costcodelist.length>0 && !loading">
             <input type="checkbox" id="customSwitch1" class="form-check-input me-1-1" [(ngModel)]="showArchived" />
             <label for="customSwitch1" class="form-check-label align-middle">Show Archived</label>
         </div>
@@ -133,8 +133,15 @@
                     </td>
                 </tr>
             </tbody>
-            <tbody *ngIf="costcodelist.length==0" class="bg-white">
-                <tr>
+            <tbody *ngIf="costcodelist.length == 0" class="bg-white">
+                <tr *ngIf="loading">
+                    <td colspan="7">
+                        <div style="position: relative; height: 400px;">
+                            <app-ui-preloader [display]="loading"></app-ui-preloader>
+                        </div>
+                    </td>
+                </tr>
+                <tr *ngIf="!loading">
                     <td colspan="7" class="text-center">
                         <div class="Paragraph-1 text-typeblackdeactivated bold-600  mt-40 ">No Cost Codes added yet
                         </div>
@@ -303,10 +310,10 @@
                     <label class="form-label" i18n>Name</label>
                     <input class="form-control" type="text" id="name" required i18n-placeholder placeholder="Enter Name"
                         [(ngModel)]="costcodeCategoryName" [ngClass]="{'is-invalid':costcodeCategoryNameError}" />
-                        <div *ngIf="costcodeCategoryNameError" class="mt-1" i18n>
-                            <i class="fe-alert-triangle invalid-feedback-icon"></i>
-                            Category name cannot be set to 'Others'
-                        </div>
+                    <div *ngIf="costcodeCategoryNameError" class="mt-1" i18n>
+                        <i class="fe-alert-triangle invalid-feedback-icon"></i>
+                        Category name cannot be set to 'Others'
+                    </div>
                 </div>
             </div>
         </div>

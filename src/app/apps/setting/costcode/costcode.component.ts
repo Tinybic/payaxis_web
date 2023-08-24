@@ -30,6 +30,7 @@ export class CostcodeComponent {
   @ViewChild('cancelcostcode') cancelcostcode: any;
   @ViewChild('cancelcategory') cancelcategory: any;
   showArchived = true;
+  loading = true;
   keywords = '';
   direction = '';
   sortCloumn = '';
@@ -88,6 +89,7 @@ export class CostcodeComponent {
           if (!result.error) {
             this.costcodelist = result.data;
           }
+          this.loading = false;
         });
     }
   }
@@ -182,7 +184,7 @@ export class CostcodeComponent {
     if (
       this.costcodeCategoryName != 'Others'
     ) {
-      this.costCodeCategoryList.push({
+      this.costCodeCategoryList.unshift({
         id: 0,
         txtName: this.costcodeCategoryName,
         costcodecount: 0,
