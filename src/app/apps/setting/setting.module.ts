@@ -10,6 +10,7 @@ import { NgbDropdownModule, NgbModalModule, NgbNavModule, NgbTypeaheadModule } f
 import { AvatarModule } from 'src/app/shared/avatar/avatar.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { callbackPipeModule } from 'src/app/core/pipe/callback.module';
+import { UiModule } from 'src/app/shared/ui/ui.module';
 
 
 
@@ -30,7 +31,8 @@ import { callbackPipeModule } from 'src/app/core/pipe/callback.module';
     NgbDropdownModule,
     AvatarModule,
     SettingRoutingModule,
-    callbackPipeModule
+    callbackPipeModule,
+    UiModule
   ]
 })
 export class SettingModule { }
