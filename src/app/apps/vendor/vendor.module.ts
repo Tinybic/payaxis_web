@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { VendorRoutingModule } from './vendor-routing.module';
 import { NgbDropdownModule,  NgbModalModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { VendoraddModule } from './vendoradd/vendoradd.module';
+import { UiModule } from 'src/app/shared/ui/ui.module';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { VendoraddModule } from './vendoradd/vendoradd.module';
     NgbDropdownModule,
     NgbModalModule,
     VendoraddModule,
+    UiModule
   ]
 })
 export class VendorModule { }

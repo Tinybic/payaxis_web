@@ -4,3 +4,7 @@
     height: calc(100vh - 470px);
     transition: all 0.1s ease-out;
 }
+
+.dropdown-menu.show{
+    margin-left: 30px !important;
+}

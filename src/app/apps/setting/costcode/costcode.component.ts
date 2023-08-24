@@ -170,6 +170,7 @@ export class CostcodeComponent {
         if (!result.error) {
           message = 'Category have been updated';
           this.costCodeCategoryList[index].edit = false;
+          this.getCostCodeCategoryList();
           this.getCostCodeList();
         } else {
           message = result.message;
@@ -181,19 +182,20 @@ export class CostcodeComponent {
   costcodeCategoryName = '';
   costcodeCategoryNameError = false;
   createCostCodeCategory() {
-    if (
-      this.costcodeCategoryName != 'Others'
-    ) {
-      this.costCodeCategoryList.unshift({
-        id: 0,
-        txtName: this.costcodeCategoryName,
-        costcodecount: 0,
-      });
+    if (this.costcodeCategoryName != 'Others') {
+      this.costCodeCategoryList.splice(
+        this.costCodeCategoryList.length - 1,
+        0,
+        {
+          id: 0,
+          txtName: this.costcodeCategoryName,
+          costcodecount: 0,
+        }
+      );
       this.costCodeCateGoryNewList.push({ txtName: this.costcodeCategoryName });
       this.costcodeCategoryName = '';
       this.categoryAddref.close();
-    }
-    else{
+    } else {
       this.costcodeCategoryNameError = true;
     }
   }
