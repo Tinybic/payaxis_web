@@ -12,7 +12,6 @@ import {
 } from 'rxjs';
 import { STATES } from 'src/app/core/constants/states';
 import {
-  compayDetail,
   companyNew,
   companyUpate,
   company_info,
@@ -77,29 +76,27 @@ export class CompanyComponent {
   ngOnInit(): void {
     this.statesList = STATES;
 
-    let gql = compayDetail;
+    let gql = company_info;
     let data = {};
     if (localStorage.getItem('idcompany')) {
-      gql = company_info;
       data = { id: parseInt(localStorage.getItem('idcompany')) };
+    } else {
+      data = { id: 0 };
     }
-
     this.apolloService.query(gql, data).then((res) => {
-      let result = res.company_details;
-      if (gql == company_info) {
-        result = res.company_info;
-      }
-      this.industryList = result.comboxIndustry;
-      this.industryNameList = result.comboxIndustry.map(
-        ({ txtName }) => txtName
-      );
-      this.paymentTermsList = result.comboxPaymentTerms.map(
-        ({ txtName }) => txtName
-      );
-      this.company.txtName = result.companyName;
+      let result = res.company_info;
 
-      if (result.company) {
-        this.company = JSON.parse(JSON.stringify(result.company));
+      this.industryList = result.data.comboxIndustry;
+      this.industryNameList = result.data.comboxIndustry.map(
+        ({ txtName }) => txtName
+      );
+      this.paymentTermsList = result.data.comboxPaymentTerms.map(
+        ({ txtName }) => txtName
+      );
+      this.company.txtName = result.data.companyName;
+
+      if (result.data.company) {
+        this.company = JSON.parse(JSON.stringify(result.data.company));
       }
     });
   }
@@ -176,6 +173,7 @@ export class CompanyComponent {
 
       if (!result.error) {
         this.company.id = result.data.id;
+        localStorage.setItem('idcompany', this.company.id.toString());
         this.eventService.broadcast(EventType.CHANGE_COMPANY, true);
       }
       this.toastrService.info(result.message, '');

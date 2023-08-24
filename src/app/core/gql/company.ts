@@ -1,46 +1,5 @@
 import { gql } from 'apollo-angular';
 
-const compayDetail = gql`
-  query company_details {
-    company_details {
-      company {
-        id
-        revision
-        createdBy
-        createdDate
-        modifiedBy
-        modifiedDate
-        idUserOwner
-        avatar
-        txtName
-        taxId
-        idMasterCompany
-        industry
-        paymentTerms
-        website
-        txtAddress
-        suiteNumber
-        txtCity
-        txtState
-        txtZipcode
-        contactNumber
-        email
-        description
-        active
-      }
-      companyName
-      comboxIndustry {
-        id
-        txtName
-      }
-      comboxPaymentTerms {
-        id
-        txtName
-      }
-    }
-  }
-`;
-
 const companyNew = gql`
   mutation company_new(
     $txtName: txtName_String_NotNull_maxLength_128!
@@ -151,15 +110,15 @@ const company_list = gql`
 `;
 
 const company_info = gql`
-  query company_info($id: Int!) {
-    company_info(id: $id) {
+query company_info($id: Int!) {
+  company_info(id: $id) {
+    error
+    code
+    message
+    data {
       company {
         id
         revision
-        createdBy
-        createdDate
-        modifiedBy
-        modifiedDate
         idUserOwner
         avatar
         txtName
@@ -189,6 +148,8 @@ const company_info = gql`
       }
     }
   }
+}
+
 `;
 
 const company_roles = gql`
@@ -206,4 +167,4 @@ query company_roles($idCompany: Int!) {
 
 `;
 
-export { compayDetail, companyNew, companyUpate, company_list,company_info,company_roles };
+export { companyNew, companyUpate, company_list,company_info,company_roles };

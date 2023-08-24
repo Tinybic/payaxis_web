@@ -381,10 +381,8 @@ export type Query = {
   __typename?: 'Query';
   /** get category-costcode list */
   categorycostcode_list: Companycategorylist;
-  /** get company details for the loging user */
-  company_details: Companydetails;
-  /** get company details for one company */
-  company_info: Companydetails;
+  /** get company info for one company */
+  company_info: Cominforesult;
   /** get company list */
   company_list: Companylist;
   /** get company members for company */
@@ -486,6 +484,14 @@ export type Cialist = {
   __typename?: 'cialist';
   id: Scalars['Int']['output'];
   txtName: Scalars['String']['output'];
+};
+
+export type Cominforesult = {
+  __typename?: 'cominforesult';
+  code: Scalars['Int']['output'];
+  data: Companyinfo;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
 };
 
 export type Company = {
@@ -602,14 +608,6 @@ export type Companycostcodelist = {
   message: Scalars['String']['output'];
 };
 
-export type Companydetails = {
-  __typename?: 'companydetails';
-  comboxIndustry?: Maybe<Array<Industrylist>>;
-  comboxPaymentTerms?: Maybe<Array<Paymenttermslist>>;
-  company?: Maybe<Company>;
-  companyName: Scalars['String']['output'];
-};
-
 export type Companyemails = {
   __typename?: 'companyemails';
   email: Scalars['String']['output'];
@@ -622,6 +620,14 @@ export type Companyemailsresult = {
   data?: Maybe<Array<Companyemails>>;
   error: Scalars['Boolean']['output'];
   message: Scalars['String']['output'];
+};
+
+export type Companyinfo = {
+  __typename?: 'companyinfo';
+  comboxIndustry?: Maybe<Array<Industrylist>>;
+  comboxPaymentTerms?: Maybe<Array<Paymenttermslist>>;
+  company?: Maybe<Company>;
+  companyName: Scalars['String']['output'];
 };
 
 export type Companylist = {

@@ -45,8 +45,8 @@ export class LeftSidebarComponent implements OnInit {
   activeMenuItems: string[] = [];
   loggedInUser: User | null = {};
   menuItems: MenuItem[] = [];
-  userAvatar:string = localStorage.getItem('avatar');
-  firstName:string = localStorage.getItem('firstName');
+  userAvatar: string = localStorage.getItem('avatar');
+  firstName: string = localStorage.getItem('firstName');
   lastName: string = localStorage.getItem('lastName');
   companyList = [];
 
@@ -71,16 +71,17 @@ export class LeftSidebarComponent implements OnInit {
     this.apolloService.query(company_list, {}).then((res) => {
       if (!res.company_list.error) {
         this.companyList = res.company_list.data;
-        if (this.companyList.length > 0) {
+        if (
+          this.companyList.length > 0 &&
+          localStorage.getItem('idcompany') == '0'
+        ) {
           localStorage.setItem('idcompany', this.companyList[0].id.toString());
           localStorage.setItem('companyName', this.companyList[0].txtName);
-          localStorage.setItem('idUserOwner',this.companyList[0].idUserOwner);
+          localStorage.setItem('idUserOwner', this.companyList[0].idUserOwner);
         }
       }
     });
   }
-
- 
 
   ngOnInit(): void {
     this.initMenu();
@@ -90,9 +91,11 @@ export class LeftSidebarComponent implements OnInit {
   selectCompanyName(id, name, idUserOwner) {
     localStorage.setItem('idcompany', id);
     localStorage.setItem('companyName', name);
-    localStorage.setItem('idUserOwner',idUserOwner);
+    localStorage.setItem('idUserOwner', idUserOwner);
     this.toastrService.info('Switch to Company ' + name, 'Successful');
-    this.router.navigate(['apps/setting'])
+    this.router.navigate(['apps/projects']).then(() => {
+      this.router.navigate(['apps/setting']);
+    });
   }
 
   ngOnChanges(): void {
@@ -212,4 +215,15 @@ export class LeftSidebarComponent implements OnInit {
     );
   }
 
+  logout() {
+    localStorage.clear();
+    this.router.navigate(['auth/login']);
+  }
+
+  newCompany() {
+    localStorage.setItem('idcompany', '0');
+    this.router.navigate(['apps/projects']).then(() => {
+      this.router.navigate(['apps/setting']);
+    });
+  }
 }

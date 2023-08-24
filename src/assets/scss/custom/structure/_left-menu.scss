@@ -17,18 +17,25 @@
 }
 
 @keyframes fadeout {
-    0% { opacity: 0; }
-    100% { opacity: 1;}
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
-.user-profile{
+.user-profile {
     color: #FFFFFF;
     animation: fadeout 0.1s ease-in-out;
     display: inline-block;
 }
 
-.sidebar-hr{
-    width: 138px; background-color: #3C3C42; height: 1px;
+.sidebar-hr {
+    width: 138px;
+    background-color: #3C3C42;
+    height: 1px;
 }
 
 //Content Page
@@ -52,9 +59,24 @@
     text-align: center;
     cursor: pointer;
 }
-.adminIcons{
-    display: none ;
+
+.adminIcons {
+    display: none;
 }
+
+.simplebar-mask,
+.simplebar-content-wrapper {
+    overflow: visible !important;
+}
+
+.simplebar-scrollbar {
+    display: none !important;
+}
+
+.simplebar-offset {
+    bottom: 0 !important;
+}
+
 // Sidemenu
 .left-side-menu {
     width: $leftbar-width;
@@ -85,7 +107,8 @@
 }
 
 // Sidebar
-#sidebar-menu,#sidebar-menu1 {
+#sidebar-menu,
+#sidebar-menu1 {
     >ul {
         list-style: none;
         padding: 0;
@@ -106,6 +129,7 @@
                 letter-spacing: 0.1px;
                 height: 40px;
                 overflow: hidden;
+
                 &:hover,
                 &:focus,
                 &:active {
@@ -293,22 +317,26 @@ body[data-leftbar-size="condensed"] {
         cursor: pointer;
     }
 
-    .navbar-custom{
+    .navbar-custom {
         left: 72px !important;
     }
-    .sidebar-hr{
+
+    .sidebar-hr {
         width: 48px;
     }
-    .adminIcon{
+
+    .adminIcon {
         display: none !important;
     }
-    .adminIcons{
-        display: block ;
+
+    .adminIcons {
+        display: block;
     }
-    .user-box
-    {
+
+    .user-box {
         width: $leftbar-width-condensed !important;
     }
+
     // Side menu
     .left-side-menu {
         position: absolute;
@@ -330,7 +358,8 @@ body[data-leftbar-size="condensed"] {
 
 
         // Sidebar Menu
-        #sidebar-menu,#sidebar-menu1 {
+        #sidebar-menu,
+        #sidebar-menu1 {
 
             .menu-title,
             .menu-arrow,
@@ -352,10 +381,11 @@ body[data-leftbar-size="condensed"] {
                         transition: none;
                         height: 40px;
                         width: 40px;
-                        &:hover
-                        {
+
+                        &:hover {
                             background-color: #73B2FF33;
                         }
+
                         &:active,
                         &:focus {
                             background-color: #2B52DD;
@@ -379,12 +409,13 @@ body[data-leftbar-size="condensed"] {
                             padding-left: 25px;
                         }
                     }
-                    
+
                     &:hover {
                         >a {
                             position: relative;
                             color: $menu-item-active;
                             background-color: #73B2FF33;
+
                             span {
                                 display: none;
                             }
@@ -1033,7 +1064,7 @@ body[data-layout-color="dark"] {
             .user-name {
                 color: #{map-get($dark-grays, "300")};
             }
-            
+
         }
     }
 

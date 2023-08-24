@@ -18,6 +18,7 @@ export class VendorlistComponent {
   vendorlist = [];
   VENDOR_LIST = [];
   idvendor = 0;
+  loading = true;
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
@@ -41,6 +42,7 @@ export class VendorlistComponent {
             this.vendorlist = result.data;
             this.VENDOR_LIST = JSON.parse(JSON.stringify(result.data));
           }
+          this.loading = false;
         });
     }
   }
