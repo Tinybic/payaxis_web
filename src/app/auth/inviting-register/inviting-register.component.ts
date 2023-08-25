@@ -76,22 +76,32 @@ export class InvitingRegisterComponent implements OnInit {
           this.loading = false;
           if (!res.error) {
             this.formValues['email'].setValue(res.data[0].email);
-            this.toastr.info(
+
+            let message = '';
+            message =
               '<img src="' +
-                res.data[0].avatar +
-                '"  class = "avatar-md rounded-circle me-1-1" /><b>' +
+              res.data[0].avatar +
+              '"  class = "avatar-md rounded-circle me-1-1" /><b>' +
+              res.data[0].firstName +
+              ' ' +
+              res.data[0].lastName +
+              '</b> has invited you to the "' +
+              res.data[0].companyname +
+              '" team.';
+            if (res.data[0].avatar.length < 10) {
+              message =
                 res.data[0].firstName +
                 ' ' +
                 res.data[0].lastName +
                 '</b> has invited you to the "' +
                 res.data[0].companyname +
-                '" team.',
-              '',
-              {
-                timeOut: 20000,
-                enableHtml: true,
-              }
-            );
+                '" team.';
+            }
+
+            this.toastr.info(message, '', {
+              timeOut: 20000,
+              enableHtml: true,
+            });
             this.companyName = res.data[0].companyname;
           } else {
             this.error = res.message;
@@ -120,7 +130,7 @@ export class InvitingRegisterComponent implements OnInit {
    */
   onSubmit(): void {
     this.formSubmitted = true;
-    
+
     if (this.InvitingsignUpForm.valid) {
       this.loading = true;
       this.httpService
@@ -134,8 +144,13 @@ export class InvitingRegisterComponent implements OnInit {
         .then((res) => {
           this.loading = false;
           if (!res.error) {
-            this.toastr.info('Your account was successfully created. Please log in.','Successful');
-            this.router.navigateByUrl('auth/login?company=' + encodeURIComponent(this.companyName) );
+            this.toastr.info(
+              'Your account was successfully created. Please log in.',
+              'Successful'
+            );
+            this.router.navigateByUrl(
+              'auth/login?company=' + encodeURIComponent(this.companyName)
+            );
           } else {
             this.error = res.message;
           }

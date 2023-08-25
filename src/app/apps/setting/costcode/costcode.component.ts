@@ -179,22 +179,36 @@ export class CostcodeComponent {
       });
   }
 
+  checkCategoryExist(name) {
+    for (let i = 0; i < this.costCodeCategoryList.length; i++) {
+      if(this.costCodeCategoryList[i].txtName == name){
+        return false;
+      }
+    }
+    return true
+  }
+
   costcodeCategoryName = '';
   costcodeCategoryNameError = false;
   createCostCodeCategory() {
-    if (this.costcodeCategoryName != 'Others') {
-      this.costCodeCategoryList.splice(
-        this.costCodeCategoryList.length - 1,
-        0,
-        {
-          id: 0,
+    if (this.costcodeCategoryName != 'Others' && this.checkCategoryExist(this.costcodeCategoryName)) {
+      this.apolloService
+        .mutate(companycategory_new, {
+          idCompany: this.costcode.idCompany,
           txtName: this.costcodeCategoryName,
-          costcodecount: 0,
-        }
-      );
-      this.costCodeCateGoryNewList.push({ txtName: this.costcodeCategoryName });
-      this.costcodeCategoryName = '';
-      this.categoryAddref.close();
+        })
+        .then((res) => {
+          const result = res.companycategory_new;
+          let message = '';
+          if (!result.error) {
+            message = 'Categories changed successfully';
+            this.categoryAddref.close();
+            this.getCostCodeCategoryList();
+          } else {
+            message = result.message;
+          }
+          this.toastrService.info(message, '');
+        });
     } else {
       this.costcodeCategoryNameError = true;
     }

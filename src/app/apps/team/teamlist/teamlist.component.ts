@@ -24,7 +24,7 @@ import { FormControl } from '@angular/forms';
 })
 export class TeamlistComponent {
   @ViewChild('inviteMember') inviteMember: any;
-  @ViewChild('ajaxRequest') ajaxRequest!: SwalComponent;
+  @ViewChild('deleteModal') deleteModal: any;
 
   statusFilter: string = 'All';
   members = [];
@@ -205,41 +205,27 @@ export class TeamlistComponent {
   }
 
   public alertOption: SweetAlertOptions = {};
-  deactive(id, firstName, lastName, revision) {
-    this.alertOption = {
-      html:
-        `<div>
-      <div class="headline text-start">Deactivating the account</div>
-      <div class="swal2-alert-content text-start">Do you want to deactivate <b>` +
-        firstName +
-        ' ' +
-        lastName +
-        `</b>?</div>
-      </div>`,
-      showCloseButton: true,
-      showConfirmButton: true,
-      showCancelButton: true,
-      confirmButtonText: 'Deactivate',
-      width: 463,
-      padding: 16,
-      background: '#fff',
-    };
-    setTimeout(() => {
-      this.ajaxRequest.fire().then((result) => {
-        if (result.isConfirmed) {
-          this.deactiveMembers(id, revision);
-        }
-      });
-    }, 100);
+
+  deleteFirstname ='';
+  deleteLastname = '';
+  deleteIndex = '';
+
+  deactive(index) {
+    this.deleteFirstname = this.members[index].firstName;
+    this.deleteLastname = this.members[index].lastName;
+    this.deleteIndex = index;
+
+    this.openVerticallyCentered(this.deleteModal);
   }
 
-  deactiveMembers(id, revision) {
+  deactiveMembers() {
     this.apolloService
-      .mutate(company_member_deactivate, { id: id, revision: revision })
+      .mutate(company_member_deactivate, { id: this.members[this.deleteIndex].id, revision: this.members[this.deleteIndex].revision })
       .then((res) => {
         let message = '';
         const result = res.company_member_deactivate;
         message = result.message;
+        this.getCompanyMembers();
         this.toastrService.info(message, '');
       });
   }
@@ -285,12 +271,11 @@ export class TeamlistComponent {
       this.openVerticallyCentered(this.inviteMember);
   }
 
-  cancelModal(){
+  cancelModal() {
     this.modalService.dismissAll();
     this.emailList = [];
     this.step = 'step1';
   }
-
 
   isEmail(email: string) {
     const expression: RegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -345,8 +330,6 @@ export class TeamlistComponent {
         }
       });
   }
-
-  
 
   step3Approval(item, event) {
     item.approvalAmount = event.id;

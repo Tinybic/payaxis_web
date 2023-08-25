@@ -11,10 +11,6 @@ body {
     }
 }
 
-label {
-    font-weight: $label-font-weight;
-}
-
 
 pre{
   background-color: #{lighten(map-get($grays, "200"), 2%)};

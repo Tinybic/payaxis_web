@@ -3,10 +3,11 @@
         My Company
     </div>
     <div class="col-md-6 text-end">
-        <button *ngIf="tabs == 1" class="btn btn-primary" (click)="saveCompany()">Save</button>
+        <button *ngIf="tabs == 1" class="btn btn-outline-primary">Cancel</button>
+        <button *ngIf="tabs == 1" class="btn btn-primary ms-2-1" (click)="saveCompany()">Save</button>
     </div>
 </div>
-<div class="row mt-2">
+<div class="row mt-1-1">
     <div class="col-md-12">
         <ul ngbNav #nav="ngbNav" [(activeId)]="tabs" class="nav-pills navtab-bg">
             <li [ngbNavItem]="1">
@@ -38,7 +39,8 @@
                                                     style="position: absolute;top: 24px;right: 24px;pointer-events: none;"></app-avatar>
                                             </div>
 
-                                            <div class="d-inline-block dropdown ms-1-1" ngbDropdown>
+                                            <div class="d-inline-block dropdown ms-1-1" ngbDropdown
+                                                *ngIf="company.avatar">
                                                 <span ngbDropdownToggle><i
                                                         class="fe-chevron-down line-56 cursor-pointer"></i></span>
                                                 <div class="dropdown-menu" ngbDropdownMenu>
@@ -142,7 +144,6 @@
                                             <input id="txtState" type="text" class="form-select position-relative"
                                                 [ngbTypeahead]="searchState"
                                                 (focus)="focus$.next($any($event).target.value)" placeholder="State"
-                                                (click)="click$.next($any($event).target.value)"
                                                 #instance="ngbTypeahead" [(ngModel)]="company.txtState" />
                                         </div>
                                         <div class="col-md-4">

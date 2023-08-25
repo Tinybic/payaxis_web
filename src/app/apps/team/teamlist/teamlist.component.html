@@ -17,7 +17,7 @@
             <a href="javascript:void(0)" class="bold-600 font-20 text-black line-60"
                 ngbDropdownToggle>{{statusFilter}}({{showCount}}) <i class=" fe-chevron-down"></i></a>
             <div class="dropdown-menu" ngbDropdownMenu>
-                <div class="mb-2 p-0" ngbDropdownItem>
+                <div ngbDropdownItem>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" name="statusFilter"
                             [checked]="statusFilter=='All'" (change)="changeStatusFilter('All');">
@@ -26,7 +26,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="mb-2 p-0" ngbDropdownItem>
+                <div ngbDropdownItem>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" [checked]="statusFilter=='Active'"
                             (change)="changeStatusFilter('Active');" name="statusFilter">
@@ -35,7 +35,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="p-0" ngbDropdownItem>
+                <div ngbDropdownItem>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" [checked]="statusFilter=='Pending'"
                             (change)="changeStatusFilter('Pending');" name="statusFilter">
@@ -56,7 +56,7 @@
                 <i class="fe-chevron-down font-16 ms-1-1"></i>
             </a>
             <div class="dropdown-menu" ngbDropdownMenu>
-                <div class="mb-2 p-0" ngbDropdownItem>
+                <div ngbDropdownItem>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck" [checked]="roleFilter=='All'"
                             (change)="changeRoleFilter('All');">
@@ -65,7 +65,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="mb-2 p-0" ngbDropdownItem *ngFor="let item of roleItems">
+                <div ngbDropdownItem *ngFor="let item of roleItems">
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck"
                             [checked]="roleFilter==item.text" (change)="changeRoleFilter(item.text);">
@@ -84,7 +84,7 @@
                 <i class="fe-chevron-down font-16 ms-1-1"></i>
             </a>
             <div class="dropdown-menu" ngbDropdownMenu>
-                <div class="mb-2 p-0">
+                <div ngbDropdownItem>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
@@ -92,7 +92,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="mb-2 p-0">
+                <div ngbDropdownItem>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
@@ -100,7 +100,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="mb-2 p-0">
+                <div ngbDropdownItem>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
@@ -108,7 +108,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="mb-2 p-0">
+                <div ngbDropdownItem>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
@@ -116,7 +116,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="p-0">
+                <div ngbDropdownItem>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
@@ -134,7 +134,7 @@
                 <i class="fe-chevron-down font-16 ms-1-1"></i>
             </a>
             <div class="dropdown-menu" ngbDropdownMenu>
-                <div class="mb-2 p-0" ngbDropdownItem>
+                <div ngbDropdownItem>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck"
                             [checked]="approvalAmountFilter=='All'" (change)="changeapprovalAmountFilter('All');">
@@ -143,7 +143,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="mb-2 p-0" ngbDropdownItem>
+                <div ngbDropdownItem>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck"
                             [checked]="approvalAmountFilter=='1000'" (change)="changeapprovalAmountFilter('1000');">
@@ -152,7 +152,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="mb-2 p-0" ngbDropdownItem>
+                <div ngbDropdownItem>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck"
                             [checked]="approvalAmountFilter=='2000'" (change)="changeapprovalAmountFilter('2000');">
@@ -161,7 +161,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="mb-2 p-0" ngbDropdownItem>
+                <div ngbDropdownItem>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck"
                             [checked]="approvalAmountFilter=='5000'" (change)="changeapprovalAmountFilter('5000');">
@@ -170,7 +170,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="mb-2 p-0" ngbDropdownItem>
+                <div ngbDropdownItem>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck"
                             [checked]="approvalAmountFilter=='7500'" (change)="changeapprovalAmountFilter('7500');">
@@ -179,7 +179,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="p-0" ngbDropdownItem>
+                <div ngbDropdownItem>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck"
                             [checked]="approvalAmountFilter=='10000'" (change)="changeapprovalAmountFilter('10000');">
@@ -247,7 +247,7 @@
                     </td>
                     <td>{{item.active?'Active':'InActive'}}</td>
                     <td><i class=" fe-trash-2 cursor-pointer" *ngIf="idUser==idUserOwner && item.role != 'Owner'"
-                            (click)="deactive(item.id,item.firstName,item.lastName,item.revision)"></i></td>
+                            (click)="deactive(i)"></i></td>
                 </tr>
             </tbody>
             <tfoot style="height: 16px;">
@@ -338,3 +338,27 @@
     </div>
 </ng-template>
 
+<ng-template #deleteModal let-modal>
+    <div class="delete-modal-container">
+        <input type="text" style="display: none;" />
+        <div class="row">
+            <div class="col-md-10">
+                <div class="headline-24 text-start">Deactivating the account</div>
+            </div>
+            <div class="col-md-2 text-end text-black">
+                <i class="fe-x cursor-pointer bold-600" (click)="modal.dismiss()"></i>
+            </div>
+        </div>
+        <div class="delete-alert-content text-start">
+            Do you want to deactivate <b>{{deleteFirstname}} {{deleteLastname}}</b>?
+        </div>
+        <div class="d-flex justify-content-end mt-3">
+            <div class="delete-cancel-button mt-0 line-40 cursor-pointer" (click)="modal.dismiss()">
+                Cancel
+            </div>
+            <div>
+                <button class="btn btn-primary ms-2-1" (click)="deactiveMembers()">Deactivate</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
