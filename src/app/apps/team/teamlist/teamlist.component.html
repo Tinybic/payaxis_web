@@ -250,6 +250,15 @@
                             (click)="deactive(i)"></i></td>
                 </tr>
             </tbody>
+            <tbody *ngIf="members.length == 0" class="bg-white">
+                <tr *ngIf="loading">
+                    <td colspan="7">
+                        <div style="position: relative; height: 400px;">
+                            <app-ui-preloader [display]="loading"></app-ui-preloader>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
             <tfoot style="height: 16px;">
                 <tr>
                     <td colspan="5">&nbsp;</td>

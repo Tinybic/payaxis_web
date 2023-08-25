@@ -23,12 +23,15 @@ const companycategory_list = gql`
 `;
 
 const companycategory_new = gql`
-  mutation companycategory_new($idCompany: Int!, $txtName: String!) {
+  mutation companycategory_new($idCompany: Int!, $txtName: txtName_String_NotNull_maxLength_128!) {
     companycategory_new(idCompany: $idCompany, txtName: $txtName) {
       error
       code
       message
-      data
+      data {
+        id
+        revision
+      }
     }
   }
 `;
