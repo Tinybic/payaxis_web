@@ -258,11 +258,11 @@
 <ng-template #cancelModal let-modal>
     <div style="padding: 16px 24px; border-radius: 8px;">
         <input type="text" style="display: none;" />
-        <div class="swal2-alert-title text-start">Close without saving</div>
-        <div class="swal2-alert-content text-start">Do you want to close the page? All changes will not be saved.</div>
+        <div class="headline text-start">Close without saving</div>
+        <div class="delete-alert-content text-start">Do you want to close the page? All changes will not be saved.</div>
         
         <div class="d-flex justify-content-between mt-3">
-            <div class="swal2-alert-link mt-0 line-40 cursor-pointer" (click)="cancelBack()">
+            <div class="delete-cancel-button mt-0 line-40 cursor-pointer" (click)="cancelBack()">
                 Cancel
             </div>
             <div>
@@ -278,11 +278,11 @@
     <div style="padding: 16px 24px; border-radius: 8px;">
         <input type="text" style="display: none;" />
         <div class="headline text-start">Delete the files</div>
-        <div class="swal2-alert-content text-start">
+        <div class="delete-alert-content text-start">
             Do you want to delete this files ?
         </div>
-        <div class="d-flex justify-content-between mt-3">
-            <div class="swal2-alert-link mt-0 line-40 cursor-pointer" (click)="cancelDelete()">
+        <div class="d-flex justify-content-end mt-3">
+            <div class="delete-cancel-button mt-0 line-40 cursor-pointer" (click)="cancelDelete()">
                 Cancel
             </div>
             <div>
@@ -296,11 +296,11 @@
     <div style="padding: 16px 24px; border-radius: 8px;">
         <input type="text" style="display: none;" />
         <div class="headline text-start">Archive the vendor</div>
-        <div class="swal2-alert-content text-start">
+        <div class="delete-alert-content text-start">
             Do you want to archive this vendor?
         </div>
-        <div class="d-flex justify-content-between mt-3">
-            <div class="swal2-alert-link mt-0 line-40 cursor-pointer" (click)="cancelArchive()">
+        <div class="d-flex justify-content-end mt-3">
+            <div class="delete-cancel-button mt-0 line-40 cursor-pointer" (click)="cancelArchive()">
                 Cancel
             </div>
             <div>

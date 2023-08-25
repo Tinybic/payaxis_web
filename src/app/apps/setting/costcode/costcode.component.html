@@ -341,11 +341,11 @@
     <div class="modal-body">
         <input type="text" style = "display: none;" />
         <div class="headline text-start">Deleting Cost Code Category</div>
-        <div class="swal2-alert-content text-start">
+        <div class="delete-alert-content text-start">
             {{deleteCategoryMessage}}
         </div>
         <div class="d-flex justify-content-end mt-3">
-            <div class="swal2-alert-link mt-0 line-40 cursor-pointer" (click)="modal.dismiss()">
+            <div class="delete-cancel-button mt-0 line-40 cursor-pointer" (click)="modal.dismiss()">
                 Cancel
             </div>
             <div>
@@ -359,15 +359,15 @@
     <div class="modal-body">
         <input type="text" style = "display: none;" />
         <div class="headline text-start">Deleting Cost Code</div>
-        <div class="swal2-alert-content text-start">
+        <div class="delete-alert-content text-start">
             {{deleteCostcodeMessage}}
         </div>
         <div class="d-flex justify-content-end mt-3">
-            <div class="swal2-alert-link mt-0 line-40 cursor-pointer" (click)="modal.dismiss()">
+            <div class="delete-cancel-button mt-0 line-40 cursor-pointer" (click)="modal.dismiss()">
                 Cancel
             </div>
             <div>
-                <button class="btn btn-primary ms-2-1" (click)="deleteCostCode()">Confirm</button>
+                <button class="btn btn-primary ms-3" (click)="deleteCostCode()">Confirm</button>
             </div>
         </div>
     </div>
@@ -376,16 +376,16 @@
 <ng-template #cancelcostcode let-modal>
     <div style="padding: 16px 24px; border-radius: 8px;">
         <input type="text" style = "display: none;" />
-        <div class="swal2-alert-title text-start">Close without saving</div>
-        <div class="swal2-alert-content text-start">Do you want to close the page? All changes will not be saved.</div>
+        <div class="headline text-start">Close without saving</div>
+        <div class="delete-alert-content text-start">Do you want to close the page? All changes will not be saved.</div>
 
         <div class="d-flex justify-content-between mt-3">
-            <div class="swal2-alert-link mt-0 line-40 cursor-pointer" (click)="cancelCostCode()">
+            <div class="delete-cancel-button mt-0 line-40 cursor-pointer" (click)="cancelCostCode()">
                 Cancel
             </div>
             <div>
                 <button class="btn btn-outline-primary" (click)="closeCancelCostCode()">Close without saving</button>
-                <button class="btn btn-primary ms-2-1" (click)="SaveCancelCostCode()">Save and Close</button>
+                <button class="btn btn-primary ms-3" (click)="SaveCancelCostCode()">Save and Close</button>
             </div>
         </div>
     </div>
@@ -394,11 +394,11 @@
 <ng-template #cancelcategory let-modal>
     <div style="padding: 16px 24px; border-radius: 8px;">
         <input type="text" style = "display: none;" />
-        <div class="swal2-alert-title text-start">Close without saving</div>
-        <div class="swal2-alert-content text-start">Do you want to close the page? All changes will not be saved.</div>
+        <div class="headline text-start">Close without saving</div>
+        <div class="delete-alert-content text-start">Do you want to close the page? All changes will not be saved.</div>
 
         <div class="d-flex justify-content-between mt-3">
-            <div class="swal2-alert-link mt-0 line-40 cursor-pointer" (click)="cancelCategory()">
+            <div class="delete-cancel-button mt-0 line-40 cursor-pointer" (click)="cancelCategory()">
                 Cancel
             </div>
             <div>
