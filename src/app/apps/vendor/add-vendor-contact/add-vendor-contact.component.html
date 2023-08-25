@@ -2,7 +2,7 @@
     <div class="headline-24">{{idcontact > 0 ? 'Edit Contact' : 'New Contact for ['+vendorName+']'}} </div>
     
     
-    <div class="mt-2-1 p-2-1 bg-white">
+    <div class="card mt-2-1 p-2-1">
         <form [formGroup]="addVendorContactForm" (ngSubmit)="onSubmit()">
             <ngb-alert [dismissible]="false" type="danger" *ngIf="error">
                 {{ error }}
