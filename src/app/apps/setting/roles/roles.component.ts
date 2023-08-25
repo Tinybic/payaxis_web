@@ -2,7 +2,7 @@ import { Component, Input, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ApolloService } from "../../../core/service/apollo.service";
 import { NgbActiveModal, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
-import { GlobalFunctionsService } from "../../../services/global-functions.service";
+import { GlobalFunctionsService } from "../../../core/service/global-functions.service";
 import { Company_Role } from "../../../core/generated/generated";
 import { company_roles } from "../../../core/gql/roles";
 import { company_info } from "../../../core/gql/company";
