@@ -158,40 +158,45 @@ export class CostcodeComponent {
   }
 
   updateCostCodeCategory(index) {
-    this.apolloService
-      .mutate(companycategory_update, {
-        id: this.costCodeCategoryList[index].id,
-        revision: this.costCodeCategoryList[index].revision,
-        txtName: this.costCodeCategoryList[index].txtName,
-      })
-      .then((res) => {
-        const result = res.companycategory_update;
-        let message = '';
-        if (!result.error) {
-          message = 'Category have been updated';
-          this.costCodeCategoryList[index].edit = false;
-          this.getCostCodeCategoryList();
-          this.getCostCodeList();
-        } else {
-          message = result.message;
-        }
-        this.toastrService.info(message, '');
-      });
+    if (this.costcodeCategoryName.toLocaleLowerCase() != 'others') {
+      this.apolloService
+        .mutate(companycategory_update, {
+          id: this.costCodeCategoryList[index].id,
+          revision: this.costCodeCategoryList[index].revision,
+          txtName: this.costCodeCategoryList[index].txtName,
+        })
+        .then((res) => {
+          const result = res.companycategory_update;
+          let message = '';
+          if (!result.error) {
+            message = 'Category have been updated';
+            this.costCodeCategoryList[index].edit = false;
+            this.getCostCodeCategoryList();
+            this.getCostCodeList();
+          } else {
+            message = result.message;
+          }
+          this.toastrService.info(message, '');
+        });
+    }
   }
 
   checkCategoryExist(name) {
     for (let i = 0; i < this.costCodeCategoryList.length; i++) {
-      if(this.costCodeCategoryList[i].txtName == name){
+      if (this.costCodeCategoryList[i].txtName == name) {
         return false;
       }
     }
-    return true
+    return true;
   }
 
   costcodeCategoryName = '';
   costcodeCategoryNameError = false;
   createCostCodeCategory() {
-    if (this.costcodeCategoryName != 'Others' && this.checkCategoryExist(this.costcodeCategoryName)) {
+    if (
+      this.costcodeCategoryName.toLocaleLowerCase() != 'others' &&
+      this.checkCategoryExist(this.costcodeCategoryName)
+    ) {
       this.apolloService
         .mutate(companycategory_new, {
           idCompany: this.costcode.idCompany,
@@ -358,7 +363,7 @@ export class CostcodeComponent {
       this.costcodeError.costCode = true;
       return;
     }
-    if (this.costcode.idcategory == 0) {
+    if (this.costcode.idcategory == 0 && this.costcode.category != 'Others') {
       this.costcodeError.idcategory = true;
       return;
     }
