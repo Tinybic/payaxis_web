@@ -158,7 +158,7 @@ export class CostcodeComponent {
   }
 
   updateCostCodeCategory(index) {
-    if (this.costcodeCategoryName.toLocaleLowerCase() != 'others') {
+    if (this.costCodeCategoryList[index].txtName.toLocaleLowerCase() != 'others') {
       this.apolloService
         .mutate(companycategory_update, {
           id: this.costCodeCategoryList[index].id,
@@ -171,11 +171,11 @@ export class CostcodeComponent {
           if (!result.error) {
             message = 'Category have been updated';
             this.costCodeCategoryList[index].edit = false;
-            this.getCostCodeCategoryList();
             this.getCostCodeList();
           } else {
             message = result.message;
           }
+          this.getCostCodeCategoryList();
           this.toastrService.info(message, '');
         });
     }
@@ -208,10 +208,10 @@ export class CostcodeComponent {
           if (!result.error) {
             message = 'Categories changed successfully';
             this.categoryAddref.close();
-            this.getCostCodeCategoryList();
           } else {
             message = result.message;
           }
+          this.getCostCodeCategoryList();
           this.toastrService.info(message, '');
         });
     } else {
