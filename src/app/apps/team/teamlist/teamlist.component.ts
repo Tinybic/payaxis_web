@@ -57,7 +57,7 @@ export class TeamlistComponent {
   edit = [];
   approvalAmountFilter = 'Approval Amount';
   roleFilter = 'Approval';
-
+  loading = true;
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
@@ -199,6 +199,7 @@ export class TeamlistComponent {
               (member) => !member.active
             ).length;
             this.showCount = this.allCount;
+            this.loading = false;
           }
         });
     }

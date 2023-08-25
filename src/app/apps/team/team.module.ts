@@ -8,6 +8,7 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { AvatarModule } from 'src/app/shared/avatar/avatar.module';
 import { DropdowndataModule } from 'src/app/shared/dropdowndata/dropdowndata.module';
 import { TagInputModule } from 'ngx-chips'; // this is needed
+import { UiModule } from 'src/app/shared/ui/ui.module';
 @NgModule({
   declarations: [TeamlistComponent],
   imports: [
@@ -20,6 +21,7 @@ import { TagInputModule } from 'ngx-chips'; // this is needed
     SweetAlert2Module,
     AvatarModule,
     DropdowndataModule,
+    UiModule
   ],
 })
 export class TeamModule {}
