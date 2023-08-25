@@ -142,7 +142,6 @@
                                             <input id="txtState" type="text" class="form-select position-relative"
                                                 [ngbTypeahead]="searchState"
                                                 (focus)="focus$.next($any($event).target.value)" placeholder="State"
-                                                (click)="click$.next($any($event).target.value)"
                                                 #instance="ngbTypeahead" [(ngModel)]="company.txtState" />
                                         </div>
                                         <div class="col-md-4">

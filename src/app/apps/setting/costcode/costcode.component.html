@@ -255,6 +255,7 @@
 
 
 <ng-template #categorylist let-modal>
+    <input type="text" style = "display: none;" />
     <div class="modal-body" style="width: 483px;display: flex; flex-direction: column;">
         <div style="flex: 1;">
             <div class="row">
@@ -338,6 +339,7 @@
 
 <ng-template #deletecategory let-modal>
     <div class="modal-body">
+        <input type="text" style = "display: none;" />
         <div class="headline text-start">Deleting Cost Code Category</div>
         <div class="swal2-alert-content text-start">
             {{deleteCategoryMessage}}
@@ -355,6 +357,7 @@
 
 <ng-template #deletecostcode let-modal>
     <div class="modal-body">
+        <input type="text" style = "display: none;" />
         <div class="headline text-start">Deleting Cost Code</div>
         <div class="swal2-alert-content text-start">
             {{deleteCostcodeMessage}}
@@ -372,6 +375,7 @@
 
 <ng-template #cancelcostcode let-modal>
     <div style="padding: 16px 24px; border-radius: 8px;">
+        <input type="text" style = "display: none;" />
         <div class="swal2-alert-title text-start">Close without saving</div>
         <div class="swal2-alert-content text-start">Do you want to close the page? All changes will not be saved.</div>
 
@@ -389,6 +393,7 @@
 
 <ng-template #cancelcategory let-modal>
     <div style="padding: 16px 24px; border-radius: 8px;">
+        <input type="text" style = "display: none;" />
         <div class="swal2-alert-title text-start">Close without saving</div>
         <div class="swal2-alert-content text-start">Do you want to close the page? All changes will not be saved.</div>
 

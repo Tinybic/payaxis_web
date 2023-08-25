@@ -2,9 +2,9 @@
     <a href="javascript:void(0)" [ngClass]="color" ngbDropdownToggle>{{displayText}}<i
             class="fe-chevron-down ms-1-1" [ngClass]="color"></i></a>
     <div class="dropdown-menu" ngbDropdownMenu>
-        <div class="mb-2" *ngFor="let item of data">
+        <div *ngFor="let item of data">
             <label (click)="changeStatus(item.id,item.text);"
-                class="cursor-pointer form-check-label ms-1-1" ngbDropdownItem>
+                class="cursor-pointer line-16 ms-1-1 " ngbDropdownItem>
                 {{item.text}}
             </label>
         </div>

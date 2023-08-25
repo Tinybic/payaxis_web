@@ -134,7 +134,7 @@
     --#{$variable-prefix}dropdown-border-color:                          #{shade-color($light, 3%)};
     --#{$variable-prefix}dropdown-divider-bg:                            #{shade-color($light, 3%)};
     --#{$variable-prefix}dropdown-box-shadow:                            0 .5rem 1rem #{rgba($black, .175)};
-    --#{$variable-prefix}dropdown-link-color:                            #{map-get($grays, "900")};
+    --#{$variable-prefix}dropdown-link-color:                            #202020;
     --#{$variable-prefix}dropdown-link-hover-color:                      #{shade-color(map-get($grays, "900"), 10%)};
     --#{$variable-prefix}dropdown-link-hover-bg:                         #{map-get($grays, "100")};
     --#{$variable-prefix}dropdown-link-active-color:                     #{$dark};

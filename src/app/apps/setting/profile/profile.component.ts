@@ -27,7 +27,7 @@ import { HttpService } from 'src/app/core/service/http.service';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent{
   @ViewChild('instance', { static: true }) instance!: NgbTypeahead;
   @ViewChild('fileInput', { static: false })
   fileInput: ElementRef<HTMLInputElement>;
@@ -102,6 +102,7 @@ export class ProfileComponent implements OnInit {
   searchState: OperatorFunction<string, readonly string[]> = (
     text$: Observable<string>
   ) => {
+    console.log(this.instance)
     const debouncedText$ = text$.pipe(
       debounceTime(200),
       distinctUntilChanged()
@@ -126,6 +127,7 @@ export class ProfileComponent implements OnInit {
   searchIndustry: OperatorFunction<string, readonly string[]> = (
     text$: Observable<string>
   ) => {
+    console.log(this.instance)
     const debouncedText$ = text$.pipe(
       debounceTime(200),
       distinctUntilChanged()
