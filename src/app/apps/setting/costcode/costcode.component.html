@@ -11,7 +11,7 @@
                 <i class="fe-chevron-down font-16 ms-1-1"></i>
             </a>
             <div class="dropdown-menu" ngbDropdownMenu>
-                <div class="mb-2 p-0" ngbDropdownItem>
+                <div ngbDropdownItem>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck"
                             [checked]="categoryFilter=='All'" (change)="changeCategoryFilter('All');">
@@ -20,7 +20,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="mb-2 p-0" ngbDropdownItem *ngFor="let item of costCodeCategoryList">
+                <div ngbDropdownItem *ngFor="let item of costCodeCategoryList">
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck"
                             [checked]="categoryFilter == item.txtName" (change)="changeCategoryFilter(item.txtName);">
@@ -48,7 +48,7 @@
 
                 <input id="csvupload" type="file" (change)="importCostCodeFromCSV($event)" accept=".csv"
                     class="d-none" />
-                <div ngbDropdownMenu style="width: 255px; padding: 0;">
+                <div ngbDropdownMenu style="width: 255px; ">
                     <div class="line-32 bold-600 cursor-pointer" ngbDropdownItem>Import from QuickBooks <img
                             class="float-end mt-1" src="/assets/images/icon/qb.png" /></div>
                     <div class="line-32 bold-600 cursor-pointer" ngbDropdownItem
@@ -61,7 +61,7 @@
                 <button class="btn btn-outline-primary" ngbDropdownToggle><i class="fe-download me-1-1"></i>Export<i
                         class="fe-chevron-down ms-1-1"></i></button>
 
-                <div ngbDropdownMenu style="width: 255px; padding: 0;">
+                <div ngbDropdownMenu style="width: 255px;">
                     <div class="line-32 bold-600 cursor-pointer" ngbDropdownItem>Export to QuickBooks <img
                             class="float-end mt-1" src="/assets/images/icon/qb.png" /></div>
                     <div class="line-32 bold-600 cursor-pointer" ngbDropdownItem>Export to CSV <img
@@ -118,7 +118,7 @@
                     </td>
                     <td> {{item.costCode}}
                     </td>
-                    <td>
+                    <td class="text-end pe-3">
                         <div *ngIf="!item.active" class="d-inline-block ArchivedTag">
                             Archived
                         </div>
@@ -179,68 +179,77 @@
     <div class="modal-body" style="width: 483px; display: flex; flex-direction: column;">
         <div style="flex: 1;">
             <div class="headline">Cost Code</div>
-            <div class="row mt-2-1">
-                <div class="col-md-12">
-                    <label class="form-label" i18n>Name</label>
-                    <input class="form-control" type="text" id="name" required i18n-placeholder placeholder="Enter Name"
-                        [(ngModel)]="costcode.txtName" [ngClass]="{'is-invalid':costcodeError.txtName}" />
-                    <div *ngIf="costcodeError.txtName" class="invalid-feedback" i18n>
-                        <i class="fe-alert-triangle invalid-feedback-icon"></i>
-                        Name required
-                    </div>
-                </div>
-            </div>
-            <div class="row mt-2-1">
-                <div class="col-md-12">
-                    <label class="form-label" i18n>Code</label>
-                    <input class="form-control" type="text" id="costCode" required i18n-placeholder
-                        placeholder="ID Cost Code number" [(ngModel)]="costcode.costCode"
-                        [ngClass]="{'is-invalid':costcodeError.costCode}" />
-                    <div *ngIf="costcodeError.costCode" class="invalid-feedback" i18n>
-                        <i class="fe-alert-triangle invalid-feedback-icon"></i>
-                        Code required
-                    </div>
-                </div>
-            </div>
-            <div class="row mt-2-1">
-                <div class="col-md-12">
-                    <label class="form-label" i18n>Category</label>
-                    <div class="d-inline-block float-end text-primary line-24 cursor-pointer bold-600"
-                        (click)="openCategoryEditModal()"><i class="fe-plus-square"></i> Create New Category</div>
-                    <div ngbDropdown class="mt-sm-0 mt-2">
-                        <input class="form-select position-relative" type="text" id="Class" i18n-placeholder
-                            placeholder="Select category" [(ngModel)]="costcode.category"
-                            [ngClass]="{'is-invalid':costcodeError.idcategory}" ngbDropdownToggle />
 
-                        <div ngbDropdownMenu aria-labelledby="paymentTerms">
-                            <a href="javascript:void(0)" *ngFor="let item of this.costCodeCategoryList"
-                                (click)="SetClass(item)" ngbDropdownItem>{{item.txtName}}</a>
+            <div class="card mt-1-1">
+                <div class="card-body p-2-1">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="form-label" i18n>Name</label>
+                            <input class="form-control" type="text" id="name" required i18n-placeholder
+                                placeholder="Enter Name" [(ngModel)]="costcode.txtName"
+                                [ngClass]="{'is-invalid':costcodeError.txtName}" />
+                            <div *ngIf="costcodeError.txtName" class="invalid-feedback" i18n>
+                                <i class="fe-alert-triangle invalid-feedback-icon"></i>
+                                Name required
+                            </div>
                         </div>
                     </div>
-                    <div *ngIf="costcodeError.idcategory" class="mt-1" i18n>
-                        <i class="fe-alert-triangle invalid-feedback-icon"></i>
-                        Category required
+                    <div class="row mt-2-1">
+                        <div class="col-md-12">
+                            <label class="form-label" i18n>Code</label>
+                            <input class="form-control" type="text" id="costCode" required i18n-placeholder
+                                placeholder="ID Cost Code number" [(ngModel)]="costcode.costCode"
+                                [ngClass]="{'is-invalid':costcodeError.costCode}" />
+                            <div *ngIf="costcodeError.costCode" class="invalid-feedback" i18n>
+                                <i class="fe-alert-triangle invalid-feedback-icon"></i>
+                                Code required
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2-1">
+                        <div class="col-md-12">
+                            <label class="form-label" i18n>Category</label>
+                            <div class="d-inline-block float-end text-primary line-24 cursor-pointer bold-600"
+                                (click)="openCategoryEditModal()"><i class="fe-plus-square"></i> Create New Category
+                            </div>
+                            <div ngbDropdown class="mt-sm-0 mt-2">
+                                <input class="form-select position-relative" type="text" id="Class" i18n-placeholder
+                                    placeholder="Select category" [(ngModel)]="costcode.category"
+                                    [ngClass]="{'is-invalid':costcodeError.idcategory}" ngbDropdownToggle />
+
+                                <div ngbDropdownMenu aria-labelledby="paymentTerms">
+                                    <a href="javascript:void(0)" *ngFor="let item of this.costCodeCategoryList"
+                                        (click)="SetClass(item)" ngbDropdownItem>{{item.txtName}}</a>
+                                </div>
+                            </div>
+                            <div *ngIf="costcodeError.idcategory" class="mt-1" i18n>
+                                <i class="fe-alert-triangle invalid-feedback-icon"></i>
+                                Category required
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2-1">
+                        <div class="col-md-12">
+                            <label class="form-label" i18n>Description</label>
+                            <span class="float-end text-optional">Optional</span>
+                            <textarea class="form-control" type="text" id="name" required i18n-placeholder rows="5"
+                                placeholder="" [(ngModel)]="costcode.txtNotes" maxlength="250"></textarea>
+                            <div class="mt-1-1 caption400">{{250 - costcode.txtNotes.length}} symbols left</div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="row mt-2-1">
-                <div class="col-md-12">
-                    <label class="form-label" i18n>Description</label>
-                    <span class="float-end text-optional">Optional</span>
-                    <textarea class="form-control" type="text" id="name" required i18n-placeholder rows="5"
-                        placeholder="" [(ngModel)]="costcode.txtNotes" maxlength="250"></textarea>
-                    <div class="mt-1-1 caption400">{{250 - costcode.txtNotes.length}} symbols left</div>
-                </div>
-            </div>
+
+
         </div>
-        <div style="height: 105px;">
+        <div style="height: 97px;">
             <div class="row">
                 <div class="col-md-12 d-grid">
                     <button class="btn btn-primary" (click)="createCostCode()"
                         [disabled]="costcode.txtName.length ==0">{{costcodeButtonText}}</button>
                 </div>
             </div>
-            <div class="row mt-2-1">
+            <div class="row mt-1-1">
                 <div class="col-md-12 d-grid">
                     <button class="btn btn-outline-primary" (click)="openCancelCostCode()">Cancel</button>
                 </div>
@@ -255,10 +264,10 @@
 
 
 <ng-template #categorylist let-modal>
-    <input type="text" style = "display: none;" />
+    <input type="text" style="display: none;" />
     <div class="modal-body" style="width: 483px;display: flex; flex-direction: column;">
         <div style="flex: 1;">
-            <div class="row">
+            <div class="row mb-2-1">
                 <div class="col-md-6 headline">Edit Categories</div>
                 <div class="col-md-6 text-end">
                     <button class="btn btn-outline-primary ms-2-1" (click)="openCategoryAddModal()"><i
@@ -284,7 +293,7 @@
                 </div>
             </div>
         </div>
-        <div style="height: 105px;">
+        <!-- <div style="height: 105px;">
             <div class="row">
                 <div class="col-md-12 d-grid">
                     <button class="btn btn-primary" (click)="saveCostCodeCategory()">Save changes</button>
@@ -295,9 +304,9 @@
                     <button class="btn btn-outline-primary" (click)="openCancelCategory()">Cancel</button>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
-    <div class="modal-x" (click)="openCancelCategory()">
+    <div class="modal-x" (click)="modal.dismiss()">
         <i class="fe-x"></i>
     </div>
 </ng-template>
@@ -306,26 +315,31 @@
     <div class="modal-body" style="width: 483px;display: flex; flex-direction: column;">
         <div style="flex: 1;">
             <div class="headline">New Category</div>
-            <div class="row mt-2-1">
-                <div class="col-md-12">
-                    <label class="form-label" i18n>Name</label>
-                    <input class="form-control" type="text" id="name" required i18n-placeholder placeholder="Enter Name"
-                        [(ngModel)]="costcodeCategoryName" [ngClass]="{'is-invalid':costcodeCategoryNameError}" />
-                    <div *ngIf="costcodeCategoryNameError" class="mt-1" i18n>
-                        <i class="fe-alert-triangle invalid-feedback-icon"></i>
-                        Category name cannot be set to 'Others'
+            <div class="card mt-1-1">
+                <div class="card-body p-2-1">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="form-label" i18n>Name</label>
+                            <input class="form-control" type="text" id="name" required i18n-placeholder
+                                placeholder="Enter Name" [(ngModel)]="costcodeCategoryName"
+                                [ngClass]="{'is-invalid':costcodeCategoryNameError}" />
+                            <div *ngIf="costcodeCategoryNameError" class="mt-1" i18n>
+                                <i class="fe-alert-triangle invalid-feedback-icon"></i>
+                                Category name cannot be set to 'Others' or this name exist
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div style="height: 105px;">
+        <div style="height: 97px;">
             <div class="row">
                 <div class="col-md-12 d-grid">
                     <button class="btn btn-primary" (click)="createCostCodeCategory()"
                         [disabled]="costcodeCategoryName.length ==0">Create</button>
                 </div>
             </div>
-            <div class="row mt-2-1">
+            <div class="row mt-1-1">
                 <div class="col-md-12 d-grid">
                     <button class="btn btn-outline-primary" (click)="modal.dismiss()">Cancel</button>
                 </div>
@@ -338,9 +352,18 @@
 </ng-template>
 
 <ng-template #deletecategory let-modal>
-    <div class="modal-body">
-        <input type="text" style = "display: none;" />
-        <div class="headline text-start">Deleting Cost Code Category</div>
+    <div class="delete-modal-container">
+        <input type="text" style="display: none;" />
+        <div class="row">
+            <div class="col-md-10">
+                <div class="headline-24 text-start">Deleting Cost Code Category</div>
+            </div>
+            <div class="col-md-2 text-end text-black">
+                <i class="fe-x cursor-pointer bold-600" (click)="modal.dismiss()"></i>
+            </div>
+        </div>
+        
+        
         <div class="delete-alert-content text-start">
             {{deleteCategoryMessage}}
         </div>
@@ -356,9 +379,16 @@
 </ng-template>
 
 <ng-template #deletecostcode let-modal>
-    <div class="modal-body">
-        <input type="text" style = "display: none;" />
-        <div class="headline text-start">Deleting Cost Code</div>
+    <div class="delete-modal-container">
+        <input type="text" style="display: none;" />
+        <div class="row">
+            <div class="col-md-10">
+                <div class="headline-24 text-start">Deleting Cost Code</div>
+            </div>
+            <div class="col-md-2 text-end text-black">
+                <i class="fe-x cursor-pointer bold-600" (click)="modal.dismiss()"></i>
+            </div>
+        </div>
         <div class="delete-alert-content text-start">
             {{deleteCostcodeMessage}}
         </div>
@@ -374,9 +404,16 @@
 </ng-template>
 
 <ng-template #cancelcostcode let-modal>
-    <div style="padding: 16px 24px; border-radius: 8px;">
-        <input type="text" style = "display: none;" />
-        <div class="headline text-start">Close without saving</div>
+    <div class="delete-modal-container">
+        <input type="text" style="display: none;" />
+        <div class="row">
+            <div class="col-md-10">
+                <div class="headline-24 text-start">Close without saving</div>
+            </div>
+            <div class="col-md-2 text-end text-black">
+                <i class="fe-x cursor-pointer bold-600" (click)="closeCancelCostCode()"></i>
+            </div>
+        </div>
         <div class="delete-alert-content text-start">Do you want to close the page? All changes will not be saved.</div>
 
         <div class="d-flex justify-content-between mt-3">
@@ -392,9 +429,17 @@
 </ng-template>
 
 <ng-template #cancelcategory let-modal>
-    <div style="padding: 16px 24px; border-radius: 8px;">
-        <input type="text" style = "display: none;" />
-        <div class="headline text-start">Close without saving</div>
+    <div class="delete-modal-container">
+        <input type="text" style="display: none;" />
+        
+        <div class="row">
+            <div class="col-md-10">
+                <div class="headline-24 text-start">Close without saving</div>
+            </div>
+            <div class="col-md-2 text-end text-black">
+                <i class="fe-x cursor-pointer bold-600" (click)="closeCancelCategory()"></i>
+            </div>
+        </div>
         <div class="delete-alert-content text-start">Do you want to close the page? All changes will not be saved.</div>
 
         <div class="d-flex justify-content-between mt-3">

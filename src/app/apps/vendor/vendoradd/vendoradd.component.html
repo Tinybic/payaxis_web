@@ -256,9 +256,16 @@
 
 
 <ng-template #cancelModal let-modal>
-    <div style="padding: 16px 24px; border-radius: 8px;">
+    <div class="delete-modal-container">
         <input type="text" style="display: none;" />
-        <div class="headline text-start">Close without saving</div>
+        <div class="row">
+            <div class="col-md-10">
+                <div class="headline-24 text-start">Close without saving</div>
+            </div>
+            <div class="col-md-2 text-end text-black">
+                <i class="fe-x cursor-pointer bold-600" (click)="cancelBack()"></i>
+            </div>
+        </div>
         <div class="delete-alert-content text-start">Do you want to close the page? All changes will not be saved.</div>
         
         <div class="d-flex justify-content-between mt-3">
@@ -275,9 +282,16 @@
 </ng-template>
 
 <ng-template #deleteModal let-modal>
-    <div style="padding: 16px 24px; border-radius: 8px;">
+    <div class="delete-modal-container">
         <input type="text" style="display: none;" />
-        <div class="headline text-start">Delete the files</div>
+        <div class="row">
+            <div class="col-md-10">
+                <div class="headline-24 text-start">Delete the files</div>
+            </div>
+            <div class="col-md-2 text-end text-black">
+                <i class="fe-x cursor-pointer bold-600" (click)="cancelDelete()"></i>
+            </div>
+        </div>
         <div class="delete-alert-content text-start">
             Do you want to delete this files ?
         </div>
@@ -293,9 +307,16 @@
 </ng-template>
 
 <ng-template #archiveModal let-modal>
-    <div style="padding: 16px 24px; border-radius: 8px;">
+    <div class="delete-modal-container">
         <input type="text" style="display: none;" />
-        <div class="headline text-start">Archive the vendor</div>
+        <div class="row">
+            <div class="col-md-10">
+                <div class="headline-24 text-start">Archive the vendor</div>
+            </div>
+            <div class="col-md-2 text-end text-black">
+                <i class="fe-x cursor-pointer bold-600" (click)="cancelArchive()"></i>
+            </div>
+        </div>
         <div class="delete-alert-content text-start">
             Do you want to archive this vendor?
         </div>

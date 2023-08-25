@@ -339,9 +339,16 @@
 </ng-template>
 
 <ng-template #deleteModal let-modal>
-    <div style="padding: 16px 24px; border-radius: 8px;">
+    <div class="delete-modal-container">
         <input type="text" style="display: none;" />
-        <div class="headline text-start">Deactivating the account</div>
+        <div class="row">
+            <div class="col-md-10">
+                <div class="headline-24 text-start">Deactivating the account</div>
+            </div>
+            <div class="col-md-2 text-end text-black">
+                <i class="fe-x cursor-pointer bold-600" (click)="modal.dismiss()"></i>
+            </div>
+        </div>
         <div class="delete-alert-content text-start">
             Do you want to deactivate <b>{{deleteFirstname}} {{deleteLastname}}</b>?
         </div>

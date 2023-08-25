@@ -23,14 +23,8 @@ const companycategory_list = gql`
 `;
 
 const companycategory_new = gql`
-  mutation companycategory_new(
-    $idCompany: Int!
-    $companycategories: [companycategory!]
-  ) {
-    companycategory_new(
-      idCompany: $idCompany
-      companycategories: $companycategories
-    ) {
+  mutation companycategory_new($idCompany: Int!, $txtName: String!) {
+    companycategory_new(idCompany: $idCompany, txtName: $txtName) {
       error
       code
       message

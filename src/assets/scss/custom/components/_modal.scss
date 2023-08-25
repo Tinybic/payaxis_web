@@ -7,6 +7,10 @@
   margin-top: 0;
 }
 
+.modal-content{
+  background-color: #F8F9FC;
+;
+}
 
 .modal-337 {
   max-width: 337px !important;
@@ -119,7 +123,9 @@
     }
   }
 }
-
+.modal-body{
+  padding:24px;
+}
 
 .modal-body.modal-form-control{
   .form-control{
