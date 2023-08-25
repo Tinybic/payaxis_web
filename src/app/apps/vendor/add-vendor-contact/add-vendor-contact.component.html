@@ -94,7 +94,7 @@
                               formControlName="notes"
                               (input)="notesChange()"
                               maxlength="250"
-                              [ngClass]="{'is-invalid': formValues['notes'].invalid && (formValues['notes'].dirty || formValues['notes'].touched)}"></textarea>
+                              [ngClass]="{'is-invalid': formValues['notes'].invalid && (formValues['notes'].dirty || formValues['notes'].touched)}" style="resize:none;"></textarea>
                     <div *ngIf="formValues['notes'].errors?.['maxlength'] && (formValues['notes'].dirty || formValues['notes'].touched)"
                          i18n>
                         <i class="fe-alert-triangle invalid-feedback-icon"></i>

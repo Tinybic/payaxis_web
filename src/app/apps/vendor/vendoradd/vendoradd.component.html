@@ -25,8 +25,8 @@
         </div>
     </div>
 </div>
-<div class="row mt-1-1">
-    <div class="col">
+<div class="row mt-1-1 flex-1">
+    <div class="col flex-column-1">
         <ul ngbNav #nav2="ngbNav" [(activeId)]="tabs1"  class="nav-pills navtab-bg ">
             <li [ngbNavItem]="1">
                 <a ngbNavLink>
@@ -232,8 +232,8 @@
                 <a ngbNavLink>
                     Contacts
                 </a>
-                <ng-template ngbNavContent>
-                    <app-vendor-contacts [params]={idvendor,vendor}></app-vendor-contacts>
+                <ng-template ngbNavContent class="d-flex flex-column">
+                    <app-vendor-contacts [params]={idvendor,vendor} class="flex-column-1"></app-vendor-contacts>
                 </ng-template>
             </li>
             <li [ngbNavItem]="3">
@@ -250,7 +250,7 @@
             </li>
         </ul>
         
-        <div [ngbNavOutlet]="nav2" class="mb-0 b-0 pt-0"></div>
+        <div [ngbNavOutlet]="nav2" class="mb-0 b-0 pt-0 flex-column-1"></div>
     </div>
 </div>
 
