@@ -1,10 +1,11 @@
-// 
+//
 // card.scss
 //
 
 .card {
     box-shadow: $box-shadow-sm;
     margin-bottom: $grid-gutter-width;
+    border-radius: 16px;
     .card-drop {
         color: #{map-get($grays, "600")};
         font-size: 20px;

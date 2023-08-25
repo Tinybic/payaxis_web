@@ -50,7 +50,7 @@ export class VendorContactsComponent {
     this.apolloService.query(vendorcontact_list, {idVendor: this.idvendor}).then((res) => {
       const result = res.vendorcontact_list;
       if(!result.error){
-        // this.vendorContacts = result.data;
+        this.vendorContacts = result.data;
       }
     })
   }
