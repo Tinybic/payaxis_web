@@ -31,6 +31,7 @@ export class VendorContactsComponent {
     idcontact: 0,
     vendorName: ''
   }
+  isLoading = true;
   
   
   constructor(
@@ -52,6 +53,7 @@ export class VendorContactsComponent {
       if(!result.error){
         this.vendorContacts = result.data;
       }
+      this.isLoading = false;
     })
   }
   

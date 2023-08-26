@@ -5,7 +5,8 @@
     </div>
     <div class="col-md-4 text-end">
         <div class="d-inline-block ms-1-1">
-            <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords" style="padding: 10px 16px 10px 36px;"/>
+            <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords"
+                   style="padding: 10px 16px 10px 36px;"/>
         </div>
         <!-- end search-->
         <button class="btn btn-outline-primary ms-2-1 btn-text-12" (click)="openVendorContact(0)"
@@ -68,14 +69,19 @@
         </tfoot>
     </table>
     
-    <div *ngIf="vendorContacts.length==0" class="text-center" style="height: calc(100% - 58px);background-color: white;border-bottom-left-radius: 16px;border-bottom-right-radius: 16px;">
-        <div class="Paragraph-1 text-typeblackdeactivated bold-600  mt-40 ">No Contacts added yet</div>
-        <div class="Paragraph-2 text-typeblackdeactivated mt-1-1">Create new order in a few clicks
-        </div>
-        <div class="mt-1-1">
-            <button class="btn btn-outline-primary ms-2-1 btn-text-12" (click)="openVendorContact(0)" style="padding: 11px 16px"><i
-                    class="fe-plus-square me-1-1" style="vertical-align: bottom;"></i>Add Contact
-            </button>
+    <div *ngIf="vendorContacts.length==0" class="text-center"
+         style="height: calc(100% - 58px);background-color: white;border-bottom-left-radius: 16px;border-bottom-right-radius: 16px;position: relative;">
+        <app-ui-preloader [display]="isLoading"></app-ui-preloader>
+        <div *ngIf="!isLoading">
+            <div class="Paragraph-1 text-typeblackdeactivated bold-600  mt-40 ">No Contacts added yet</div>
+            <div class="Paragraph-2 text-typeblackdeactivated mt-1-1">Create new order in a few clicks
+            </div>
+            <div class="mt-1-1">
+                <button class="btn btn-outline-primary ms-2-1 btn-text-12" (click)="openVendorContact(0)"
+                        style="padding: 11px 16px"><i
+                        class="fe-plus-square me-1-1" style="vertical-align: bottom;"></i>Add Contact
+                </button>
+            </div>
         </div>
     </div>
 </div>
