@@ -88,20 +88,17 @@ export class LoginComponent implements OnInit {
           this.apolloService.query(profile_info, {}).then((res) => {
             if(!res.profile_info.error){
               const result = res.profile_info.data;
+              localStorage.setItem('email', this.formValues['email'].value);
               localStorage.setItem('firstName', result.firstName);
               localStorage.setItem('lastName', result.lastName);
               localStorage.setItem('memberyn', result.memberyn.toString());
               localStorage.setItem('id', result.id.toString());
               localStorage.setItem('avatar', result.avatar);
-              if(result.memberyn){
-                if(localStorage.getItem('welcomeyn') === 'true'){
-                  localStorage.setItem('welcomeyn', 'false')
-                } else if(localStorage.getItem('welcomeyn') !== 'false'){
-                  localStorage.setItem('welcomeyn', 'true')
-                }
-                this.router.navigate(['apps/projects']);
-              } else{
+              localStorage.setItem('welcomeyn', result.welcomeyn.toString());
+              if(result.welcomeyn && !result.memberyn){
                 this.router.navigate(['apps/welcome']);
+              } else{
+                this.router.navigate(['apps/projects']);
               }
             }
             this.loading = false;

@@ -65,6 +65,7 @@ export class CompanyComponent {
     avatar: '',
     suiteNumber: '',
   };
+  welcomeyn = 'false';
 
   constructor(
     private apolloService: ApolloService,
@@ -99,6 +100,8 @@ export class CompanyComponent {
         this.company = JSON.parse(JSON.stringify(result.data.company));
       }
     });
+    
+    this.welcomeyn = localStorage.getItem('welcomeyn');
   }
 
   searchState: OperatorFunction<string, readonly string[]> = (
