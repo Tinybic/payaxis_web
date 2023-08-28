@@ -55,6 +55,7 @@ query profile_info {
       companyName
       active
       memberyn
+      welcomeyn
     }
   }
 }

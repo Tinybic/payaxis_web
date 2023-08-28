@@ -19,7 +19,7 @@ export class ProjectsGuidComponent {
     ){ }
     
     ngOnInit(): void{
-        if(localStorage.getItem('welcomeyn') !== 'true'){
+        if(localStorage.getItem('welcomeyn') == 'false'){
             this.router.navigate(['apps/projects']);
         }
         

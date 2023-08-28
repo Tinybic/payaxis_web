@@ -15,55 +15,55 @@ import { PROJECTS } from './data';
 
 
 @Component({
-    selector: 'app-projects',
-    templateUrl: './projects.component.html',
-    styleUrls: ['./projects.component.scss']
+  selector: 'app-projects',
+  templateUrl: './projects.component.html',
+  styleUrls: ['./projects.component.scss']
 })
 export class ProjectsComponent implements OnInit {
-    @ViewChild('joinUsModal') joinUsModal: NgbModalRef;
-    projects: Project[] = [];
-    
-    constructor(
-        private modalService: NgbModal,
-        private router: Router,
-        private eventService: EventService
-    ){ }
-    
-    ngOnInit(): void{
-        this.eventService.broadcast(EventType.CHANGE_PAGE_TITLE, {
-            title: "Projects",
-            breadCrumbItems: [{
-                label: 'Apps',
-                path: '.'
-            },
-                {
-                    label: 'Projects',
-                    path: '.',
-                    active: true
-                }]
+  @ViewChild('joinUsModal') joinUsModal: NgbModalRef;
+  projects: Project[] = [];
+  
+  constructor(
+    private modalService: NgbModal,
+    private router: Router,
+    private eventService: EventService
+  ){ }
+  
+  ngOnInit(): void{
+    this.eventService.broadcast(EventType.CHANGE_PAGE_TITLE, {
+      title: "Projects",
+      breadCrumbItems: [{
+        label: 'Apps',
+        path: '.'
+      },
+        {
+          label: 'Projects',
+          path: '.',
+          active: true
+        }]
+    });
+    this._fetchData();
+    if(localStorage.getItem('welcomeyn') === 'true'){
+      setTimeout(() => {
+        this.modalService.open(this.joinUsModal, {
+          backdrop: 'static',
+          centered: true,
+          windowClass: 'centerModal'
         });
-        this._fetchData();
-        if(localStorage.getItem('welcomeyn') === 'true'){
-            setTimeout(() => {
-                this.modalService.open(this.joinUsModal, {
-                    backdrop: 'static',
-                    centered: true,
-                    windowClass: 'centerModal'
-                });
-            }, 30);
-        }
+      }, 30);
     }
-    
-    /**
-     * fetches data
-     */
-    _fetchData(): void{
-        this.projects = PROJECTS;
-    }
-    
-    
-    goNext(){
-        this.modalService.dismissAll();
-        this.router.navigate(['apps/projects/guid']);
-    }
+  }
+  
+  /**
+   * fetches data
+   */
+  _fetchData(): void{
+    this.projects = PROJECTS;
+  }
+  
+  
+  goNext(){
+    this.modalService.dismissAll();
+    this.router.navigate(['apps/projects/guid']);
+  }
 }
