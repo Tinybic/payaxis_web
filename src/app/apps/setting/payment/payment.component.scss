@@ -12,6 +12,7 @@
 }
 
 .paymentListItem {
+    flex: 1;
     border: 1px solid #E5E7EB;
     padding: 16px;
     border-radius: 16px;
@@ -21,4 +22,11 @@
 .paymentListItemActive{
     border: 1px solid #2B52DD;
     box-shadow: 0px 20px 25px 0px #0000001A;
+}
+
+.rightIcon{
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }
