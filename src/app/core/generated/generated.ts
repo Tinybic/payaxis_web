@@ -13,7 +13,9 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+  account_String_NotNull_maxLength_25: { input: any; output: any; }
   avatar_String_NotNull_maxLength_512: { input: any; output: any; }
+  bankName_String_NotNull_maxLength_128: { input: any; output: any; }
   category_String_NotNull_maxLength_50: { input: any; output: any; }
   contactName_String_NotNull_maxLength_128: { input: any; output: any; }
   contactNumber_String_NotNull_maxLength_20: { input: any; output: any; }
@@ -23,12 +25,15 @@ export type Scalars = {
   fileName_String_NotNull_maxLength_128: { input: any; output: any; }
   fileType_String_NotNull_maxLength_15: { input: any; output: any; }
   fileUrl_String_NotNull_maxLength_512: { input: any; output: any; }
+  holderName_String_NotNull_maxLength_128: { input: any; output: any; }
   industry_String_NotNull_maxLength_50: { input: any; output: any; }
   mobile_String_NotNull_pattern_093093094: { input: any; output: any; }
   notes_String_NotNull_maxLength_250: { input: any; output: any; }
+  payType_String_NotNull_maxLength_25: { input: any; output: any; }
   paymentTerms_String_NotNull_maxLength_50: { input: any; output: any; }
   phone_String_NotNull_maxLength_20: { input: any; output: any; }
   primaryContact_String_NotNull_maxLength_50: { input: any; output: any; }
+  routing_String_NotNull_maxLength_15: { input: any; output: any; }
   suiteNumber_String_NotNull_maxLength_30: { input: any; output: any; }
   taxId_String_NotNull_maxLength_50: { input: any; output: any; }
   txtAddress_String_NotNull_maxLength_80: { input: any; output: any; }
@@ -67,7 +72,7 @@ export type Mutation = {
   /** deactivate company_category */
   companycategory_deactivate: Costcodedeactivateeresult;
   /** new company_category */
-  companycategory_new: Costcodedeactivateeresult;
+  companycategory_new: Costcoderesult;
   /** update company_category */
   companycategory_update: Costcoderesult;
   /** activate company_costcode */
@@ -82,6 +87,14 @@ export type Mutation = {
   companycostcode_new: Costcoderesult;
   /** update company_costcode */
   companycostcode_update: Costcoderesult;
+  /** deactivate companypayment */
+  companypayment_deactivate: Paymentbooleanresult;
+  /** new companypayment */
+  companypayment_new: Paymentresult;
+  /** favorite companypayment */
+  companypayment_setdefault: Paymentresult;
+  /** update companypayment */
+  companypayment_update: Paymentresult;
   /** to activate the user profile */
   profile_2fa?: Maybe<Scalars['Boolean']['output']>;
   /** to activate the user profile */
@@ -184,7 +197,7 @@ export type MutationCompanycategory_DeactivateArgs = {
 /** structure to handle table sms */
 export type MutationCompanycategory_NewArgs = {
   idCompany: Scalars['Int']['input'];
-  txtName: Scalars['String']['input'];
+  txtName: Scalars['txtName_String_NotNull_maxLength_128']['input'];
 };
 
 
@@ -241,6 +254,47 @@ export type MutationCompanycostcode_UpdateArgs = {
   revision: Scalars['Int']['input'];
   txtName: Scalars['txtName_String_NotNull_maxLength_128']['input'];
   txtNotes: Scalars['txtNotes_String_NotNull_maxLength_512']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationCompanypayment_DeactivateArgs = {
+  id: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationCompanypayment_NewArgs = {
+  account: Scalars['account_String_NotNull_maxLength_25']['input'];
+  bankName: Scalars['bankName_String_NotNull_maxLength_128']['input'];
+  defaultPay: Scalars['Boolean']['input'];
+  email: Scalars['email_String_NotNull_maxLength_180_format_email']['input'];
+  holderName: Scalars['holderName_String_NotNull_maxLength_128']['input'];
+  idCompany: Scalars['Int']['input'];
+  payType: Scalars['payType_String_NotNull_maxLength_25']['input'];
+  routing: Scalars['routing_String_NotNull_maxLength_15']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationCompanypayment_SetdefaultArgs = {
+  defaultPay: Scalars['Boolean']['input'];
+  id: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationCompanypayment_UpdateArgs = {
+  account: Scalars['account_String_NotNull_maxLength_25']['input'];
+  bankName: Scalars['bankName_String_NotNull_maxLength_128']['input'];
+  defaultPay: Scalars['Boolean']['input'];
+  email: Scalars['email_String_NotNull_maxLength_180_format_email']['input'];
+  holderName: Scalars['holderName_String_NotNull_maxLength_128']['input'];
+  id: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+  routing: Scalars['routing_String_NotNull_maxLength_15']['input'];
 };
 
 
@@ -395,6 +449,10 @@ export type Query = {
   companycostcode_list: Companycostcodelist;
   /** get company members email */
   companymember_emails: Companyemailsresult;
+  /** get companypayment info */
+  companypayment_info: Paymentinforesult;
+  /** get companypayment list */
+  companypayment_list: Paymentlist;
   /** get url for a new file */
   get_file_url: FileResponse;
   /** retrieve profile for the loging user */
@@ -446,6 +504,16 @@ export type QueryCompanycostcode_ListArgs = {
 
 export type QueryCompanymember_EmailsArgs = {
   emaillist?: InputMaybe<Array<Scalars['String']['input']>>;
+  idCompany: Scalars['Int']['input'];
+};
+
+
+export type QueryCompanypayment_InfoArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type QueryCompanypayment_ListArgs = {
   idCompany: Scalars['Int']['input'];
 };
 
@@ -653,6 +721,29 @@ export type Companymemberresult = {
   message: Scalars['String']['output'];
 };
 
+/** structure to handle table company_payment */
+export type Companypayment = {
+  __typename?: 'companypayment';
+  account: Scalars['String']['output'];
+  active: Scalars['Boolean']['output'];
+  bankName: Scalars['String']['output'];
+  createdBy: Scalars['Int']['output'];
+  createdDate: Scalars['String']['output'];
+  defaultPay: Scalars['Boolean']['output'];
+  email: Scalars['String']['output'];
+  holderName: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  idCompany: Scalars['Int']['output'];
+  linkedProjects?: Maybe<Scalars['Int']['output']>;
+  modifiedBy: Scalars['Int']['output'];
+  modifiedDate: Scalars['String']['output'];
+  nextAch: Scalars['Int']['output'];
+  nextCheck: Scalars['Int']['output'];
+  payType: Scalars['String']['output'];
+  revision: Scalars['Int']['output'];
+  routing: Scalars['String']['output'];
+};
+
 export type Companyrolesresult = {
   __typename?: 'companyrolesresult';
   code: Scalars['Int']['output'];
@@ -728,6 +819,44 @@ export type Invitememberresult = {
   message: Scalars['String']['output'];
 };
 
+export type Paymentbooleanresult = {
+  __typename?: 'paymentbooleanresult';
+  code: Scalars['Int']['output'];
+  data: Scalars['Boolean']['output'];
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Paymentidrevision = {
+  __typename?: 'paymentidrevision';
+  id: Scalars['Int']['output'];
+  revision: Scalars['Int']['output'];
+};
+
+export type Paymentinforesult = {
+  __typename?: 'paymentinforesult';
+  code: Scalars['Int']['output'];
+  data: Companypayment;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Paymentlist = {
+  __typename?: 'paymentlist';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Array<Companypayment>>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Paymentresult = {
+  __typename?: 'paymentresult';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Paymentidrevision>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
 export type Paymenttermslist = {
   __typename?: 'paymenttermslist';
   id: Scalars['Int']['output'];
@@ -749,6 +878,7 @@ export type Profile = {
   socialMedia: Scalars['Int']['output'];
   socialMediaToken: Scalars['String']['output'];
   twofa: Scalars['Boolean']['output'];
+  welcomeyn: Scalars['Boolean']['output'];
 };
 
 export type Residrevision = {
