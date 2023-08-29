@@ -89,10 +89,10 @@ export type Mutation = {
   companycostcode_update: Costcoderesult;
   /** deactivate companypayment */
   companypayment_deactivate: Paymentbooleanresult;
-  /** favorite companypayment */
-  companypayment_favorite: Paymentresult;
   /** new companypayment */
   companypayment_new: Paymentresult;
+  /** favorite companypayment */
+  companypayment_setdefault: Paymentresult;
   /** update companypayment */
   companypayment_update: Paymentresult;
   /** to activate the user profile */
@@ -265,14 +265,6 @@ export type MutationCompanypayment_DeactivateArgs = {
 
 
 /** structure to handle table sms */
-export type MutationCompanypayment_FavoriteArgs = {
-  favoritePay: Scalars['Boolean']['input'];
-  id: Scalars['Int']['input'];
-  revision: Scalars['Int']['input'];
-};
-
-
-/** structure to handle table sms */
 export type MutationCompanypayment_NewArgs = {
   account: Scalars['account_String_NotNull_maxLength_25']['input'];
   bankName: Scalars['bankName_String_NotNull_maxLength_128']['input'];
@@ -282,6 +274,14 @@ export type MutationCompanypayment_NewArgs = {
   idCompany: Scalars['Int']['input'];
   payType: Scalars['payType_String_NotNull_maxLength_25']['input'];
   routing: Scalars['routing_String_NotNull_maxLength_15']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationCompanypayment_SetdefaultArgs = {
+  defaultPay: Scalars['Boolean']['input'];
+  id: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
 };
 
 
@@ -731,7 +731,6 @@ export type Companypayment = {
   createdDate: Scalars['String']['output'];
   defaultPay: Scalars['Boolean']['output'];
   email: Scalars['String']['output'];
-  favoritePay: Scalars['Boolean']['output'];
   holderName: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   idCompany: Scalars['Int']['output'];

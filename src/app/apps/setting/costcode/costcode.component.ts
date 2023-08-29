@@ -94,6 +94,7 @@ export class CostcodeComponent {
   SetClass(event){
     this.costcode.category = event.txtName;
     this.costcode.idcategory = event.id;
+    this.costcodeError.idcategory = false;
   }
   
   onSort(column){
