@@ -102,7 +102,6 @@ export class ProfileComponent{
   searchState: OperatorFunction<string, readonly string[]> = (
     text$: Observable<string>
   ) => {
-    console.log(this.instance)
     const debouncedText$ = text$.pipe(
       debounceTime(200),
       distinctUntilChanged()
@@ -127,7 +126,6 @@ export class ProfileComponent{
   searchIndustry: OperatorFunction<string, readonly string[]> = (
     text$: Observable<string>
   ) => {
-    console.log(this.instance)
     const debouncedText$ = text$.pipe(
       debounceTime(200),
       distinctUntilChanged()
