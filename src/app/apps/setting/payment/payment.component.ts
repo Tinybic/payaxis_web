@@ -87,6 +87,7 @@ export class PaymentComponent {
     if (index == -1) {
       this.clearFormValue();
       this.buttonText = 'Create';
+      this.formValues['email'].setValue(localStorage.getItem('email'));
     } else {
       this.setFormValue(index);
       this.buttonText = 'Save';
