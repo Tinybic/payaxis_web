@@ -44,7 +44,7 @@ export class PaymentComponent {
   selectIndex = 0;
   deletePaymentMessage = '';
   buttonText = 'Create';
-
+  titleText = 'New Payment Method';
   id = 0;
   revision = 0;
 
@@ -87,9 +87,11 @@ export class PaymentComponent {
     if (index == -1) {
       this.clearFormValue();
       this.buttonText = 'Create';
+      this.titleText = 'New Payment Method';
       this.formValues['email'].setValue(localStorage.getItem('email'));
     } else {
       this.setFormValue(index);
+      this.titleText = 'Edit ACH Payment Method';
       this.buttonText = 'Save';
     }
     this.addref = this.modalService.open(this.addpayment, {
