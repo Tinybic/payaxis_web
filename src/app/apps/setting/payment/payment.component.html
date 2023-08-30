@@ -25,7 +25,7 @@
                         <div class="Paragraph-2 text-typeblackdeactivated mt-1-1">Get your Method on track in a few
                             clicks</div>
                         <div class="mt-1-1">
-                            <button type="button" class="btn btn-outline-primary" (click)="openAddPaymentModal(-1)"><i
+                            <button type="button" class="btn btn-outline-primary" style="padding: 8px 16px;" (click)="openAddPaymentModal(-1)"><i
                                     class="fe-plus me-1-1"></i>Add
                             </button>
                         </div>
@@ -105,7 +105,7 @@
                                     </div>
                                     <div class="col-md-6 text-end">
                                         <button type="button" class="btn btn-outline-primary"
-                                            style="padding: 8px 16px;"><i class="fe-plus-square me-1-1"></i>Link
+                                            style="padding: 8px 16px; background-color: transparent;"><i class="fe-plus-square me-1-1"></i>Link
                                             Project</button>
                                     </div>
                                 </div>
@@ -117,7 +117,7 @@
                                         <div class="Paragraph-2 text-typeblackdeactivated mt-1-1">Add your Project to
                                             Payment in a few clicks</div>
                                         <div class="mt-1-1">
-                                            <button type="button" class="btn btn-outline-primary"><i
+                                            <button type="button" class="btn btn-outline-primary" style="padding: 8px 16px; background-color: transparent;"><i
                                                     class="fe-plus-square me-1-1"></i>Link
                                             </button>
                                         </div>
@@ -138,8 +138,8 @@
             style="width: 399px; display: flex; flex-direction: column; height: 100%;">
             <input type="text" style="display: none;">
             <div style="flex: 1;">
-                <div class="headline">Cost Code</div>
-                <div class="mt-2-1 d-flex">
+                <div class="headline">{{titleText}}</div>
+                <div class="mt-2-1 d-flex" *ngIf="buttonText == 'Create'">
                     <div class="paymentType subtitle-2-500 paymentTypeactive">
                         <img class=" me-2-1" src="/assets/images/ach.png" />ACH
                     </div>
