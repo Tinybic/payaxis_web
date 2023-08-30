@@ -215,14 +215,14 @@
                             <div ngbDropdown class="mt-sm-0 mt-2">
                                 <input class="form-select position-relative" type="text" id="Class" i18n-placeholder
                                     placeholder="Select category" [(ngModel)]="costcode.category"
-                                    [ngClass]="{'is-invalid':costcodeError.idcategory}" ngbDropdownToggle />
+                                    [ngClass]="{'is-invalid':costcodeError.idCategory}" ngbDropdownToggle />
 
                                 <div ngbDropdownMenu aria-labelledby="paymentTerms">
                                     <a href="javascript:void(0)" *ngFor="let item of this.costCodeCategoryList"
                                         (click)="SetClass(item)" ngbDropdownItem>{{item.txtName}}</a>
                                 </div>
                             </div>
-                            <div *ngIf="costcodeError.idcategory" class="mt-1" i18n>
+                            <div *ngIf="costcodeError.idCategory" class="mt-1" i18n>
                                 <i class="fe-alert-triangle invalid-feedback-icon"></i>
                                 Category required
                             </div>
