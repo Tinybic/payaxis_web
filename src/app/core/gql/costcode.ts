@@ -59,14 +59,14 @@ const companycostcode_new = gql`
     $idCompany: Int!
     $costCode: costCode_String_NotNull_maxLength_15!
     $txtName: txtName_String_NotNull_maxLength_128!
-    $idcategory: Int!
+    $idCategory: Int!
     $txtNotes: txtNotes_String_NotNull_maxLength_512!
   ) {
     companycostcode_new(
       idCompany: $idCompany
       costCode: $costCode
       txtName: $txtName
-      idcategory: $idcategory
+      idCategory: $idCategory
       txtNotes: $txtNotes
     ) {
       error
@@ -85,14 +85,14 @@ const companycostcode_update = gql`
     $id: Int!
     $revision: Int!
     $txtName: txtName_String_NotNull_maxLength_128!
-    $idcategory: Int!
+    $idCategory: Int!
     $txtNotes: txtNotes_String_NotNull_maxLength_512!
   ) {
     companycostcode_update(
       id: $id
       revision: $revision
       txtName: $txtName
-      idcategory: $idcategory
+      idCategory: $idCategory
       txtNotes: $txtNotes
     ) {
       error
@@ -156,7 +156,7 @@ const companycostcode_list = gql`
         idCompany
         costCode
         txtName
-        idcategory
+        idCategory
         category
         txtNotes
         active
