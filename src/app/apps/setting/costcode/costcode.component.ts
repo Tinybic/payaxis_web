@@ -42,13 +42,13 @@ export class CostcodeComponent {
     txtNotes: '',
     category: '',
     idCompany: 0,
-    idcategory: 0,
+    idCategory: 0,
     revision: 0
   };
   costcodeError = {
     costCode: false,
     txtName: false,
-    idcategory: false
+    idCategory: false
   };
   costCodeCategoryList = [];
   costCodeCateGoryNewList = [];
@@ -93,7 +93,8 @@ export class CostcodeComponent {
   
   SetClass(event){
     this.costcode.category = event.txtName;
-    this.costcode.idcategory = event.id;
+    this.costcode.idCategory = event.id;
+    this.costcodeError.idCategory = false;
   }
   
   onSort(column){
@@ -354,7 +355,7 @@ export class CostcodeComponent {
     this.costcodeError = {
       costCode: false,
       txtName: false,
-      idcategory: false
+      idCategory: false
     };
     
     if(this.costcode.txtName.trim().length == 0){
@@ -365,8 +366,8 @@ export class CostcodeComponent {
       this.costcodeError.costCode = true;
       return;
     }
-    if(this.costcode.idcategory == 0 && this.costcode.category != 'Others'){
-      this.costcodeError.idcategory = true;
+    if(this.costcode.idCategory == 0 && this.costcode.category != 'Others'){
+      this.costcodeError.idCategory = true;
       return;
     }
     
@@ -375,7 +376,7 @@ export class CostcodeComponent {
         idCompany: this.costcode.idCompany,
         costCode: this.costcode.costCode,
         txtName: this.costcode.txtName,
-        idcategory: this.costcode.idcategory,
+        idCategory: this.costcode.idCategory,
         txtNotes: this.costcode.txtNotes
       }).then((res) => {
         const result = res.companycostcode_new;
@@ -396,7 +397,7 @@ export class CostcodeComponent {
         id: this.costcode.id,
         revision: this.costcode.revision,
         txtName: this.costcode.txtName,
-        idcategory: this.costcode.idcategory,
+        idCategory: this.costcode.idCategory,
         txtNotes: this.costcode.txtNotes
       }).then((res) => {
         const result = res.companycostcode_update;
@@ -451,7 +452,7 @@ export class CostcodeComponent {
   costcodetemp = {
     txtName: '',
     category: '',
-    idcategory: 0,
+    idCategory: 0,
     revision: 0,
     txtNotes: '',
     costCode: ''
@@ -460,7 +461,7 @@ export class CostcodeComponent {
   updateCostCode(item){
     this.costcode.txtName = item.txtName;
     this.costcode.category = item.category;
-    this.costcode.idcategory = item.idcategory;
+    this.costcode.idCategory = item.idCategory;
     this.costcode.revision = item.revision;
     this.costcode.txtNotes = item.txtNotes;
     this.costcode.costCode = item.costCode;
@@ -468,7 +469,7 @@ export class CostcodeComponent {
     
     this.costcodetemp.txtName = item.txtName;
     this.costcodetemp.category = item.category;
-    this.costcodetemp.idcategory = item.idcategory;
+    this.costcodetemp.idCategory = item.idCategory;
     this.costcodetemp.revision = item.revision;
     this.costcodetemp.txtNotes = item.txtNotes;
     this.costcodetemp.costCode = item.costCode;
@@ -486,7 +487,7 @@ export class CostcodeComponent {
       (this.costcode.id > 0 &&
         this.costcodetemp.txtName == this.costcode.txtName &&
         this.costcodetemp.category == this.costcode.category &&
-        this.costcodetemp.idcategory == this.costcode.idcategory &&
+        this.costcodetemp.idCategory == this.costcode.idCategory &&
         this.costcodetemp.txtNotes == this.costcode.txtNotes &&
         this.costcodetemp.costCode == this.costcode.costCode)
     ){
@@ -506,13 +507,13 @@ export class CostcodeComponent {
     this.costcode.txtName = '';
     this.costcode.txtNotes = '';
     this.costcode.category = '';
-    this.costcode.idcategory = 0;
+    this.costcode.idCategory = 0;
     this.costcode.revision = 0;
     
     this.costcodeError = {
       costCode: false,
       txtName: false,
-      idcategory: false
+      idCategory: false
     };
   }
   

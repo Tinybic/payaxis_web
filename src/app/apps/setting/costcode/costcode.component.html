@@ -187,8 +187,8 @@
                             <label class="form-label" i18n>Name</label>
                             <input class="form-control" type="text" id="name" required i18n-placeholder
                                 placeholder="Enter Name" [(ngModel)]="costcode.txtName"
-                                [ngClass]="{'is-invalid':costcodeError.txtName}" />
-                            <div *ngIf="costcodeError.txtName" class="invalid-feedback" i18n>
+                                [ngClass]="{'is-invalid':costcodeError.txtName && costcode.txtName.length == 0}" />
+                            <div *ngIf="costcodeError.txtName && costcode.txtName.length == 0" class="invalid-feedback" i18n>
                                 <i class="fe-alert-triangle invalid-feedback-icon"></i>
                                 Name required
                             </div>
@@ -199,8 +199,8 @@
                             <label class="form-label" i18n>Code</label>
                             <input class="form-control" type="text" id="costCode" required i18n-placeholder
                                 placeholder="ID Cost Code number" [(ngModel)]="costcode.costCode"
-                                [ngClass]="{'is-invalid':costcodeError.costCode}" />
-                            <div *ngIf="costcodeError.costCode" class="invalid-feedback" i18n>
+                                [ngClass]="{'is-invalid':costcodeError.costCode && costcode.costCode.length == 0}" />
+                            <div *ngIf="costcodeError.costCode && costcode.costCode.length == 0" class="invalid-feedback" i18n>
                                 <i class="fe-alert-triangle invalid-feedback-icon"></i>
                                 Code required
                             </div>
@@ -215,14 +215,14 @@
                             <div ngbDropdown class="mt-sm-0 mt-2">
                                 <input class="form-select position-relative" type="text" id="Class" i18n-placeholder
                                     placeholder="Select category" [(ngModel)]="costcode.category"
-                                    [ngClass]="{'is-invalid':costcodeError.idcategory}" ngbDropdownToggle />
+                                    [ngClass]="{'is-invalid':costcodeError.idCategory}" ngbDropdownToggle />
 
                                 <div ngbDropdownMenu aria-labelledby="paymentTerms">
                                     <a href="javascript:void(0)" *ngFor="let item of this.costCodeCategoryList"
                                         (click)="SetClass(item)" ngbDropdownItem>{{item.txtName}}</a>
                                 </div>
                             </div>
-                            <div *ngIf="costcodeError.idcategory" class="mt-1" i18n>
+                            <div *ngIf="costcodeError.idCategory" class="mt-1" i18n>
                                 <i class="fe-alert-triangle invalid-feedback-icon"></i>
                                 Category required
                             </div>

@@ -1,1 +1,355 @@
-<p>payment works!</p>
+<div class="row" *ngIf="loading">
+    <div class="col-md-12" style="position: relative; height: 400px;">
+        <app-ui-preloader [display]="loading"></app-ui-preloader>
+    </div>
+</div>
+
+<div class="row justify-content-md-center mt-2-1" *ngIf="paymentList.length == 0 && !loading">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body-p-16">
+                <div class="row">
+                    <div class="col-md-6 headline-24 pt-1">
+                        Payment Methods
+                    </div>
+                    <div class="col-md-6 headline-24 text-end">
+                        <button type="button" class="btn btn-primary" style="padding: 8px 16px;"
+                            (click)="openAddPaymentModal(-1)"><i class="fe-plus-square me-1-1"></i>Add
+                            Method</button>
+                    </div>
+                </div>
+                <div class="row mt-3-1">
+                    <div class="col-md-12 text-center" style="height: 60vh;">
+                        <img src="/assets/images/nopayment.png" />
+                        <div class="Subtitle-1-600 text-typeblackdeactivated mt-1-1">No Payment Methods added yet</div>
+                        <div class="Paragraph-2 text-typeblackdeactivated mt-1-1">Get your Method on track in a few
+                            clicks</div>
+                        <div class="mt-1-1">
+                            <button type="button" class="btn btn-outline-primary" style="padding: 8px 16px;" (click)="openAddPaymentModal(-1)"><i
+                                    class="fe-plus me-1-1"></i>Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-2-1" *ngIf="paymentList.length > 0 && !loading">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body-p-16">
+                <div class="row">
+                    <div class="col-md-2 headline-24 pt-1">
+                        Payment Methods
+                    </div>
+                    <div class="col-md-2 headline-24 text-end">
+                        <button type="button" class="btn btn-primary" style="padding: 8px 16px;"
+                            (click)="openAddPaymentModal(-1)"><i class="fe-plus-square me-1-1"></i>Add
+                            Method</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+
+                        <div class="d-flex"  *ngFor="let item of paymentList; let i = index">
+                        <div class="mt-2-1 paymentListItem" [ngClass]="{'paymentListItemActive': i == selectIndex}"
+                            (click)="selectIndexFn(i)">
+                            <div class="row">
+                                <div class="col-md-6 subtitle-2-500">
+                                    <img class=" me-1-1" src="/assets/images/ach.png" />ACH
+                                </div>
+                                <div class="col-md-6 headline-24 text-end">
+                                    <i class="fe-star cursor-pointer" style="color: #D1D8E2;" *ngIf="!item.defaultPay"
+                                        (click)="openDefaultModal(item.id,item.revision,!item.defaultPay,item.account)"></i>
+                                    <i class="fe-star-on cursor-pointer text-primary"
+                                        (click)="openDefaultModal(item.id,item.revision,!item.defaultPay,item.account)"
+                                        *ngIf="item.defaultPay"></i>
+                                    <i class="fe-edit-1 cursor-pointer text-primary ms-1-1"
+                                        (click)="openAddPaymentModal(i)"></i>
+                                    <i class="fe-trash-2 cursor-pointer text-primary ms-1-1" (click) = "openDeleteConfirmModal(item.id,item.revision,item.account)"></i>
+                                </div>
+                            </div>
+                            <div class="row mt-2-1">
+                                <div class="col-md-12 Subtitle-1-600 text-start">
+                                    {{item.account}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-caption400">
+                                    {{item.routing}}<br />
+                                    {{item.bankName}}<br />
+                                    {{item.email}}
+                                </div>
+                            </div>
+                            <div class="row mt-2-1">
+                                <div class="col-md-12 subtitle-2-500">
+                                    Linked Projects <span
+                                        class="text-typeblackdeactivated">{{item.linkedProjects}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rightIcon">
+                            <i class="fe-chevron-right font-24" *ngIf="i == selectIndex"></i>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8  mt-2-1">
+                        <div class="card" style="background-color: #F8F9FC; height: 600px;">
+                            <div class="card-body-p-16">
+                                <div class="row">
+                                    <div class="col-md-6 subtitle-2-600-20">
+                                        No Linked Projects
+                                    </div>
+                                    <div class="col-md-6 text-end">
+                                        <button type="button" class="btn btn-outline-primary"
+                                            style="padding: 8px 16px; background-color: transparent;"><i class="fe-plus-square me-1-1"></i>Link
+                                            Project</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <img src="/assets/images/welcome/noprojects.svg" class="mt-2-1" />
+                                        <div class="Subtitle-1-600 text-typeblackdeactivated mt-1-1">No Projects linked
+                                            yet</div>
+                                        <div class="Paragraph-2 text-typeblackdeactivated mt-1-1">Add your Project to
+                                            Payment in a few clicks</div>
+                                        <div class="mt-1-1">
+                                            <button type="button" class="btn btn-outline-primary" style="padding: 8px 16px; background-color: transparent;"><i
+                                                    class="fe-plus-square me-1-1"></i>Link
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #addpayment let-modal>
+    <div class="modal-body">
+        <form name="addpayment-form" [formGroup]="paymentForm" (ngSubmit)="savePayment()"
+            style="width: 399px; display: flex; flex-direction: column; height: 100%;">
+            <input type="text" style="display: none;">
+            <div style="flex: 1;">
+                <div class="headline">{{titleText}}</div>
+                <div class="mt-2-1 d-flex" *ngIf="buttonText == 'Create'">
+                    <div class="paymentType subtitle-2-500 paymentTypeactive">
+                        <img class=" me-2-1" src="/assets/images/ach.png" />ACH
+                    </div>
+
+                    <div class=" paymentType subtitle-2-500 ms-2-1">
+                        <img class=" me-2-1" src="/assets/images/card.png" />Credit Card
+                    </div>
+                </div>
+                <div class="card mt-2-1">
+                    <div class="card-body p-2-1">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input me-1-1" id="defaultPay"
+                                        formControlName="defaultPay">
+                                    <label class="form-check-label" for="defaultPay" i18n>Make it a Default Payment
+                                        Method</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2-1">
+                            <div class="col-md-6">
+                                <label class="form-label" i18n>Account number</label>
+                                <input class="form-control" type="text" id="account" required i18n-placeholder
+                                    placeholder="Account number" formControlName="account"
+                                    [ngClass]="{'is-invalid':formSubmitted && formValues['account'].invalid}" />
+                                <div *ngIf="formSubmitted && formValues['email'].invalid" class="invalid-feedback">
+
+                                    <div *ngIf="formValues['account'].errors?.['required']" i18n>
+                                        <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter account
+                                        name
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label" i18n>Re enter Account number</label>
+                                <input class="form-control" type="text" id="reaccount" required i18n-placeholder
+                                    placeholder="Account number" formControlName="reaccount"
+                                    [ngClass]="{'is-invalid':formSubmitted && formValues['reaccount'].invalid}" />
+                                <div *ngIf="formSubmitted && formValues['reaccount'].invalid" class="invalid-feedback">
+                                    <div *ngIf="formValues['reaccount'].errors?.['required']" i18n>
+                                        <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter account
+                                        name
+                                    </div>
+
+                                    <div *ngIf="formValues['reaccount'].hasError('matching')" i18n>
+                                        <i class="fe-alert-triangle invalid-feedback-icon"></i> Account number must
+                                        match.
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2-1">
+                            <div class="col-md-12">
+                                <label class="form-label" i18n>Routing Number</label>
+                                <input class="form-control" type="text" id="routing" required i18n-placeholder
+                                    placeholder="Routing Number" formControlName="routing"
+                                    [ngClass]="{'is-invalid':formSubmitted && formValues['routing'].invalid}" />
+                                <div *ngIf="formSubmitted && formValues['routing'].invalid" class="invalid-feedback">
+                                    <div *ngIf="formValues['routing'].errors?.['required']" i18n>
+                                        <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter routing
+                                        name
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2-1">
+                            <div class="col-md-12">
+                                <label class="form-label" i18n>Bank Name</label>
+                                <input class="form-control" type="text" id="bankName" required i18n-placeholder
+                                    placeholder="Bank Name" formControlName="bankName"
+                                    [ngClass]="{'is-invalid':formSubmitted && formValues['bankName'].invalid}" />
+                                <div *ngIf="formSubmitted && formValues['bankName'].invalid" class="invalid-feedback">
+                                    <div *ngIf="formValues['bankName'].errors?.['required']" i18n>
+                                        <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter bank
+                                        name
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2-1">
+                            <div class="col-md-12">
+                                <label class="form-label" i18n>Account Holder name</label>
+                                <input class="form-control" type="text" id="holderName" required i18n-placeholder
+                                    placeholder="Holder name" formControlName="holderName"
+                                    [ngClass]="{'is-invalid':formSubmitted && formValues['holderName'].invalid}" />
+                                <div *ngIf="formSubmitted && formValues['holderName'].invalid" class="invalid-feedback">
+                                    <div *ngIf="formValues['holderName'].errors?.['required']" i18n>
+                                        <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter holder name
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2-1">
+                            <div class="col-md-12">
+                                <label class="form-label" i18n>Email</label>
+                                <input class="form-control" type="text" id="email" required i18n-placeholder
+                                    placeholder="Email" formControlName="email"
+                                    [ngClass]="{'is-invalid':formSubmitted && formValues['email'].invalid}" />
+                                <div *ngIf="formSubmitted && formValues['email'].invalid" class="invalid-feedback">
+                                    <div *ngIf="formValues['email'].errors?.['required']" i18n>
+                                        <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter email
+                                    </div>
+                                    <div *ngIf="formValues['email'].errors?.['email']" i18n>
+                                        <i class="fe-alert-triangle invalid-feedback-icon"></i> Email must be a
+                                        valid
+                                        Email Address
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div style="height: 97px;">
+                <div class="row">
+                    <div class="col-md-12 d-grid">
+                        <button class="btn btn-primary" type="submit"
+                            [disabled]="formValues['account'].value.length == 0">{{buttonText}}</button>
+                    </div>
+                </div>
+                <div class="row mt-1-1">
+                    <div class="col-md-12 d-grid">
+                        <button type="button" class="btn btn-outline-primary" (click) = "openCancelModal()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal-x" (click) = "openCancelModal()">
+        <i class="fe-x"></i>
+    </div>
+</ng-template>
+
+<ng-template #deletepayment let-modal>
+    <div class="delete-modal-container">
+        <input type="text" style="display: none;" />
+        <div class="row">
+            <div class="col-md-10">
+                <div class="headline-24 text-start">Deleting Payment</div>
+            </div>
+            <div class="col-md-2 text-end text-black">
+                <i class="fe-x cursor-pointer bold-600" (click)="modal.dismiss()"></i>
+            </div>
+        </div>
+        <div class="delete-alert-content text-start">
+            {{deletePaymentMessage}}
+        </div>
+        <div class="d-flex justify-content-end mt-3">
+            <div class="delete-cancel-button mt-0 line-40 cursor-pointer" (click)="modal.dismiss()">
+                Cancel
+            </div>
+            <div>
+                <button class="btn btn-primary ms-2-1" (click) = "deletePaymentItem()">Confirm</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #defaultpayment let-modal>
+    <div class="delete-modal-container">
+        <input type="text" style="display: none;" />
+        <div class="row">
+            <div class="col-md-10">
+                <div class="headline-24 text-start">Set Default Payment</div>
+            </div>
+            <div class="col-md-2 text-end text-black">
+                <i class="fe-x cursor-pointer bold-600" (click)="modal.dismiss()"></i>
+            </div>
+        </div>
+        <div class="delete-alert-content text-start">
+            {{defaultPaymentMessage}}
+        </div>
+        <div class="d-flex justify-content-end mt-3">
+            <div class="delete-cancel-button mt-0 line-40 cursor-pointer" (click)="modal.dismiss()">
+                Cancel
+            </div>
+            <div>
+                <button class="btn btn-primary ms-2-1" (click) = "SetDefault()">Confirm</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #cancelpayment let-modal>
+    <div class="delete-modal-container">
+        <input type="text" style="display: none;" />
+        <div class="row">
+            <div class="col-md-10">
+                <div class="headline-24 text-start">Close without saving</div>
+            </div>
+            <div class="col-md-2 text-end text-black">
+                <i class="fe-x cursor-pointer bold-600" (click)="cancelPayment()"></i>
+            </div>
+        </div>
+        <div class="delete-alert-content text-start">Do you want to close the page? All changes will not be saved.</div>
+
+        <div class="d-flex justify-content-between mt-3">
+            <div class="delete-cancel-button mt-0 line-40 cursor-pointer" (click)="cancelPayment()">
+                Cancel
+            </div>
+            <div>
+                <button class="btn btn-outline-primary" (click)="closeWithoutSave()">Close without saving</button>
+                <button class="btn btn-primary ms-3" (click)="saveAndClose()">Save and Close</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
