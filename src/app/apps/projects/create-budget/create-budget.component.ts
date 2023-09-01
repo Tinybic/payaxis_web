@@ -102,6 +102,7 @@ export class CreateBudgetComponent {
     })
     this.createProject.categoryList.splice(i, 1);
     this.cleanCategoryList();
+    this.budgetAmountChange('');
   }
   
   addCategory(){
@@ -139,11 +140,6 @@ export class CreateBudgetComponent {
       total += item.budgetAmount;
     })
     this.totalBudget = total;
-  }
-  
-  checkStatus(){
-    this.cleanCategoryList();
-    return this.createProject.categoryList.length == 0
   }
   
   submitProject(){
