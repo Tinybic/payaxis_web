@@ -1,0 +1,146 @@
+<div class="modal-body modal-form-control" style="padding: 32px 24px 24px;">
+    <div class="headline-24">Create a new Project</div>
+    
+    
+    <div class="card mt-2-1 p-2-1">
+        <ngb-alert [dismissible]="false" type="danger" *ngIf="error">
+            {{ error }}
+        </ngb-alert>
+        <form *ngIf="step==1" [formGroup]="createProjectStep1Form" (ngSubmit)="step=2">
+            <div class="row">
+                <div class="col">
+                    <label class="form-label" for="name" i18n>Project Name</label>
+                    <input class="form-control"
+                           type="text"
+                           id="name"
+                           formControlName="name"
+                           required
+                           i18n-placeholder placeholder="Enter a Name"
+                           [ngClass]="{'is-invalid':formStep1Values['name'].invalid && formStep1Values['name'].dirty}"/>
+                    <div *ngIf="formStep1Values['name'].invalid && formStep1Values['name'].dirty">
+                        <div *ngIf="formStep1Values['name'].errors?.['required']" i18n>
+                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter project name
+                        </div>
+                        <div *ngIf="formStep1Values['name'].errors?.['maxlength']" i18n>
+                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Project Name must be exceed 128
+                            letters
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col pt-2-1">
+                    <label class="form-label" for="address" i18n>Project Address
+                    </label>
+                    <div class="text-optional-400 float-end" style="padding-top: 3px;">Optional</div>
+                    <input class="form-control"
+                           type="text"
+                           id="address"
+                           formControlName="address"
+                           i18n-placeholder
+                           placeholder="Enter an Address"
+                           [ngClass]="{'is-invalid': formStep1Values['address'].invalid && formStep1Values['address'].dirty}"/>
+                    
+                    <div *ngIf="formStep1Values['address'].invalid && formStep1Values['address'].dirty">
+                        <div *ngIf="formStep1Values['address'].errors?.['required']" i18n>
+                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter address
+                        </div>
+                        <div *ngIf="formStep1Values['address'].errors?.['maxlength']" i18n>
+                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Project Address must be exceed 180
+                            letters
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div class="d-grid" style="width: calc(100% - 48px);position: fixed;bottom: 24px;right: 24px;">
+                <button class="btn btn-primary mb-1-1" type="submit" [disabled]="createProjectStep1Form.invalid">Next
+                </button>
+                <button class="btn btn-outline-primary" (click)="closeModal($event)">Cancel</button>
+            </div>
+        </form>
+        <form *ngIf="step==2" [formGroup]="createProjectStep2Form" (ngSubmit)="onSubmit()">
+            <div class="row">
+                <div class="col">
+                    <label class="form-label" for="budget" i18n>Project Budget</label>
+                    <input class="form-control"
+                           type="text"
+                           id="budget"
+                           formControlName="budget"
+                           required
+                           prefix="$"
+                           mask="separator.2"
+                           thousandSeparator=","
+                           allowNegativeNumbers="false"
+                           i18n-placeholder placeholder="0.00"
+                           [ngClass]="{'is-invalid':formStep2Values['budget'].invalid && formStep2Values['budget'].dirty}"/>
+                    <div *ngIf="formStep2Values['budget'].invalid && formStep2Values['budget'].dirty">
+                        <div *ngIf="formStep2Values['budget'].errors?.['required']" i18n>
+                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter project budget
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2-1">
+                <div class="col">
+                    <label class="form-label" for="sqft" i18n>Project Size, sqft
+                    </label>
+                    <input class="form-control"
+                           type="text"
+                           id="sqft"
+                           required
+                           formControlName="sqft"
+                           mask="separator.5"
+                           thousandSeparator=","
+                           allowNegativeNumbers="false"
+                           i18n-placeholder placeholder="0"
+                           [ngClass]="{'is-invalid': formStep2Values['sqft'].invalid && formStep2Values['sqft'].dirty}"/>
+                    
+                    <div *ngIf="formStep2Values['sqft'].invalid && formStep2Values['sqft'].dirty">
+                        <div *ngIf="formStep2Values['sqft'].errors?.['required']" i18n>
+                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter Project Size,sqft
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2-1">
+                <div class="col col-12 Subtitle-1 text-start mb-1-1">
+                    Choose your Template
+                </div>
+                <div class="col col-12">
+                    <div class="d-flex flex-between" *ngFor="let item of template" style="flex-direction: row;
+    justify-content: space-between;align-items: center;border-bottom: 1px solid #E5E7EB;padding: 7px 0px 7px 16px;background-color: {{item.isSelected ? '#F1F3F9' : '#fff'}}">
+                        <div class="Subtitle-1">{{item.name}}</div>
+                        <button class="btn btn-link waves-effect btn-text-12" (click)="selectedTemplate(item.id)">
+                            <i *ngIf="item.isSelected" class="fe-check me-1-1" style="line-height: 14px;"></i>
+                            Select
+                        </button>
+                    </div>
+                </div>
+                <div class="col col-12 text-center mt-2-1">
+                    <button class="btn btn-link waves-effect btn-text-12" (click)="createBudget($event)">
+                        Start with Blank Budget
+                    </button>
+                </div>
+            </div>
+            
+            
+            <div class="d-grid" style="width: calc(100% - 48px);position: fixed;bottom: 24px;right: 24px;">
+                <button class="btn btn-primary mb-1-1" type="submit" [disabled]="createProjectStep2Form.invalid">Next
+                </button>
+                <button class="btn btn-outline-primary" (click)="step=1">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div class="modal-x" (click)="modalRef.modalRef.dismiss()">
+    <i class="fe-x"></i>
+</div>
+
+
+<ng-template #createBudgetModal let-modal>
+    <app-create-budget [params]={createProject} [modalRef]={createBudgetModalRef}></app-create-budget>
+</ng-template>

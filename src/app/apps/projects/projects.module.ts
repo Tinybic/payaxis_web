@@ -4,22 +4,41 @@ import { CommonModule } from '@angular/common';
 import { ProjectsRoutingModule } from './projects-routing.module';
 import { ProjectsComponent } from './projects.component';
 import {
-    NgbTooltipModule,
-    NgbProgressbarModule
+  NgbAlertModule,
+  NgbTooltipModule,
+  NgbProgressbarModule, NgbDropdownModule
 } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProjectsGuidComponent } from './projects-guid/projects-guid.component';
+import { CreateProjectComponent } from "./create-project/create-project.component";
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from "ngx-mask";
+import { CreateBudgetComponent } from './create-budget/create-budget.component';
+import { SharedModule } from "../../shared/shared.module";
 
 
 @NgModule({
-    declarations: [
-        ProjectsComponent,
-        ProjectsGuidComponent
-    ],
-    imports: [
-        CommonModule,
-        NgbTooltipModule,
-        ProjectsRoutingModule,
-        NgbProgressbarModule
-    ]
+  declarations: [
+    ProjectsComponent,
+    ProjectsGuidComponent,
+    CreateProjectComponent,
+    CreateBudgetComponent
+  ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgbTooltipModule,
+    NgbAlertModule,
+    NgbDropdownModule,
+    ProjectsRoutingModule,
+    NgbProgressbarModule,
+    NgxMaskDirective,
+    NgxMaskPipe,
+    SharedModule,
+  ],
+  providers:[
+    provideNgxMask()
+  ]
 })
-export class ProjectsModule { }
+export class ProjectsModule {
+}

@@ -1,0 +1,131 @@
+<div class="modal-body modal-form-control createBudgetModal" style="padding: 32px 24px 24px;">
+    <div class="headline-24">Budget Allocation</div>
+    
+    <div class="card mt-2-1 p-2-1">
+        <ngb-alert [dismissible]="false" type="danger" *ngIf="error">
+            {{ error }}
+        </ngb-alert>
+        <div class="row">
+            <div class="col col-6">
+                <label class="form-label text-1" i18n style="color:#202020CC;">Allocated Budget</label>
+                <div style="font-size: 21.33px;line-height: 24px;font-weight: 400;color: #202020;padding: 12px 0px;">{{createProject.budget | currency}}</div>
+            </div>
+            <div class="col col-6 text-end">
+                <label class="form-label text-1" i18n style="color:#202020CC;">Total Project Budget
+                </label>
+                
+                <div style="font-size: 21.33px;line-height: 24px;font-weight: 400;color: #202020;background-color: #F8F9FC;padding: 11px 16px;border: 1px solid #E1E6EF;border-radius: 8px;">{{totalBudget | currency}}</div>
+            </div>
+        </div>
+        
+        <div class="progress progress-bar-alt-success progress-sm mt-3-1">
+            <div class="progress-bar bg-success wow" role="progressbar" aria-valuenow="20" aria-valuemin="0"
+                 aria-valuemax="100" style="width: 20%; visibility: visible;">
+            </div><!-- /.progress-bar .progress-bar-success -->
+        </div><!-- /.progress .no-rounded -->
+        
+        
+        <table class="advanced-table no-border mt-5-1">
+            <thead>
+            <tr>
+                <th style="width: 30%;">Categories
+                </th>
+                <th style="width: 30%;">%Amount
+                </th>
+                <th style="width: 30%;">$Amount
+                </th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of createProject.categoryList; let i = index">
+                <td style="width: 30%;">
+                    <div *ngIf="i!=editingCategory" class="td-text text-start" (click)="setEdtingCategory(i, 'Name')">
+                        {{item.txtName}}
+                    </div>
+                    <div *ngIf="i==editingCategory" class="d-inline-block dropdown" ngbDropdown>
+                        <button id="categoryDropdownBtn_{{i}}" class="dropdow-outline text-start" (click)="openCategoryDropdownMenu(i)"
+                                ngbDropdownToggle>
+                            {{item.txtName}}
+                        </button>
+                        <div class="dropdown-menu" ngbDropdownMenu>
+                            <div *ngFor="let category of categoryList" (click)="selectedCategory(category)"
+                                 [disabled]="category.selected" style="cursor: pointer;"
+                                 ngbDropdownItem>
+                                {{category.txtName}}
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td style="width: 30%;">
+                    <div *ngIf="i!=editingCategory" class="td-text" (click)="setEdtingCategory(i, 'BP')">
+                        {{item.budgetPercentage == '' ? '0%' : item.budgetPercentage + '%'}}
+                    </div>
+                    <div *ngIf="i==editingCategory">
+                        <input id="budgetPercentage_{{i}}"
+                               class="form-control"
+                               type="text"
+                               [(ngModel)]="item.budgetPercentage"
+                               mask="separator.5"
+                               thousandSeparator=","
+                               allowNegativeNumbers="false"
+                               i18n-placeholder placeholder="0"
+                               (ngModelChange)="budgetPercentageChange(item)"
+                        />
+                    </div>
+                </td>
+                <td style="width: 30%;">
+                    <div *ngIf="i!=editingCategory" class="td-text" (click)="setEdtingCategory(i, 'BA')">
+                        {{item.budgetAmount | currency}}
+                    </div>
+                    <div *ngIf="i==editingCategory">
+                        <input id="budgetAmount_{{i}}"
+                               class="form-control"
+                               type="text"
+                               prefix="$"
+                               [(ngModel)]="item.budgetAmount"
+                               mask="separator.2"
+                               thousandSeparator=","
+                               allowNegativeNumbers="false"
+                               i18n-placeholder placeholder="0"
+                               (ngModelChange)="budgetAmountChange(item)"
+                        />
+                    </div>
+                </td>
+                <td class="text-end" style="width: 10%;">
+                    <i class="fe-trash-2 ms-2-1 font-20" (click)="deleteCategory(i)"
+                       style="cursor: pointer;"></i>
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="4">
+                    <button class="btn btn-link waves-effect" (click)="addCategory()">
+                        <i class="fe-plus-square me-1-1"></i>
+                        Add Item
+                    </button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    
+    
+    </div>
+    
+    
+    
+    
+    <div class="d-grid" style="width: calc(100% - 48px);position: fixed;bottom: 24px;right: 24px;">
+        <button class="btn btn-primary mb-1-1" [disabled]="!(createProject.categoryList | checkProjectStatus)" (click)="submitProject()">Create a Project
+        </button>
+        <button class="btn btn-outline-primary" (click)="closeModal()">
+            <i class="fe-arrow-left ms-1-1"></i>
+            Back</button>
+    </div>
+</div>
+
+
+<div class="modal-x" (click)="closeModal()">
+    <i class="fe-x"></i>
+</div>

@@ -16,8 +16,8 @@
                            formControlName="name"
                            required
                            i18n-placeholder placeholder="Contact Name"
-                           [ngClass]="{'is-invalid':formValues['name'].invalid && (formValues['name'].dirty || formValues['name'].touched)}"/>
-                    <div *ngIf="formValues['name'].invalid && (formValues['name'].dirty || formValues['name'].touched)">
+                           [ngClass]="{'is-invalid':formValues['name'].invalid && formValues['name'].dirty}"/>
+                    <div *ngIf="formValues['name'].invalid && formValues['name'].dirty">
                         <div *ngIf="formValues['name'].errors?.['required']" i18n>
                             <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter contact name
                         </div>
@@ -38,9 +38,9 @@
                            i18n-placeholder
                            formControlName="email"
                            placeholder="Contact Email"
-                           [ngClass]="{'is-invalid': formValues['email'].invalid && (formValues['email'].dirty || formValues['email'].touched)}"/>
+                           [ngClass]="{'is-invalid': formValues['email'].invalid && formValues['email'].dirty}"/>
                     
-                    <div *ngIf="formValues['email'].invalid && (formValues['email'].dirty || formValues['email'].touched)">
+                    <div *ngIf="formValues['email'].invalid && formValues['email'].dirty">
                         <div *ngIf="formValues['email'].errors?.['required']" i18n>
                             <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter contact email
                         </div>
@@ -64,10 +64,10 @@
                            placeholder="Contact Phone"
                            formControlName="phone"
                            mask="(000) 000-0000"
-                           [ngClass]="{'is-invalid': formValues['phone'].invalid && (formValues['phone'].dirty || formValues['phone'].touched)}"/>
+                           [ngClass]="{'is-invalid': formValues['phone'].invalid && formValues['phone'].dirty}"/>
                     
                     
-                    <div *ngIf="formValues['phone'].invalid && (formValues['phone'].dirty || formValues['phone'].touched)">
+                    <div *ngIf="formValues['phone'].invalid && formValues['phone'].dirty">
                         <div *ngIf="formValues['phone'].errors?.['required']" i18n>
                             <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter contact phone
                         </div>
@@ -86,7 +86,7 @@
                 <div class="col pt-2-1">
                     <div>
                         <label class="form-label" for="notes" i18n>Notes </label>
-                        <div class="label-tips" style="float:right;color: #818791;">Optional</div>
+                        <div class="text-optional-400 float-end" style="padding-top: 3px;">Optional</div>
                     </div>
                     <textarea id="notes"
                               class="form-control"
@@ -94,8 +94,8 @@
                               formControlName="notes"
                               (input)="notesChange()"
                               maxlength="250"
-                              [ngClass]="{'is-invalid': formValues['notes'].invalid && (formValues['notes'].dirty || formValues['notes'].touched)}" style="resize:none;"></textarea>
-                    <div *ngIf="formValues['notes'].errors?.['maxlength'] && (formValues['notes'].dirty || formValues['notes'].touched)"
+                              [ngClass]="{'is-invalid': formValues['notes'].invalid && formValues['notes'].dirty}" style="resize:none;"></textarea>
+                    <div *ngIf="formValues['notes'].errors?.['maxlength'] && formValues['notes'].dirty"
                          i18n>
                         <i class="fe-alert-triangle invalid-feedback-icon"></i>
                         Character limit exceeded
