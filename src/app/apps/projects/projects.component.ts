@@ -12,6 +12,8 @@ import { Project } from './projects.model';
 
 // data
 import { PROJECTS } from './data';
+import { companyproject_list } from "../../core/gql/project";
+import { ApolloService } from "../../core/service/apollo.service";
 
 
 @Component({
@@ -21,12 +23,19 @@ import { PROJECTS } from './data';
 })
 export class ProjectsComponent implements OnInit {
   @ViewChild('joinUsModal') joinUsModal: NgbModalRef;
-  projects: Project[] = [];
+  @ViewChild('createProjectModal') createProjectModal: NgbModalRef;
+  
+  
+  modalRef: any;
+  projects: any[] = [];
+  idProject=0;
+  idCompany = 0;
   
   constructor(
     private modalService: NgbModal,
     private router: Router,
-    private eventService: EventService
+    private eventService: EventService,
+    private apolloService: ApolloService,
   ){ }
   
   ngOnInit(): void{
@@ -54,11 +63,43 @@ export class ProjectsComponent implements OnInit {
     }
   }
   
+  
+  getCategoryList(){
+    this.idCompany = parseInt(localStorage.getItem('idcompany'));
+    if(this.idCompany != 0){
+      this.apolloService.query(companyproject_list, {idCompany: this.idCompany}).then((res) => {
+        const result = res.companycategory_list;
+        if(!result.error){
+          this.projects = result.data;
+        }
+      });
+    }
+  }
+  
   /**
    * fetches data
    */
   _fetchData(): void{
     this.projects = PROJECTS;
+  }
+  
+  
+  createProject(idProject){
+    this.idProject = idProject;
+    this.modalRef = this.modalService.open(this.createProjectModal, {
+      modalDialogClass: 'modal-right',
+      size: '640',
+      centered: true,
+      backdrop: 'static'
+    })
+  
+    this.modalRef.result.then((result) => {
+      // get projects
+      
+      console.log('get projects')
+    }, (reason) => {
+      console.log(reason);
+    })
   }
   
   

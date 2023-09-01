@@ -1,0 +1,33 @@
+.createBudgetModal {
+  .card {
+    table {
+      tbody {
+        tr {
+          td {
+            padding: 8px;
+
+            .dropdown {
+              width: 100%;
+
+              .dropdow-outline {
+                width: 100%;
+                height: 32px;
+                padding: 7px 16px;
+              }
+            }
+
+            .td-text{
+              height: 32px;
+              padding: 7px 9px;
+              text-align: right;
+            }
+            .form-control {
+              padding: 7px 8px;
+              text-align: right;
+            }
+          }
+        }
+      }
+    }
+  }
+}

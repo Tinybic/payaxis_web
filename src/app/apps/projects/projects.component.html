@@ -4,9 +4,8 @@
         <div class="subtitle-2-500"></div>
     </div>
     <div class="col-md-6 text-end">
-        <button class="btn btn-outline-primary btn-text-12" style="padding: 10px 24px;"><i class="fe-edit me-1-1 font-16"></i>Edit</button>
-        <button class="btn btn-primary mx-2-1 btn-text-12" style="padding: 9px 24px;">New Bill<i class="fe-chevron-down ms-1-1 font-16"></i></button>
-        <i class="fe-more-vertical- font-16 mx-2-1 v-middle"></i>
+        <button class="btn btn-primary mx-2-1 btn-text-12" (click)="createProject(0)" style="padding: 10px 16px;">
+            <i class="fe-file-plus font-16 me-1-1"></i>New Project</button>
     </div>
 </div>
 <div *ngIf="projects.length > 0" class="container p-v-40">
@@ -34,5 +33,9 @@
         </div>
     </ng-template>
 </div>
+
+<ng-template #createProjectModal let-modal>
+    <app-create-project [idProject]={idProject} [modalRef]={modalRef}></app-create-project>
+</ng-template>
 
 

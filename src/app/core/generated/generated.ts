@@ -33,6 +33,8 @@ export type Scalars = {
   paymentTerms_String_NotNull_maxLength_50: { input: any; output: any; }
   phone_String_NotNull_maxLength_20: { input: any; output: any; }
   primaryContact_String_NotNull_maxLength_50: { input: any; output: any; }
+  projectAddress_String_NotNull_maxLength_255: { input: any; output: any; }
+  projectName_String_NotNull_maxLength_128: { input: any; output: any; }
   routing_String_NotNull_maxLength_15: { input: any; output: any; }
   suiteNumber_String_NotNull_maxLength_30: { input: any; output: any; }
   taxId_String_NotNull_maxLength_50: { input: any; output: any; }
@@ -89,12 +91,18 @@ export type Mutation = {
   companycostcode_update: Costcoderesult;
   /** deactivate companypayment */
   companypayment_deactivate: Paymentbooleanresult;
-  /** favorite companypayment */
-  companypayment_favorite: Paymentresult;
   /** new companypayment */
   companypayment_new: Paymentresult;
+  /** favorite companypayment */
+  companypayment_setdefault: Paymentresult;
   /** update companypayment */
   companypayment_update: Paymentresult;
+  /** deactivate companyproject */
+  companyproject_deactivate: Projectbooleanresult;
+  /** new companyproject */
+  companyproject_new: Projectresult;
+  /** update companyproject */
+  companyproject_update: Projectresult;
   /** to activate the user profile */
   profile_2fa?: Maybe<Scalars['Boolean']['output']>;
   /** to activate the user profile */
@@ -240,8 +248,8 @@ export type MutationCompanycostcode_ImportcsvArgs = {
 /** structure to handle table sms */
 export type MutationCompanycostcode_NewArgs = {
   costCode: Scalars['costCode_String_NotNull_maxLength_15']['input'];
+  idCategory: Scalars['Int']['input'];
   idCompany: Scalars['Int']['input'];
-  idcategory: Scalars['Int']['input'];
   txtName: Scalars['txtName_String_NotNull_maxLength_128']['input'];
   txtNotes: Scalars['txtNotes_String_NotNull_maxLength_512']['input'];
 };
@@ -250,7 +258,7 @@ export type MutationCompanycostcode_NewArgs = {
 /** structure to handle table sms */
 export type MutationCompanycostcode_UpdateArgs = {
   id: Scalars['Int']['input'];
-  idcategory: Scalars['Int']['input'];
+  idCategory: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
   txtName: Scalars['txtName_String_NotNull_maxLength_128']['input'];
   txtNotes: Scalars['txtNotes_String_NotNull_maxLength_512']['input'];
@@ -259,14 +267,6 @@ export type MutationCompanycostcode_UpdateArgs = {
 
 /** structure to handle table sms */
 export type MutationCompanypayment_DeactivateArgs = {
-  id: Scalars['Int']['input'];
-  revision: Scalars['Int']['input'];
-};
-
-
-/** structure to handle table sms */
-export type MutationCompanypayment_FavoriteArgs = {
-  favoritePay: Scalars['Boolean']['input'];
   id: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
 };
@@ -286,6 +286,14 @@ export type MutationCompanypayment_NewArgs = {
 
 
 /** structure to handle table sms */
+export type MutationCompanypayment_SetdefaultArgs = {
+  defaultPay: Scalars['Boolean']['input'];
+  id: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
 export type MutationCompanypayment_UpdateArgs = {
   account: Scalars['account_String_NotNull_maxLength_25']['input'];
   bankName: Scalars['bankName_String_NotNull_maxLength_128']['input'];
@@ -295,6 +303,36 @@ export type MutationCompanypayment_UpdateArgs = {
   id: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
   routing: Scalars['routing_String_NotNull_maxLength_15']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationCompanyproject_DeactivateArgs = {
+  id: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationCompanyproject_NewArgs = {
+  budgetAllocation?: InputMaybe<Array<Allocatebudget>>;
+  idCompany: Scalars['Int']['input'];
+  projectAddress: Scalars['projectAddress_String_NotNull_maxLength_255']['input'];
+  projectBudget: Scalars['Float']['input'];
+  projectName: Scalars['projectName_String_NotNull_maxLength_128']['input'];
+  projectSqft: Scalars['Float']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationCompanyproject_UpdateArgs = {
+  budgetAllocation?: InputMaybe<Array<Allocatebudget>>;
+  id: Scalars['Int']['input'];
+  projectAddress: Scalars['projectAddress_String_NotNull_maxLength_255']['input'];
+  projectBudget: Scalars['Float']['input'];
+  projectName: Scalars['projectName_String_NotNull_maxLength_128']['input'];
+  projectSqft: Scalars['Float']['input'];
+  revision: Scalars['Int']['input'];
 };
 
 
@@ -453,10 +491,16 @@ export type Query = {
   companypayment_info: Paymentinforesult;
   /** get companypayment list */
   companypayment_list: Paymentlist;
+  /** get companyproject info */
+  companyproject_info: Projectinforesult;
+  /** get companyproject list */
+  companyproject_list: Projectlist;
   /** get url for a new file */
   get_file_url: FileResponse;
   /** retrieve profile for the loging user */
   profile_info: Resprofile;
+  /** get project budget list */
+  projectbudget_list: Projectbudgetlist;
   /** query to retrieve an existing row */
   test1_find: Test1;
   /** query to retrieve all existing rows */
@@ -518,9 +562,24 @@ export type QueryCompanypayment_ListArgs = {
 };
 
 
+export type QueryCompanyproject_InfoArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type QueryCompanyproject_ListArgs = {
+  idCompany: Scalars['Int']['input'];
+};
+
+
 export type QueryGet_File_UrlArgs = {
   fileName: Scalars['String']['input'];
   folder?: InputMaybe<Folder>;
+};
+
+
+export type QueryProjectbudget_ListArgs = {
+  idProject: Scalars['Int']['input'];
 };
 
 
@@ -546,6 +605,12 @@ export type QueryVendorcontact_InfoArgs = {
 
 export type QueryVendorcontact_ListArgs = {
   idVendor: Scalars['Int']['input'];
+};
+
+export type Allocatebudget = {
+  budgetAmount: Scalars['Float']['input'];
+  budgetPercentage: Scalars['Float']['input'];
+  idCategory: Scalars['Int']['input'];
 };
 
 export type Cialist = {
@@ -613,8 +678,8 @@ export type Company_Costcode = {
   createdBy: Scalars['Int']['output'];
   createdDate: Scalars['String']['output'];
   id: Scalars['Int']['output'];
+  idCategory: Scalars['Int']['output'];
   idCompany: Scalars['Int']['output'];
-  idcategory: Scalars['Int']['output'];
   modifiedBy: Scalars['Int']['output'];
   modifiedDate: Scalars['String']['output'];
   revision: Scalars['Int']['output'];
@@ -731,7 +796,6 @@ export type Companypayment = {
   createdDate: Scalars['String']['output'];
   defaultPay: Scalars['Boolean']['output'];
   email: Scalars['String']['output'];
-  favoritePay: Scalars['Boolean']['output'];
   holderName: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   idCompany: Scalars['Int']['output'];
@@ -743,6 +807,25 @@ export type Companypayment = {
   payType: Scalars['String']['output'];
   revision: Scalars['Int']['output'];
   routing: Scalars['String']['output'];
+};
+
+/** structure to handle table company_project */
+export type Companyproject = {
+  __typename?: 'companyproject';
+  active: Scalars['Boolean']['output'];
+  createdBy: Scalars['Int']['output'];
+  createdDate: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  idCompany: Scalars['Int']['output'];
+  idCompany_payment: Scalars['Int']['output'];
+  modifiedBy: Scalars['Int']['output'];
+  modifiedDate: Scalars['String']['output'];
+  projectAddress: Scalars['String']['output'];
+  projectBudget: Scalars['Float']['output'];
+  projectName: Scalars['String']['output'];
+  projectSqft: Scalars['Float']['output'];
+  revision: Scalars['Int']['output'];
+  status: Scalars['String']['output'];
 };
 
 export type Companyrolesresult = {
@@ -880,6 +963,68 @@ export type Profile = {
   socialMediaToken: Scalars['String']['output'];
   twofa: Scalars['Boolean']['output'];
   welcomeyn: Scalars['Boolean']['output'];
+};
+
+export type Projectbooleanresult = {
+  __typename?: 'projectbooleanresult';
+  code: Scalars['Int']['output'];
+  data: Scalars['Boolean']['output'];
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Projectbudgetlist = {
+  __typename?: 'projectbudgetlist';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Array<Projectbudgets>>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Projectbudgets = {
+  __typename?: 'projectbudgets';
+  active: Scalars['Boolean']['output'];
+  budgetAmount: Scalars['Float']['output'];
+  budgetPercentage: Scalars['Float']['output'];
+  category: Scalars['String']['output'];
+  createdBy: Scalars['Int']['output'];
+  createdDate: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  idCategory: Scalars['Int']['output'];
+  idProject: Scalars['Int']['output'];
+  modifiedBy: Scalars['Int']['output'];
+  modifiedDate: Scalars['String']['output'];
+  revision: Scalars['Int']['output'];
+};
+
+export type Projectidrevision = {
+  __typename?: 'projectidrevision';
+  id: Scalars['Int']['output'];
+  revision: Scalars['Int']['output'];
+};
+
+export type Projectinforesult = {
+  __typename?: 'projectinforesult';
+  code: Scalars['Int']['output'];
+  data: Companyproject;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Projectlist = {
+  __typename?: 'projectlist';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Array<Companyproject>>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Projectresult = {
+  __typename?: 'projectresult';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Projectidrevision>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
 };
 
 export type Residrevision = {
