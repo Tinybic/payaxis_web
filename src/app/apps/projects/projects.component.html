@@ -1,14 +1,109 @@
 <div class="row mt-2-1">
     <div class="col-md-6">
-        <div class="headline-28">Projects</div>
+        <div class="headline-28">Projects {{projects.length}}</div>
         <div class="subtitle-2-500"></div>
     </div>
     <div class="col-md-6 text-end">
         <button class="btn btn-primary mx-2-1 btn-text-12" (click)="createProject(0)" style="padding: 10px 16px;">
-            <i class="fe-file-plus font-16 me-1-1"></i>New Project</button>
+            <i class="fe-file-plus font-16 me-1-1"></i>New Project
+        </button>
     </div>
 </div>
-<div *ngIf="projects.length > 0" class="container p-v-40">
+
+<div *ngIf="!isLoading && projects.length > 0" class="row mt-2-1">
+    <div class="col col-3" *ngFor="let project of projects; let i=index;">
+        <div class="card" style="background-color: #C9A0FF26;">
+            <div class="card-body">
+                <div>
+                    <span class="badge me-1 text-light btn-text-12"
+                          style="padding: 2px 6px;background-color: #C9A0FF;color: #7838CC !important;">Commercial</span>
+                    <div class="float-end" ngbDropdown placement="bottom-end" style="padding-top: 4px;">
+                        <a href="javascript:void(0);" class="arrow-none card-drop" ngbDropdownToggle>
+                            <i class="mdi mdi-dots-vertical text-blackprimary"></i>
+                        </a>
+                        <div ngbDropdownMenu style="padding: 4px 8px;">
+                            <a class="subtitle-2-500" href="javascript:void(0);" style="padding: 12px 4px;" ngbDropdownItem>
+                                <i class="fe-image me-1-1"></i>
+                                Set color & icon
+                            </a>
+                            <a class="subtitle-2-500" href="javascript:void(0);" style="padding: 12px 4px;" ngbDropdownItem>
+                                <i class="fe-folder me-1-1"></i>
+                                Move to
+                            </a>
+                            <a class="subtitle-2-500" href="javascript:void(0);" style="padding: 12px 4px;" ngbDropdownItem>
+                                <i class="fe-plus me-1-1"></i>
+                                Add a new Bill
+                            </a>
+                            <a class="subtitle-2-500" href="javascript:void(0);" style="padding: 12px 4px;color: #EA001E;" ngbDropdownItem>
+                                <i class="fe-trash-2 me-1-1"></i>
+                                Remove project
+                            </a>
+                        </div>
+                    </div>
+                    <div class="float-end me-2-1 pe-2" style="padding-top: 2px;">
+                        <img src="assets/images/icon/pin.svg"/>
+                    </div>
+                </div>
+                <div class="d-flex mt-2-1">
+                    <div class="me-1 flex-shrink-0">
+                        <img src="assets/images/projects/project_placeholder.svg" alt="image" class="img-fluid">
+                    </div>
+                    <div class="flex-grow-1 overflow-hidden headline-24">
+                        {{project.projectName}}
+                    </div>
+                </div>
+                <div class="mt-4-1">
+                    <div class="d-flex justify-content-between">
+                        <div class="Subtitle-1-400">
+                            Budget
+                            <i class="fe-info text-optional"></i>
+                        </div>
+                        <div class="float-end Subtitle-1">
+                            {{project.projectBudget | currency}}
+                        </div>
+                    </div>
+                    <div class="progress progress-bar-alt-success progress-sm" style="margin-top: 10px;">
+                        <div class="progress-bar bg-success wow" role="progressbar" aria-valuenow="20" aria-valuemin="0"
+                             aria-valuemax="100" style="width: 20%; visibility: visible;">
+                        </div><!-- /.progress-bar .progress-bar-success -->
+                    </div><!-- /.progress .no-rounded -->
+                </div>
+                <div class="d-flex justify-content-between mt-4-1">
+                    <div class="avatar-group">
+                        <div class="avatar-group-item position-relative" style="z-index: 6;">
+                            <img src="assets/images/users/user-6.jpg" class="rounded-circle avatar-sm">
+                        </div>
+                        <div class="avatar-group-item position-relative" style="z-index: 5;">
+                            <img src="assets/images/users/user-5.jpg" class="rounded-circle avatar-sm">
+                        </div>
+                        <div class="avatar-group-item position-relative" style="z-index: 4;">
+                            <img src="assets/images/users/user-4.jpg" class="rounded-circle avatar-sm">
+                        </div>
+                        <div class="avatar-group-item position-relative" style="z-index: 3;">
+                            <img src="assets/images/users/user-2.jpg" class="rounded-circle avatar-sm">
+                        </div>
+                        <div class="avatar-group-item position-relative" style="z-index: 2;">
+                            <div class="rounded-circle avatar-sm label-tips"
+                                 style="display: inline-flex;vertical-align: middle;justify-content: center;align-items: center;color: white;background-color: #2B2D30">
+                                +4
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center subtitle-2-500-12 text-optional">
+                        Overdue
+                        <span class="ms-1 text-center" style="min-width: 20px;height: 20px;border-radius: 10px;background-color: #F87171;color: white;padding: 4px;">4</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div  *ngIf="isLoading" class="position-relative" style="height: calc(100vh - 154px);">
+    <app-ui-preloader [display]="isLoading"></app-ui-preloader>
+</div>
+
+<div *ngIf="!isLoading && projects.length == 0" class="container p-v-40">
     <div class="row justify-content-md-center">
         <div class="col-md-4 text-center">
             <img src="assets/images/welcome/noprojects.svg">
@@ -22,7 +117,8 @@
             <div class="text-center">
                 <img src="assets/images/logo_bg.png">
             </div>
-            <div class="headline text-center" style="padding-top: 40px;padding-bottom: 16px;" i18n>Great you join us!
+            <div class="headline text-center" style="padding-top: 40px;padding-bottom: 16px;" i18n>Great you join
+                us!
             </div>
             <div class="text-1 text-center" i18n>
                 We will provide you with the main items of the platform for fast and easy start.

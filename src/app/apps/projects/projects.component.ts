@@ -27,15 +27,16 @@ export class ProjectsComponent implements OnInit {
   
   
   modalRef: any;
+  isLoading = true;
   projects: any[] = [];
-  idProject=0;
+  idProject = 0;
   idCompany = 0;
   
   constructor(
     private modalService: NgbModal,
     private router: Router,
     private eventService: EventService,
-    private apolloService: ApolloService,
+    private apolloService: ApolloService
   ){ }
   
   ngOnInit(): void{
@@ -51,8 +52,8 @@ export class ProjectsComponent implements OnInit {
           active: true
         }]
     });
-    this._fetchData();
     if(localStorage.getItem('welcomeyn') === 'true'){
+      this.isLoading = false;
       setTimeout(() => {
         this.modalService.open(this.joinUsModal, {
           backdrop: 'static',
@@ -60,29 +61,27 @@ export class ProjectsComponent implements OnInit {
           windowClass: 'centerModal'
         });
       }, 30);
+    } else{
+      this.getProjectList();
     }
   }
   
   
-  getCategoryList(){
+  getProjectList(){
     this.idCompany = parseInt(localStorage.getItem('idcompany'));
     if(this.idCompany != 0){
       this.apolloService.query(companyproject_list, {idCompany: this.idCompany}).then((res) => {
-        const result = res.companycategory_list;
+        const result = res.companyproject_list;
         if(!result.error){
           this.projects = result.data;
         }
+        
+        this.isLoading = false;
       });
+    } else{
+      this.isLoading = false;
     }
   }
-  
-  /**
-   * fetches data
-   */
-  _fetchData(): void{
-    this.projects = PROJECTS;
-  }
-  
   
   createProject(idProject){
     this.idProject = idProject;
@@ -92,11 +91,10 @@ export class ProjectsComponent implements OnInit {
       centered: true,
       backdrop: 'static'
     })
-  
+    
     this.modalRef.result.then((result) => {
       // get projects
-      
-      console.log('get projects')
+      this.getProjectList();
     }, (reason) => {
       console.log(reason);
     })
