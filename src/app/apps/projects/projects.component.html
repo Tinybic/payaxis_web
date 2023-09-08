@@ -13,11 +13,11 @@
 <div *ngIf="!isLoading && projectList.length > 0">
     <div class="row">
         <div class="col col-3" *ngFor="let project of (projectList | callback: filterPinProjectList); let i=index;">
-            <div class="card" style="background-color: {{project.color}}10;">
+            <div class="card" style="background-color: {{project.color}}16;">
                 <div class="card-body">
                     <div>
                         <span class="badge me-1 text-light btn-text-12"
-                            style="padding: 2px 6px;background-color: {{project.color}}33;color: {{project.color}} !important;">Commercial</span>
+                            style="padding: 2px 6px;background-color: {{project.color}}33;color: {{project.color}} !important;">{{project.groupName}}</span>
                         <div class="float-end" ngbDropdown placement="bottom-end" style="padding-top: 4px;">
                             <a href="javascript:void(0);" class="arrow-none card-drop" ngbDropdownToggle>
                                 <i class="mdi mdi-dots-vertical text-blackprimary"></i>
@@ -45,7 +45,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="float-end me-2-1 pe-2" style="padding-top: 2px;">
+                        <div class="float-end me-1-1 pe-2" style="padding-top: 2px;">
                             <svg width="16" height="16" viewBox="0 0 16 16"
                                 style="fill: {{project.color}}; cursor: pointer;" (click)="pinProject(project,false)"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -193,7 +193,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="float-end me-2-1 pe-2" style="padding-top: 2px;">
+                        <div class="float-end me-1-1 pe-2" style="padding-top: 2px;">
                             <svg width="16" height="16" viewBox="0 0 16 16" style="fill: #D1D8E2; cursor: pointer;"
                                 (click)="pinProject(project,true)" xmlns="http://www.w3.org/2000/svg">
                                 <path
