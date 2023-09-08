@@ -14,107 +14,107 @@ h3,
 h4,
 h5,
 h6 {
-    margin: 10px 0;
-    font-family: $font-family-base;
-    color: #{$typeblackprimary};
-    font-weight: $font-weight-normal;
+  margin: 10px 0;
+  font-family: $font-family-base;
+  color: #{$typeblackprimary};
+  font-weight: $font-weight-normal;
 }
 
 .bg-primary {
-    background-color: $primary;
+  background-color: $primary;
 }
 
 .text-white {
-    color: $white;
+  color: $white;
 }
 
 .bold-800 {
-    font-weight: 800;
+  font-weight: 800;
 }
 
 .bold-700 {
-    font-weight: 700;
+  font-weight: 700;
 }
 
 .bold-600 {
-    font-weight: 600;
+  font-weight: 600;
 }
 
 .bold-500 {
-    font-weight: 500;
+  font-weight: 500;
 }
 
 h1 {
-    font-size: 5.6125rem;
-    line-height: 7rem;
-    letter-spacing: -1.5px;
+  font-size: 5.6125rem;
+  line-height: 7rem;
+  letter-spacing: -1.5px;
 }
 
 h2 {
-    font-size: 4.20875rem;
-    line-height: 4.5rem;
-    letter-spacing: -0.5px;
+  font-size: 4.20875rem;
+  line-height: 4.5rem;
+  letter-spacing: -0.5px;
 }
 
 h3 {
-    font-size: 3.1575rem;
-    line-height: 3.5rem;
-    letter-spacing: -0px;
+  font-size: 3.1575rem;
+  line-height: 3.5rem;
+  letter-spacing: -0px;
 }
 
 h4 {
-    font-size: 2.36875rem;
-    line-height: 2.5rem;
-    letter-spacing: 0.25px;
+  font-size: 2.36875rem;
+  line-height: 2.5rem;
+  letter-spacing: 0.25px;
 }
 
 
 h5 {
-    font-size: 1.776875rem;
-    line-height: 2rem;
-    letter-spacing: -0.18px;
+  font-size: 1.776875rem;
+  line-height: 2rem;
+  letter-spacing: -0.18px;
 }
 
 h6 {
-    color: #{$primarylight};
-    font-weight: $font-weight-bold;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    line-height: 1rem;
+  color: #{$primarylight};
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  line-height: 1rem;
 }
 
 .text-primarylight {
-    color: #{$primarylight} !important;
+  color: #{$primarylight} !important;
 }
 
 .headline {
-    font-size: 21.33px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 40px;
+  font-size: 21.33px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 40px;
 }
 
 .headline-24 {
-    font-size: 21.33px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 24px;
+  font-size: 21.33px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 24px;
 }
 
 .headline-28 {
-    font-size: 28px;
-    font-weight: 700;
-    line-height: 32px;
-    letter-spacing: -0.18px;
-    text-align: left;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 32px;
+  letter-spacing: -0.18px;
+  text-align: left;
 }
 
 .text-blackprimary {
-    color: #202020;
+  color: #202020;
 }
 
 .text-blackprimary-op-50 {
-    color: #20202080;
+  color: #20202080;
 }
 
 // ms: margin-left;
@@ -123,367 +123,372 @@ h6 {
 // my: margin-top and margin-bottom;
 
 .ms-1-1 {
-    margin-left: 0.5rem;
+  margin-left: 0.5rem;
 }
 
 .mb-1-1 {
-    margin-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .mt-1-1 {
-    margin-top: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 .me-1-1 {
-    margin-right: 0.5rem;
+  margin-right: 0.5rem;
 }
 
 .me-2-1 {
-    margin-right: 1rem;
+  margin-right: 1rem;
 }
 
 .mb-2-1 {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .ms-2-1 {
-    margin-left: 1rem;
+  margin-left: 1rem;
 }
 
 .mt-2-1 {
-    margin-top: 1rem;
+  margin-top: 1rem;
 }
 
 .mx-2-1 {
-    margin: 0 1rem;
+  margin: 0 1rem;
 }
 
 .mt-3-1 {
-    margin-top: 1.5rem;
+  margin-top: 1.5rem;
 }
 
 .mt-4-1 {
-    margin-top: 2rem;
+  margin-top: 2rem;
 }
 
 .mt-5-1 {
-    margin-top: 2.5rem;
+  margin-top: 2.5rem;
 }
 
 .mt-40 {
-    margin-top: 40px;
+  margin-top: 40px;
 }
 
-.py-1-1{
+.py-1-1 {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
 
 .pt-2-1 {
-    padding-top: 1rem !important;
+  padding-top: 1rem !important;
 }
 
 .p-2-1 {
-    padding: 1rem;
+  padding: 1rem;
 }
 
 .padding-12-24 {
-    padding: 12px 24px;
+  padding: 12px 24px;
 }
 
 .padding-12-16 {
-    padding: 12px 16px;
+  padding: 12px 16px;
 }
 
-.padding-16-24{
-    padding: 16px 24px !important;
+.padding-16-24 {
+  padding: 16px 24px !important;
 }
 
 // Font sizes (Custom)
 .font-11 {
-    font-size: 11px !important;
+  font-size: 11px !important;
 }
 
 .font-12 {
-    font-size: 12px !important;
+  font-size: 12px !important;
 }
 
 .font-13 {
-    font-size: 13px !important;
+  font-size: 13px !important;
 }
 
 .font-14 {
-    font-size: 14px !important;
+  font-size: 14px !important;
 }
 
 .font-15 {
-    font-size: 15px !important;
+  font-size: 15px !important;
 }
 
 .font-16 {
-    font-size: 16px !important;
+  font-size: 16px !important;
 }
 
 .font-17 {
-    font-size: 17px !important;
+  font-size: 17px !important;
 }
 
 .font-18 {
-    font-size: 18px !important;
+  font-size: 18px !important;
 }
 
 .font-19 {
-    font-size: 19px !important;
+  font-size: 19px !important;
 }
 
 .font-20 {
-    font-size: 20px !important;
+  font-size: 20px !important;
 }
 
 .font-22 {
-    font-size: 22px !important;
+  font-size: 22px !important;
 }
 
 .font-24 {
-    font-size: 24px !important;
+  font-size: 24px !important;
 }
 
 .font-26 {
-    font-size: 26px !important;
+  font-size: 26px !important;
 }
 
 .font-28 {
-    font-size: 28px !important;
+  font-size: 28px !important;
 }
 
 .line-16 {
-    line-height: 16px !important;
+  line-height: 16px !important;
 }
 
 .line-40 {
-    line-height: 40px !important;
+  line-height: 40px !important;
 }
 
 .line-44 {
-    line-height: 44px !important;
+  line-height: 44px !important;
 }
 
 .line-32 {
-    line-height: 32px !important;
+  line-height: 32px !important;
 }
 
 .line-56 {
-    line-height: 56px !important;
+  line-height: 56px !important;
 }
 
 .line-60 {
-    line-height: 60px !important;
+  line-height: 60px !important;
 }
 
 .line-24 {
-    line-height: 24px !important;
+  line-height: 24px !important;
 }
 
 // Font Weight
 
 .fw-medium {
-    font-weight: $font-weight-medium;
+  font-weight: $font-weight-medium;
 }
 
 .fw-semibold {
-    font-weight: $font-weight-semibold;
+  font-weight: $font-weight-semibold;
 }
 
 
 .Paragraph-1 {
-    font-size: 1rem;
-    line-height: 1.5rem;
-    letter-spacing: 0.5px;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  letter-spacing: 0.5px;
 }
 
 
 .Paragraph-2 {
-    font-size: 0.75rem;
-    line-height: 1rem;
-    letter-spacing: 0px;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  letter-spacing: 0px;
 }
 
 .Subtitle-1 {
-    text-align: center;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 24px;
-    letter-spacing: 0.5px;
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0.5px;
 }
 
 .Subtitle-1-400 {
-    text-align: center;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 24px;
-    letter-spacing: 0.5px;
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0.5px;
 }
 
 .Subtitle-1-600 {
-    text-align: center;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 24px;
-    letter-spacing: 0.5px;
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0.5px;
 }
+
 .Subtitle-2 {
-    font-weight: 500;
-    line-height: 1rem;
-    letter-spacing: 0.1px;
+  font-weight: 500;
+  line-height: 1rem;
+  letter-spacing: 0.1px;
 }
 
 .subtitle-2-400-20 {
-    font-size: 20px;
-    font-weight: 400;
-    line-height: 20px;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 20px;
 }
 
 .subtitle-2-500 {
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 24px;
-    letter-spacing: 0.1px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: 0.1px;
 }
 
 .subtitle-2-500-12 {
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 12px;
 }
 
 .subtitle-2-500-16 {
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 16px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 16px;
 }
 
 .subtitle-2-500-18 {
-    font-size: 18px;
-    font-weight: 500;
-    line-height: 24px;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 24px;
 }
 
 .subtitle-2-500-20 {
-    font-size: 20px;
-    font-weight: 500;
-    line-height: 20px;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 20px;
 }
 
 .subtitle-2-500-24 {
-    font-size: 24px;
-    font-weight: 500;
-    line-height: 24px;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 24px;
 }
 
 .subtitle-2-600 {
-    font-size: 12px;
-    font-weight: 600;
-    line-height: 24px;
-    letter-spacing: 0.1px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0.1px;
 }
 
 .subtitle-2-600-20 {
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
 }
 
 .subtitle-2-800 {
-    font-size: 12px;
-    font-weight: 800;
-    line-height: 24px;
-    letter-spacing: 0.1px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 24px;
+  letter-spacing: 0.1px;
 }
 
 
 .Subtitle-3 {
-    color: #20202080;
-    letter-spacing: 0.4px;
+  color: #20202080;
+  letter-spacing: 0.4px;
 }
 
 .btn-text-12 {
-    font-size: 12px;
-    font-weight: 600;
-    line-height: 16px;
-    letter-spacing: 0px;
-    text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0px;
+  text-align: center;
 }
 
 .btn-text-14 {
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 16px;
-    letter-spacing: 0.02em;
-    text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0.02em;
+  text-align: left;
 }
 
 .text-1 {
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 24px;
-    letter-spacing: 0.5px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0.5px;
 }
 
 .search-text {
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 16px;
-    letter-spacing: 0px;
-    text-align: left;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0px;
+  text-align: left;
 }
 
 .label-tips {
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 16px;
-    letter-spacing: 0.4px;
-    text-align: right;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0.4px;
+  text-align: right;
 }
 
 del {
-    color: #20202080
+  color: #20202080
 }
 
 .text-optional {
-    color: #20202080 !important;
+  color: #20202080 !important;
 }
 
 .text-typeblackdeactivated {
-    color: #20202080 !important;
+  color: #20202080 !important;
 }
 
 .text-caption-400 {
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 16px;
-    letter-spacing: 0.4000000059604645px;
-    text-align: left;
-    color: #202020CC;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0.4000000059604645px;
+  text-align: left;
+  color: #202020CC;
+}
+
+.c-p {
+  cursor: pointer;
 }
 
 // dark mode
 body[data-layout-color="dark"] {
 
-    .h1,
-    .h2,
-    .h3,
-    .h4,
-    .h5,
-    .h6,
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        color: #{map-get($dark-grays, "800")};
-    }
+  .h1,
+  .h2,
+  .h3,
+  .h4,
+  .h5,
+  .h6,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: #{map-get($dark-grays, "800")};
+  }
 }

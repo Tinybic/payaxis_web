@@ -15,6 +15,7 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from "ngx-mask";
 import { CreateBudgetComponent } from './create-budget/create-budget.component';
 import { SharedModule } from "../../shared/shared.module";
 import { UiModule } from "../../shared/ui/ui.module";
+import { CreateGroupComponent } from './create-group/create-group.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { UiModule } from "../../shared/ui/ui.module";
     ProjectsComponent,
     ProjectsGuidComponent,
     CreateProjectComponent,
-    CreateBudgetComponent
+    CreateBudgetComponent,
+    CreateGroupComponent
   ],
   imports: [
     CommonModule,

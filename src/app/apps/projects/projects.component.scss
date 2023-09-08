@@ -1,4 +1,4 @@
-.p-v-40{
+.p-v-40 {
   padding-top: 40px;
   padding-bottom: 40px;
 }
@@ -8,4 +8,19 @@
   display: inline-block;
   border: 2px solid var(--ct-card-bg);
   border-radius: 50%;
+}
+
+.filterDropdownMenu {
+  .dropdow-outline {
+    color: #2B52DD;
+    padding: 11px 16px;
+  }
+
+  .dropdown-menu {
+    padding: 0px;
+
+    .dropdown-item {
+      padding: 12px;
+    }
+  }
 }
