@@ -17,6 +17,7 @@ import {
   profile_info,
 } from 'src/app/core/gql/user';
 import { ToastrService } from 'ngx-toastr';
+import { companyNew } from 'src/app/core/gql/company';
 @Component({
   selector: 'app-auth-info',
   templateUrl: './info.component.html',
@@ -65,11 +66,11 @@ export class InfoComponent implements OnInit {
             this.formValues['f2_auth'].setValue(result.data.twofa);
             this.revision = result.data.revision;
           } else {
-            localStorage.setItem('firstName',result.data.firstName);
-            localStorage.setItem('lastName',result.data.lastName);
-            localStorage.setItem('memberyn',result.data.memberyn.toString());
-            localStorage.setItem('id',result.data.id.toString());
-            localStorage.setItem('avatar',result.data.avatar);
+            localStorage.setItem('firstName', result.data.firstName);
+            localStorage.setItem('lastName', result.data.lastName);
+            localStorage.setItem('memberyn', result.data.memberyn.toString());
+            localStorage.setItem('id', result.data.id.toString());
+            localStorage.setItem('avatar', result.data.avatar);
             this.toastr.info(
               'This account has been activated. Please log in.',
               'Account information update.'
@@ -108,7 +109,34 @@ export class InfoComponent implements OnInit {
       .then((res) => {
         this.loading = false;
         if (!res.profile_activate.error) {
-          this.router.navigate(['apps/welcome']);
+          this.apolloService
+            .mutate(companyNew, {
+              id: 0,
+              revision: 0,
+              txtName: this.formValues['companyName'].value,
+              taxId: '',
+              idMasterCompany: 0,
+              industry: '',
+              paymentTerms: '',
+              website: '',
+              txtAddress: '',
+              txtCity: '',
+              txtState: '',
+              txtZipcode: '',
+              contactNumber: '',
+              description: '',
+              avatar: '',
+              suiteNumber: '',
+            })
+            .then((res) => {
+              let result;
+              result = res.company_new;
+              if (!result.error) {
+                localStorage.setItem('idcompany', result.data.id);
+                this.router.navigate(['apps/welcome']);
+              }
+            });
+          
         } else {
           this.error = res.profile_activate.message;
         }
