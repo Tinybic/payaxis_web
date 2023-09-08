@@ -158,7 +158,7 @@ export class RegisterComponent implements OnInit {
    */
   onSubmit(): void{
     this.formSubmitted = true;
-    
+    this.error = '';
     if(this.signUpForm.valid){
       this.loading = true;
       this.httpService.post('signup', {

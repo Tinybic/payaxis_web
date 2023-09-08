@@ -1,0 +1,167 @@
+<div class="card mb-0">
+    <div class="card-body padding-16-24">
+        <div class="row">
+            <div class="col-md-10 subtitle-2-600-24 text-black">
+                Set color & icon
+            </div>
+            <div class="col-md-2 text-black line-24 text-end">
+                <i class="fe-x cursor-pointer"  (click) = "close()"></i>
+            </div>
+        </div>
+
+        <div class="row mt-3-1">
+            <div class="col-md-12 Subtitle-1-600 text-start">
+                Choose Color
+            </div>
+        </div>
+
+        <div class="row mt-2-1">
+            <div class="col-md-12 d-flex justify-content-between">
+                <div class="colorItem" [ngClass]="{'colorItemActive': selectColor == '#EF4444'}"
+                    (click)="selectColor = '#EF4444'" style="background-color: #EF4444;">
+                </div>
+                <div class="colorItem" [ngClass]="{'colorItemActive': selectColor == '#F97316'}"
+                    (click)="selectColor = '#F97316'" style="background-color: #F97316;">
+                </div>
+                <div class="colorItem" [ngClass]="{'colorItemActive': selectColor == '#FACC15'}"
+                    (click)="selectColor = '#FACC15'" style="background-color: #FACC15;">
+                </div>
+                <div class="colorItem" [ngClass]="{'colorItemActive': selectColor == '#4ADE80'}"
+                    (click)="selectColor = '#4ADE80'" style="background-color: #4ADE80;">
+                </div>
+                <div class="colorItem" [ngClass]="{'colorItemActive': selectColor == '#2DD4BF'}"
+                    (click)="selectColor = '#2DD4BF'" style="background-color: #2DD4BF;">
+                </div>
+                <div class="colorItem" [ngClass]="{'colorItemActive': selectColor == '#3B82F6'}"
+                    (click)="selectColor = '#3B82F6'" style="background-color: #3B82F6;">
+                </div>
+                <div class="colorItem" [ngClass]="{'colorItemActive': selectColor == '#6467F2'}"
+                    (click)="selectColor = '#6467F2'" style="background-color: #6467F2;">
+                </div>
+            </div>
+        </div>
+        <div class="row mt-1-1">
+            <div class="col-md-12 d-flex justify-content-between">
+                <div class="colorItem" [ngClass]="{'colorItemActive': selectColor == '#EC4899'}"
+                    (click)="selectColor = '#EC4899'" style="background-color: #EC4899;">
+                </div>
+                <div class="colorItem" [ngClass]="{'colorItemActive': selectColor == '#F43F5E'}"
+                    (click)="selectColor = '#F43F5E'" style="background-color: #F43F5E;">
+                </div>
+                <div class="colorItem" [ngClass]="{'colorItemActive': selectColor == '#D946EF'}"
+                    (click)="selectColor = '#D946EF'" style="background-color: #D946EF;">
+                </div>
+                <div class="colorItem" [ngClass]="{'colorItemActive': selectColor == '#8B5CF6'}"
+                    (click)="selectColor = '#8B5CF6'" style="background-color: #8B5CF6;">
+                </div>
+                <div class="colorItem" [ngClass]="{'colorItemActive': selectColor == '#0EA5E9'}"
+                    (click)="selectColor = '#0EA5E9'" style="background-color: #0EA5E9;">
+                </div>
+                <div class="colorItem" [ngClass]="{'colorItemActive': selectColor == '#10B981'}"
+                    (click)="selectColor = '#10B981'" style="background-color: #10B981;">
+                </div>
+                <div class="colorItem" [ngClass]="{'colorItemActive': selectColor == '#84CC16'}"
+                    (click)="selectColor = '#84CC16'" style="background-color: #84CC16;">
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3-1">
+            <div class="col-md-12 Subtitle-1-600 text-start">
+                Choose Icon
+            </div>
+        </div>
+        <div class="row mt-2-1">
+            <div class="col-md-12 d-flex justify-content-between">
+                <div class="iconItem" [ngClass]="{'iconItemActive': selectIcon == 'fe-bell-off'}"
+                    (click)="selectIcon = 'fe-bell-off'">
+                    <i class="fe-bell-off font-24"></i>
+                </div>
+                <div class="iconItem" [ngClass]="{'iconItemActive': selectIcon == 'fe-bell'}"
+                    (click)="selectIcon = 'fe-bell'">
+                    <i class="fe-bell font-24"></i>
+                </div>
+                <div class="iconItem" [ngClass]="{'iconItemActive': selectIcon == 'fe-bluetooth'}"
+                    (click)="selectIcon = 'fe-bluetooth'">
+                    <i class="fe-bluetooth font-24"></i>
+                </div>
+
+                <div class="iconItem" [ngClass]="{'iconItemActive': selectIcon == 'fe-bold'}"
+                    (click)="selectIcon = 'fe-bold'">
+                    <i class="fe-bold font-24"></i>
+                </div>
+                <div class="iconItem" [ngClass]="{'iconItemActive': selectIcon == 'fe-book-open'}"
+                    (click)="selectIcon = 'fe-book-open'">
+                    <i class="fe-book-open font-24"></i>
+                </div>
+                <div class="iconItem" [ngClass]="{'iconItemActive': selectIcon == 'fe-book'}"
+                    (click)="selectIcon = 'fe-book'">
+                    <i class="fe-book font-24"></i>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-1-1">
+            <div class="col-md-12 d-flex justify-content-between">
+                <div class="iconItem" [ngClass]="{'iconItemActive': selectIcon == 'fe-bell-off'}"
+                    (click)="selectIcon = 'fe-bell-off'">
+                    <i class="fe-bell-off font-24"></i>
+                </div>
+                <div class="iconItem" [ngClass]="{'iconItemActive': selectIcon == 'fe-bell'}"
+                    (click)="selectIcon = 'fe-bell'">
+                    <i class="fe-bell font-24"></i>
+                </div>
+                <div class="iconItem" [ngClass]="{'iconItemActive': selectIcon == 'fe-bluetooth'}"
+                    (click)="selectIcon = 'fe-bluetooth'">
+                    <i class="fe-bluetooth font-24"></i>
+                </div>
+
+                <div class="iconItem" [ngClass]="{'iconItemActive': selectIcon == 'fe-bold'}"
+                    (click)="selectIcon = 'fe-bold'">
+                    <i class="fe-bold font-24"></i>
+                </div>
+                <div class="iconItem" [ngClass]="{'iconItemActive': selectIcon == 'fe-book-open'}"
+                    (click)="selectIcon = 'fe-book-open'">
+                    <i class="fe-book-open font-24"></i>
+                </div>
+                <div class="iconItem" [ngClass]="{'iconItemActive': selectIcon == 'fe-book'}"
+                    (click)="selectIcon = 'fe-book'">
+                    <i class="fe-book font-24"></i>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-1-1">
+            <div class="col-md-12 d-flex justify-content-between">
+                <div class="iconItem" [ngClass]="{'iconItemActive': selectIcon == 'fe-bell-off'}"
+                    (click)="selectIcon = 'fe-bell-off'">
+                    <i class="fe-bell-off font-24"></i>
+                </div>
+                <div class="iconItem" [ngClass]="{'iconItemActive': selectIcon == 'fe-bell'}"
+                    (click)="selectIcon = 'fe-bell'">
+                    <i class="fe-bell font-24"></i>
+                </div>
+                <div class="iconItem" [ngClass]="{'iconItemActive': selectIcon == 'fe-bluetooth'}"
+                    (click)="selectIcon = 'fe-bluetooth'">
+                    <i class="fe-bluetooth font-24"></i>
+                </div>
+
+                <div class="iconItem" [ngClass]="{'iconItemActive': selectIcon == 'fe-bold'}"
+                    (click)="selectIcon = 'fe-bold'">
+                    <i class="fe-bold font-24"></i>
+                </div>
+                <div class="iconItem" [ngClass]="{'iconItemActive': selectIcon == 'fe-book-open'}"
+                    (click)="selectIcon = 'fe-book-open'">
+                    <i class="fe-book-open font-24"></i>
+                </div>
+                <div class="iconItem" [ngClass]="{'iconItemActive': selectIcon == 'fe-book'}"
+                    (click)="selectIcon = 'fe-book'">
+                    <i class="fe-book font-24"></i>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3-1">
+            <div class="col-md-12 text-center">
+                <button class="btn btn-link" style="width: 109px;" (click) = "close()">Cancel</button>
+                <button class="btn btn-primary" style="width: 109px;" (click) = "save()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

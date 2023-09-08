@@ -16,6 +16,7 @@ import { CreateBudgetComponent } from './create-budget/create-budget.component';
 import { SharedModule } from "../../shared/shared.module";
 import { UiModule } from "../../shared/ui/ui.module";
 import { CreateGroupComponent } from './create-group/create-group.component';
+import { SetColorComponent } from './set-color/set-color.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { CreateGroupComponent } from './create-group/create-group.component';
     ProjectsGuidComponent,
     CreateProjectComponent,
     CreateBudgetComponent,
-    CreateGroupComponent
+    CreateGroupComponent,
+    SetColorComponent
   ],
   imports: [
     CommonModule,
@@ -38,7 +40,7 @@ import { CreateGroupComponent } from './create-group/create-group.component';
     NgxMaskDirective,
     NgxMaskPipe,
     SharedModule,
-    UiModule,
+    UiModule
   ],
   providers:[
     provideNgxMask()
