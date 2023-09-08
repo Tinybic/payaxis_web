@@ -51,36 +51,38 @@ export class CreateProjectComponent {
   createBudgetModalRef: any;
   newGroupModalRef: NgbModalRef;
   
-  template = [{
-    id: 1,
-    name: '1 BD 1BR',
-    isSelected: false
-  },
-    {
-      id: 2,
-      name: '2 BD 1BR',
-      isSelected: false
-    },
-    {
-      id: 3,
-      name: '3 BD 1BR',
-      isSelected: false
-    },
-    {
-      id: 4,
-      name: '4 BD 1BR',
-      isSelected: false
-    },
-    {
-      id: 5,
-      name: '5 BD 1BR',
-      isSelected: false
-    },
-    {
-      id: 6,
-      name: '6 BD 1BR',
-      isSelected: false
-    }]
+  template = [];
+  
+  // template = [{
+  //   id: 1,
+  //   name: '1 BD 1BR',
+  //   isSelected: false
+  // },
+  //   {
+  //     id: 2,
+  //     name: '2 BD 1BR',
+  //     isSelected: false
+  //   },
+  //   {
+  //     id: 3,
+  //     name: '3 BD 1BR',
+  //     isSelected: false
+  //   },
+  //   {
+  //     id: 4,
+  //     name: '4 BD 1BR',
+  //     isSelected: false
+  //   },
+  //   {
+  //     id: 5,
+  //     name: '5 BD 1BR',
+  //     isSelected: false
+  //   },
+  //   {
+  //     id: 6,
+  //     name: '6 BD 1BR',
+  //     isSelected: false
+  //   }]
   
   createProjectStep1Form: UntypedFormGroup = this.fb.group({
     name: ['',
@@ -210,7 +212,7 @@ export class CreateProjectComponent {
       idGroup: this.selectedGroup.idGroup,
       budget: this.formStep2Values['budget'].value,
       sqft: this.formStep2Values['sqft'].value,
-      categoryList: []
+      categoryList: this.createProject.categoryList
     }
     e.preventDefault();
     this.createBudgetModalRef = this.modalService.open(this.createBudgetModal, {
@@ -222,6 +224,7 @@ export class CreateProjectComponent {
     this.createBudgetModalRef.result.then((result) => {
       this.modalRef.modalRef.close();
     }, (reason) => {
+      this.createProject.categoryList = reason;
       console.log(reason);
     })
   }

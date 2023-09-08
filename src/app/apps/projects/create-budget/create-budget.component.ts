@@ -114,8 +114,8 @@ export class CreateBudgetComponent {
       this.createProject.categoryList.push({
         idCategory: '',
         txtName: '',
-        budgetPercentage: '',
-        budgetAmount: ''
+        budgetPercentage: 0,
+        budgetAmount: 0
       })
       
       this.editingCategory = this.createProject.categoryList.length - 1;
@@ -131,12 +131,18 @@ export class CreateBudgetComponent {
   }
   
   
-  budgetPercentageChange(item){
-  
+  budgetPercentageChange(budget){
+    let total = 0;
+    budget.budgetAmount = parseFloat(this.createProject.budget) * budget.budgetPercentage / 100
+    this.createProject.categoryList.map(item => {
+      total += item.budgetAmount;
+    })
+    this.totalBudget = total;
   }
   
-  budgetAmountChange(item){
+  budgetAmountChange(budget){
     let total = 0;
+    budget.budgetPercentage = budget.budgetAmount / parseFloat(this.createProject.budget) * 100;
     this.createProject.categoryList.map(item => {
       total += item.budgetAmount;
     })
@@ -194,7 +200,7 @@ export class CreateBudgetComponent {
   
   
   closeModal(){
-    this.modalRef.createBudgetModalRef.dismiss();
+    this.modalRef.createBudgetModalRef.dismiss(this.createProject.categoryList);
   }
   
   
