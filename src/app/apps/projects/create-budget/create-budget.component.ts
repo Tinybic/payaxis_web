@@ -32,6 +32,7 @@ export class CreateBudgetComponent {
   createProject = {
     name: '',
     address: '',
+    idGroup: 0,
     budget: '',
     sqft: '',
     categoryList: []
@@ -174,6 +175,7 @@ export class CreateBudgetComponent {
       idCompany: this.idCompany,
       projectName: this.createProject.name,
       projectAddress: this.createProject.address,
+      idGroup: this.createProject.idGroup,
       projectBudget: this.createProject.budget,
       projectSqft: this.createProject.sqft,
       budgetAllocation: list

@@ -7,6 +7,7 @@ import {
 import { ToastrService } from "ngx-toastr";
 import { ApolloService } from "../../../core/service/apollo.service";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
+import { companygroup_list } from "../../../core/gql/project";
 
 
 @Component({
@@ -18,7 +19,8 @@ export class CreateProjectComponent {
   @Input() idProject;
   @Input() modalRef;
   
-  @ViewChild('createBudgetModal') createBudgetModal: NgbModalRef
+  @ViewChild('createBudgetModal') createBudgetModal: NgbModalRef;
+  @ViewChild('newGroupModal') newGroupModal: NgbModalRef;
   
   
   constructor(
@@ -31,14 +33,23 @@ export class CreateProjectComponent {
   
   error: string = '';
   step: number = 1;
+  idCompany = 0;
   createProject = {
     name: '',
     address: '',
+    idGroup: 0,
     budget: '',
     sqft: '',
-    categoryList: [],
+    categoryList: []
+  }
+  companyGroupList = [];
+  selectedGroup = {
+    idGroup: 0,
+    txtName: '',
+    projectCount: 0
   }
   createBudgetModalRef: any;
+  newGroupModalRef: NgbModalRef;
   
   template = [{
     id: 1,
@@ -101,9 +112,29 @@ export class CreateProjectComponent {
   })
   
   ngOnInit(): void{
-  
+    this.idCompany = parseInt(localStorage.getItem('idcompany'));
+    this.getCompanyGroupList();
   }
   
+  
+  getCompanyGroupList(){
+    if(this.idCompany != 0){
+      this.apolloService.query(companygroup_list, {idCompany: this.idCompany}).then((res) => {
+        const result = res.companygroup_list;
+        if(!result.error){
+          this.companyGroupList = result.data;
+          
+          // if(this.companyGroupList.length > 0){
+          //   this.selectedGroup = {
+          //     idGroup: this.companyGroupList[this.companyGroupList.length - 1].id,
+          //     txtName: this.companyGroupList[this.companyGroupList.length - 1].txtName,
+          //     projectCount: this.companyGroupList[this.companyGroupList.length - 1].projectcount
+          //   }
+          // }
+        }
+      });
+    }
+  }
   
   /**
    * convenience getter for easy access to form fields
@@ -116,6 +147,31 @@ export class CreateProjectComponent {
     return this.createProjectStep2Form.controls;
   }
   
+  
+  selectGroupProject(group){
+    this.selectedGroup = {
+      idGroup: group.id,
+      txtName: group.txtName,
+      projectCount: group.projectcount
+    }
+  }
+  
+  
+  newGroup(e){
+    e.preventDefault();
+    this.newGroupModalRef = this.modalService.open(this.newGroupModal, {
+      modalDialogClass: 'modal-right',
+      size: '640',
+      centered: true,
+      backdrop: 'static'
+    })
+    
+    this.newGroupModalRef.result.then((result) => {
+      this.getCompanyGroupList();
+    }, (reason) => {
+      console.log(reason);
+    })
+  }
   
   selectedTemplate(id){
     this.template.map(item => {
@@ -133,6 +189,11 @@ export class CreateProjectComponent {
       return;
     }
     
+    if(this.selectedGroup.txtName == ''){
+      this.toastrService.warning('Group is required, please back to select Group.');
+      return;
+    }
+    
     if(this.formStep2Values['budget'].value == ''){
       this.toastrService.warning('Project Budget is required, please enter the Project Budget.');
       return;
@@ -146,6 +207,7 @@ export class CreateProjectComponent {
     this.createProject = {
       name: this.formStep1Values['name'].value,
       address: this.formStep1Values['address'].value,
+      idGroup: this.selectedGroup.idGroup,
       budget: this.formStep2Values['budget'].value,
       sqft: this.formStep2Values['sqft'].value,
       categoryList: []
@@ -164,11 +226,7 @@ export class CreateProjectComponent {
     })
   }
   
-  
-  onSubmit(){
-  
-  }
-  
+  onSubmit(){}
   
   closeModal(e){
     e.preventDefault();

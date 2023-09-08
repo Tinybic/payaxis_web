@@ -7,12 +7,7 @@ import { EventType } from 'src/app/core/constants/events';
 // services
 import { EventService } from 'src/app/core/service/event.service';
 
-// types
-import { Project } from './projects.model';
-
-// data
-import { PROJECTS } from './data';
-import { companyproject_list } from "../../core/gql/project";
+import { companyproject_list, companygroup_list } from "../../core/gql/project";
 import { ApolloService } from "../../core/service/apollo.service";
 
 
@@ -24,13 +19,25 @@ import { ApolloService } from "../../core/service/apollo.service";
 export class ProjectsComponent implements OnInit {
   @ViewChild('joinUsModal') joinUsModal: NgbModalRef;
   @ViewChild('createProjectModal') createProjectModal: NgbModalRef;
+  @ViewChild('newGroupModal') newGroupModal: NgbModalRef;
   
   
   modalRef: any;
   isLoading = true;
-  projects: any[] = [];
+  projectList: any[] = [];
+  groupedProjectList: any;
+  companyGroupList = [];
   idProject = 0;
   idCompany = 0;
+  keywords = '';
+  groupedProjects: any[] = [];
+  selectedGroup = {
+    idGroup: 0,
+    txtName: '',
+    projectCount: 0
+  }
+  
+  newGroupModalRef: NgbModalRef;
   
   constructor(
     private modalService: NgbModal,
@@ -38,6 +45,7 @@ export class ProjectsComponent implements OnInit {
     private eventService: EventService,
     private apolloService: ApolloService
   ){ }
+  
   
   ngOnInit(): void{
     this.eventService.broadcast(EventType.CHANGE_PAGE_TITLE, {
@@ -62,25 +70,56 @@ export class ProjectsComponent implements OnInit {
         });
       }, 30);
     } else{
-      this.getProjectList();
+      this.idCompany = parseInt(localStorage.getItem('idcompany'));
+      setTimeout(() => {
+        this.getProjectList();
+        this.getCompanyGroupList();
+      }, 500)
     }
   }
   
   
   getProjectList(){
-    this.idCompany = parseInt(localStorage.getItem('idcompany'));
     if(this.idCompany != 0){
       this.apolloService.query(companyproject_list, {idCompany: this.idCompany}).then((res) => {
         const result = res.companyproject_list;
         if(!result.error){
-          this.projects = result.data;
+          this.projectList = result.data;
         }
         
+        this.groupedProjects = this.projectList.reduce((acc, project) => {
+          const group = acc[project.idGroup] || [];
+          group.push(project);
+          acc[project.idGroup] = group;
+          return acc;
+        }, {});
+        this.groupedProjectList = Object.values(this.groupedProjects)[0];
         this.isLoading = false;
       });
     } else{
       this.isLoading = false;
     }
+  }
+  
+  getCompanyGroupList(){
+    if(this.idCompany != 0){
+      this.apolloService.query(companygroup_list, {idCompany: this.idCompany}).then((res) => {
+        const result = res.companygroup_list;
+        if(!result.error){
+          this.companyGroupList = result.data;
+          
+          this.selectedGroup = {
+            idGroup: this.companyGroupList[0].id,
+            txtName: this.companyGroupList[0].txtName,
+            projectCount: this.companyGroupList[0].projectcount
+          }
+        }
+      });
+    }
+  }
+  
+  filterPinProjectList = (project) =>{
+    return project.pinyn;
   }
   
   createProject(idProject){
@@ -95,11 +134,40 @@ export class ProjectsComponent implements OnInit {
     this.modalRef.result.then((result) => {
       // get projects
       this.getProjectList();
+      this.getCompanyGroupList();
     }, (reason) => {
       console.log(reason);
     })
   }
   
+  selectGroupProject(group){
+    this.selectedGroup = {
+      idGroup: group.id,
+      txtName: group.txtName,
+      projectCount: group.projectcount
+    }
+    
+    Object.keys(this.groupedProjects).map((key) => {
+      if(key == group.id){
+        this.groupedProjectList = this.groupedProjects[key];
+      }
+    })
+  }
+  
+  newGroup(){
+    this.newGroupModalRef = this.modalService.open(this.newGroupModal, {
+      modalDialogClass: 'modal-right',
+      size: '640',
+      centered: true,
+      backdrop: 'static'
+    })
+    
+    this.newGroupModalRef.result.then((result) => {
+      this.getCompanyGroupList();
+    }, (reason) => {
+      console.log(reason);
+    })
+  }
   
   goNext(){
     this.modalService.dismissAll();
