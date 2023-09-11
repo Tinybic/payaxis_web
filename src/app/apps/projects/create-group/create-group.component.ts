@@ -14,6 +14,7 @@ import { ToastrService } from "ngx-toastr";
 })
 export class CreateGroupComponent implements OnInit {
   @Input() modalRef;
+  @Input() group;
   
   newGroupError = '';
   idCompany=0;
@@ -29,6 +30,9 @@ export class CreateGroupComponent implements OnInit {
   
   ngOnInit() {
     this.idCompany = parseInt(localStorage.getItem('idcompany'));
+    if(this.group.id != ''){
+      this.newGroupFormValues['name'].setValue(this.group.txtName);
+    }
   }
   
   
@@ -60,7 +64,7 @@ export class CreateGroupComponent implements OnInit {
     }).then((res) => {
       let result = res.companygroup_new;
       if(!result.error){
-        this.modalRef.newGroupModalRef.close('save success');
+        this.modalRef.close('save success');
         this.toastrService.info('Save success', '');
       } else{
         this.toastrService.info(result.message, 'Error');

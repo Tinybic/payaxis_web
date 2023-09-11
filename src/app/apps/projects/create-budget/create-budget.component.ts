@@ -40,7 +40,7 @@ export class CreateBudgetComponent {
   
   
   ngOnInit(): void{
-    this.createProject = this.params.createProject;
+    this.createProject = this.params;
     this.getCategoryList();
   }
   
@@ -188,7 +188,7 @@ export class CreateBudgetComponent {
     }).then((res) => {
       let result = res.companyproject_new;
       if(!result.error){
-        this.modalRef.createBudgetModalRef.close('save success');
+        this.modalRef.close('save success');
         this.toastrService.success('Save success', '');
       } else{
         this.toastrService.error(result.message, 'Error');
@@ -200,7 +200,7 @@ export class CreateBudgetComponent {
   
   
   closeModal(){
-    this.modalRef.createBudgetModalRef.dismiss(this.createProject.categoryList);
+    this.modalRef.dismiss(this.createProject.categoryList);
   }
   
   

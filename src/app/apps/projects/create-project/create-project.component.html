@@ -167,16 +167,16 @@
 </div>
 
 
-<div class="modal-x" (click)="modalRef.modalRef.dismiss()">
+<div class="modal-x" (click)="modalRef.dismiss()">
     <i class="fe-x"></i>
 </div>
 
 
 <ng-template #createBudgetModal let-modal>
-    <app-create-budget [params]={createProject} [modalRef]={createBudgetModalRef}></app-create-budget>
+    <app-create-budget [params]="createProject" [modalRef]="createBudgetModalRef"></app-create-budget>
 </ng-template>
 
 
 <ng-template #newGroupModal let-modal>
-    <app-create-group [modalRef]={newGroupModalRef}></app-create-group>
+    <app-create-group [group]="createGroup" [modalRef]="newGroupModalRef"></app-create-group>
 </ng-template>

@@ -14,64 +14,79 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
-  styleUrls: ['./projects.component.scss'],
+  styleUrls: ['./projects.component.scss']
 })
 export class ProjectsComponent implements OnInit {
   @ViewChild('joinUsModal') joinUsModal: NgbModalRef;
   @ViewChild('createProjectModal') createProjectModal: NgbModalRef;
   @ViewChild('newGroupModal') newGroupModal: NgbModalRef;
+  @ViewChild('deleteModal') deleteModal: NgbModalRef;
   @ViewChild('selectColor') selectColor: NgbModalRef;
-
+  
   modalRef: any;
   isLoading = true;
   projectList: any[] = [];
-  groupedProjectList: any;
   companyGroupList = [];
   idProject = 0;
   idCompany = 0;
   keywords = '';
-  groupedProjects: any[] = [];
   selectedGroup = {
-    idGroup: 0,
-    txtName: '',
-    projectCount: 0,
+    id: 'all',
+    txtName: 'All',
+    checked: true,
+    projectcount: 0
+  }
+  editGroup = {
+    id: '',
+    txtName: ''
+  }
+  groupDelete = {
+    title: 'Delete Group',
+    message: 'All projects within this group will be moved to ungrouped category. Do you wish to proceed?',
+    btnDelete: 'Delete Group'
+  }
+  
+  createProjectWithGroup = {
+    id: '',
+    txtName: ''
   };
-
+  
   newGroupModalRef: NgbModalRef;
-
+  deleteModalRef: NgbModalRef;
+  
   constructor(
     private modalService: NgbModal,
     private router: Router,
     private eventService: EventService,
     private apolloService: ApolloService,
-    private toastrService: ToastrService,
-  ) {}
-
-  ngOnInit(): void {
+    private toastrService: ToastrService
+  ){}
+  
+  ngOnInit(): void{
     this.eventService.broadcast(EventType.CHANGE_PAGE_TITLE, {
       title: 'Projects',
       breadCrumbItems: [
         {
           label: 'Apps',
-          path: '.',
+          path: '.'
         },
         {
           label: 'Projects',
           path: '.',
-          active: true,
-        },
-      ],
+          active: true
+        }
+      ]
     });
-    if (localStorage.getItem('welcomeyn') === 'true') {
+    if(localStorage.getItem('welcomeyn') === 'true'){
       this.isLoading = false;
       setTimeout(() => {
         this.modalService.open(this.joinUsModal, {
           backdrop: 'static',
           centered: true,
-          windowClass: 'centerModal',
+          windowClass: 'centerModal'
         });
       }, 30);
-    } else {
+    } else{
       setTimeout(() => {
         this.idCompany = parseInt(localStorage.getItem('idcompany'));
         this.getProjectList();
@@ -79,97 +94,116 @@ export class ProjectsComponent implements OnInit {
       }, 500);
     }
   }
-
-  getProjectList() {
-    if (this.idCompany != 0) {
-      this.apolloService
-        .query(companyproject_list, { idCompany: this.idCompany })
-        .then((res) => {
-          const result = res.companyproject_list;
-          if (!result.error) {
-            this.projectList = result.data;
-          }
-
-          this.groupedProjects = this.projectList.reduce((acc, project) => {
-            const group = acc[project.idGroup] || [];
-            group.push(project);
-            acc[project.idGroup] = group;
-            return acc;
-          }, {});
-          this.groupedProjectList = Object.values(this.groupedProjects)[0];
-          this.isLoading = false;
-        });
-    } else {
+  
+  getProjectList(){
+    if(this.idCompany != 0){
+      this.apolloService.query(companyproject_list, {idCompany: this.idCompany}).then((res) => {
+        const result = res.companyproject_list;
+        if(!result.error){
+          this.projectList = result.data;
+        }
+        this.isLoading = false;
+      });
+    } else{
       this.isLoading = false;
     }
   }
-
-  getCompanyGroupList() {
-    if (this.idCompany != 0) {
-      this.apolloService
-        .query(companygroup_list, { idCompany: this.idCompany })
-        .then((res) => {
-          const result = res.companygroup_list;
-          if (!result.error) {
-            this.companyGroupList = result.data;
-
-            this.selectedGroup = {
-              idGroup: this.companyGroupList[0].id,
-              txtName: this.companyGroupList[0].txtName,
-              projectCount: this.companyGroupList[0].projectcount,
-            };
-          }
-        });
+  
+  getCompanyGroupList(){
+    if(this.idCompany != 0){
+      this.apolloService.query(companygroup_list, {idCompany: this.idCompany}).then((res) => {
+        const result = res.companygroup_list;
+        if(!result.error){
+          this.companyGroupList = result.data;
+          
+          this.companyGroupList.map(group => group.checked = false)
+          
+          this.companyGroupList.unshift({
+            id: 'all',
+            txtName: 'All',
+            checked: true,
+            projectCount: 0
+          })
+        }
+      });
     }
   }
-
+  
   filterPinProjectList = (project) => {
     return project.pinyn;
   };
-
-  createProject(idProject) {
+  
+  createProject(idProject, group){
     this.idProject = idProject;
+    if(group == ''){
+      this.createProjectWithGroup = {
+        id: '',
+        txtName: ''
+      }
+    }else {
+      this.createProjectWithGroup = {
+        id: group.id,
+        txtName: group.txtName
+      }
+    }
     this.modalRef = this.modalService.open(this.createProjectModal, {
       modalDialogClass: 'modal-right',
       size: '640',
       centered: true,
-      backdrop: 'static',
+      backdrop: 'static'
     });
-
-    this.modalRef.result.then(
-      (result) => {
-        // get projects
-        this.getProjectList();
-        this.getCompanyGroupList();
-      },
-      (reason) => {
-        console.log(reason);
-      }
-    );
-  }
-
-  selectGroupProject(group) {
-    this.selectedGroup = {
-      idGroup: group.id,
-      txtName: group.txtName,
-      projectCount: group.projectcount,
-    };
-
-    Object.keys(this.groupedProjects).map((key) => {
-      if (key == group.id) {
-        this.groupedProjectList = this.groupedProjects[key];
-      }
+    
+    this.modalRef.result.then((result) => {
+      // get projects
+      this.getProjectList();
+      this.getCompanyGroupList();
+    }, (reason) => {
+      console.log(reason);
     });
   }
-
-  newGroup() {
+  
+  selectGroupProject(group, i){
+    this.selectedGroup = group;
+    setTimeout(() => {
+      this.companyGroupList.map((item) => {
+        item.checked = item.id == group.id;
+      })
+    }, 200)
+  }
+  
+  filterGroupProjectList = (project) => {
+    return !project.pinyn &&
+      (this.selectedGroup.id == 'all' || project.idGroup == this.selectedGroup.id)
+      && (this.keywords == '' || project.includes(this.keywords))
+      ;
+  }
+  
+  getGroupedProjectCount(group){
+    let allGroupProjectsCount = 0;
+    this.projectList.map((project) => {
+      if(!project.pinyn && (group.id == 'all' || project.idGroup == group.id)){
+        allGroupProjectsCount++;
+      }
+    })
+    return allGroupProjectsCount;
+  }
+  
+  newGroup(group){
+    if(group == ''){
+      this.editGroup = {
+        id: '',
+        txtName: ''
+      };
+    }else {
+      this.editGroup = group;
+    }
     this.newGroupModalRef = this.modalService.open(this.newGroupModal, {
       modalDialogClass: 'modal-right',
       size: '640',
       centered: true,
-      backdrop: 'static',
+      backdrop: 'static'
     });
-
+    
     this.newGroupModalRef.result.then(
       (result) => {
         this.getCompanyGroupList();
@@ -179,46 +213,59 @@ export class ProjectsComponent implements OnInit {
       }
     );
   }
-
-  goNext() {
+  
+  deleteGroup(group, i){
+    this.deleteModalRef = this.modalService.open(this.deleteModal, {
+      size: '443',
+      centered: true
+    })
+    this.deleteModalRef.result.then(
+      (result) => {
+      
+      },
+      (reason) => {
+        console.log(reason);
+      }
+    );
+  }
+  
+  goNext(){
     this.modalService.dismissAll();
     this.router.navigate(['apps/projects/guid']);
   }
-
-
-  pinProject(item,pinyn){
-    this.apolloService
-    .mutate(companyproject_pin, {
+  
+  
+  pinProject(item, pinyn){
+    this.apolloService.mutate(companyproject_pin, {
       id: item.id,
       revision: item.revision,
       pinyn: pinyn
-    })
-    .then((res) => {
+    }).then((res) => {
       const result = res.companyproject_pin;
       let message = '';
-      if (!result.error) {
+      if(!result.error){
         message = 'Project pin have been updated';
-      } else {
+      } else{
         message = result.message;
       }
       this.getProjectList();
       this.toastrService.info(message, '');
     });
   }
-
-
-
+  
+  
   colorRef;
   colorSelectItem;
-  openSetColor(item) {
+  
+  openSetColor(item){
     this.colorRef = this.modalService.open(this.selectColor, {
       size: '280',
       centered: true,
-      backdrop: 'static',
+      backdrop: 'static'
     });
     this.colorSelectItem = item;
-
-
+    
+    
     this.colorRef.result.then(
       (result) => {
         // get projects
