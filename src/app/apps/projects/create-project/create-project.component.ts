@@ -17,6 +17,7 @@ import { companygroup_list } from "../../../core/gql/project";
 })
 export class CreateProjectComponent {
   @Input() idProject;
+  @Input() createProjectWithGroup;
   @Input() modalRef;
   
   @ViewChild('createBudgetModal') createBudgetModal: NgbModalRef;
@@ -49,6 +50,8 @@ export class CreateProjectComponent {
     projectCount: 0
   }
   createBudgetModalRef: any;
+  
+  createGroup = {id: '', txtName: ''}
   newGroupModalRef: NgbModalRef;
   
   template = [];
@@ -116,6 +119,14 @@ export class CreateProjectComponent {
   ngOnInit(): void{
     this.idCompany = parseInt(localStorage.getItem('idcompany'));
     this.getCompanyGroupList();
+    
+    if(this.createProjectWithGroup.id != ''){
+      this.selectedGroup = {
+        idGroup: this.createProjectWithGroup.id,
+        txtName: this.createProjectWithGroup.txtName,
+        projectCount: 0
+      }
+    }
   }
   
   
@@ -222,7 +233,7 @@ export class CreateProjectComponent {
       backdrop: 'static'
     })
     this.createBudgetModalRef.result.then((result) => {
-      this.modalRef.modalRef.close();
+      this.modalRef.close();
     }, (reason) => {
       this.createProject.categoryList = reason;
       console.log(reason);
@@ -233,6 +244,6 @@ export class CreateProjectComponent {
   
   closeModal(e){
     e.preventDefault();
-    this.modalRef.modalRef.dismiss();
+    this.modalRef.dismiss();
   }
 }

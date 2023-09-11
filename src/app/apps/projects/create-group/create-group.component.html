@@ -30,15 +30,15 @@
             </div>
             
             <div class="d-grid" style="width: calc(100% - 48px);position: fixed;bottom: 24px;right: 24px;">
-                <button class="btn btn-primary mb-1-1" type="submit" [disabled]="newGroupForm.invalid">Create
+                <button class="btn btn-primary mb-1-1" type="submit" [disabled]="newGroupForm.invalid">{{group.id == ''? 'Create' : 'Save'}}
                 </button>
-                <button class="btn btn-outline-primary" (click)="modalRef.newGroupModalRef.dismiss()">Cancel</button>
+                <button class="btn btn-outline-primary" (click)="modalRef.dismiss()">Cancel</button>
             </div>
         </form>
     </div>
 </div>
 
 
-<div class="modal-x" (click)="modalRef.newGroupModalRef.dismiss()">
+<div class="modal-x" (click)="modalRef.dismiss()">
     <i class="fe-x"></i>
 </div>

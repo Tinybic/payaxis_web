@@ -21,6 +21,38 @@
 
     .dropdown-item {
       padding: 12px;
+
+      &.selected {
+        background-color: #73B2FF33;
+        border-radius: 0;
+        &:nth-child(1){
+          border-top-left-radius: 8px;
+          border-top-right-radius: 8px;
+        }
+        &:last-child{
+          border-bottom-left-radius: 8px;
+          border-bottom-right-radius: 8px;
+        }
+      }
+
+      .groupDotsVertical {
+        > button {
+          display: none;
+        }
+
+        .dropdown-menu {
+          margin-left: 47px !important;
+          margin-top: -36px !important;
+        }
+      }
+
+      &:hover, &.selected {
+        .groupDotsVertical {
+          > button {
+            display: block;
+          }
+        }
+      }
     }
   }
 }
