@@ -107,6 +107,10 @@ export type Mutation = {
   companyproject_coloricon: Projectresult;
   /** deactivate companyproject */
   companyproject_deactivate: Projectbooleanresult;
+  /** delete companyproject */
+  companyproject_delete: Projectbooleanresult;
+  /** moveto companyproject to group */
+  companyproject_moveto: Projectresult;
   /** new companyproject */
   companyproject_new: Projectresult;
   /** pin companyproject */
@@ -350,6 +354,21 @@ export type MutationCompanyproject_ColoriconArgs = {
 /** structure to handle table sms */
 export type MutationCompanyproject_DeactivateArgs = {
   id: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationCompanyproject_DeleteArgs = {
+  id: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationCompanyproject_MovetoArgs = {
+  id: Scalars['Int']['input'];
+  idGroup: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
 };
 
@@ -900,6 +919,7 @@ export type Companypayment = {
 export type Companyproject = {
   __typename?: 'companyproject';
   active: Scalars['Boolean']['output'];
+  canDelete: Scalars['Boolean']['output'];
   color: Scalars['String']['output'];
   createdBy: Scalars['Int']['output'];
   createdDate: Scalars['String']['output'];
