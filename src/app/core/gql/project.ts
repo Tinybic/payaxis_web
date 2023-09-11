@@ -26,6 +26,7 @@ const companyproject_list = gql`
         pinyn
         status
         active
+        canDelete
       }
     }
   }
@@ -180,6 +181,41 @@ const companyproject_pin = gql`
   }
 `;
 
+const companyproject_moveto = gql`
+  mutation companyproject_moveto($id: Int!, $revision: Int!, $idGroup: Int!) {
+    companyproject_moveto(id: $id, revision: $revision, idGroup: $idGroup) {
+      error
+      code
+      message
+      data {
+        id
+        revision
+      }
+    }
+  }
+`;
+
+const companyproject_delete = gql`
+  mutation companyproject_delete($id: Int!, $revision: Int!) {
+    companyproject_delete(id: $id, revision: $revision) {
+      error
+      code
+      message
+      data
+    }
+  }
+`;
+const companyproject_deactivate = gql`
+  mutation companyproject_deactivate($id: Int!, $revision: Int!) {
+    companyproject_deactivate(id: $id, revision: $revision) {
+      error
+      code
+      message
+      data
+    }
+  }
+`;
+
 export {
   companyproject_list,
   groupproject_list,
@@ -188,4 +224,7 @@ export {
   companygroup_new,
   companyproject_coloricon,
   companyproject_pin,
+  companyproject_moveto,
+  companyproject_delete,
+  companyproject_deactivate,
 };

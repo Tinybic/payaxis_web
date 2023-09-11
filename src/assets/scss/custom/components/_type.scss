@@ -123,55 +123,60 @@ h6 {
 // my: margin-top and margin-bottom;
 
 .ms-1-1 {
-  margin-left: 0.5rem;
+  margin-left: 0.5rem !important;
 }
 
 .mb-1-1 {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.5rem !important;
 }
 
 .mt-1-1 {
-  margin-top: 0.5rem;
+  margin-top: 0.5rem !important;
 }
 
 .me-1-1 {
-  margin-right: 0.5rem;
+  margin-right: 0.5rem !important;
 }
 
 .me-2-1 {
-  margin-right: 1rem;
+  margin-right: 1rem !important;
 }
 
 .mb-2-1 {
-  margin-bottom: 1rem;
+  margin-bottom: 1rem !important;
 }
 
 .ms-2-1 {
-  margin-left: 1rem;
+  margin-left: 1rem !important;
 }
 
 .mt-2-1 {
-  margin-top: 1rem;
+  margin-top: 1rem !important;
 }
 
 .mx-2-1 {
-  margin: 0 1rem;
+  margin: 0 1rem !important;
 }
 
 .mt-3-1 {
-  margin-top: 1.5rem;
+  margin-top: 1.5rem !important;
 }
 
 .mt-4-1 {
-  margin-top: 2rem;
+  margin-top: 2rem !important;
 }
 
+.mt1-36 {
+  margin-top: -36px !important;
+}
+
+
 .mt-5-1 {
-  margin-top: 2.5rem;
+  margin-top: 2.5rem !important;
 }
 
 .mt-40 {
-  margin-top: 40px;
+  margin-top: 40px !important;
 }
 
 .py-1-1 {

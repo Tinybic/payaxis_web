@@ -13,53 +13,75 @@
 <div *ngIf="!isLoading && projectList.length > 0">
     <div class="row">
         <div class="col col-3" *ngFor="let project of (projectList | callback: filterPinProjectList); let i=index;">
-            <div class="card" style="background-color: {{project.color}}16;">
+            <div class="card" style="background-color: {{project.color}}26;">
                 <div class="card-body">
                     <div>
                         <span class="badge me-1 text-light btn-text-12"
-                              style="padding: 2px 6px;background-color: {{project.color}}33;color: {{project.color}} !important;">{{project.groupName}}</span>
+                            style="padding: 2px 6px;background-color: {{project.color}}26;color: {{project.color}} !important;">{{project.groupName}}</span>
                         <div class="float-end" ngbDropdown placement="bottom-end" style="padding-top: 4px;">
                             <a href="javascript:void(0);" class="arrow-none card-drop" ngbDropdownToggle>
                                 <i class="mdi mdi-dots-vertical text-blackprimary"></i>
                             </a>
                             <div ngbDropdownMenu style="padding: 4px 8px;">
                                 <a class="subtitle-2-500" href="javascript:void(0);" (click)="openSetColor(project)"
-                                   style="padding: 12px 4px;" ngbDropdownItem>
+                                    style="padding: 12px 4px;" ngbDropdownItem>
                                     <i class="fe-image me-1-1"></i>
                                     Set color & icon
                                 </a>
-                                <a class="subtitle-2-500" href="javascript:void(0);" style="padding: 12px 4px;"
-                                   ngbDropdownItem>
-                                    <i class="fe-folder me-1-1"></i>
-                                    Move to
+                                <a class="subtitle-2-500 dropdown-item1" href="javascript:void(0);"
+                                    style="padding: 12px 4px;">
+                                    <div ngbDropdown placement="end-top">
+                                        <div style="width: 100%; color: #202020;" ngbDropdownToggle>
+                                            <i class="fe-folder me-1-1"></i>
+                                            Move to
+                                        </div>
+                                        <div *ngIf="companyGroupList.length > 2" ngbDropdownMenu
+                                            aria-labelledby="dropdownBasic" class="ms-2-1 mt1-36"
+                                            style="padding: 3px 4px;">
+                                            <div *ngFor="let group of companyGroupList;">
+                                                <a href="javascript:void(0)"
+                                                    *ngIf="group.txtName != project.groupName &&  group.txtName != 'All' "
+                                                    (click)="projectMoveto(project.id,project.revision,group.id)"
+                                                    ngbDropdownItem>{{group.txtName}}
+                                                    ({{group.projectcount}})</a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </a>
                                 <a class="subtitle-2-500" href="javascript:void(0);" style="padding: 12px 4px;"
-                                   ngbDropdownItem>
+                                    ngbDropdownItem>
                                     <i class="fe-plus me-1-1"></i>
                                     Add a new Bill
                                 </a>
-                                <a class="subtitle-2-500" href="javascript:void(0);"
-                                   style="padding: 12px 4px;color: #EA001E;" ngbDropdownItem>
+                                <a *ngIf="project.canDelete" class="subtitle-2-500" href="javascript:void(0);"
+                                    style="padding: 12px 4px;color: #EA001E;"
+                                    (click)="openProjectDeleteModal(project.id,project.revision,1)" ngbDropdownItem>
                                     <i class="fe-trash-2 me-1-1"></i>
                                     Remove project
+                                </a>
+                                <a *ngIf="!project.canDelete" class="subtitle-2-500" href="javascript:void(0);"
+                                    style="padding: 12px 4px;color: #EA001E;"
+                                    (click)="openProjectDeleteModal(project.id,project.revision,0)" ngbDropdownItem>
+                                    <i class="fe-archive me-1-1"></i>
+                                    Archive project
                                 </a>
                             </div>
                         </div>
                         <div class="float-end me-1-1 pe-2" style="padding-top: 2px;">
                             <svg width="16" height="16" viewBox="0 0 16 16"
-                                 style="fill: {{project.color}}; cursor: pointer;" (click)="pinProject(project,false)"
-                                 xmlns="http://www.w3.org/2000/svg">
+                                style="fill: {{project.color}}; cursor: pointer;" (click)="pinProject(project,false)"
+                                xmlns="http://www.w3.org/2000/svg">
                                 <path
-                                        d="M10.73 1.59005C10.3983 1.25702 9.95994 1.05143 9.49181 1.00937C9.02368 0.967311 8.55569 1.09147 8.16997 1.36005C7.91573 1.53947 7.70686 1.77573 7.55997 2.05005L5.55997 5.81005L2.41997 7.05005C2.31972 7.09232 2.2307 7.15737 2.15997 7.24005C2.08673 7.32664 2.0353 7.42951 2.00997 7.54005C1.98526 7.64529 1.98526 7.75482 2.00997 7.86005C2.04112 7.96442 2.09587 8.06023 2.16997 8.14005L4.36997 10.3401L1.52997 13.2001C1.50933 13.3282 1.51939 13.4594 1.55933 13.5828C1.59926 13.7063 1.66794 13.8186 1.7597 13.9103C1.85147 14.0021 1.9637 14.0708 2.08718 14.1107C2.21066 14.1506 2.34185 14.1607 2.46997 14.1401L5.32997 11.2801L7.52997 13.4701C7.60617 13.549 7.70138 13.607 7.80645 13.6385C7.91151 13.67 8.02292 13.674 8.12997 13.6501C8.23743 13.6302 8.33759 13.5819 8.41997 13.5101C8.5055 13.4397 8.57389 13.3508 8.61997 13.2501L9.85997 10.1401L13.62 8.14005C13.8954 7.99032 14.1317 7.77794 14.31 7.52005C14.4825 7.26412 14.5984 6.97434 14.65 6.67005C14.6922 6.36057 14.6614 6.04548 14.56 5.75005C14.4678 5.45105 14.3029 5.1796 14.08 4.96005L10.73 1.59005ZM8.72997 2.68005C8.78062 2.58773 8.85263 2.50887 8.93997 2.45005C9.02408 2.39324 9.11969 2.35568 9.21997 2.34005C9.32179 2.31505 9.42815 2.31505 9.52997 2.34005C9.63023 2.36727 9.7205 2.42282 9.78997 2.50005L13.14 5.85005C13.2138 5.92229 13.2688 6.01158 13.3 6.11005C13.3196 6.20909 13.3196 6.31102 13.3 6.41005C13.2812 6.51419 13.2402 6.61308 13.18 6.70005C13.1205 6.78427 13.0416 6.85288 12.95 6.90005L8.99997 9.08005C8.86771 9.16022 8.76305 9.27883 8.69997 9.42005L7.69997 11.8101L3.79997 7.91005L6.23997 7.00005C6.38661 6.94572 6.5078 6.83878 6.57997 6.70005L8.72997 2.68005Z"/>
+                                    d="M10.73 1.59005C10.3983 1.25702 9.95994 1.05143 9.49181 1.00937C9.02368 0.967311 8.55569 1.09147 8.16997 1.36005C7.91573 1.53947 7.70686 1.77573 7.55997 2.05005L5.55997 5.81005L2.41997 7.05005C2.31972 7.09232 2.2307 7.15737 2.15997 7.24005C2.08673 7.32664 2.0353 7.42951 2.00997 7.54005C1.98526 7.64529 1.98526 7.75482 2.00997 7.86005C2.04112 7.96442 2.09587 8.06023 2.16997 8.14005L4.36997 10.3401L1.52997 13.2001C1.50933 13.3282 1.51939 13.4594 1.55933 13.5828C1.59926 13.7063 1.66794 13.8186 1.7597 13.9103C1.85147 14.0021 1.9637 14.0708 2.08718 14.1107C2.21066 14.1506 2.34185 14.1607 2.46997 14.1401L5.32997 11.2801L7.52997 13.4701C7.60617 13.549 7.70138 13.607 7.80645 13.6385C7.91151 13.67 8.02292 13.674 8.12997 13.6501C8.23743 13.6302 8.33759 13.5819 8.41997 13.5101C8.5055 13.4397 8.57389 13.3508 8.61997 13.2501L9.85997 10.1401L13.62 8.14005C13.8954 7.99032 14.1317 7.77794 14.31 7.52005C14.4825 7.26412 14.5984 6.97434 14.65 6.67005C14.6922 6.36057 14.6614 6.04548 14.56 5.75005C14.4678 5.45105 14.3029 5.1796 14.08 4.96005L10.73 1.59005ZM8.72997 2.68005C8.78062 2.58773 8.85263 2.50887 8.93997 2.45005C9.02408 2.39324 9.11969 2.35568 9.21997 2.34005C9.32179 2.31505 9.42815 2.31505 9.52997 2.34005C9.63023 2.36727 9.7205 2.42282 9.78997 2.50005L13.14 5.85005C13.2138 5.92229 13.2688 6.01158 13.3 6.11005C13.3196 6.20909 13.3196 6.31102 13.3 6.41005C13.2812 6.51419 13.2402 6.61308 13.18 6.70005C13.1205 6.78427 13.0416 6.85288 12.95 6.90005L8.99997 9.08005C8.86771 9.16022 8.76305 9.27883 8.69997 9.42005L7.69997 11.8101L3.79997 7.91005L6.23997 7.00005C6.38661 6.94572 6.5078 6.83878 6.57997 6.70005L8.72997 2.68005Z" />
                                 <path
-                                        d="M9.5202 1.81006L7.4002 3.22006L6.5002 5.57006L4.8502 7.07006L2.7002 7.58006L7.1702 12.0801L8.0002 12.6201L9.9902 9.32006L13.9502 6.77006L14.2502 5.80006L9.5202 1.81006Z"/>
+                                    d="M9.5202 1.81006L7.4002 3.22006L6.5002 5.57006L4.8502 7.07006L2.7002 7.58006L7.1702 12.0801L8.0002 12.6201L9.9902 9.32006L13.9502 6.77006L14.2502 5.80006L9.5202 1.81006Z" />
                             </svg>
                         </div>
                     </div>
                     <div class="d-flex mt-2-1">
                         <div class="me-1 flex-shrink-0">
                             <div class="me-1 flex-shrink-0"
-                                 style="width: 42px; height: 42px; line-height: 42px; text-align: center; border-radius: 8px; background-color: {{project.color}};">
+                                style="width: 42px; height: 42px; line-height: 42px; text-align: center; border-radius: 8px; background-color: {{project.color}};">
                                 <i class="{{project.icon}} font-26 text-white"></i>
                             </div>
                         </div>
@@ -79,7 +101,7 @@
                         </div>
                         <div class="progress progress-bar-alt-success progress-sm" style="margin-top: 10px;">
                             <div class="progress-bar bg-success wow" role="progressbar" aria-valuenow="20"
-                                 aria-valuemin="0" aria-valuemax="100" style="width: 20%; visibility: visible;">
+                                aria-valuemin="0" aria-valuemax="100" style="width: 20%; visibility: visible;">
                             </div><!-- /.progress-bar .progress-bar-success -->
                         </div><!-- /.progress .no-rounded -->
                     </div>
@@ -99,7 +121,7 @@
                             </div>
                             <div class="avatar-group-item position-relative" style="z-index: 2;">
                                 <div class="rounded-circle avatar-sm label-tips"
-                                     style="display: inline-flex;vertical-align: middle;justify-content: center;align-items: center;color: white;background-color: #2B2D30">
+                                    style="display: inline-flex;vertical-align: middle;justify-content: center;align-items: center;color: white;background-color: #2B2D30">
                                     +4
                                 </div>
                             </div>
@@ -107,7 +129,7 @@
                         <div class="d-flex align-items-center subtitle-2-500-12 text-optional">
                             Overdue
                             <span class="ms-1 text-center"
-                                  style="min-width: 20px;height: 20px;border-radius: 10px;background-color: #F87171;color: white;padding: 4px;">4</span>
+                                style="min-width: 20px;height: 20px;border-radius: 10px;background-color: #F87171;color: white;padding: 4px;">4</span>
                         </div>
                     </div>
                 </div>
@@ -117,12 +139,14 @@
     <div class="row mt-1-1">
         <div class="col-md-6">
             <div class="d-flex align-items-center">
-                <div style="font-size: 20px;font-weight: 600;line-height: 24px;letter-spacing: 0em;text-align: left;">{{getGroupedProjectCount(selectedGroup)}} {{selectedGroup.txtName}} {{selectedGroup.projectcount == 1 ? 'Project' : 'Projects'}}
+                <div style="font-size: 20px;font-weight: 600;line-height: 24px;letter-spacing: 0em;text-align: left;">
+                    {{getGroupedProjectCount(selectedGroup)}} {{selectedGroup.txtName}} {{selectedGroup.projectcount ==
+                    1 ? 'Project' : 'Projects'}}
                 </div>
-                
-                
+
+
                 <div class="filterDropdownMenu d-inline-block dropdown ms-3" ngbDropdown autoClose="outside"
-                     #filterDropdownMenu="ngbDropdown">
+                    #filterDropdownMenu="ngbDropdown">
                     <div class="dropdow-outline c-p search-text" ngbDropdownToggle>
                         <i class="fe-folder me-1-1"></i>
                         {{selectedGroup.txtName}}
@@ -130,34 +154,35 @@
                     </div>
                     <div id="groupDropdownMenu" class="dropdown-menu" ngbDropdownMenu>
                         <a class="subtitle-2-500 c-p d-flex align-items-center justify-content-between"
-                           [ngClass]="{'selected':selectedGroup.id == group.id}"
-                           *ngFor="let group of companyGroupList; let i=index;" (click)="selectGroupProject(group, i)"
-                           ngbDropdownItem>
+                            [ngClass]="{'selected':selectedGroup.id == group.id}"
+                            *ngFor="let group of companyGroupList; let i=index;" (click)="selectGroupProject(group, i)"
+                            ngbDropdownItem>
                             <div style="padding: 2px 0px;">
                                 <input id="commercialCheck_{{i}}" type="checkbox" class="form-check-input c-p"
-                                       [(ngModel)]="group.checked">
+                                    [(ngModel)]="group.checked">
                                 <label class="form-check-label ms-1-1 c-p" for="commercialCheck_{{i}}">
                                     {{group.txtName}} ({{ getGroupedProjectCount(group)}})
                                 </label>
                             </div>
                             <div *ngIf="group.id != 'all' && group.id != '0'" class="groupDotsVertical" ngbDropdown>
                                 <button class="btn btn-default float-end"
-                                        style="padding: 2px 3px;border-radius: 4px;background-color:#fff;"
-                                        ngbDropdownToggle>
+                                    style="padding: 2px 3px;border-radius: 4px;background-color:#fff;"
+                                    ngbDropdownToggle>
                                     <i class="fe-more-vertical- text-blackprimary"></i>
                                 </button>
                                 <div class="dropdown-menu" style="padding: 4px;" ngbDropdownMenu>
                                     <a class="subtitle-2-500 c-p d-flex align-items-center"
-                                       (click)="filterDropdownMenu.close();newGroup(group);" ngbDropdownItem>
+                                        (click)="filterDropdownMenu.close();newGroup(group);" ngbDropdownItem>
                                         <i class="fe-type me-1-1"></i>
                                         Rename
                                     </a>
-                                    <a class="subtitle-2-500 c-p d-flex align-items-center" (click)="filterDropdownMenu.close();createProject(0, group)" ngbDropdownItem>
+                                    <a class="subtitle-2-500 c-p d-flex align-items-center"
+                                        (click)="filterDropdownMenu.close();createProject(0, group)" ngbDropdownItem>
                                         <i class="fe-edit me-1-1"></i>
                                         Add a new Project
                                     </a>
                                     <a class="subtitle-2-500 c-p d-flex align-items-center" style="color: #EA001E;"
-                                       (click)="filterDropdownMenu.close();deleteGroup(group, i)" ngbDropdownItem>
+                                        (click)="filterDropdownMenu.close();deleteGroup(group, i)" ngbDropdownItem>
                                         <i class="fe-trash-2 me-1-1"></i>
                                         Delete Group
                                     </a>
@@ -171,12 +196,12 @@
         <div class="col-md-6 text-end">
             <div class="d-inline-block ms-1-1">
                 <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords"
-                       style="padding: 10px 16px 10px 36px;"/>
+                    style="padding: 10px 16px 10px 36px;" />
             </div>
             <!-- end search-->
             <button class="btn btn-outline-primary ms-2-1 btn-text-12" (click)="newGroup('')"
-                    style="margin-top: -1px;padding: 7px 16px;"><i class="fe-plus-square me-1-1"
-                                                                   style="vertical-align: bottom;"></i>New Group
+                style="margin-top: -1px;padding: 7px 16px;"><i class="fe-plus-square me-1-1"
+                    style="vertical-align: bottom;"></i>New Group
             </button>
         </div>
     </div>
@@ -186,47 +211,69 @@
                 <div class="card-body">
                     <div>
                         <span class="badge me-1 text-light btn-text-12"
-                              style="padding: 2px 6px;background-color: {{project.color}}33;color: {{project.color}} !important;">{{project.groupName}}</span>
+                            style="padding: 2px 6px;background-color: {{project.color}}26;color: {{project.color}} !important;">{{project.groupName}}</span>
                         <div class="float-end" ngbDropdown placement="bottom-end" style="padding-top: 4px;">
                             <a href="javascript:void(0);" class="arrow-none card-drop" ngbDropdownToggle>
                                 <i class="mdi mdi-dots-vertical text-blackprimary"></i>
                             </a>
                             <div ngbDropdownMenu style="padding: 4px 8px;">
                                 <a class="subtitle-2-500" href="javascript:void(0);" (click)="openSetColor(project)"
-                                   style="padding: 12px 4px;" ngbDropdownItem>
+                                    style="padding: 12px 4px;" ngbDropdownItem>
                                     <i class="fe-image me-1-1"></i>
                                     Set color & icon
                                 </a>
-                                <a class="subtitle-2-500" href="javascript:void(0);" style="padding: 12px 4px;"
-                                   ngbDropdownItem>
-                                    <i class="fe-folder me-1-1"></i>
-                                    Move to
+                                <a class="subtitle-2-500 dropdown-item1" href="javascript:void(0);"
+                                    style="padding: 12px 4px;">
+                                    <div ngbDropdown placement="end-top">
+                                        <div style="width: 100%; color: #202020;" ngbDropdownToggle>
+                                            <i class="fe-folder me-1-1"></i>
+                                            Move to
+                                        </div>
+                                        <div *ngIf="companyGroupList.length > 2" ngbDropdownMenu
+                                            aria-labelledby="dropdownBasic" class="ms-2-1 mt1-36"
+                                            style="padding: 3px 4px;">
+                                            <div *ngFor="let group of companyGroupList;">
+                                                <a href="javascript:void(0)"
+                                                    *ngIf="group.txtName != project.groupName &&  group.txtName != 'All'"
+                                                    (click)="projectMoveto(project.id,project.revision,group.id)"
+                                                    ngbDropdownItem>{{group.txtName}}
+                                                    ({{group.projectcount}})</a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </a>
                                 <a class="subtitle-2-500" href="javascript:void(0);" style="padding: 12px 4px;"
-                                   ngbDropdownItem>
+                                    ngbDropdownItem>
                                     <i class="fe-plus me-1-1"></i>
                                     Add a new Bill
                                 </a>
-                                <a class="subtitle-2-500" href="javascript:void(0);"
-                                   style="padding: 12px 4px;color: #EA001E;" ngbDropdownItem>
+                                <a *ngIf="project.canDelete" class="subtitle-2-500" href="javascript:void(0);"
+                                    style="padding: 12px 4px;color: #EA001E;"
+                                    (click)="openProjectDeleteModal(project.id,project.revision,1)" ngbDropdownItem>
                                     <i class="fe-trash-2 me-1-1"></i>
                                     Remove project
+                                </a>
+                                <a *ngIf="!project.canDelete" class="subtitle-2-500" href="javascript:void(0);"
+                                    style="padding: 12px 4px;color: #EA001E;"
+                                    (click)="openProjectDeleteModal(project.id,project.revision,0)" ngbDropdownItem>
+                                    <i class="fe-archive me-1-1"></i>
+                                    Archive project
                                 </a>
                             </div>
                         </div>
                         <div class="float-end me-1-1 pe-2" style="padding-top: 2px;">
                             <svg width="16" height="16" viewBox="0 0 16 16" style="fill: #D1D8E2; cursor: pointer;"
-                                 (click)="pinProject(project,true)" xmlns="http://www.w3.org/2000/svg">
+                                (click)="pinProject(project,true)" xmlns="http://www.w3.org/2000/svg">
                                 <path
-                                        d="M10.73 1.59005C10.3983 1.25702 9.95994 1.05143 9.49181 1.00937C9.02368 0.967311 8.55569 1.09147 8.16997 1.36005C7.91573 1.53947 7.70686 1.77573 7.55997 2.05005L5.55997 5.81005L2.41997 7.05005C2.31972 7.09232 2.2307 7.15737 2.15997 7.24005C2.08673 7.32664 2.0353 7.42951 2.00997 7.54005C1.98526 7.64529 1.98526 7.75482 2.00997 7.86005C2.04112 7.96442 2.09587 8.06023 2.16997 8.14005L4.36997 10.3401L1.52997 13.2001C1.50933 13.3282 1.51939 13.4594 1.55933 13.5828C1.59926 13.7063 1.66794 13.8186 1.7597 13.9103C1.85147 14.0021 1.9637 14.0708 2.08718 14.1107C2.21066 14.1506 2.34185 14.1607 2.46997 14.1401L5.32997 11.2801L7.52997 13.4701C7.60617 13.549 7.70138 13.607 7.80645 13.6385C7.91151 13.67 8.02292 13.674 8.12997 13.6501C8.23743 13.6302 8.33759 13.5819 8.41997 13.5101C8.5055 13.4397 8.57389 13.3508 8.61997 13.2501L9.85997 10.1401L13.62 8.14005C13.8954 7.99032 14.1317 7.77794 14.31 7.52005C14.4825 7.26412 14.5984 6.97434 14.65 6.67005C14.6922 6.36057 14.6614 6.04548 14.56 5.75005C14.4678 5.45105 14.3029 5.1796 14.08 4.96005L10.73 1.59005ZM8.72997 2.68005C8.78062 2.58773 8.85263 2.50887 8.93997 2.45005C9.02408 2.39324 9.11969 2.35568 9.21997 2.34005C9.32179 2.31505 9.42815 2.31505 9.52997 2.34005C9.63023 2.36727 9.7205 2.42282 9.78997 2.50005L13.14 5.85005C13.2138 5.92229 13.2688 6.01158 13.3 6.11005C13.3196 6.20909 13.3196 6.31102 13.3 6.41005C13.2812 6.51419 13.2402 6.61308 13.18 6.70005C13.1205 6.78427 13.0416 6.85288 12.95 6.90005L8.99997 9.08005C8.86771 9.16022 8.76305 9.27883 8.69997 9.42005L7.69997 11.8101L3.79997 7.91005L6.23997 7.00005C6.38661 6.94572 6.5078 6.83878 6.57997 6.70005L8.72997 2.68005Z"/>
+                                    d="M10.73 1.59005C10.3983 1.25702 9.95994 1.05143 9.49181 1.00937C9.02368 0.967311 8.55569 1.09147 8.16997 1.36005C7.91573 1.53947 7.70686 1.77573 7.55997 2.05005L5.55997 5.81005L2.41997 7.05005C2.31972 7.09232 2.2307 7.15737 2.15997 7.24005C2.08673 7.32664 2.0353 7.42951 2.00997 7.54005C1.98526 7.64529 1.98526 7.75482 2.00997 7.86005C2.04112 7.96442 2.09587 8.06023 2.16997 8.14005L4.36997 10.3401L1.52997 13.2001C1.50933 13.3282 1.51939 13.4594 1.55933 13.5828C1.59926 13.7063 1.66794 13.8186 1.7597 13.9103C1.85147 14.0021 1.9637 14.0708 2.08718 14.1107C2.21066 14.1506 2.34185 14.1607 2.46997 14.1401L5.32997 11.2801L7.52997 13.4701C7.60617 13.549 7.70138 13.607 7.80645 13.6385C7.91151 13.67 8.02292 13.674 8.12997 13.6501C8.23743 13.6302 8.33759 13.5819 8.41997 13.5101C8.5055 13.4397 8.57389 13.3508 8.61997 13.2501L9.85997 10.1401L13.62 8.14005C13.8954 7.99032 14.1317 7.77794 14.31 7.52005C14.4825 7.26412 14.5984 6.97434 14.65 6.67005C14.6922 6.36057 14.6614 6.04548 14.56 5.75005C14.4678 5.45105 14.3029 5.1796 14.08 4.96005L10.73 1.59005ZM8.72997 2.68005C8.78062 2.58773 8.85263 2.50887 8.93997 2.45005C9.02408 2.39324 9.11969 2.35568 9.21997 2.34005C9.32179 2.31505 9.42815 2.31505 9.52997 2.34005C9.63023 2.36727 9.7205 2.42282 9.78997 2.50005L13.14 5.85005C13.2138 5.92229 13.2688 6.01158 13.3 6.11005C13.3196 6.20909 13.3196 6.31102 13.3 6.41005C13.2812 6.51419 13.2402 6.61308 13.18 6.70005C13.1205 6.78427 13.0416 6.85288 12.95 6.90005L8.99997 9.08005C8.86771 9.16022 8.76305 9.27883 8.69997 9.42005L7.69997 11.8101L3.79997 7.91005L6.23997 7.00005C6.38661 6.94572 6.5078 6.83878 6.57997 6.70005L8.72997 2.68005Z" />
                                 <path
-                                        d="M9.5202 1.81006L7.4002 3.22006L6.5002 5.57006L4.8502 7.07006L2.7002 7.58006L7.1702 12.0801L8.0002 12.6201L9.9902 9.32006L13.9502 6.77006L14.2502 5.80006L9.5202 1.81006Z"/>
+                                    d="M9.5202 1.81006L7.4002 3.22006L6.5002 5.57006L4.8502 7.07006L2.7002 7.58006L7.1702 12.0801L8.0002 12.6201L9.9902 9.32006L13.9502 6.77006L14.2502 5.80006L9.5202 1.81006Z" />
                             </svg>
                         </div>
                     </div>
                     <div class="d-flex mt-2-1">
                         <div class="me-1 flex-shrink-0"
-                             style="width: 42px; height: 42px; line-height: 42px; text-align: center; border-radius: 8px; background-color: {{project.color}}33;">
+                            style="width: 42px; height: 42px; line-height: 42px; text-align: center; border-radius: 8px; background-color: {{project.color}}33;">
                             <i class="{{project.icon}} font-26 " style="color: {{project.color}}"></i>
                         </div>
                         <div class="flex-grow-1 overflow-hidden headline-24">
@@ -245,7 +292,7 @@
                         </div>
                         <div class="progress progress-bar-alt-success progress-sm" style="margin-top: 10px;">
                             <div class="progress-bar bg-success wow" role="progressbar" aria-valuenow="20"
-                                 aria-valuemin="0" aria-valuemax="100" style="width: 20%; visibility: visible;">
+                                aria-valuemin="0" aria-valuemax="100" style="width: 20%; visibility: visible;">
                             </div><!-- /.progress-bar .progress-bar-success -->
                         </div><!-- /.progress .no-rounded -->
                     </div>
@@ -265,7 +312,7 @@
                             </div>
                             <div class="avatar-group-item position-relative" style="z-index: 2;">
                                 <div class="rounded-circle avatar-sm label-tips"
-                                     style="display: inline-flex;vertical-align: middle;justify-content: center;align-items: center;color: white;background-color: #2B2D30">
+                                    style="display: inline-flex;vertical-align: middle;justify-content: center;align-items: center;color: white;background-color: #2B2D30">
                                     +4
                                 </div>
                             </div>
@@ -274,7 +321,7 @@
                             <!--                            {{project.status}}-->
                             Overdue
                             <span class="ms-1 text-center"
-                                  style="min-width: 20px;height: 20px;border-radius: 10px;background-color: #F87171;color: white;padding: 4px;">4</span>
+                                style="min-width: 20px;height: 20px;border-radius: 10px;background-color: #F87171;color: white;padding: 4px;">4</span>
                         </div>
                     </div>
                 </div>
@@ -313,9 +360,9 @@
         </div>
     </ng-template>
 </div>
-
 <ng-template #createProjectModal let-modal>
-    <app-create-project [idProject]="idProject" [createProjectWithGroup]="createProjectWithGroup" [modalRef]="modalRef"></app-create-project>
+    <app-create-project [idProject]="idProject" [createProjectWithGroup]="createProjectWithGroup"
+        [modalRef]="modalRef"></app-create-project>
 </ng-template>
 
 <ng-template #newGroupModal let-modal>
@@ -324,9 +371,36 @@
 
 <ng-template #selectColor let-modal>
     <app-set-color [selectColor]="colorSelectItem.color" [selectIcon]="colorSelectItem.icon" [id]="colorSelectItem.id"
-                   [revision]="colorSelectItem.revision" [modalRef]="colorRef"></app-set-color>
+        [revision]="colorSelectItem.revision" [modalRef]="colorRef"></app-set-color>
 </ng-template>
 
 <ng-template #deleteModal let-modal>
-    <app-delete-modal [title]="groupDelete.title" [message]="groupDelete.message" [btnDelete]="groupDelete.btnDelete" [modalRef]="deleteModalRef"></app-delete-modal>
+    <app-delete-modal [title]="groupDelete.title" [message]="groupDelete.message" [btnDelete]="groupDelete.btnDelete"
+        [modalRef]="deleteModalRef"></app-delete-modal>
+</ng-template>
+
+<ng-template #deleteProjectModal let-modal>
+    <input type="text" style="display: none;" />
+    <div class="delete-modal-container">
+        <div class="row">
+            <div class="col-md-10">
+                <div class="headline-24 text-start">{{projectDeleteText.title}}</div>
+            </div>
+            <div class="col-md-2 text-end text-black">
+                <i class="fe-x cursor-pointer bold-600" (click)="modal.dismiss()"></i>
+            </div>
+        </div>
+        <div class="delete-alert-content text-start">
+            {{projectDeleteText.message}}
+        </div>
+        <div class="d-flex justify-content-between mt-3">
+            <div class="delete-cancel-button mt-0 line-40 cursor-pointer" (click)="modal.dismiss()">
+                Cancel
+            </div>
+            <div>
+                <button class="btn btn-primary ms-2-1"
+                    (click)="projectDelete()">{{projectDeleteText.btnDelete}}</button>
+            </div>
+        </div>
+    </div>
 </ng-template>
