@@ -6,7 +6,7 @@ import { ProjectsComponent } from './projects.component';
 import {
   NgbAlertModule,
   NgbTooltipModule,
-  NgbProgressbarModule, NgbDropdownModule
+  NgbProgressbarModule, NgbDropdownModule, NgbNavModule
 } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProjectsGuidComponent } from './projects-guid/projects-guid.component';
@@ -18,6 +18,7 @@ import { UiModule } from "../../shared/ui/ui.module";
 import { CreateGroupComponent } from './create-group/create-group.component';
 import { SetColorComponent } from './set-color/set-color.component';
 import { DeleteModalComponent } from "../../shared/delete-modal/delete-modal.component";
+import { ProjectDetailComponent } from './project-detail/project-detail.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { DeleteModalComponent } from "../../shared/delete-modal/delete-modal.com
     CreateBudgetComponent,
     CreateGroupComponent,
     SetColorComponent,
-    DeleteModalComponent
+    DeleteModalComponent,
+    ProjectDetailComponent
   ],
   imports: [
     CommonModule,
@@ -42,7 +44,8 @@ import { DeleteModalComponent } from "../../shared/delete-modal/delete-modal.com
     NgxMaskDirective,
     NgxMaskPipe,
     SharedModule,
-    UiModule
+    UiModule,
+    NgbNavModule
   ],
   providers:[
     provideNgxMask()
