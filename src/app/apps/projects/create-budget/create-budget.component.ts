@@ -25,7 +25,7 @@ export class CreateBudgetComponent {
   ){}
   
   error: string = '';
-  totalBudget = 0;
+  allocatedBudget = 0;
   idCompany = 0;
   categoryList = [];
   editingCategory = 0;
@@ -33,14 +33,15 @@ export class CreateBudgetComponent {
     name: '',
     address: '',
     idGroup: 0,
-    budget: '',
-    sqft: '',
+    budget: 0,
+    sqft: 0,
     categoryList: []
   }
   
   
   ngOnInit(): void{
     this.createProject = this.params;
+    this.budgetChange();
     this.getCategoryList();
   }
   
@@ -103,7 +104,7 @@ export class CreateBudgetComponent {
     })
     this.createProject.categoryList.splice(i, 1);
     this.cleanCategoryList();
-    this.budgetAmountChange('');
+    this.budgetChange();
   }
   
   addCategory(){
@@ -130,24 +131,19 @@ export class CreateBudgetComponent {
     this.editingCategory = i;
   }
   
-  
-  budgetPercentageChange(budget){
+  budgetChange(){
     let total = 0;
-    budget.budgetAmount = parseFloat(this.createProject.budget) * budget.budgetPercentage / 100
     this.createProject.categoryList.map(item => {
-      total += item.budgetAmount;
+      total += item.budgetAmount * item.budgetPercentage / 100;
     })
-    this.totalBudget = total;
+    this.allocatedBudget = total;
   }
   
-  budgetAmountChange(budget){
-    let total = 0;
-    budget.budgetPercentage = budget.budgetAmount / parseFloat(this.createProject.budget) * 100;
-    this.createProject.categoryList.map(item => {
-      total += item.budgetAmount;
-    })
-    this.totalBudget = total;
+  getProgressBarWidth(){
+    let percent = this.allocatedBudget / this.createProject.budget * 100;
+    return percent + '%';
   }
+  
   
   submitProject(){
     this.cleanCategoryList();
@@ -157,15 +153,15 @@ export class CreateBudgetComponent {
       return;
     }
     
-    if(this.createProject.budget == ''){
-      this.toastrService.warning('Project Budget is required, please back to enter the Project Budget.');
-      return;
-    }
-    
-    if(this.createProject.sqft == ''){
-      this.toastrService.warning('Project Size, sqft is required, please back to enter the Project Size, sqft.');
-      return;
-    }
+    // if(this.createProject.budget == ''){
+    //   this.toastrService.warning('Project Budget is required, please back to enter the Project Budget.');
+    //   return;
+    // }
+    //
+    // if(this.createProject.sqft == ''){
+    //   this.toastrService.warning('Project Size, sqft is required, please back to enter the Project Size, sqft.');
+    //   return;
+    // }
     
     let list = [];
     this.createProject.categoryList.map(item => {
