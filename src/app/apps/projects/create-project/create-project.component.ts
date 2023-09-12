@@ -102,12 +102,10 @@ export class CreateProjectComponent {
   createProjectStep2Form: UntypedFormGroup = this.fb.group({
     budget: ['',
       [
-        Validators.required,
         Validators.pattern('\\$?(([1-9](\\d*|\\d{0,2}(,\\d{3})*))|0)(\\.\\d{1,2})?')
       ]],
     sqft: ['',
       [
-        Validators.required,
         Validators.pattern('(([1-9](\\d*|\\d{0,2}(,\\d{3})*))|0)(\\.\\d{1,5})?')
       ]],
     template: ['',
@@ -208,13 +206,15 @@ export class CreateProjectComponent {
     }
     
     if(this.formStep2Values['budget'].value == ''){
-      this.toastrService.warning('Project Budget is required, please enter the Project Budget.');
-      return;
+      this.formStep2Values['budget'].setValue(0);
+      // this.toastrService.warning('Project Budget is required, please enter the Project Budget.');
+      // return;
     }
     
     if(this.formStep2Values['sqft'].value == ''){
-      this.toastrService.warning('Project Size, sqft is required, please enter the Project Size, sqft.');
-      return;
+      this.formStep2Values['sqft'].setValue(0);
+      // this.toastrService.warning('Project Size, sqft is required, please enter the Project Size, sqft.');
+      // return;
     }
     
     this.createProject = {

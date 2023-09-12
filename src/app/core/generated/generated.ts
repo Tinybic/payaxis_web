@@ -115,8 +115,10 @@ export type Mutation = {
   companyproject_new: Projectresult;
   /** pin companyproject */
   companyproject_pin: Projectresult;
-  /** update companyproject */
-  companyproject_update: Projectresult;
+  /** update companyproject budget */
+  companyproject_updatebudget: Projectresult;
+  /** update companyproject detail */
+  companyproject_updatedetail: Projectresult;
   /** to activate the user profile */
   profile_2fa?: Maybe<Scalars['Boolean']['output']>;
   /** to activate the user profile */
@@ -394,11 +396,19 @@ export type MutationCompanyproject_PinArgs = {
 
 
 /** structure to handle table sms */
-export type MutationCompanyproject_UpdateArgs = {
+export type MutationCompanyproject_UpdatebudgetArgs = {
   budgetAllocation?: InputMaybe<Array<Allocatebudget>>;
   id: Scalars['Int']['input'];
-  projectAddress: Scalars['projectAddress_String_NotNull_maxLength_255']['input'];
   projectBudget: Scalars['Float']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationCompanyproject_UpdatedetailArgs = {
+  id: Scalars['Int']['input'];
+  idGroup: Scalars['Int']['input'];
+  projectAddress: Scalars['projectAddress_String_NotNull_maxLength_255']['input'];
   projectName: Scalars['projectName_String_NotNull_maxLength_128']['input'];
   projectSqft: Scalars['Float']['input'];
   revision: Scalars['Int']['input'];

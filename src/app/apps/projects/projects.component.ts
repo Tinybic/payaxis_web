@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { TypedDocumentNode } from "@apollo/client";
 // constants
 import { EventType } from 'src/app/core/constants/events';
 
@@ -9,11 +10,13 @@ import { EventService } from 'src/app/core/service/event.service';
 
 import {
   companyproject_list,
-  companygroup_list,
   companyproject_pin,
   companyproject_moveto,
   companyproject_delete,
   companyproject_deactivate,
+  companygroup_list,
+  companygroup_update,
+  companygroup_deactivate,
 } from '../../core/gql/project';
 import { ApolloService } from '../../core/service/apollo.service';
 import { ToastrService } from 'ngx-toastr';
@@ -48,13 +51,17 @@ export class ProjectsComponent implements OnInit {
     id: '',
     txtName: '',
   };
-  groupDelete = {
-    title: 'Delete Group',
-    message:
-      'All projects within this group will be moved to ungrouped category. Do you wish to proceed?',
-    btnDelete: 'Delete Group',
-  };
-
+  
+  
+  deleteObj={
+    title: '',
+    message: '',
+    btnDelete: '',
+    serviceName: {},
+    serviceNameStr: '',
+    params: {}
+  }
+  
   createProjectWithGroup = {
     id: '',
     txtName: '',
@@ -99,7 +106,7 @@ export class ProjectsComponent implements OnInit {
       setTimeout(() => {
         this.idCompany = parseInt(localStorage.getItem('idcompany'));
         this.getProjectList();
-        this.getCompanyGroupList();
+        this.getCompanyGroupList('');
       }, 500);
     }
   }
@@ -120,7 +127,7 @@ export class ProjectsComponent implements OnInit {
     }
   }
 
-  getCompanyGroupList() {
+  getCompanyGroupList(i) {
     if (this.idCompany != 0) {
       this.apolloService
         .query(companygroup_list, { idCompany: this.idCompany })
@@ -128,14 +135,19 @@ export class ProjectsComponent implements OnInit {
           const result = res.companygroup_list;
           if (!result.error) {
             this.companyGroupList = result.data;
-
-            this.companyGroupList.map((group) => (group.checked = false));
-
+  
             this.companyGroupList.unshift({
               id: 'all',
               txtName: 'All',
-              checked: true,
+              checked: i==='',
               projectCount: 0,
+            });
+
+            this.companyGroupList.map((group, index) => {
+              group.checked = i===index;
+              if(i===index){
+                this.selectedGroup = group;
+              }
             });
           }
         });
@@ -170,7 +182,7 @@ export class ProjectsComponent implements OnInit {
       (result) => {
         // get projects
         this.getProjectList();
-        this.getCompanyGroupList();
+        this.getCompanyGroupList('');
       },
       (reason) => {
         console.log(reason);
@@ -178,7 +190,7 @@ export class ProjectsComponent implements OnInit {
     );
   }
 
-  selectGroupProject(group, i) {
+  selectGroupProject(group) {
     this.selectedGroup = group;
     setTimeout(() => {
       this.companyGroupList.map((item) => {
@@ -209,7 +221,7 @@ export class ProjectsComponent implements OnInit {
     return allGroupProjectsCount;
   }
 
-  newGroup(group) {
+  newGroup(group, i) {
     if (group == '') {
       this.editGroup = {
         id: '',
@@ -227,7 +239,7 @@ export class ProjectsComponent implements OnInit {
 
     this.newGroupModalRef.result.then(
       (result) => {
-        this.getCompanyGroupList();
+        this.getCompanyGroupList(i);
       },
       (reason) => {
         console.log(reason);
@@ -236,12 +248,28 @@ export class ProjectsComponent implements OnInit {
   }
 
   deleteGroup(group, i) {
+    this.deleteObj={
+      title: 'Delete Group',
+      message:
+        'All projects within this group will be moved to ungrouped category. Do you wish to proceed?',
+      btnDelete: 'Delete Group',
+      serviceName: companygroup_deactivate,
+      serviceNameStr: 'companygroup_deactivate',
+      params: {
+        idCompany_group: group.id,
+        revision: group.revision,
+      }
+    }
+    
     this.deleteModalRef = this.modalService.open(this.deleteModal, {
       size: '443',
       centered: true,
     });
     this.deleteModalRef.result.then(
-      (result) => {},
+      (result) => {
+        this.companyGroupList.splice(i, 1);
+        this.selectGroupProject(this.companyGroupList[0]);
+      },
       (reason) => {
         console.log(reason);
       }
@@ -308,7 +336,7 @@ export class ProjectsComponent implements OnInit {
         if (!result.error) {
           message = 'Project group have been updated';
           this.getProjectList();
-          this.getCompanyGroupList();
+          this.getCompanyGroupList('');
         } else {
           message = result.message;
         }

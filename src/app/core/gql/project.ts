@@ -31,48 +31,6 @@ const companyproject_list = gql`
     }
   }
 `;
-const groupproject_list = gql`
-  query groupproject_list($idCompany: Int!) {
-    groupproject_list(idCompany: $idCompany) {
-      error
-      code
-      message
-      data {
-        id
-        revision
-        createdBy
-        createdDate
-        modifiedBy
-        modifiedDate
-        idCompany
-        txtName
-        active
-        projectcount
-        projectlist {
-          id
-          revision
-          createdBy
-          createdDate
-          modifiedBy
-          modifiedDate
-          idCompany
-          projectName
-          projectAddress
-          projectBudget
-          projectSqft
-          idGroup
-          groupName
-          idCompany_payment
-          color
-          icon
-          pinyn
-          status
-          active
-        }
-      }
-    }
-  }
-`;
 
 const companyproject_new = gql`
   mutation companyproject_new(
@@ -104,34 +62,47 @@ const companyproject_new = gql`
   }
 `;
 
-const companygroup_list = gql`
-  query companygroup_list($idCompany: Int!) {
-    companygroup_list(idCompany: $idCompany) {
+const companyproject_updatedetail = gql`
+  mutation companyproject_updatedetail(
+    $id: Int!
+    $revision: Int!
+    $projectName: projectName_String_NotNull_maxLength_128!
+    $projectAddress: projectAddress_String_NotNull_maxLength_255!
+    $idGroup: Int!
+    $projectSqft: Float!
+  ) {
+    companyproject_updatedetail(
+      id: $id
+      revision: $revision
+      projectName: $projectName
+      projectAddress: $projectAddress
+      idGroup: $idGroup
+      projectSqft: $projectSqft
+    ) {
       error
       code
       message
       data {
         id
         revision
-        createdBy
-        createdDate
-        modifiedBy
-        modifiedDate
-        idCompany
-        txtName
-        active
-        projectcount
       }
     }
   }
 `;
 
-const companygroup_new = gql`
-  mutation companygroup_new(
-    $idCompany: Int!
-    $txtName: txtName_String_NotNull_maxLength_128!
+const companyproject_updatebudget = gql`
+  mutation companyproject_updatebudget (
+    $id: Int!
+    $revision: Int!
+    $projectBudget: Float!
+    $budgetAllocation: [allocatebudget!]
   ) {
-    companygroup_new(idCompany: $idCompany, txtName: $txtName) {
+    companyproject_updatebudget(
+      id: $id
+      revision: $revision
+      projectBudget: $projectBudget
+      budgetAllocation: $budgetAllocation
+    ) {
       error
       code
       message
@@ -205,6 +176,7 @@ const companyproject_delete = gql`
     }
   }
 `;
+
 const companyproject_deactivate = gql`
   mutation companyproject_deactivate($id: Int!, $revision: Int!) {
     companyproject_deactivate(id: $id, revision: $revision) {
@@ -216,15 +188,87 @@ const companyproject_deactivate = gql`
   }
 `;
 
+
+const companygroup_list = gql`
+  query companygroup_list($idCompany: Int!) {
+    companygroup_list(idCompany: $idCompany) {
+      error
+      code
+      message
+      data {
+        id
+        revision
+        createdBy
+        createdDate
+        modifiedBy
+        modifiedDate
+        idCompany
+        txtName
+        active
+        projectcount
+      }
+    }
+  }
+`;
+
+const companygroup_new = gql`
+  mutation companygroup_new(
+    $idCompany: Int!
+    $txtName: txtName_String_NotNull_maxLength_128!
+  ) {
+    companygroup_new(idCompany: $idCompany, txtName: $txtName) {
+      error
+      code
+      message
+      data {
+        id
+        revision
+      }
+    }
+  }
+`;
+
+const companygroup_update = gql`
+  mutation companygroup_update(
+    $id: Int!
+    $revision: Int!
+    $txtName: txtName_String_NotNull_maxLength_128!
+  ) {
+    companygroup_update(id: $id, revision: $revision, txtName: $txtName) {
+      error
+      code
+      message
+      data {
+        id
+        revision
+      }
+    }
+  }
+`;
+
+const companygroup_deactivate = gql`
+  mutation companygroup_deactivate($idCompany_group : Int!, $revision: Int!) {
+    companygroup_deactivate(idCompany_group : $idCompany_group , revision: $revision) {
+      error
+      code
+      message
+      data
+    }
+  }
+`;
+
 export {
   companyproject_list,
-  groupproject_list,
   companyproject_new,
-  companygroup_list,
-  companygroup_new,
+  companyproject_updatedetail,
+  companyproject_updatebudget,
   companyproject_coloricon,
   companyproject_pin,
   companyproject_moveto,
   companyproject_delete,
   companyproject_deactivate,
+  companygroup_list,
+  companygroup_new,
+  companygroup_update,
+  companygroup_deactivate,
 };

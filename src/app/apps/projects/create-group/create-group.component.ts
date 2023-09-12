@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { companygroup_new } from "../../../core/gql/project";
+import { companygroup_new, companygroup_update } from "../../../core/gql/project";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { Router } from "@angular/router";
 import { EventService } from "../../../core/service/event.service";
@@ -58,11 +58,24 @@ export class CreateGroupComponent implements OnInit {
       this.toastrService.warning('Name is required, please enter the Name.');
       return;
     }
-    this.apolloService.mutate(companygroup_new, {
-      idCompany: this.idCompany,
-      txtName: this.newGroupFormValues['name'].value
-    }).then((res) => {
-      let result = res.companygroup_new;
+    let serviceName;
+    let params;
+    if(this.group.id == ''){
+      serviceName = companygroup_new;
+      params = {
+        idCompany: this.idCompany,
+        txtName: this.newGroupFormValues['name'].value
+      }
+    }else {
+      serviceName = companygroup_update;
+      params = {
+        id: this.group.id,
+        revision: this.group.revision,
+        txtName: this.newGroupFormValues['name'].value
+      }
+    }
+    this.apolloService.mutate(serviceName, params).then((res) => {
+      let result: any = Object.values(res)[0];
       if(!result.error){
         this.modalRef.close('save success');
         this.toastrService.info('Save success', '');
