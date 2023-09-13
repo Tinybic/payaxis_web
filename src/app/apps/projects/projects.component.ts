@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
-import { TypedDocumentNode } from "@apollo/client";
+import { TypedDocumentNode } from '@apollo/client';
 // constants
 import { EventType } from 'src/app/core/constants/events';
 
@@ -16,7 +16,7 @@ import {
   companyproject_deactivate,
   companygroup_list,
   companygroup_update,
-  companygroup_deactivate
+  companygroup_deactivate,
 } from '../../core/gql/project';
 import { ApolloService } from '../../core/service/apollo.service';
 import { ToastrService } from 'ngx-toastr';
@@ -24,7 +24,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
-  styleUrls: ['./projects.component.scss']
+  styleUrls: ['./projects.component.scss'],
 })
 export class ProjectsComponent implements OnInit {
   @ViewChild('joinUsModal') joinUsModal: NgbModalRef;
@@ -33,7 +33,7 @@ export class ProjectsComponent implements OnInit {
   @ViewChild('deleteModal') deleteModal: NgbModalRef;
   @ViewChild('selectColor') selectColor: NgbModalRef;
   @ViewChild('deleteProjectModal') deleteProjectModal: NgbModalRef;
-  
+
   modalRef: any;
   isLoading = true;
   projectList: any[] = [];
@@ -45,64 +45,63 @@ export class ProjectsComponent implements OnInit {
     id: 'all',
     txtName: 'All',
     checked: true,
-    projectcount: 0
+    projectcount: 0,
   };
   editGroup = {
     id: '',
-    txtName: ''
+    txtName: '',
   };
-  
-  
+
   deleteObj = {
     title: '',
     message: '',
     btnDelete: '',
     serviceName: {},
     serviceNameStr: '',
-    params: {}
-  }
-  
+    params: {},
+  };
+
   createProjectWithGroup = {
     id: '',
-    txtName: ''
+    txtName: '',
   };
-  
+
   newGroupModalRef: NgbModalRef;
   deleteModalRef: NgbModalRef;
-  
+
   constructor(
     private modalService: NgbModal,
     private router: Router,
     private eventService: EventService,
     private apolloService: ApolloService,
     private toastrService: ToastrService
-  ){}
-  
-  ngOnInit(): void{
+  ) {}
+
+  ngOnInit(): void {
     this.eventService.broadcast(EventType.CHANGE_PAGE_TITLE, {
       title: 'Projects',
       breadCrumbItems: [
         {
           label: 'Apps',
-          path: '.'
+          path: '.',
         },
         {
           label: 'Projects',
           path: '.',
-          active: true
-        }
-      ]
+          active: true,
+        },
+      ],
     });
-    if(localStorage.getItem('welcomeyn') === 'true'){
+    if (localStorage.getItem('welcomeyn') === 'true') {
       this.isLoading = false;
       setTimeout(() => {
         this.modalService.open(this.joinUsModal, {
           backdrop: 'static',
           centered: true,
-          windowClass: 'centerModal'
+          windowClass: 'centerModal',
         });
       }, 30);
-    } else{
+    } else {
       setTimeout(() => {
         this.idCompany = parseInt(localStorage.getItem('idcompany'));
         this.getProjectList();
@@ -110,70 +109,74 @@ export class ProjectsComponent implements OnInit {
       }, 500);
     }
   }
-  
-  getProjectList(){
-    if(this.idCompany != 0){
-      this.apolloService.query(companyproject_list, {idCompany: this.idCompany}).then((res) => {
-        const result = res.companyproject_list;
-        if(!result.error){
-          this.projectList = result.data;
-        }
-        this.isLoading = false;
-      });
-    } else{
+
+  getProjectList() {
+    if (this.idCompany != 0) {
+      this.apolloService
+        .query(companyproject_list, { idCompany: this.idCompany })
+        .then((res) => {
+          const result = res.companyproject_list;
+          if (!result.error) {
+            this.projectList = result.data;
+          }
+          this.isLoading = false;
+        });
+    } else {
       this.isLoading = false;
     }
   }
-  
-  getCompanyGroupList(id){
-    if(this.idCompany != 0){
-      this.apolloService.query(companygroup_list, {idCompany: this.idCompany}).then((res) => {
-        const result = res.companygroup_list;
-        if(!result.error){
-          this.companyGroupList = result.data;
-          
-          this.companyGroupList.unshift({
-            id: 'all',
-            txtName: 'All',
-            checked: false,
-            projectCount: 0
-          });
-          
-          this.companyGroupList.map((group) => {
-              group.checked = id===group.id;
-              if(id===group.id){
+
+  getCompanyGroupList(id) {
+    if (this.idCompany != 0) {
+      this.apolloService
+        .query(companygroup_list, { idCompany: this.idCompany })
+        .then((res) => {
+          const result = res.companygroup_list;
+          if (!result.error) {
+            this.companyGroupList = result.data;
+
+            this.companyGroupList.unshift({
+              id: 'all',
+              txtName: 'All',
+              checked: false,
+              projectCount: 0,
+            });
+
+            this.companyGroupList.map((group) => {
+              group.checked = id === group.id;
+              if (id === group.id) {
                 this.selectedGroup = group;
               }
-          });
-        }
-      });
+            });
+          }
+        });
     }
   }
-  
+
   filterPinProjectList = (project) => {
     return project.pinyn;
   };
-  
-  createProject(idProject, group){
+
+  createProject(idProject, group) {
     this.idProject = idProject;
-    if(group == ''){
+    if (group == '') {
       this.createProjectWithGroup = {
         id: '',
-        txtName: ''
+        txtName: '',
       };
-    } else{
+    } else {
       this.createProjectWithGroup = {
         id: group.id,
-        txtName: group.txtName
+        txtName: group.txtName,
       };
     }
     this.modalRef = this.modalService.open(this.createProjectModal, {
       modalDialogClass: 'modal-right',
       size: '640',
       centered: true,
-      backdrop: 'static'
+      backdrop: 'static',
     });
-    
+
     this.modalRef.result.then(
       (result) => {
         // get projects
@@ -186,8 +189,8 @@ export class ProjectsComponent implements OnInit {
       }
     );
   }
-  
-  selectGroupProject(group){
+
+  selectGroupProject(group) {
     this.selectedGroup = group;
     setTimeout(() => {
       this.companyGroupList.map((item) => {
@@ -195,7 +198,7 @@ export class ProjectsComponent implements OnInit {
       });
     }, 200);
   }
-  
+
   filterGroupProjectList = (project) => {
     return (
       !project.pinyn &&
@@ -204,36 +207,36 @@ export class ProjectsComponent implements OnInit {
       (this.keywords == '' || project.includes(this.keywords))
     );
   };
-  
-  getGroupedProjectCount(group){
+
+  getGroupedProjectCount(group) {
     let allGroupProjectsCount = 0;
     this.projectList.map((project) => {
-      if(
+      if (
         !project.pinyn &&
         (group.id == 'all' || project.idGroup == group.id)
-      ){
+      ) {
         allGroupProjectsCount++;
       }
     });
     return allGroupProjectsCount;
   }
-  
-  newGroup(group){
-    if(group == 'all'){
+
+  newGroup(group) {
+    if (group == 'all') {
       this.editGroup = {
         id: '',
-        txtName: ''
+        txtName: '',
       };
-    } else{
+    } else {
       this.editGroup = group;
     }
     this.newGroupModalRef = this.modalService.open(this.newGroupModal, {
       modalDialogClass: 'modal-right',
       size: '640',
       centered: true,
-      backdrop: 'static'
+      backdrop: 'static',
     });
-    
+
     this.newGroupModalRef.result.then(
       (result) => {
         this.getCompanyGroupList(group.id);
@@ -243,8 +246,8 @@ export class ProjectsComponent implements OnInit {
       }
     );
   }
-  
-  deleteGroup(group, i){
+
+  deleteGroup(group, i) {
     this.deleteObj = {
       title: 'Delete Group',
       message:
@@ -254,13 +257,13 @@ export class ProjectsComponent implements OnInit {
       serviceNameStr: 'companygroup_deactivate',
       params: {
         idCompany_group: group.id,
-        revision: group.revision
-      }
-    }
-    
+        revision: group.revision,
+      },
+    };
+
     this.deleteModalRef = this.modalService.open(this.deleteModal, {
       size: '443',
-      centered: true
+      centered: true,
     });
     this.deleteModalRef.result.then(
       (result) => {
@@ -272,41 +275,43 @@ export class ProjectsComponent implements OnInit {
       }
     );
   }
-  
-  goNext(){
+
+  goNext() {
     this.modalService.dismissAll();
     this.router.navigate(['apps/projects/guid']);
   }
-  
-  pinProject(item, pinyn){
-    this.apolloService.mutate(companyproject_pin, {
-      id: item.id,
-      revision: item.revision,
-      pinyn: pinyn
-    }).then((res) => {
-      const result = res.companyproject_pin;
-      let message = '';
-      if(!result.error){
-        message = 'Project pin have been updated';
-      } else{
-        message = result.message;
-      }
-      this.getProjectList();
-      this.toastrService.info(message, '');
-    });
+
+  pinProject(item, pinyn) {
+    this.apolloService
+      .mutate(companyproject_pin, {
+        id: item.id,
+        revision: item.revision,
+        pinyn: pinyn,
+      })
+      .then((res) => {
+        const result = res.companyproject_pin;
+        let message = '';
+        if (!result.error) {
+          message = 'Project pin have been updated';
+        } else {
+          message = result.message;
+        }
+        this.getProjectList();
+        this.toastrService.info(message, '');
+      });
   }
-  
+
   colorRef;
   colorSelectItem;
-  
-  openSetColor(item){
+
+  openSetColor(item) {
     this.colorRef = this.modalService.open(this.selectColor, {
       size: '280',
       centered: true,
-      backdrop: 'static'
+      backdrop: 'static',
     });
     this.colorSelectItem = item;
-    
+
     this.colorRef.result.then(
       (result) => {
         // get projects
@@ -317,89 +322,97 @@ export class ProjectsComponent implements OnInit {
       }
     );
   }
-  
-  projectMoveto(id, revision, idGroup){
-    this.apolloService.mutate(companyproject_moveto, {
-      id: id,
-      revision: revision,
-      idGroup: idGroup
-    }).then((res) => {
-      const result = res.companyproject_moveto;
-      let message = '';
-      if(!result.error){
-        message = 'Project group have been updated';
-        this.getProjectList();
-        this.getCompanyGroupList('all');
-      } else{
-        message = result.message;
-      }
-      this.toastrService.info(message, '');
-    });
+
+  projectMoveto(id, revision, idGroup) {
+    this.apolloService
+      .mutate(companyproject_moveto, {
+        id: id,
+        revision: revision,
+        idGroup: idGroup,
+      })
+      .then((res) => {
+        const result = res.companyproject_moveto;
+        let message = '';
+        if (!result.error) {
+          message = 'Project group have been updated';
+          this.getProjectList();
+          this.getCompanyGroupList('all');
+        } else {
+          message = result.message;
+        }
+        this.toastrService.info(message, '');
+      });
   }
-  
+
   projectDeleteRef;
   projectDeleteText = {
     title: 'Delete Project',
     message: 'Are you sure you want to delete this project?',
-    btnDelete: 'Delete Project'
+    btnDelete: 'Delete Project',
   };
   selectProjectId;
   selectProjectRevison;
   projectDeleteType;
-  
-  openProjectDeleteModal(id, revision, type){
+
+  openProjectDeleteModal(id, revision, type) {
     this.selectProjectId = id;
     this.selectProjectRevison = revision;
     this.projectDeleteType = type;
-    if(type == 1){
+    if (type == 1) {
       this.projectDeleteText = {
         title: 'Delete Project',
         message: 'Are you sure you want to delete this project?',
-        btnDelete: 'Delete Project'
+        btnDelete: 'Delete Project',
       };
-    } else{
+    } else {
       this.projectDeleteText = {
         title: 'Archive Project',
         message:
           'This project has records tied to it and can only be archived.',
-        btnDelete: 'Archive Project'
+        btnDelete: 'Archive Project',
       };
     }
     this.projectDeleteRef = this.modalService.open(this.deleteProjectModal, {
       size: '483',
       centered: true,
-      backdrop: 'static'
+      backdrop: 'static',
     });
   }
-  
-  projectDelete(){
+
+  projectDelete() {
     let gql = companyproject_delete;
-    if(this.projectDeleteType == 0){
+    if (this.projectDeleteType == 0) {
       gql = companyproject_deactivate;
     }
-    this.apolloService.mutate(gql, {
-      id: this.selectProjectId,
-      revision: this.selectProjectRevison
-    }).then((res) => {
-      let result;
-      if(this.projectDeleteType == 1){
-        result = res.companyproject_delete;
-      } else{
-        result = res.companyproject_deactivate;
-      }
-      let message = '';
-      if(!result.error){
-        if(this.projectDeleteType == 1){
-          message = 'Project have been deleted';
-        } else{
-          message = 'Project have been archived';
+    this.apolloService
+      .mutate(gql, {
+        id: this.selectProjectId,
+        revision: this.selectProjectRevison,
+      })
+      .then((res) => {
+        let result;
+        if (this.projectDeleteType == 1) {
+          result = res.companyproject_delete;
+        } else {
+          result = res.companyproject_deactivate;
         }
-        this.getProjectList();
-        this.projectDeleteRef.close();
-      } else{
-        message = result.message;
-      }
-      this.toastrService.info(message, '');
-    });
+        let message = '';
+        if (!result.error) {
+          if (this.projectDeleteType == 1) {
+            message = 'Project have been deleted';
+          } else {
+            message = 'Project have been archived';
+          }
+          this.getProjectList();
+          this.projectDeleteRef.close();
+        } else {
+          message = result.message;
+        }
+        this.toastrService.info(message, '');
+      });
+  }
+
+  navProjectDetail(id) {
+    this.router.navigate(['/apps/projects/detail/' + id]);
   }
 }

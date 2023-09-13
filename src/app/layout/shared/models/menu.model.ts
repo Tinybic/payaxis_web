@@ -10,4 +10,5 @@ export interface MenuItem {
     isTitle?: boolean;
     badge?: any;
     parentKey?: number;
+    item?:any;
 }

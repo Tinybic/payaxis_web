@@ -91,7 +91,7 @@ const companyproject_updatedetail = gql`
 `;
 
 const companyproject_updatebudget = gql`
-  mutation companyproject_updatebudget (
+  mutation companyproject_updatebudget(
     $id: Int!
     $revision: Int!
     $projectBudget: Float!
@@ -188,7 +188,6 @@ const companyproject_deactivate = gql`
   }
 `;
 
-
 const companygroup_list = gql`
   query companygroup_list($idCompany: Int!) {
     companygroup_list(idCompany: $idCompany) {
@@ -247,12 +246,69 @@ const companygroup_update = gql`
 `;
 
 const companygroup_deactivate = gql`
-  mutation companygroup_deactivate($idCompany_group : Int!, $revision: Int!) {
-    companygroup_deactivate(idCompany_group : $idCompany_group , revision: $revision) {
+  mutation companygroup_deactivate($idCompany_group: Int!, $revision: Int!) {
+    companygroup_deactivate(
+      idCompany_group: $idCompany_group
+      revision: $revision
+    ) {
       error
       code
       message
       data
+    }
+  }
+`;
+const companyproject_info = gql`
+  query companyproject_info($id: Int!) {
+    companyproject_info(id: $id) {
+      error
+      code
+      message
+      data {
+        id
+        revision
+        createdBy
+        createdDate
+        modifiedBy
+        modifiedDate
+        idCompany
+        projectName
+        projectAddress
+        projectBudget
+        projectSqft
+        idGroup
+        groupName
+        idCompany_payment
+        color
+        icon
+        pinyn
+        status
+        active
+        canDelete
+      }
+    }
+  }
+`;
+const projectbudget_list = gql`
+  query projectbudget_list($idProject: Int!) {
+    projectbudget_list(idProject: $idProject) {
+      error
+      code
+      message
+      data {
+        id
+        revision
+        createdBy
+        createdDate
+        modifiedBy
+        modifiedDate
+        idProject
+        idCategory
+        category
+        budgetPercentage
+        budgetAmount
+        active
+      }
     }
   }
 `;
@@ -271,4 +327,6 @@ export {
   companygroup_new,
   companygroup_update,
   companygroup_deactivate,
+  companyproject_info,
+  projectbudget_list,
 };
