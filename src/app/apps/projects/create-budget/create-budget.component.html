@@ -6,9 +6,12 @@
             {{ error }}
         </ngb-alert>
         <div class="row">
-            <div class="col col-6">
+            <div class="col col-6 position-relative">
                 <label class="form-label text-1" i18n style="color:#202020CC;">Allocated Budget</label>
-                <div style="font-size: 21.33px;line-height: 24px;font-weight: 400;color: #202020;padding: 12px 0px;">{{allocatedBudget | currency}}</div>
+                <div class="headline-24-400" [ngClass]=" allocatedBudget > createProject.budget ? 'over-budget-text' : 'text-blackprimary'" style="padding: 12px 0px 0px;">{{allocatedBudget | currency}}</div>
+                <div *ngIf="allocatedBudget > createProject.budget" class="subtitle-2-500 position-absolute" style="color:#F87171;">
+                    Over budget by {{allocatedBudget - createProject.budget | currency}}
+                </div>
             </div>
             <div class="col col-6 text-end">
                 <label class="form-label text-1" i18n style="color:#202020CC;">Total Project Budget
@@ -70,6 +73,7 @@
                                allowNegativeNumbers="false"
                                i18n-placeholder placeholder="0"
                                (ngModelChange)="budgetPercentageChange(item)"
+                               (focus)="setCursorPosition($event, item, item.budgetPercentage, 'budgetPercentage')"
                         />
                     </div>
                 </td>
@@ -88,6 +92,7 @@
                                allowNegativeNumbers="false"
                                i18n-placeholder placeholder="0"
                                (ngModelChange)="budgetAmountChange(item)"
+                               (focus)="setCursorPosition($event, item, item.budgetAmount, 'budgetAmount')"
                         />
                     </div>
                 </td>
