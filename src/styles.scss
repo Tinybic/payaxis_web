@@ -28,16 +28,20 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-.payaxis-light:before {
+.payaxis-invoice:before {
     content: "\e900";
 }
 
-.payaxis-pin:before {
+.payaxis-light:before {
     content: "\e901";
 }
 
-.payaxis-unpin:before {
+.payaxis-pin:before {
     content: "\e902";
+}
+
+.payaxis-unpin:before {
+    content: "\e903";
 }
 
 .otherLogin {
