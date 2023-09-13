@@ -3,20 +3,22 @@ import { MenuItem } from '../models/menu.model';
 // menu items for vertcal and detached layout
 const MENU_ITEMS: MenuItem[] = [
   {
-    key: 'base-ui',
+    key: 'projects',
     label: 'Projects',
     isTitle: false,
     icon: 'fe-grid',
     collapsed: true,
     url: '/apps/projects',
-  },{
+    item: ['/apps/projects/details/'],
+  },
+  {
     key: 'bill',
     label: 'Bills',
     isTitle: false,
     icon: 'fe-file-text',
     collapsed: true,
     url: '/icons/feather',
-  }, 
+  },
   {
     key: 'vendor',
     label: 'Vendors',
