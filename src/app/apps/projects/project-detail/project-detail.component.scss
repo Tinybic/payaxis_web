@@ -1,6 +1,7 @@
 .progress-bar-alt-success{
     background-color: #E5E7EB;
 }
+
 .budgetItem{
-    width: 20%;
+    width: calc(20% - 13px);
 }
