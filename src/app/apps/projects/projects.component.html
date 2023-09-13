@@ -4,7 +4,7 @@
         <div class="subtitle-2-500"></div>
     </div>
     <div class="col-md-6 text-end">
-        <button class="btn btn-primary mx-2-1 btn-text-12" (click)="createProject(0, '')" style="padding: 10px 16px;">
+        <button class="btn btn-primary btn-text-12" (click)="createProject(0, '')" style="padding: 10px 16px;">
             <i class="fe-file-plus font-16 me-1-1"></i>New Project
         </button>
     </div>
@@ -166,7 +166,7 @@
                                 </button>
                                 <div class="dropdown-menu" style="padding: 4px;" ngbDropdownMenu>
                                     <a class="subtitle-2-500 c-p d-flex align-items-center"
-                                       (click)="filterDropdownMenu.close();newGroup(group, i);" ngbDropdownItem>
+                                       (click)="filterDropdownMenu.close();newGroup(group);" ngbDropdownItem>
                                         <i class="fe-type me-1-1"></i>
                                         Rename
                                     </a>
@@ -193,8 +193,8 @@
                        style="padding: 10px 16px 10px 36px;"/>
             </div>
             <!-- end search-->
-            <button class="btn btn-outline-primary ms-2-1 btn-text-12" (click)="newGroup('','')"
-                    style="margin-top: -1px;padding: 7px 16px;"><i class="fe-plus-square me-1-1"
+            <button class="btn btn-outline-primary ms-1-1 btn-text-12" (click)="newGroup('all')"
+                    style="padding: 7px 16px;"><i class="fe-plus-square me-1-1"
                                                                    style="vertical-align: bottom;"></i>New Group
             </button>
         </div>
@@ -354,24 +354,30 @@
         </div>
     </ng-template>
 </div>
+
+<!--#createProjectModal-->
 <ng-template #createProjectModal let-modal>
     <app-create-project [idProject]="idProject" [createProjectWithGroup]="createProjectWithGroup"
                         [modalRef]="modalRef"></app-create-project>
 </ng-template>
 
+<!--#newGroupModal-->
 <ng-template #newGroupModal let-modal>
     <app-create-group [group]="editGroup" [modalRef]="newGroupModalRef"></app-create-group>
 </ng-template>
 
+<!--#selectColor-->
 <ng-template #selectColor let-modal>
     <app-set-color [selectColor]="colorSelectItem.color" [selectIcon]="colorSelectItem.icon" [id]="colorSelectItem.id"
                    [revision]="colorSelectItem.revision" [modalRef]="colorRef"></app-set-color>
 </ng-template>
 
+<!--#deleteModal-->
 <ng-template #deleteModal let-modal>
     <app-delete-modal [title]="deleteObj.title" [message]="deleteObj.message" [btnDelete]="deleteObj.btnDelete" [modalRef]="deleteModalRef" [serviceName]="deleteObj.serviceName" [serviceNameStr]="deleteObj.serviceNameStr" [params]="deleteObj.params"></app-delete-modal>
 </ng-template>
 
+<!--#deleteProjectModal-->
 <ng-template #deleteProjectModal let-modal>
     <input type="text" style="display: none;"/>
     <div class="delete-modal-container">

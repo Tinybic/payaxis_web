@@ -26,6 +26,7 @@ export class CreateBudgetComponent {
   
   error: string = '';
   allocatedBudget = 0;
+  progressBarPercentage = 0;
   idCompany = 0;
   categoryList = [];
   editingCategory = 0;
@@ -41,7 +42,7 @@ export class CreateBudgetComponent {
   
   ngOnInit(): void{
     this.createProject = this.params;
-    this.budgetChange();
+    this.calculateBudget();
     this.getCategoryList();
   }
   
@@ -53,6 +54,13 @@ export class CreateBudgetComponent {
         const result = res.companycategory_list;
         if(!result.error){
           this.categoryList = result.data;
+          this.categoryList.map((category) => {
+            this.createProject.categoryList.map((item) => {
+              if(category.id == item.idCategory){
+                category.selected = true;
+              }
+            })
+          })
         }
       });
     }
@@ -85,6 +93,18 @@ export class CreateBudgetComponent {
     }, 50)
   }
   
+  // setCursorPosition(e){
+  //   setTimeout(() => {
+  //     let t = e.target;
+  //     t.scrollLeft = t.scrollWidth;
+  //     if(t.value == 0 || t.value == '$0'){
+  //       t.value = '';
+  //     }
+  //     t.setSelectionRange(1000, 1000);
+  //     console.log('*****************');
+  //   }, 150)
+  // }
+  
   selectedCategory(category){
     category.selected = true;
     this.categoryList.map(item => {
@@ -104,7 +124,7 @@ export class CreateBudgetComponent {
     })
     this.createProject.categoryList.splice(i, 1);
     this.cleanCategoryList();
-    this.budgetChange();
+    this.calculateBudget();
   }
   
   addCategory(){
@@ -115,8 +135,8 @@ export class CreateBudgetComponent {
       this.createProject.categoryList.push({
         idCategory: '',
         txtName: '',
-        budgetPercentage: 0,
-        budgetAmount: 0
+        budgetPercentage: '',
+        budgetAmount: ''
       })
       
       this.editingCategory = this.createProject.categoryList.length - 1;
@@ -131,17 +151,35 @@ export class CreateBudgetComponent {
     this.editingCategory = i;
   }
   
-  budgetChange(){
-    let total = 0;
+  calculateBudget(){
+    let allocatedBudgetTotal = 0;
+    let progressBarPercentageTotal = 0;
     this.createProject.categoryList.map(item => {
-      total += item.budgetAmount * item.budgetPercentage / 100;
+      allocatedBudgetTotal += item.budgetAmount;
+      progressBarPercentageTotal += item.budgetPercentage;
     })
-    this.allocatedBudget = total;
+    this.allocatedBudget = allocatedBudgetTotal;
+    if(this.createProject.budget == 0){
+      this.progressBarPercentage = 100;
+    }else if(this.allocatedBudget > this.createProject.budget){
+      this.progressBarPercentage = this.createProject.budget / this.allocatedBudget * 100;
+    }else {
+      this.progressBarPercentage = progressBarPercentageTotal;
+    }
   }
   
-  getProgressBarWidth(){
-    let percent = this.allocatedBudget / this.createProject.budget * 100;
-    return percent + '%';
+  budgetPercentageChange(budget){
+    if(this.createProject.budget !== 0){
+      budget.budgetAmount = this.createProject.budget * budget.budgetPercentage / 100;
+    }
+    this.calculateBudget();
+  }
+  
+  budgetAmountChange(budget){
+    if(this.createProject.budget !== 0){
+      budget.budgetPercentage = budget.budgetAmount / this.createProject.budget * 100;
+    }
+    this.calculateBudget();
   }
   
   
