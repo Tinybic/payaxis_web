@@ -18,8 +18,8 @@
             </div>
         </div>
         
-        <div class="progress progress-bar-alt-success progress-sm mt-3-1">
-            <div class="progress-bar bg-success wow" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: {{getProgressBarWidth()}};">
+        <div class="progress progress-sm mt-3-1" [ngClass]="{'bg-red-progressbar': allocatedBudget > createProject.budget}">
+            <div class="progress-bar wow" [ngClass]="{'bg-success': createProject.budget != 0, 'bg-red-progressbar': createProject.budget == 0}" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: {{progressBarPercentage}}%;">
             </div><!-- /.progress-bar .progress-bar-success -->
         </div><!-- /.progress .no-rounded -->
         
@@ -69,7 +69,7 @@
                                thousandSeparator=","
                                allowNegativeNumbers="false"
                                i18n-placeholder placeholder="0"
-                               (ngModelChange)="budgetChange()"
+                               (ngModelChange)="budgetPercentageChange(item)"
                         />
                     </div>
                 </td>
@@ -87,7 +87,7 @@
                                thousandSeparator=","
                                allowNegativeNumbers="false"
                                i18n-placeholder placeholder="0"
-                               (ngModelChange)="budgetChange()"
+                               (ngModelChange)="budgetAmountChange(item)"
                         />
                     </div>
                 </td>

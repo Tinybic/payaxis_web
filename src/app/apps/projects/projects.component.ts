@@ -106,7 +106,7 @@ export class ProjectsComponent implements OnInit {
       setTimeout(() => {
         this.idCompany = parseInt(localStorage.getItem('idcompany'));
         this.getProjectList();
-        this.getCompanyGroupList('');
+        this.getCompanyGroupList('all');
       }, 500);
     }
   }
@@ -125,7 +125,7 @@ export class ProjectsComponent implements OnInit {
     }
   }
   
-  getCompanyGroupList(i){
+  getCompanyGroupList(id){
     if(this.idCompany != 0){
       this.apolloService.query(companygroup_list, {idCompany: this.idCompany}).then((res) => {
         const result = res.companygroup_list;
@@ -140,15 +140,11 @@ export class ProjectsComponent implements OnInit {
           });
           
           this.companyGroupList.map((group) => {
-              group.checked = false;
+              group.checked = id===group.id;
+              if(id===group.id){
+                this.selectedGroup = group;
+              }
           });
-          if(i===''){
-            this.companyGroupList[0].checked = true;
-            this.selectedGroup = this.companyGroupList[0];
-          }else {
-            this.companyGroupList[i].checked = true;
-            this.selectedGroup = this.companyGroupList[i];
-          }
         }
       });
     }
@@ -182,10 +178,11 @@ export class ProjectsComponent implements OnInit {
       (result) => {
         // get projects
         this.getProjectList();
-        this.getCompanyGroupList('');
+        this.getCompanyGroupList(this.selectedGroup.id);
       },
       (reason) => {
         console.log(reason);
+        this.getCompanyGroupList(this.selectedGroup.id);
       }
     );
   }
@@ -221,8 +218,8 @@ export class ProjectsComponent implements OnInit {
     return allGroupProjectsCount;
   }
   
-  newGroup(group, i){
-    if(group == ''){
+  newGroup(group){
+    if(group == 'all'){
       this.editGroup = {
         id: '',
         txtName: ''
@@ -239,7 +236,7 @@ export class ProjectsComponent implements OnInit {
     
     this.newGroupModalRef.result.then(
       (result) => {
-        this.getCompanyGroupList(i);
+        this.getCompanyGroupList(group.id);
       },
       (reason) => {
         console.log(reason);
@@ -268,7 +265,7 @@ export class ProjectsComponent implements OnInit {
     this.deleteModalRef.result.then(
       (result) => {
         this.companyGroupList.splice(i, 1);
-        this.getCompanyGroupList('');
+        this.getCompanyGroupList('all');
       },
       (reason) => {
         console.log(reason);
@@ -332,7 +329,7 @@ export class ProjectsComponent implements OnInit {
       if(!result.error){
         message = 'Project group have been updated';
         this.getProjectList();
-        this.getCompanyGroupList('');
+        this.getCompanyGroupList('all');
       } else{
         message = result.message;
       }
@@ -369,6 +366,7 @@ export class ProjectsComponent implements OnInit {
       };
     }
     this.projectDeleteRef = this.modalService.open(this.deleteProjectModal, {
+      size: '483',
       centered: true,
       backdrop: 'static'
     });
