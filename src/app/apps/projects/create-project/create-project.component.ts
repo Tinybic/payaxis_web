@@ -205,17 +205,17 @@ export class CreateProjectComponent {
       return;
     }
     
-    if(this.formStep2Values['budget'].value == ''){
-      this.formStep2Values['budget'].setValue(0);
-      // this.toastrService.warning('Project Budget is required, please enter the Project Budget.');
-      // return;
-    }
+    // if(this.formStep2Values['budget'].value == ''){
+    //   // this.formStep2Values['budget'].setValue(0);
+    //   this.toastrService.warning('Project Budget is required, please enter the Project Budget.');
+    //   return;
+    // }
     
-    if(this.formStep2Values['sqft'].value == ''){
-      this.formStep2Values['sqft'].setValue(0);
-      // this.toastrService.warning('Project Size, sqft is required, please enter the Project Size, sqft.');
-      // return;
-    }
+    // if(this.formStep2Values['sqft'].value == ''){
+    //   // this.formStep2Values['sqft'].setValue(0);
+    //   this.toastrService.warning('Project Size, sqft is required, please enter the Project Size, sqft.');
+    //   return;
+    // }
     
     this.createProject = {
       name: this.formStep1Values['name'].value,

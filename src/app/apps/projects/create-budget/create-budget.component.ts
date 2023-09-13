@@ -41,7 +41,11 @@ export class CreateBudgetComponent {
   
   
   ngOnInit(): void{
-    this.createProject = this.params;
+    let obj = this.params;
+    obj.budget = obj.budget ? obj.budget : 0;
+    obj.sqft = obj.sqft ? obj.sqft : 0;
+    this.createProject = obj;
+    
     this.calculateBudget();
     this.getCategoryList();
   }
@@ -93,17 +97,16 @@ export class CreateBudgetComponent {
     }, 50)
   }
   
-  // setCursorPosition(e){
-  //   setTimeout(() => {
-  //     let t = e.target;
-  //     t.scrollLeft = t.scrollWidth;
-  //     if(t.value == 0 || t.value == '$0'){
-  //       t.value = '';
-  //     }
-  //     t.setSelectionRange(1000, 1000);
-  //     console.log('*****************');
-  //   }, 150)
-  // }
+  setCursorPosition(e, item, val, type){
+    if(val == 0){
+      item[type] = '';
+    }
+    setTimeout(() => {
+      let t = e.target;
+      t.scrollLeft = t.scrollWidth;
+      t.setSelectionRange(1000, 1000);
+    }, 150)
+  }
   
   selectedCategory(category){
     category.selected = true;
@@ -234,9 +237,8 @@ export class CreateBudgetComponent {
   
   
   closeModal(){
+    this.cleanCategoryList();
     this.modalRef.dismiss(this.createProject.categoryList);
   }
-  
-  
 }
 
