@@ -63,6 +63,13 @@
                 <div class="ms-2 sidebar-hr"></div>
                 <div id="sidebar-menu1" class="mt-2-1">
                     <ul id="side-menu1">
+                        <li [ngClass]="{'menuitem-active': activeMenuItems.includes('notifications')}">
+                            <a class="side-nav-link-ref" [ngClass]="{'active': activeMenuItems.includes('notifications')}"
+                                data-menu-key="notifications" >
+                                <i class="fe-bell"></i>
+                                <span>Notifications</span>
+                            </a>
+                        </li>
                         <li [ngClass]="{'menuitem-active': activeMenuItems.includes('setting')}">
                             <a class="side-nav-link-ref" [ngClass]="{'active': activeMenuItems.includes('setting')}"
                                 data-menu-key="setting" routerLink="/apps/setting">

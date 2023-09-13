@@ -20,6 +20,13 @@ const MENU_ITEMS: MenuItem[] = [
     url: '/icons/feather',
   },
   {
+    key: 'invoice',
+    label: 'Invoice Inbox',
+    isTitle: false,
+    icon: 'payaxis-invoice',
+    collapsed: true,
+  },
+  {
     key: 'vendor',
     label: 'Vendors',
     isTitle: false,
