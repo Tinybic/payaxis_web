@@ -25,11 +25,11 @@
         <div class="d-inline-block ms-2-1" ngbDropdown>
             <span ngbDropdownToggle><i class="fe-more-vertical- font-24 cursor-pointer"></i></span>
             <div ngbDropdownMenu style="padding: 4px 8px;">
-                <a class="subtitle-2-500" href="javascript:void(0);" style="padding: 12px 4px;" ngbDropdownItem>
+                <a class="subtitle-2-500" href="javascript:void(0);" (click)="editProjectDetails()" style="padding: 12px 4px;" ngbDropdownItem>
                     <i class="fe-edit me-1-1"></i>
                     Edit Project Details
                 </a>
-                <a class="subtitle-2-500" href="javascript:void(0);" style="padding: 12px 4px;" ngbDropdownItem>
+                <a class="subtitle-2-500" href="javascript:void(0);" style="padding: 12px 4px;" (click)="editProjectBudget()" ngbDropdownItem>
                     <i class="fe-file-text me-1-1"></i>
                     Edit Project Budget
                 </a>
@@ -249,3 +249,15 @@
     </div>
     <div [ngbNavOutlet]="nav" class="mb-0 b-0 pt-0"></div>
 </div>
+
+
+<!--#editProjectModal-->
+<ng-template #editProjectModal let-modal>
+    <app-create-project [project]="project" [createProjectWithGroup]="" [modalRef]="editProjectModalRef"></app-create-project>
+</ng-template>
+
+
+<!--#editBudgetModal-->
+<ng-template #editBudgetModal let-modal>
+    <app-create-budget [project]="project"  [budgetAllocation]="budgetList" [modalRef]="editBudgetModalRef"></app-create-budget>
+</ng-template>

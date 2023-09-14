@@ -8,21 +8,37 @@
         <div class="row">
             <div class="col col-6 position-relative">
                 <label class="form-label text-1" i18n style="color:#202020CC;">Allocated Budget</label>
-                <div class="headline-24-400" [ngClass]=" allocatedBudget > createProject.budget ? 'over-budget-text' : 'text-blackprimary'" style="padding: 12px 0px 0px;">{{allocatedBudget | currency}}</div>
-                <div *ngIf="allocatedBudget > createProject.budget" class="subtitle-2-500 position-absolute" style="color:#F87171;">
-                    Over budget by {{allocatedBudget - createProject.budget | currency}}
+                <div class="headline-24-400"
+                     [ngClass]=" allocatedBudget > project.projectBudget ? 'over-budget-text' : 'text-blackprimary'"
+                     style="padding: 12px 0px 0px;">{{allocatedBudget | currency}}</div>
+                <div *ngIf="allocatedBudget > project.projectBudget" class="subtitle-2-500 position-absolute"
+                     style="color:#F87171;">
+                    Over budget by {{allocatedBudget - project.projectBudget | currency}}
                 </div>
             </div>
             <div class="col col-6 text-end">
-                <label class="form-label text-1" i18n style="color:#202020CC;">Total Project Budget
+                <label class="form-label text-1" for="projectBudget" i18n style="color:#202020CC;">Total Project Budget
                 </label>
-                
-                <div style="font-size: 21.33px;line-height: 24px;font-weight: 400;color: #202020;background-color: #F8F9FC;padding: 11px 16px;border: 1px solid #E1E6EF;border-radius: 8px;">{{createProject.budget | currency}}</div>
+                <input id="projectBudget"
+                       class="form-control"
+                       type="text"
+                       [(ngModel)]="project.projectBudget"
+                       prefix="$"
+                       mask="separator.2"
+                       thousandSeparator=","
+                       allowNegativeNumbers="false"
+                       i18n-placeholder placeholder="0.00"
+                       (ngModelChange)="calculateBudget()"
+                       style="font-size: 21.33px;line-height: 24px;font-weight: 400;color: #202020;text-align: right;"
+                />
             </div>
         </div>
         
-        <div class="progress progress-sm mt-3-1" [ngClass]="{'bg-red-progressbar': allocatedBudget > createProject.budget}">
-            <div class="progress-bar wow" [ngClass]="{'bg-success': createProject.budget != 0, 'bg-red-progressbar': createProject.budget == 0}" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: {{progressBarPercentage}}%;">
+        <div class="progress progress-sm mt-3-1"
+             [ngClass]="{'bg-red-progressbar': allocatedBudget > project.projectBudget}">
+            <div class="progress-bar wow"
+                 [ngClass]="{'bg-success': project.projectBudget != 0, 'bg-red-progressbar': project.projectBudget == 0}"
+                 role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: {{progressBarPercentage}}%;">
             </div><!-- /.progress-bar .progress-bar-success -->
         </div><!-- /.progress .no-rounded -->
         
@@ -40,15 +56,16 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let item of createProject.categoryList; let i = index">
+            <tr *ngFor="let item of budgetAllocation; let i = index">
                 <td style="width: 30%;">
                     <div *ngIf="i!=editingCategory" class="td-text text-start" (click)="setEdtingCategory(i, 'Name')">
-                        {{item.txtName}}
+                        {{item.category}}
                     </div>
                     <div *ngIf="i==editingCategory" class="d-inline-block dropdown" ngbDropdown>
-                        <button id="categoryDropdownBtn_{{i}}" class="dropdow-outline text-start" (click)="openCategoryDropdownMenu(i)"
+                        <button id="categoryDropdownBtn_{{i}}" class="dropdow-outline text-start"
+                                (click)="openCategoryDropdownMenu(i)"
                                 ngbDropdownToggle>
-                            {{item.txtName}}
+                            {{item.category}}
                         </button>
                         <div class="dropdown-menu" ngbDropdownMenu>
                             <div *ngFor="let category of categoryList" (click)="selectedCategory(category)"
@@ -85,8 +102,8 @@
                         <input id="budgetAmount_{{i}}"
                                class="form-control"
                                type="text"
-                               prefix="$"
                                [(ngModel)]="item.budgetAmount"
+                               prefix="$"
                                mask="separator.2"
                                thousandSeparator=","
                                allowNegativeNumbers="false"
@@ -118,14 +135,13 @@
     </div>
     
     
-    
-    
     <div class="d-grid" style="width: calc(100% - 48px);position: fixed;bottom: 24px;right: 24px;">
-        <button class="btn btn-primary mb-1-1" [disabled]="!(createProject.categoryList | checkProjectStatus)" (click)="submitProject()">Create a Project
+        <button class="btn btn-primary mb-1-1" [disabled]="!(budgetAllocation | checkProjectStatus)"
+                (click)="submitProject()">{{project.id == '' ? 'Create a Project' : 'Save'}}
         </button>
         <button class="btn btn-outline-primary" (click)="closeModal()">
-            <i class="fe-arrow-left ms-1-1"></i>
-            Back</button>
+            <i *ngIf="project.id == ''" class="fe-arrow-left ms-1-1"></i>
+            {{project.id == '' ? 'Back' : 'Cancel'}}</button>
     </div>
 </div>
 

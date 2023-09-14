@@ -4,7 +4,7 @@ import { ApolloService } from "../../../core/service/apollo.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { companycategory_list } from "../../../core/gql/costcode";
-import { companyproject_new } from "../../../core/gql/project";
+import { companyproject_new, companyproject_updatebudget } from "../../../core/gql/project";
 
 
 @Component({
@@ -13,7 +13,8 @@ import { companyproject_new } from "../../../core/gql/project";
   styleUrls: ['./create-budget.component.scss']
 })
 export class CreateBudgetComponent {
-  @Input() params;
+  @Input() project;
+  @Input() budgetAllocation;
   @Input() modalRef;
   
   
@@ -29,22 +30,12 @@ export class CreateBudgetComponent {
   progressBarPercentage = 0;
   idCompany = 0;
   categoryList = [];
-  editingCategory = 0;
-  createProject = {
-    name: '',
-    address: '',
-    idGroup: 0,
-    budget: 0,
-    sqft: 0,
-    categoryList: []
-  }
+  editingCategory = -1;
   
   
   ngOnInit(): void{
-    let obj = this.params;
-    obj.budget = obj.budget ? obj.budget : 0;
-    obj.sqft = obj.sqft ? obj.sqft : 0;
-    this.createProject = obj;
+    this.project.projectBudget = this.project.projectBudget ? this.project.projectBudget : 0;
+    this.project.projectSqft = this.project.projectSqft ? this.project.projectSqft : 0;
     
     this.calculateBudget();
     this.getCategoryList();
@@ -59,8 +50,8 @@ export class CreateBudgetComponent {
         if(!result.error){
           this.categoryList = result.data;
           this.categoryList.map((category) => {
-            this.createProject.categoryList.map((item) => {
-              if(category.id == item.idCategory){
+            this.budgetAllocation.map((item) => {
+              if(category.id === item.idCategory){
                 category.selected = true;
               }
             })
@@ -73,12 +64,12 @@ export class CreateBudgetComponent {
   
   cleanCategoryList(){
     let list = [];
-    this.createProject.categoryList.map(item => {
+    this.budgetAllocation.map(item => {
       if(item.idCategory !== ''){
         list.push(item);
       }
     })
-    this.createProject.categoryList = list;
+    this.budgetAllocation = list;
   }
   
   setEdtingCategory(i, obj){
@@ -111,38 +102,38 @@ export class CreateBudgetComponent {
   selectedCategory(category){
     category.selected = true;
     this.categoryList.map(item => {
-      if(item.id === this.createProject.categoryList[this.editingCategory].idCategory){
+      if(item.id === this.budgetAllocation[this.editingCategory].idCategory){
         item.selected = false;
       }
     })
-    this.createProject.categoryList[this.editingCategory].idCategory = category.id;
-    this.createProject.categoryList[this.editingCategory].txtName = category.txtName;
+    this.budgetAllocation[this.editingCategory].idCategory = category.id;
+    this.budgetAllocation[this.editingCategory].category = category.txtName;
   }
   
   deleteCategory(i){
     this.categoryList.map(item => {
-      if(item.id === this.createProject.categoryList[i].idCategory){
+      if(item.id === this.budgetAllocation[i].idCategory){
         item.selected = false;
       }
     })
-    this.createProject.categoryList.splice(i, 1);
+    this.budgetAllocation.splice(i, 1);
     this.cleanCategoryList();
     this.calculateBudget();
   }
   
   addCategory(){
-    let isEditing = this.createProject.categoryList.some(item => {
+    let isEditing = this.budgetAllocation.some(item => {
       return item.idCategory === '';
     })
     if(!isEditing){
-      this.createProject.categoryList.push({
+      this.budgetAllocation.push({
         idCategory: '',
-        txtName: '',
+        category: '',
         budgetPercentage: '',
         budgetAmount: ''
       })
       
-      this.editingCategory = this.createProject.categoryList.length - 1;
+      this.editingCategory = this.budgetAllocation.length - 1;
       
       setTimeout(() => {
         document.getElementById('categoryDropdownBtn_' + this.editingCategory).click();
@@ -157,30 +148,30 @@ export class CreateBudgetComponent {
   calculateBudget(){
     let allocatedBudgetTotal = 0;
     let progressBarPercentageTotal = 0;
-    this.createProject.categoryList.map(item => {
+    this.budgetAllocation.map(item => {
       allocatedBudgetTotal += item.budgetAmount;
       progressBarPercentageTotal += item.budgetPercentage;
     })
     this.allocatedBudget = allocatedBudgetTotal;
-    if(this.createProject.budget == 0){
+    if(this.project.projectBudget == 0){
       this.progressBarPercentage = 100;
-    }else if(this.allocatedBudget > this.createProject.budget){
-      this.progressBarPercentage = this.createProject.budget / this.allocatedBudget * 100;
-    }else {
-      this.progressBarPercentage = progressBarPercentageTotal;
+    } else if(this.allocatedBudget > this.project.projectBudget){
+      this.progressBarPercentage = this.project.projectBudget / this.allocatedBudget * 100;
+    } else{
+      this.progressBarPercentage = this.allocatedBudget / this.project.projectBudget * 100;
     }
   }
   
   budgetPercentageChange(budget){
-    if(this.createProject.budget !== 0){
-      budget.budgetAmount = this.createProject.budget * budget.budgetPercentage / 100;
+    if(this.project.projectBudget !== 0){
+      budget.budgetAmount = this.project.projectBudget * budget.budgetPercentage / 100;
     }
     this.calculateBudget();
   }
   
   budgetAmountChange(budget){
-    if(this.createProject.budget !== 0){
-      budget.budgetPercentage = budget.budgetAmount / this.createProject.budget * 100;
+    if(this.project.projectBudget !== 0){
+      budget.budgetPercentage = budget.budgetAmount / this.project.projectBudget * 100;
     }
     this.calculateBudget();
   }
@@ -189,7 +180,7 @@ export class CreateBudgetComponent {
   submitProject(){
     this.cleanCategoryList();
     
-    if(this.createProject.name == ''){
+    if(this.project.projectName == ''){
       this.toastrService.warning('Project Name is required, please back to enter the Project Name.');
       return;
     }
@@ -205,7 +196,7 @@ export class CreateBudgetComponent {
     // }
     
     let list = [];
-    this.createProject.categoryList.map(item => {
+    this.budgetAllocation.map(item => {
       list.push({
         idCategory: item.idCategory,
         budgetPercentage: item.budgetPercentage,
@@ -213,17 +204,32 @@ export class CreateBudgetComponent {
       })
     })
     
+    let serviceName;
+    let params;
     
-    this.apolloService.mutate(companyproject_new, {
-      idCompany: this.idCompany,
-      projectName: this.createProject.name,
-      projectAddress: this.createProject.address,
-      idGroup: this.createProject.idGroup,
-      projectBudget: this.createProject.budget,
-      projectSqft: this.createProject.sqft,
-      budgetAllocation: list
-    }).then((res) => {
-      let result = res.companyproject_new;
+    if(this.project.id === ''){
+      serviceName = companyproject_new;
+      params = {
+        idCompany: this.idCompany,
+        projectName: this.project.projectName,
+        projectAddress: this.project.projectAddress,
+        idGroup: this.project.idGroup,
+        projectBudget: this.project.projectBudget,
+        projectSqft: this.project.projectSqft,
+        budgetAllocation: list
+      }
+    }else {
+      serviceName = companyproject_updatebudget;
+      params = {
+        id: this.project.id,
+        revision: this.project.revision,
+        projectBudget: this.project.projectBudget,
+        budgetAllocation: list
+      }
+    }
+    
+    this.apolloService.mutate(serviceName, params).then((res) => {
+      let result: any = Object.values(res)[0];
       if(!result.error){
         this.modalRef.close('save success');
         this.toastrService.success('Save success', '');
@@ -238,7 +244,7 @@ export class CreateBudgetComponent {
   
   closeModal(){
     this.cleanCategoryList();
-    this.modalRef.dismiss(this.createProject.categoryList);
+    this.modalRef.dismiss(this.budgetAllocation);
   }
 }
 
