@@ -1,10 +1,10 @@
 <div class="row" style="padding-top: 4px;padding-bottom: 16px;">
     <div class="col-md-6">
-        <div class="headline-28">{{projectList.length > 0 ? 'Projects' + projectList.length : 'No Projects'}}</div>
+        <div class="headline-28">{{projectList.length > 0 ? 'Projects' : 'No Projects'}}</div>
         <div class="subtitle-2-500"></div>
     </div>
     <div class="col-md-6 text-end">
-        <button class="btn btn-primary btn-text-12" (click)="createProject(0, '')" style="padding: 10px 16px;">
+        <button class="btn btn-primary btn-text-12" (click)="createProject('')" style="padding: 10px 16px;">
             <i class="fe-file-plus font-16 me-1-1"></i>New Project
         </button>
     </div>
@@ -150,14 +150,14 @@
                             [ngClass]="{'selected':selectedGroup.id == group.id}"
                             *ngFor="let group of companyGroupList; let i=index;"
                             (click)="filterDropdownMenu.close();selectGroupProject(group);" ngbDropdownItem>
-                            <div style="padding: 2px 0px;">
+                            <div class="me-2-1" style="padding: 2px 0px;">
                                 <input id="commercialCheck_{{i}}" type="checkbox" class="form-check-input c-p"
                                     [(ngModel)]="group.checked">
                                 <label class="form-check-label ms-1-1 c-p" for="commercialCheck_{{i}}">
                                     {{group.txtName}} ({{ getGroupedProjectCount(group)}})
                                 </label>
                             </div>
-                            <div *ngIf="group.id != 'all' && group.id != '0'" class="groupDotsVertical ms-2-1"
+                            <div *ngIf="group.id != 'all' && group.id != '0'" class="groupDotsVertical"
                                 ngbDropdown>
                                 <button class="btn btn-default float-end"
                                     (click)="$event.stopPropagation();selectGroupProject(group);"
@@ -172,7 +172,7 @@
                                         Rename
                                     </a>
                                     <a class="subtitle-2-500 c-p d-flex align-items-center"
-                                        (click)="filterDropdownMenu.close();createProject(0, group)" ngbDropdownItem>
+                                        (click)="filterDropdownMenu.close();createProject(group)" ngbDropdownItem>
                                         <i class="fe-edit me-1-1"></i>
                                         Add a new Project
                                     </a>
@@ -194,7 +194,7 @@
                     style="padding: 10px 16px 10px 36px;" />
             </div>
             <!-- end search-->
-            <button class="btn btn-outline-primary ms-1-1 btn-text-12" (click)="newGroup('all')"
+            <button class="btn btn-outline-primary ms-1-1 btn-text-12" (click)="newGroup('')"
                 style="padding: 7px 16px;"><i class="fe-plus-square me-1-1" style="vertical-align: bottom;"></i>New
                 Group
             </button>
@@ -354,13 +354,13 @@
 
 <!--#createProjectModal-->
 <ng-template #createProjectModal let-modal>
-    <app-create-project [idProject]="idProject" [createProjectWithGroup]="createProjectWithGroup"
+    <app-create-project [createProjectWithGroup]="createProjectWithGroup"
         [modalRef]="modalRef"></app-create-project>
 </ng-template>
 
 <!--#newGroupModal-->
 <ng-template #newGroupModal let-modal>
-    <app-create-group [group]="editGroup" [modalRef]="newGroupModalRef"></app-create-group>
+    <app-create-group [group]="group" [modalRef]="newGroupModalRef"></app-create-group>
 </ng-template>
 
 <!--#selectColor-->

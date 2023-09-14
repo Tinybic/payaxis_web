@@ -7,7 +7,7 @@ import {
 import { ToastrService } from "ngx-toastr";
 import { ApolloService } from "../../../core/service/apollo.service";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
-import { companygroup_list } from "../../../core/gql/project";
+import { companygroup_list, companyproject_updatedetail } from "../../../core/gql/project";
 
 
 @Component({
@@ -16,7 +16,7 @@ import { companygroup_list } from "../../../core/gql/project";
   styleUrls: ['./create-project.component.scss']
 })
 export class CreateProjectComponent {
-  @Input() idProject;
+  @Input() project;
   @Input() createProjectWithGroup;
   @Input() modalRef;
   
@@ -36,22 +36,21 @@ export class CreateProjectComponent {
   step: number = 1;
   idCompany = 0;
   createProject = {
-    name: '',
-    address: '',
+    id: '',
+    projectName: '',
+    projectAddress: '',
     idGroup: 0,
-    budget: '',
-    sqft: '',
-    categoryList: []
+    projectBudget: '',
+    projectSqft: ''
   }
+  budgetAllocation = [];
   companyGroupList = [];
   selectedGroup = {
-    idGroup: 0,
-    txtName: '',
+    idGroup: -1,
+    txtName: 'Assign Group',
     projectCount: 0
   }
-  createBudgetModalRef: any;
-  
-  createGroup = {id: '', txtName: ''}
+  createBudgetModalRef: NgbModalRef;
   newGroupModalRef: NgbModalRef;
   
   template = [];
@@ -98,7 +97,6 @@ export class CreateProjectComponent {
         Validators.maxLength(255)
       ]]
   })
-  
   createProjectStep2Form: UntypedFormGroup = this.fb.group({
     budget: ['',
       [
@@ -113,18 +111,44 @@ export class CreateProjectComponent {
         Validators.required
       ]]
   })
+  createProjectStep3Form: UntypedFormGroup = this.fb.group({
+    editName: ['',
+      [
+        Validators.required,
+        Validators.maxLength(128)
+      ]],
+    editAddress: ['',
+      [
+        Validators.maxLength(255)
+      ]],
+    editSqft: ['',
+      [
+        Validators.pattern('(([1-9](\\d*|\\d{0,2}(,\\d{3})*))|0)(\\.\\d{1,5})?')
+      ]]
+  })
   
   ngOnInit(): void{
     this.idCompany = parseInt(localStorage.getItem('idcompany'));
-    this.getCompanyGroupList();
-    
-    if(this.createProjectWithGroup.id != ''){
+    if(this.project){
+      this.step = 3;
+      this.formStep3Values['editName'].setValue(this.project.projectName);
+      this.formStep3Values['editAddress'].setValue(this.project.projectAddress);
       this.selectedGroup = {
-        idGroup: this.createProjectWithGroup.id,
-        txtName: this.createProjectWithGroup.txtName,
+        idGroup: this.project.idGroup,
+        txtName: this.project.groupName,
         projectCount: 0
       }
+      this.formStep3Values['editSqft'].setValue(this.project.projectSqft);
+    } else{
+      if(this.createProjectWithGroup != ''){
+        this.selectedGroup = {
+          idGroup: this.createProjectWithGroup.id,
+          txtName: this.createProjectWithGroup.txtName,
+          projectCount: 0
+        }
+      }
     }
+    this.getCompanyGroupList();
   }
   
   
@@ -156,6 +180,10 @@ export class CreateProjectComponent {
   
   get formStep2Values(){
     return this.createProjectStep2Form.controls;
+  }
+  
+  get formStep3Values(){
+    return this.createProjectStep3Form.controls;
   }
   
   
@@ -200,7 +228,7 @@ export class CreateProjectComponent {
       return;
     }
     
-    if(this.selectedGroup.txtName == ''){
+    if(this.selectedGroup.idGroup == -1){
       this.toastrService.warning('Group is required, please back to select Group.');
       return;
     }
@@ -218,12 +246,12 @@ export class CreateProjectComponent {
     // }
     
     this.createProject = {
-      name: this.formStep1Values['name'].value,
-      address: this.formStep1Values['address'].value,
+      id: '',
+      projectName: this.formStep1Values['name'].value,
+      projectAddress: this.formStep1Values['address'].value,
       idGroup: this.selectedGroup.idGroup,
-      budget: this.formStep2Values['budget'].value,
-      sqft: this.formStep2Values['sqft'].value,
-      categoryList: this.createProject.categoryList
+      projectBudget: this.formStep2Values['budget'].value,
+      projectSqft: this.formStep2Values['sqft'].value
     }
     e.preventDefault();
     this.createBudgetModalRef = this.modalService.open(this.createBudgetModal, {
@@ -235,12 +263,44 @@ export class CreateProjectComponent {
     this.createBudgetModalRef.result.then((result) => {
       this.modalRef.close();
     }, (reason) => {
-      this.createProject.categoryList = reason;
+      this.budgetAllocation = reason;
       console.log(reason);
     })
   }
   
   onSubmit(){}
+  
+  
+  editProject(){
+    if(this.formStep3Values['editName'].value == ''){
+      this.toastrService.warning('Project Name is required, please back to enter the Project Name.');
+      return;
+    }
+    
+    if(this.selectedGroup.idGroup == -1){
+      this.toastrService.warning('Group is required, please back to select Group.');
+      return;
+    }
+    
+    this.apolloService.mutate(companyproject_updatedetail, {
+      id: this.project.id,
+      revision: this.project.revision,
+      projectName: this.formStep3Values['editName'].value,
+      projectAddress: this.formStep3Values['editAddress'].value,
+      idGroup: this.selectedGroup.idGroup,
+      projectSqft: this.formStep3Values['editSqft'].value
+    }).then((res) => {
+      let result = res.companyproject_updatedetail;
+      if(!result.error){
+        this.modalRef.close('save success');
+        this.toastrService.success('Save success', '');
+      } else{
+        this.toastrService.error(result.message, 'Error');
+      }
+    }).catch((error) => {
+      this.error = error;
+    });
+  }
   
   closeModal(e){
     e.preventDefault();

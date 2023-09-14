@@ -30,7 +30,7 @@ export class CreateGroupComponent implements OnInit {
   
   ngOnInit() {
     this.idCompany = parseInt(localStorage.getItem('idcompany'));
-    if(this.group.id != ''){
+    if(this.group != ''){
       this.newGroupFormValues['name'].setValue(this.group.txtName);
     }
   }
@@ -60,7 +60,7 @@ export class CreateGroupComponent implements OnInit {
     }
     let serviceName;
     let params;
-    if(this.group.id == ''){
+    if(this.group == ''){
       serviceName = companygroup_new;
       params = {
         idCompany: this.idCompany,

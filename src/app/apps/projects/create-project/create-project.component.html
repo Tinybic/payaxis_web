@@ -1,5 +1,5 @@
 <div class="modal-body modal-form-control" style="padding: 32px 24px 24px;">
-    <div class="headline-24">Create a new Project</div>
+    <div class="headline-24">{{project == '' ? 'Create a new Project':'Edit Project Details'}}</div>
     
     
     <div class="card mt-2-1 p-2-1">
@@ -165,6 +165,113 @@
                 <button class="btn btn-outline-primary" (click)="step=1">Cancel</button>
             </div>
         </form>
+        <form *ngIf="step==3" [formGroup]="createProjectStep3Form" (ngSubmit)="editProject()">
+            <div class="row">
+                <div class="col">
+                    <label class="form-label" for="editName" i18n>Project Name</label>
+                    <input class="form-control"
+                           type="text"
+                           id="editName"
+                           formControlName="editName"
+                           required
+                           i18n-placeholder placeholder="Enter a Name"
+                           [ngClass]="{'is-invalid':formStep3Values['editName'].invalid && formStep3Values['editName'].dirty}"/>
+                    <div *ngIf="formStep3Values['editName'].invalid && formStep3Values['editName'].dirty">
+                        <div *ngIf="formStep3Values['editName'].errors?.['required']" i18n>
+                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter project name
+                        </div>
+                        <div *ngIf="formStep3Values['editName'].errors?.['maxlength']" i18n>
+                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Project Name must be exceed 128
+                            letters
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col pt-2-1">
+                    <label class="form-label" for="editAddress" i18n>Project Address
+                    </label>
+                    <div class="text-optional-400 float-end" style="padding-top: 3px;">Optional</div>
+                    <input class="form-control"
+                           type="text"
+                           id="editAddress"
+                           formControlName="editAddress"
+                           i18n-placeholder
+                           placeholder="Enter an Address"
+                           [ngClass]="{'is-invalid': formStep3Values['editAddress'].invalid && formStep3Values['editAddress'].dirty}"/>
+                
+                    <div *ngIf="formStep3Values['editAddress'].invalid && formStep3Values['editAddress'].dirty">
+                        <div *ngIf="formStep3Values['editAddress'].errors?.['required']" i18n>
+                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter address
+                        </div>
+                        <div *ngIf="formStep3Values['editAddress'].errors?.['maxlength']" i18n>
+                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Project Address must be exceed 180
+                            letters
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-12 pt-2-1">
+                    <label class="form-label" i18n>
+                        Group
+                    </label>
+                    <div class="float-end" style="margin-top: -2px;">
+                        <button class="btn btn-link waves-effect ms-2-1 btn-text-12" (click)="newGroup($event)"
+                                style="margin-top: -1px;padding: 7px 16px;"><i
+                                class="fe-plus-square me-1-1" style="vertical-align: bottom;"></i>Create New Group
+                        </button>
+                    </div>
+                </div>
+                <div class="col col-12">
+                    <div class=" filterDropdownMenu d-inline-block dropdown" style="width: 100%;" ngbDropdown>
+                        <div class="dropdow-outline c-p search-text" style="width: 100%;background-color: #F8F9FC;"
+                             ngbDropdownToggle>
+                            {{selectedGroup.txtName}}
+                            <i class="fe-chevron-down font-16 ms-1-1 float-end"></i>
+                        </div>
+                        <div class="dropdown-menu" style="width: 100%;" ngbDropdownMenu>
+                            <div class="subtitle-2-500" *ngFor="let group of companyGroupList; let i=index;"
+                                 (click)="selectGroupProject(group)" ngbDropdownItem>
+                                <label class="form-check-label ms-1-1">
+                                    {{group.txtName}} ({{group.projectcount}})
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2-1">
+                <div class="col">
+                    <label class="form-label" for="editSqft" i18n>Project Size, sqft
+                    </label>
+                    <div class="text-optional-400 float-end" style="padding-top: 3px;">Optional</div>
+                    <input class="form-control"
+                           type="text"
+                           id="editSqft"
+                           required
+                           formControlName="editSqft"
+                           mask="separator.5"
+                           thousandSeparator=","
+                           allowNegativeNumbers="false"
+                           i18n-placeholder placeholder="0"
+                           [ngClass]="{'is-invalid': formStep3Values['editSqft'].invalid && formStep3Values['editSqft'].dirty}"/>
+            
+                    <div *ngIf="formStep3Values['editSqft'].invalid && formStep3Values['editSqft'].dirty">
+                        <div *ngIf="formStep3Values['editSqft'].errors?.['required']" i18n>
+                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter Project Size,sqft
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        
+            <div class="d-grid" style="width: calc(100% - 48px);position: fixed;bottom: 24px;right: 24px;">
+                <button class="btn btn-primary mb-1-1" type="submit" [disabled]="createProjectStep3Form.invalid || selectedGroup.idGroup == -1">Save
+                </button>
+                <button class="btn btn-outline-primary" (click)="closeModal($event)">Cancel</button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -175,10 +282,10 @@
 
 
 <ng-template #createBudgetModal let-modal>
-    <app-create-budget [params]="createProject" [modalRef]="createBudgetModalRef"></app-create-budget>
+    <app-create-budget [project]="createProject" [budgetAllocation]="budgetAllocation" [modalRef]="createBudgetModalRef"></app-create-budget>
 </ng-template>
 
 
 <ng-template #newGroupModal let-modal>
-    <app-create-group [group]="createGroup" [modalRef]="newGroupModalRef"></app-create-group>
+    <app-create-group [group]="''" [modalRef]="newGroupModalRef"></app-create-group>
 </ng-template>
