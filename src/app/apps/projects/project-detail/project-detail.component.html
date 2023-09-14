@@ -1,13 +1,13 @@
 <div class="row">
     <div class="col-md-6">
-        <div class="headline font-28">
+        <div class="headline font-28 line-32">
             {{project.projectName}}
         </div>
         <div class="subtitle-2-500 text-typeblack80">
             {{project.projectAddress}}
         </div>
     </div>
-    <div class="col-md-6 text-end">
+    <div class="col-md-6 text-end line-56">
         <div class="d-inline-block" ngbDropdown>
             <button class="btn btn-primary ms-2-1" ngbDropdownToggle>New Order<i
                     class="fe-chevron-down ms-1-1"></i></button>
@@ -133,7 +133,7 @@
                                     </div>
                                     <div class="card" style="height: 120px;margin-bottom: 16px">
                                         <div class="card-body padding-24">
-                                            <div class="subtitle-2-500-16 text-typeblack80">Pick Dates</div>
+                                            <div class="subtitle-2-500-16" style="color: #215EA9;">Pick Dates<div class="d-inline-block triangle ms-1-1"></div></div>
                                             <div class="subtitle-2-500-24 mt-2-1">-</div>
                                         </div>
                                     </div>
@@ -240,7 +240,7 @@
                     Team
                 </a>
             </li>
-            <li [ngbNavItem]="4">
+            <li [ngbNavItem]="5">
                 <a ngbNavLink>
                     Payment History
                 </a>
