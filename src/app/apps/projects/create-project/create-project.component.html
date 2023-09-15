@@ -66,14 +66,14 @@
                     </div>
                 </div>
                 <div class="col col-12">
-                    <div class=" filterDropdownMenu d-inline-block dropdown" style="width: 100%;" ngbDropdown>
+                    <div id="createProjectGroupDropdown" class="d-inline-block dropdown" style="width: 100%;" ngbDropdown>
                         <div class="dropdow-outline c-p search-text" style="width: 100%;background-color: #F8F9FC;"
                              ngbDropdownToggle>
                             {{selectedGroup.txtName}}
                             <i class="fe-chevron-down font-16 ms-1-1 float-end"></i>
                         </div>
                         <div class="dropdown-menu" style="width: 100%;" ngbDropdownMenu>
-                            <div class="subtitle-2-500" *ngFor="let group of companyGroupList; let i=index;"
+                            <div class="subtitle-2-500" *ngFor="let group of groupList; let i=index;"
                                  (click)="selectGroupProject(group)" ngbDropdownItem>
                                 <label class="form-check-label ms-1-1">
                                     {{group.txtName}} ({{group.projectcount}})
@@ -224,14 +224,14 @@
                     </div>
                 </div>
                 <div class="col col-12">
-                    <div class=" filterDropdownMenu d-inline-block dropdown" style="width: 100%;" ngbDropdown>
+                    <div id="editProjectGroupDropdown" class="d-inline-block dropdown" style="width: 100%;" ngbDropdown>
                         <div class="dropdow-outline c-p search-text" style="width: 100%;background-color: #F8F9FC;"
                              ngbDropdownToggle>
                             {{selectedGroup.txtName}}
                             <i class="fe-chevron-down font-16 ms-1-1 float-end"></i>
                         </div>
                         <div class="dropdown-menu" style="width: 100%;" ngbDropdownMenu>
-                            <div class="subtitle-2-500" *ngFor="let group of companyGroupList; let i=index;"
+                            <div class="subtitle-2-500" *ngFor="let group of groupList; let i=index;"
                                  (click)="selectGroupProject(group)" ngbDropdownItem>
                                 <label class="form-check-label ms-1-1">
                                     {{group.txtName}} ({{group.projectcount}})
