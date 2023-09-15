@@ -125,7 +125,7 @@ export class ProjectsComponent implements OnInit {
       this.apolloService.query(companygroup_list, {idCompany: this.idCompany}).then((res) => {
         const result = res.companygroup_list;
         if(!result.error){
-          this.companyGroupList = this.companyGroupList.concat(result.data);
+          this.companyGroupList = JSON.parse(JSON.stringify(result.data));
           
           this.companyGroupList.unshift({
             id: 'all',
@@ -133,6 +133,8 @@ export class ProjectsComponent implements OnInit {
             checked: false,
             projectCount: 0
           });
+          
+          console.log(this.companyGroupList.length, result.data.length)
           
           this.companyGroupList.map((group) => {
             group.checked = id === group.id;
