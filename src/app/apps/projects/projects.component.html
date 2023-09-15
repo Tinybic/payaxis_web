@@ -145,7 +145,7 @@
                         {{selectedGroup.txtName}}
                         <i class="fe-chevron-down font-16 ms-1-1"></i>
                     </div>
-                    <div id="groupDropdownMenu" class="dropdown-menu" ngbDropdownMenu>
+                    <div id="groupDropdownMenu" class="dropdown-menu" style="max-height: 360px;overflow-y: auto;" ngbDropdownMenu>
                         <a class="subtitle-2-500 c-p d-flex align-items-center justify-content-between"
                             [ngClass]="{'selected':selectedGroup.id == group.id}"
                             *ngFor="let group of companyGroupList; let i=index;"
