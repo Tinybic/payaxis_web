@@ -141,7 +141,7 @@ export class CreateProjectComponent {
       }
       this.formStep3Values['editSqft'].setValue(this.project.projectSqft);
     } else{
-      if(this.createProjectWithGroup != ''){
+      if(this.createProjectWithGroup.id !== ''){
         this.selectedGroup = {
           idGroup: this.createProjectWithGroup.id,
           txtName: this.createProjectWithGroup.txtName,

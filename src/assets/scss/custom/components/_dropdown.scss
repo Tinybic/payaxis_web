@@ -22,6 +22,9 @@
     }
     border-radius: 8px;
     padding: 16px;
+    &::-webkit-scrollbar{
+      width: 1px;
+    }
 }
 
 .dropdown-item{
@@ -161,7 +164,7 @@ html[dir="ltr"] .megamenu-list {
     white-space: nowrap; // prevent links from randomly breaking onto new lines
     background-color: transparent; // For `<button>`s
     border: 0; // For `<button>`s
-  
+
     border-radius: 8px;
 
     // Prevent dropdown overflow if there's no padding
@@ -170,26 +173,26 @@ html[dir="ltr"] .megamenu-list {
       &:first-child {
         @include border-top-radius($dropdown-inner-border-radius);
       }
-  
+
       &:last-child {
         @include border-bottom-radius($dropdown-inner-border-radius);
       }
     }
-  
+
     &:hover,
     &:focus {
       color: $dropdown-link-hover-color;
       text-decoration: if($link-hover-decoration == underline, none, null);
       @include gradient-bg($dropdown-link-hover-bg);
     }
-  
+
     &.active,
     &:active {
       color: $dropdown-link-active-color;
       text-decoration: none;
       @include gradient-bg($dropdown-link-active-bg);
     }
-  
+
     &.disabled,
     &:disabled {
       color: $dropdown-link-disabled-color;
@@ -199,4 +202,3 @@ html[dir="ltr"] .megamenu-list {
       background-image: if($enable-gradients, none, null);
     }
   }
-  
