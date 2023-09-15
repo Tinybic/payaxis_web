@@ -125,7 +125,7 @@ export class ProjectsComponent implements OnInit {
       this.apolloService.query(companygroup_list, {idCompany: this.idCompany}).then((res) => {
         const result = res.companygroup_list;
         if(!result.error){
-          this.companyGroupList = result.data;
+          this.companyGroupList = this.companyGroupList.concat(result.data);
           
           this.companyGroupList.unshift({
             id: 'all',

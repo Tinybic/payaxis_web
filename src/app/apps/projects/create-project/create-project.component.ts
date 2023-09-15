@@ -44,7 +44,7 @@ export class CreateProjectComponent {
     projectSqft: ''
   }
   budgetAllocation = [];
-  companyGroupList = [];
+  groupList = [];
   selectedGroup = {
     idGroup: -1,
     txtName: 'Assign Group',
@@ -129,6 +129,7 @@ export class CreateProjectComponent {
   
   ngOnInit(): void{
     this.idCompany = parseInt(localStorage.getItem('idcompany'));
+    this.getGroupList();
     if(this.project){
       this.step = 3;
       this.formStep3Values['editName'].setValue(this.project.projectName);
@@ -148,24 +149,15 @@ export class CreateProjectComponent {
         }
       }
     }
-    this.getCompanyGroupList();
   }
   
   
-  getCompanyGroupList(){
+  getGroupList(){
     if(this.idCompany != 0){
       this.apolloService.query(companygroup_list, {idCompany: this.idCompany}).then((res) => {
         const result = res.companygroup_list;
         if(!result.error){
-          this.companyGroupList = result.data;
-          
-          // if(this.companyGroupList.length > 0){
-          //   this.selectedGroup = {
-          //     idGroup: this.companyGroupList[this.companyGroupList.length - 1].id,
-          //     txtName: this.companyGroupList[this.companyGroupList.length - 1].txtName,
-          //     projectCount: this.companyGroupList[this.companyGroupList.length - 1].projectcount
-          //   }
-          // }
+          this.groupList = result.data;
         }
       });
     }
@@ -206,7 +198,7 @@ export class CreateProjectComponent {
     })
     
     this.newGroupModalRef.result.then((result) => {
-      this.getCompanyGroupList();
+      this.getGroupList();
     }, (reason) => {
       console.log(reason);
     })
