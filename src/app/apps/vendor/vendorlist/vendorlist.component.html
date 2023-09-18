@@ -4,10 +4,34 @@
     </h5>
     <div class="col-md-9 text-end">
         <button class="btn btn-link"><i class="fe-mail me-1-1"></i>Invite</button>
-        <button class="btn btn-outline-primary ms-2-1"><i class="fe-upload me-1-1"></i>Import<i
-                class="fe-chevron-down ms-1-1"></i></button>
-        <button class="btn btn-outline-primary ms-2-1"><i class="fe-download me-1-1"></i>Export<i
-                class="fe-chevron-down ms-1-1"></i></button>
+        <div ngbDropdown class="d-inline-block  ms-2-1">
+            <button class="btn btn-outline-primary" ngbDropdownToggle><i class="fe-upload me-1-1"></i>Import<i
+                    class="fe-chevron-down ms-1-1"></i></button>
+
+            <input id="csvupload" type="file"  accept=".csv"
+                class="d-none" />
+            <div ngbDropdownMenu style="width: 255px; ">
+                <div class="line-32 bold-600 cursor-pointer" (click) = "importFromQB()" ngbDropdownItem>Import from QuickBooks <img
+                    class="float-end mt-1" src="/assets/images/icon/qb.png" /></div>
+                <div class="line-32 bold-600 cursor-pointer" ngbDropdownItem
+                    >Import from CSV <img
+                        class="float-end mt-1" src="/assets/images/icon/csv.png" /></div>
+            </div>
+        </div>
+
+        <div ngbDropdown class="d-inline-block  ms-2-1">
+            <button class="btn btn-outline-primary" ngbDropdownToggle><i class="fe-download me-1-1"></i>Export<i
+                    class="fe-chevron-down ms-1-1"></i></button>
+
+            <div ngbDropdownMenu style="width: 255px;">
+                <div class="line-32 bold-600 cursor-pointer" ngbDropdownItem>Export to QuickBooks <img
+                        class="float-end mt-1" src="/assets/images/icon/qb.png" /></div>
+                <div class="line-32 bold-600 cursor-pointer" ngbDropdownItem>Export to CSV <img
+                        class="float-end mt-1" src="/assets/images/icon/csv.png" /></div>
+                <div class="line-32 bold-600 cursor-pointer" ngbDropdownItem>Export CSV Template <img
+                        class="float-end mt-1" src="/assets/images/icon/csv.png" /></div>
+            </div>
+        </div>
         <button class="btn btn-primary ms-2-1" (click)="openAddModal()">New Vendor</button>
     </div>
 </div>

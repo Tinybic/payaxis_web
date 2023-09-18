@@ -123,6 +123,10 @@ export type Mutation = {
   profile_2fa?: Maybe<Scalars['Boolean']['output']>;
   /** to activate the user profile */
   profile_activate: Response;
+  /** download quickbooks vendors */
+  quickbooks_downloadvendors: ResponseQuickbooks;
+  /** upload quickbooks vendors */
+  quickbooks_uploadvendors: ResponseQuickbooks;
   /** to send sms code */
   sms_send: Response;
   /** to verify the code */
@@ -430,6 +434,22 @@ export type MutationProfile_ActivateArgs = {
   revision: Scalars['Int']['input'];
   twofa: Scalars['Boolean']['input'];
   verificationCode: Scalars['String']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationQuickbooks_DownloadvendorsArgs = {
+  idCompany: Scalars['Int']['input'];
+  realmid: Scalars['String']['input'];
+  redirectUri: Scalars['String']['input'];
+  url: Scalars['String']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationQuickbooks_UploadvendorsArgs = {
+  accessToken: Scalars['String']['input'];
+  refreshToken: Scalars['String']['input'];
 };
 
 
@@ -1136,7 +1156,7 @@ export type Projectidrevision = {
 export type Projectinforesult = {
   __typename?: 'projectinforesult';
   code: Scalars['Int']['output'];
-  data: Companyproject;
+  data?: Maybe<Companyproject>;
   error: Scalars['Boolean']['output'];
   message: Scalars['String']['output'];
 };
@@ -1168,6 +1188,14 @@ export type Response = {
   __typename?: 'response';
   code: Scalars['Int']['output'];
   data?: Maybe<Token>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type ResponseQuickbooks = {
+  __typename?: 'responseQuickbooks';
+  code: Scalars['Int']['output'];
+  data: Scalars['Boolean']['output'];
   error: Scalars['Boolean']['output'];
   message: Scalars['String']['output'];
 };

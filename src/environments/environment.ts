@@ -4,8 +4,10 @@
 
 export const environment = {
   production: false,
-  apiUrl: "https://payaxis.azurewebsites.net/api/",
-  apolloUrl :"https://payaxis.azurewebsites.net/graphql"
+  apiUrl: 'https://payaxis.azurewebsites.net/api/',
+  apolloUrl: 'https://payaxis.azurewebsites.net/graphql',
+  baseUrl: 'http://localhost:4200',
+  intuitKey: 'ABmr511iE0FKIhJRmsN09MTXuSgekgQQcEdVwYiSmaSqnNywRZ',
 };
 
 /*

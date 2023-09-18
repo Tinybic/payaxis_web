@@ -153,10 +153,7 @@ const vendor_info = gql`
 
 const vendor_file_delete = gql`
   mutation vendor_file_delete($idVendor_file: Int!, $revision: Int!) {
-    vendor_file_delete(
-      idVendor_file: $idVendor_file
-      revision: $revision
-    ) {
+    vendor_file_delete(idVendor_file: $idVendor_file, revision: $revision) {
       error
       code
       message
@@ -166,14 +163,35 @@ const vendor_file_delete = gql`
 `;
 
 const vendor_archive = gql`
-mutation vendor_archive($id: Int!, $revision: Int!) {
-  vendor_archive(id: $id, revision: $revision) {
-    error
-    code
-    message
-    data
+  mutation vendor_archive($id: Int!, $revision: Int!) {
+    vendor_archive(id: $id, revision: $revision) {
+      error
+      code
+      message
+      data
+    }
   }
-}
+`;
+
+const quickbooks_downloadvendors = gql`
+  mutation quickbooks_downloadvendors(
+    $idCompany: Int!
+    $realmid: String!
+    $redirectUri: String!
+    $url: String!
+  ) {
+    quickbooks_downloadvendors(
+      idCompany: $idCompany
+      realmid: $realmid
+      redirectUri: $redirectUri
+      url: $url
+    ) {
+      error
+      code
+      message
+      data
+    }
+  }
 `;
 
 export {
@@ -183,4 +201,5 @@ export {
   vendor_info,
   vendor_file_delete,
   vendor_archive,
+  quickbooks_downloadvendors,
 };
