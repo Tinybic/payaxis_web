@@ -86,7 +86,7 @@
             
             
             <div class="d-grid" style="width: calc(100% - 48px);position: fixed;bottom: 24px;right: 24px;">
-                <button class="btn btn-primary mb-1-1" type="submit" [disabled]="createProjectStep1Form.invalid || selectedGroup.txtName == ''">Next
+                <button class="btn btn-primary mb-1-1" type="submit" [disabled]="createProjectStep1Form.invalid || selectedGroup.idGroup == -1">Next
                 </button>
                 <button class="btn btn-outline-primary" (click)="closeModal($event)">Cancel</button>
             </div>

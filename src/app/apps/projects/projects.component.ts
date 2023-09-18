@@ -133,9 +133,6 @@ export class ProjectsComponent implements OnInit {
             checked: false,
             projectCount: 0
           });
-          
-          console.log(this.companyGroupList.length, result.data.length)
-          
           this.companyGroupList.map((group) => {
             group.checked = id === group.id;
             if(id === group.id){

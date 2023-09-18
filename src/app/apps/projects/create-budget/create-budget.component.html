@@ -23,12 +23,13 @@
                        class="form-control"
                        type="text"
                        [(ngModel)]="project.projectBudget"
+                       (focus)="setCursorPosition($event, '', project.projectBudget,'')"
+                       (ngModelChange)="budgetChange()"
                        prefix="$"
                        mask="separator.2"
                        thousandSeparator=","
                        allowNegativeNumbers="false"
                        i18n-placeholder placeholder="0.00"
-                       (ngModelChange)="calculateBudget()"
                        style="font-size: 21.33px;line-height: 24px;font-weight: 400;color: #202020;text-align: right;"
                 />
             </div>
@@ -91,12 +92,13 @@
                                i18n-placeholder placeholder="0"
                                (ngModelChange)="budgetPercentageChange(item)"
                                (focus)="setCursorPosition($event, item, item.budgetPercentage, 'budgetPercentage')"
+                               [disabled]="project.projectBudget == 0"
                         />
                     </div>
                 </td>
                 <td style="width: 30%;">
                     <div *ngIf="i!=editingCategory" class="td-text" (click)="setEdtingCategory(i, 'BA')">
-                        {{item.budgetAmount | currency}}
+                        {{item.budgetAmount == '' ? 0 : item.budgetAmount| currency}}
                     </div>
                     <div *ngIf="i==editingCategory">
                         <input id="budgetAmount_{{i}}"

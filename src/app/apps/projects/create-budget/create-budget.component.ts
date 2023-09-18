@@ -31,12 +31,11 @@ export class CreateBudgetComponent {
   idCompany = 0;
   categoryList = [];
   editingCategory = -1;
+  keepBudgetAllocation = [];
   
   
   ngOnInit(): void{
-    this.project.projectBudget = this.project.projectBudget ? this.project.projectBudget : 0;
-    this.project.projectSqft = this.project.projectSqft ? this.project.projectSqft : 0;
-    
+    this.keepBudgetAllocation = JSON.parse(JSON.stringify(this.budgetAllocation));
     this.calculateBudget();
     this.getCategoryList();
   }
@@ -90,13 +89,22 @@ export class CreateBudgetComponent {
   
   setCursorPosition(e, item, val, type){
     if(val == 0){
-      item[type] = '';
+      if(type == ''){
+        this.project.projectBudget = '';
+      } else{
+        item[type] = '';
+      }
     }
     setTimeout(() => {
       let t = e.target;
       t.scrollLeft = t.scrollWidth;
       t.setSelectionRange(1000, 1000);
     }, 150)
+  
+    if(type == ''){
+      this.editingCategory = -1;
+      this.cleanCategoryList();
+    }
   }
   
   selectedCategory(category){
@@ -108,6 +116,7 @@ export class CreateBudgetComponent {
     })
     this.budgetAllocation[this.editingCategory].idCategory = category.id;
     this.budgetAllocation[this.editingCategory].category = category.txtName;
+    this.keepBudgetAllocation = JSON.parse(JSON.stringify(this.budgetAllocation));
   }
   
   deleteCategory(i){
@@ -147,13 +156,13 @@ export class CreateBudgetComponent {
   
   calculateBudget(){
     let allocatedBudgetTotal = 0;
-    let progressBarPercentageTotal = 0;
     this.budgetAllocation.map(item => {
       allocatedBudgetTotal += item.budgetAmount;
-      progressBarPercentageTotal += item.budgetPercentage;
     })
     this.allocatedBudget = allocatedBudgetTotal;
-    if(this.project.projectBudget == 0){
+    this.keepBudgetAllocation = JSON.parse(JSON.stringify(this.budgetAllocation));
+    
+    if(this.project.projectBudget == 0 || this.project.projectBudget == ''){
       this.progressBarPercentage = 100;
     } else if(this.allocatedBudget > this.project.projectBudget){
       this.progressBarPercentage = this.project.projectBudget / this.allocatedBudget * 100;
@@ -162,15 +171,39 @@ export class CreateBudgetComponent {
     }
   }
   
+  budgetChange(){
+    if([0, ''].includes(this.project.projectBudget)){
+      this.budgetAllocation.map(item => {
+        item.budgetPercentage = 0;
+      })
+      this.progressBarPercentage = 100;
+    } else{
+      this.budgetAllocation = JSON.parse(JSON.stringify(this.keepBudgetAllocation));
+      let allocatedBudgetTotal = 0;
+      this.budgetAllocation.map(item => {
+        item.budgetAmount = this.project.projectBudget * item.budgetPercentage / 100;
+        allocatedBudgetTotal += item.budgetAmount;
+      })
+      this.keepBudgetAllocation = JSON.parse(JSON.stringify(this.budgetAllocation));
+      this.allocatedBudget = allocatedBudgetTotal;
+      if(this.allocatedBudget > this.project.projectBudget){
+        this.progressBarPercentage = this.project.projectBudget / this.allocatedBudget * 100;
+      } else{
+        this.progressBarPercentage = this.allocatedBudget / this.project.projectBudget * 100;
+      }
+    }
+    
+  }
+  
   budgetPercentageChange(budget){
-    if(this.project.projectBudget !== 0){
+    if(this.project.projectBudget !== 0 && this.project.projectBudget !== ''){
       budget.budgetAmount = this.project.projectBudget * budget.budgetPercentage / 100;
     }
     this.calculateBudget();
   }
   
   budgetAmountChange(budget){
-    if(this.project.projectBudget !== 0){
+    if(this.project.projectBudget !== 0 && this.project.projectBudget !== ''){
       budget.budgetPercentage = budget.budgetAmount / this.project.projectBudget * 100;
     }
     this.calculateBudget();
@@ -215,10 +248,10 @@ export class CreateBudgetComponent {
         projectAddress: this.project.projectAddress,
         idGroup: this.project.idGroup,
         projectBudget: this.project.projectBudget,
-        projectSqft: this.project.projectSqft,
+        projectSqft: this.project.projectSqft ? this.project.projectSqft : 0,
         budgetAllocation: list
       }
-    }else {
+    } else{
       serviceName = companyproject_updatebudget;
       params = {
         id: this.project.id,
@@ -244,7 +277,10 @@ export class CreateBudgetComponent {
   
   closeModal(){
     this.cleanCategoryList();
-    this.modalRef.dismiss(this.budgetAllocation);
+    this.modalRef.dismiss({
+      budgetAllocation: this.budgetAllocation,
+      projectBudget: this.project.projectBudget
+    });
   }
 }
 
