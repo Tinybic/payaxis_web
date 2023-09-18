@@ -31,6 +31,7 @@ export class ProjectsComponent implements OnInit {
   @ViewChild('createProjectModal') createProjectModal: NgbModalRef;
   @ViewChild('newGroupModal') newGroupModal: NgbModalRef;
   @ViewChild('deleteModal') deleteModal: NgbModalRef;
+  @ViewChild('infoModal') infoModal: NgbModalRef;
   @ViewChild('selectColor') selectColor: NgbModalRef;
   @ViewChild('deleteProjectModal') deleteProjectModal: NgbModalRef;
   
@@ -57,6 +58,12 @@ export class ProjectsComponent implements OnInit {
     params: {}
   };
   
+  infoObj = {
+    title: '',
+    message: '',
+    btnOK: ''
+  }
+  
   createProjectWithGroup = {
     id: '',
     txtName: ''
@@ -64,6 +71,7 @@ export class ProjectsComponent implements OnInit {
   
   newGroupModalRef: NgbModalRef;
   deleteModalRef: NgbModalRef;
+  infoModalRef: NgbModalRef;
   
   constructor(
     private modalService: NgbModal,
@@ -264,22 +272,47 @@ export class ProjectsComponent implements OnInit {
     this.router.navigate(['apps/projects/guid']);
   }
   
-  pinProject(item, pinyn){
-    this.apolloService.mutate(companyproject_pin, {
-      id: item.id,
-      revision: item.revision,
-      pinyn: pinyn
-    }).then((res) => {
-      const result = res.companyproject_pin;
-      let message = '';
-      if(!result.error){
-        message = 'Project pin have been updated';
-      } else{
-        message = result.message;
-      }
-      this.getProjectList();
-      this.toastrService.info(message, '');
+  
+  pinInfo(){
+    this.infoObj = {
+      title: 'Pin Project',
+      message: 'Only 4 Projects could be pin to the top.',
+      btnOK: 'Clear'
+    };
+    
+    this.infoModalRef = this.modalService.open(this.infoModal, {
+      size: '443',
+      centered: true
     });
+  }
+  
+  pinProject(item, pinyn){
+    let pinProjectsLength = 0;
+    this.projectList.map(item => {
+      if(item.pinyn){
+        pinProjectsLength++;
+      }
+    })
+    
+    if(pinProjectsLength > 3 && pinyn){
+      this.pinInfo();
+    } else{
+      this.apolloService.mutate(companyproject_pin, {
+        id: item.id,
+        revision: item.revision,
+        pinyn: pinyn
+      }).then((res) => {
+        const result = res.companyproject_pin;
+        let message = '';
+        if(!result.error){
+          message = 'Project pin have been updated';
+        } else{
+          message = result.message;
+        }
+        this.getProjectList();
+        this.toastrService.info(message, '');
+      });
+    }
   }
   
   colorRef;

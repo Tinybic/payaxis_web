@@ -372,8 +372,14 @@
 <!--#deleteModal-->
 <ng-template #deleteModal let-modal>
     <app-delete-modal [title]="deleteObj.title" [message]="deleteObj.message" [btnDelete]="deleteObj.btnDelete"
-        [modalRef]="deleteModalRef" [serviceName]="deleteObj.serviceName" [serviceNameStr]="deleteObj.serviceNameStr"
-        [params]="deleteObj.params"></app-delete-modal>
+                      [modalRef]="deleteModalRef" [serviceName]="deleteObj.serviceName" [serviceNameStr]="deleteObj.serviceNameStr"
+                      [params]="deleteObj.params"></app-delete-modal>
+</ng-template>
+
+
+<!--#infoModal-->
+<ng-template #infoModal let-modal>
+    <app-info-modal [title]="infoObj.title" [message]="infoObj.message" [btnOK]="infoObj.btnOK" [modalRef]="infoModalRef"></app-info-modal>
 </ng-template>
 
 <!--#deleteProjectModal-->
