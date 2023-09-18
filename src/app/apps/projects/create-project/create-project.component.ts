@@ -255,7 +255,8 @@ export class CreateProjectComponent {
     this.createBudgetModalRef.result.then((result) => {
       this.modalRef.close();
     }, (reason) => {
-      this.budgetAllocation = reason;
+      this.budgetAllocation = reason.budgetAllocation;
+      this.formStep2Values['budget'].setValue(reason.projectBudget);
       console.log(reason);
     })
   }
