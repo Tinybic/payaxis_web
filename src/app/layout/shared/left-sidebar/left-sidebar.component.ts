@@ -169,7 +169,6 @@ export class LeftSidebarComponent implements OnInit {
           this.activeMenuItems = matchingObjs;
 
 
-          console.log(this.activeMenuItems);
           this.menuItems.forEach((menu: MenuItem) => {
             menu.collapsed = !matchingObjs.includes(menu.key!);
           });

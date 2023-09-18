@@ -1,8 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { vendor_list } from 'src/app/core/gql/vendor';
+import {
+  quickbooks_downloadvendors,
+  vendor_list,
+} from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-vendorlist',
@@ -105,5 +109,70 @@ export class VendorlistComponent {
         this.getVendorList();
       }
     );
+  }
+
+  getQuickboosVendors(realmid, redirectUri, url) {
+    this.apolloService
+      .mutate(quickbooks_downloadvendors, {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
+        realmid: realmid,
+        redirectUri: redirectUri,
+        url: url,
+      })
+      .then((res) => {
+        const result = res.quickbooks_downloadvendors;
+        let message = '';
+        if (!result.error) {
+          message = 'Sync successful';
+          this.getVendorList();
+        } else {
+          message = result.message;
+        }
+        this.toastrService.info(message, '');
+        this.loading = false;
+      });
+  }
+
+  getQueryString(name, url) {
+    var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+    var r = url.substr(1).match(reg);
+    if (r != null) {
+      return unescape(r[2]);
+    }
+    return null;
+  }
+
+  importFromQB() {
+    var parameters = 'location=1,width=800,height=650';
+    parameters +=
+      ',left=' + (screen.width - 800) / 2 + ',top=' + (screen.height - 650) / 2;
+    const backurl = environment.baseUrl + '/apps/vendor';
+    var win = window.open(
+      'https://appcenter.intuit.com/app/connect/oauth2?client_id=' +
+        environment.intuitKey +
+        '&redirect_uri=' +
+        backurl +
+        '&response_type=code&scope=com.intuit.quickbooks.accounting&state=testState',
+      'connectPopup',
+      parameters
+    );
+    let that = this;
+    var pollOAuth = window.setInterval(function () {
+      try {
+        if (win.document.URL.indexOf('code') != -1) {
+          let realmid = that.getQueryString('realmid', win.document.URL);
+
+          that.getQuickboosVendors(
+            realmid,
+            backurl,
+            win.document.URL.replace(environment.baseUrl, '')
+          );
+          window.clearInterval(pollOAuth);
+          win.close();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }, 100);
   }
 }
