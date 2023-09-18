@@ -19,6 +19,7 @@ import { CreateGroupComponent } from './create-group/create-group.component';
 import { SetColorComponent } from './set-color/set-color.component';
 import { DeleteModalComponent } from "../../shared/delete-modal/delete-modal.component";
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
+import { InfoModalComponent } from "../../shared/info-modal/info-modal.component";
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { ProjectDetailComponent } from './project-detail/project-detail.componen
     CreateGroupComponent,
     SetColorComponent,
     DeleteModalComponent,
-    ProjectDetailComponent
+    ProjectDetailComponent,
+    InfoModalComponent
   ],
   imports: [
     CommonModule,
