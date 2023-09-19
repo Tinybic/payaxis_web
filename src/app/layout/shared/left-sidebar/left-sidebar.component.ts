@@ -31,6 +31,7 @@ import {
   TopbarTheme,
 } from '../config/layout.model';
 import { ToastrService } from 'ngx-toastr';
+import { GlobalFunctionsService } from "src/app/core/service/global-functions.service";
 
 @Component({
   selector: 'app-left-sidebar',
@@ -54,7 +55,8 @@ export class LeftSidebarComponent implements OnInit {
     private router: Router,
     private eventService: EventService,
     private apolloService: ApolloService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private globalService: GlobalFunctionsService
   ) {
     router.events.forEach((event) => {
       if (event instanceof NavigationEnd) {
@@ -67,7 +69,8 @@ export class LeftSidebarComponent implements OnInit {
     });
   }
 
-  getCompanyList() {
+
+getCompanyList() {
     if (localStorage.getItem('token')) {
       this.apolloService.query(company_list, {}).then((res) => {
         if (!res.company_list.error) {
@@ -86,7 +89,8 @@ export class LeftSidebarComponent implements OnInit {
             localStorage.setItem(
               'idUserOwner',
               this.companyList[0].idUserOwner
-            );
+            );            
+            this.globalService.setCompanyID(parseInt(this.companyList[0].id.toString()));
           } else {
             for (let i = 0; i < this.companyList.length; i++) {
               if (
@@ -119,6 +123,7 @@ export class LeftSidebarComponent implements OnInit {
     localStorage.setItem('idcompany', id);
     localStorage.setItem('companyName', name);
     localStorage.setItem('idUserOwner', idUserOwner);
+    this.globalService.setCompanyID(parseInt(id));
     this.toastrService.info('Switch to Company ' + name, 'Successful');
     this.router.navigate(['apps/projects']).then(() => {
       this.router.navigate(['apps/setting']);

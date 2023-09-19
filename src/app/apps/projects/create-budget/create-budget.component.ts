@@ -214,7 +214,7 @@ export class CreateBudgetComponent {
     this.cleanCategoryList();
     
     if(this.project.projectName == ''){
-      this.toastrService.warning('Project Name is required, please back to enter the Project Name.');
+      this.toastrService.info('Project Name is required, please back to enter the Project Name.');
       return;
     }
     
@@ -265,9 +265,9 @@ export class CreateBudgetComponent {
       let result: any = Object.values(res)[0];
       if(!result.error){
         this.modalRef.close('save success');
-        this.toastrService.success('Save success', '');
+        this.toastrService.info('Save success', '');
       } else{
-        this.toastrService.error(result.message, 'Error');
+        this.toastrService.info(result.message, 'Error');
       }
     }).catch((error) => {
       this.error = error;

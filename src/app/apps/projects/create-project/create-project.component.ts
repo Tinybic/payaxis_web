@@ -216,12 +216,12 @@ export class CreateProjectComponent {
   
   createBudget(e){
     if(this.formStep1Values['name'].value == ''){
-      this.toastrService.warning('Project Name is required, please back to enter the Project Name.');
+      this.toastrService.info('Project Name is required, please back to enter the Project Name.');
       return;
     }
     
     if(this.selectedGroup.idGroup == -1){
-      this.toastrService.warning('Group is required, please back to select Group.');
+      this.toastrService.info('Group is required, please back to select Group.');
       return;
     }
     
@@ -266,12 +266,12 @@ export class CreateProjectComponent {
   
   editProject(){
     if(this.formStep3Values['editName'].value == ''){
-      this.toastrService.warning('Project Name is required, please back to enter the Project Name.');
+      this.toastrService.info('Project Name is required, please back to enter the Project Name.');
       return;
     }
     
     if(this.selectedGroup.idGroup == -1){
-      this.toastrService.warning('Group is required, please back to select Group.');
+      this.toastrService.info('Group is required, please back to select Group.');
       return;
     }
     
@@ -286,9 +286,9 @@ export class CreateProjectComponent {
       let result = res.companyproject_updatedetail;
       if(!result.error){
         this.modalRef.close('save success');
-        this.toastrService.success('Save success', '');
+        this.toastrService.info('Save success', '');
       } else{
-        this.toastrService.error(result.message, 'Error');
+        this.toastrService.info(result.message, 'Error');
       }
     }).catch((error) => {
       this.error = error;

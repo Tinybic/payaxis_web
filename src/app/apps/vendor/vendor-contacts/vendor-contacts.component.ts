@@ -99,13 +99,13 @@ export class VendorContactsComponent {
     }).then((res) => {
       const result = res.vendor_contact_deactivate;
       if(!result.error){
-        this.toastrService.success('Delete success', '');
+        this.toastrService.info('Delete success', '');
         this.vendorContacts.splice(i, 1);
       } else{
-        this.toastrService.error(result.message, '');
+        this.toastrService.info(result.message, '');
       }
     }).catch((error) => {
-      this.toastrService.error(error, '');
+      this.toastrService.info(error, '');
     });
   }
   

@@ -147,7 +147,7 @@
                         {{selectedGroup.txtName}}
                         <i class="fe-chevron-down font-16 ms-1-1"></i>
                     </div>
-                    <div id="groupDropdownMenu" class="dropdown-menu" style="max-height: 360px;overflow-y: auto;"
+                    <div id="groupDropdownMenu" class="dropdown-menu" style="max-height: 360px;"
                          ngbDropdownMenu>
                         <a class="subtitle-2-500 c-p d-flex align-items-center justify-content-between"
                            [ngClass]="{'selected':selectedGroup.id == group.id}"
@@ -168,7 +168,7 @@
                                         ngbDropdownToggle>
                                     <i class="fe-more-vertical- text-blackprimary"></i>
                                 </button>
-                                <div class="dropdown-menu" style="padding: 4px;" ngbDropdownMenu>
+                                <div class="dropdown-menu" style="padding: 4px;" ngbDropdownMenu placement="bottom-end">
                                     <a class="subtitle-2-500 c-p d-flex align-items-center"
                                        (click)="filterDropdownMenu.close();newGroup(group);" ngbDropdownItem>
                                         <i class="fe-type me-1-1"></i>
