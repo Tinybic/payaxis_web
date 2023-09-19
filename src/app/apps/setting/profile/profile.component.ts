@@ -1,4 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { NgbTypeahead } from '@ng-bootstrap/ng-bootstrap';
 import {
   Observable,
@@ -27,7 +33,7 @@ import { HttpService } from 'src/app/core/service/http.service';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
 })
-export class ProfileComponent{
+export class ProfileComponent implements OnInit, OnDestroy {
   @ViewChild('instance', { static: true }) instance!: NgbTypeahead;
   @ViewChild('fileInput', { static: false })
   fileInput: ElementRef<HTMLInputElement>;
@@ -171,12 +177,16 @@ export class ProfileComponent{
 
       if (!result.error) {
         this.company.id = result.data.id;
-        this.company.revision =  result.data.revision;
+        this.company.revision = result.data.revision;
         localStorage.setItem('idcompany', this.company.id.toString());
         this.eventService.broadcast(EventType.CHANGE_COMPANY, true);
       }
       this.toastrService.info(result.message, '');
     });
+  }
+
+  ngOnDestroy() {
+    this.eventService.broadcast(EventType.CHANGE_COMPANY, true);
   }
 
   dropdownSelect(item) {

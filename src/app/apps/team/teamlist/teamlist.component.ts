@@ -305,6 +305,7 @@ export class TeamlistComponent {
 
   step1() {
     let data = [];
+    this.userList = [];
     this.emailList.forEach((item) => {
       data.push(item.value);
     });
@@ -315,14 +316,13 @@ export class TeamlistComponent {
       })
       .then((res) => {
         if (!res.companymember_emails.error) {
-          console.log(this.roleItems);
           res.companymember_emails.data.forEach((item) => {
             this.userList.push({
               email: item.email,
               memberyn: item.memberyn,
-              idRole: 0,
+              idRole: this.roleItems[0].id,
               role: this.roleItems[0].text,
-              approvalAmount: this.roleItems[0].id,
+              approvalAmount: 0,
               approvalAmountText: 'Approval Limit',
             });
           });
@@ -371,6 +371,7 @@ export class TeamlistComponent {
       }
       this.step = 'step1';
       this.email = '';
+      this.emailList = [];
       this.toastrService.info(message, '');
     });
   }
