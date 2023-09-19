@@ -232,8 +232,8 @@ export class CreateBudgetComponent {
     this.budgetAllocation.map(item => {
       list.push({
         idCategory: item.idCategory,
-        budgetPercentage: item.budgetPercentage,
-        budgetAmount: item.budgetAmount
+        budgetPercentage: item.budgetPercentage ? item.budgetPercentage: 0,
+        budgetAmount: item.budgetAmount ? item.budgetAmount : 0
       })
     })
     
@@ -247,7 +247,7 @@ export class CreateBudgetComponent {
         projectName: this.project.projectName,
         projectAddress: this.project.projectAddress,
         idGroup: this.project.idGroup,
-        projectBudget: this.project.projectBudget,
+        projectBudget: this.project.projectBudget ? this.project.projectBudget : 0,
         projectSqft: this.project.projectSqft ? this.project.projectSqft : 0,
         budgetAllocation: list
       }
