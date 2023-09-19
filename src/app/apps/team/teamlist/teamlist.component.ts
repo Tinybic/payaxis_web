@@ -207,7 +207,7 @@ export class TeamlistComponent {
 
   public alertOption: SweetAlertOptions = {};
 
-  deleteFirstname ='';
+  deleteFirstname = '';
   deleteLastname = '';
   deleteIndex = '';
 
@@ -221,13 +221,17 @@ export class TeamlistComponent {
 
   deactiveMembers() {
     this.apolloService
-      .mutate(company_member_deactivate, { id: this.members[this.deleteIndex].id, revision: this.members[this.deleteIndex].revision })
+      .mutate(company_member_deactivate, {
+        id: this.members[this.deleteIndex].id,
+        revision: this.members[this.deleteIndex].revision,
+      })
       .then((res) => {
         let message = '';
         const result = res.company_member_deactivate;
         message = result.message;
         this.getCompanyMembers();
         this.toastrService.info(message, '');
+        this.modalService.dismissAll();
       });
   }
 
@@ -266,6 +270,7 @@ export class TeamlistComponent {
   openVerticallyCentered(content: TemplateRef<NgbModal>): void {
     this.modalService.open(content, { size: '530', centered: true });
   }
+
 
   inviteMembers() {
     if (this.idUser == this.idUserOwner)

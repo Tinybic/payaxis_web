@@ -246,7 +246,7 @@
                         <span *ngIf="!editFlag || item.role == 'Owner'">${{item.approvalAmount}}</span>
                     </td>
                     <td>{{item.active?'Active':'InActive'}}</td>
-                    <td><i class=" fe-trash-2 cursor-pointer" *ngIf="idUser==idUserOwner && item.role != 'Owner'"
+                    <td><i class=" fe-trash-2 cursor-pointer" *ngIf="idUser==idUserOwner && item.role != 'Owner' && item.active"
                             (click)="deactive(i)"></i></td>
                 </tr>
             </tbody>
