@@ -37,7 +37,7 @@ export class InfoComponent implements OnInit {
   formSubmitted: boolean = false;
   loading: boolean = false;
   error: string = '';
-
+  phoneError = '';
   mobile: string = '';
   revision: number = 1;
 
@@ -133,10 +133,30 @@ export class InfoComponent implements OnInit {
               result = res.company_new;
               if (!result.error) {
                 localStorage.setItem('idcompany', result.data.id);
-                this.router.navigate(['apps/welcome']);
+
+                this.apolloService.query(profile_info, {}).then((res) => {
+                  if (!res.profile_info.error) {
+                    const result = res.profile_info.data;
+                    localStorage.setItem('email', result.email);
+                    localStorage.setItem('firstName', result.firstName);
+                    localStorage.setItem('lastName', result.lastName);
+                    localStorage.setItem(
+                      'memberyn',
+                      result.memberyn.toString()
+                    );
+                    localStorage.setItem('id', result.id.toString());
+                    localStorage.setItem('avatar', result.avatar);
+                    localStorage.setItem(
+                      'welcomeyn',
+                      result.welcomeyn.toString()
+                    );
+
+                    this.router.navigate(['apps/welcome']);
+                  }
+                  this.loading = false;
+                });
               }
             });
-          
         } else {
           this.error = res.profile_activate.message;
         }
@@ -155,9 +175,18 @@ export class InfoComponent implements OnInit {
    */
   paracont: string = 'Resend';
   onSubmit(): void {
+    this.phoneError = '';
     this.error = '';
     this.formSubmitted = true;
     if (this.signUpForm2.valid) {
+      if (
+        this.formValues['f2_auth'].value &&
+        this.formValues['phone'].value.length == 0
+      ) {
+        this.phoneError = 'error';
+        return;
+      }
+
       if (this.formValues['f2_auth'].value) {
         if (this.paracont == 'Resend') {
           this.modalService.dismissAll();
