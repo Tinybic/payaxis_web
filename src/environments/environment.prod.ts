@@ -3,5 +3,5 @@ export const environment = {
   apiUrl: "https://payaxis.azurewebsites.net/api/",
   apolloUrl :"https://payaxis.azurewebsites.net/graphql",
   baseUrl: "https://zealous-ocean-0382f3010.3.azurestaticapps.net",
-  intuitKey: 'ABmr511iE0FKIhJRmsN09MTXuSgekgQQcEdVwYiSmaSqnNywRZ',
+  intuitKey: 'ABhGS3Ozya4I5jKquoHETNNOnX8vFu8jyufgFXnhenoU13rQHC',
 };
