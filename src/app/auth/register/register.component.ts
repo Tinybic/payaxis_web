@@ -150,7 +150,7 @@ export class RegisterComponent implements OnInit {
       backdrop: 'static',
       centered: true
     })
-    this.sendVerifyCode();
+    this.setResendInterval();
   }
   
   /**
