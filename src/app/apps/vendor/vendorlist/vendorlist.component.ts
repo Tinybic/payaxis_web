@@ -169,6 +169,11 @@ export class VendorlistComponent {
           window.clearInterval(pollOAuth);
           win.close();
         }
+        else if(win.document.URL.indexOf('error=access_denied') != -1){
+          that.toastrService.info('Authorization is required, please try again','');
+          window.clearInterval(pollOAuth);
+          win.close();
+        }
       } catch (e) {
         console.log(e);
       }
