@@ -68,21 +68,46 @@ export class LeftSidebarComponent implements OnInit {
   }
 
   getCompanyList() {
-    this.apolloService.query(company_list, {}).then((res) => {
-      if (!res.company_list.error) {
-        this.companyList = res.company_list.data;
-        if (
-          this.companyList.length > 0 &&
-          (localStorage.getItem('idcompany') == '0' ||
-            localStorage.getItem('idcompany') == null||
-            localStorage.getItem('idUserOwner') == null)
-        ) {
-          localStorage.setItem('idcompany', this.companyList[0].id.toString());
-          localStorage.setItem('companyName', this.companyList[0].txtName);
-          localStorage.setItem('idUserOwner', this.companyList[0].idUserOwner);
+    if (localStorage.getItem('token')) {
+      this.apolloService.query(company_list, {}).then((res) => {
+        if (!res.company_list.error) {
+          this.companyList = res.company_list.data;
+          if (
+            this.companyList.length > 0 &&
+            (localStorage.getItem('idcompany') == '0' ||
+              localStorage.getItem('idcompany') == null ||
+              localStorage.getItem('idUserOwner') == null)
+          ) {
+            localStorage.setItem(
+              'idcompany',
+              this.companyList[0].id.toString()
+            );
+            localStorage.setItem('companyName', this.companyList[0].txtName);
+            localStorage.setItem(
+              'idUserOwner',
+              this.companyList[0].idUserOwner
+            );
+          } else {
+            for (let i = 0; i < this.companyList.length; i++) {
+              if (
+                this.companyList[i].id.toString() ==
+                localStorage.getItem('idcompany')
+              ) {
+                localStorage.setItem(
+                  'companyName',
+                  this.companyList[i].txtName
+                );
+                localStorage.setItem(
+                  'idUserOwner',
+                  this.companyList[i].idUserOwner
+                );
+                break;
+              }
+            }
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   ngOnInit(): void {
@@ -165,10 +190,7 @@ export class LeftSidebarComponent implements OnInit {
             ...findAllParent(this.menuItems, activeMt),
           ];
 
-
-
           this.activeMenuItems = matchingObjs;
-
 
           this.menuItems.forEach((menu: MenuItem) => {
             menu.collapsed = !matchingObjs.includes(menu.key!);
