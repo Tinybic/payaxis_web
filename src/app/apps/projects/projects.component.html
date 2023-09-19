@@ -17,51 +17,51 @@
                 <div class="card-body">
                     <div>
                         <span class="badge me-1 text-light btn-text-12"
-                            style="padding: 2px 6px;background-color: {{project.color}}26;color: {{project.color}} !important;">{{project.groupName}}</span>
+                              style="padding: 2px 6px;background-color: {{project.color}}26;color: {{project.color}} !important;">{{project.groupName}}</span>
                         <div class="float-end" ngbDropdown placement="bottom-end" style="padding-top: 4px;">
                             <a href="javascript:void(0);" class="arrow-none card-drop" ngbDropdownToggle>
                                 <i class="mdi mdi-dots-vertical text-blackprimary"></i>
                             </a>
                             <div ngbDropdownMenu style="padding: 4px 8px;">
                                 <a class="subtitle-2-500" href="javascript:void(0);" (click)="openSetColor(project)"
-                                    style="padding: 12px 4px;" ngbDropdownItem>
+                                   style="padding: 12px 4px;" ngbDropdownItem>
                                     <i class="fe-image me-1-1"></i>
                                     Set color & icon
                                 </a>
                                 <a class="subtitle-2-500 dropdown-item1" href="javascript:void(0);"
-                                    style="padding: 12px 4px;">
+                                   style="padding: 12px 4px;">
                                     <div ngbDropdown placement="end-top">
                                         <div style="width: 100%; color: #202020;" ngbDropdownToggle>
                                             <i class="fe-folder me-1-1"></i>
                                             Move to
                                         </div>
                                         <div *ngIf="companyGroupList.length > 2" ngbDropdownMenu
-                                            aria-labelledby="dropdownBasic" class="ms-2-1 mt1-36"
-                                            style="padding: 3px 4px;">
+                                             aria-labelledby="dropdownBasic" class="ms-2-1 mt1-36"
+                                             style="padding: 3px 4px;">
                                             <div *ngFor="let group of companyGroupList;">
                                                 <a href="javascript:void(0)"
-                                                    *ngIf="group.txtName != project.groupName &&  group.txtName != 'All' "
-                                                    (click)="projectMoveto(project.id,project.revision,group.id)"
-                                                    ngbDropdownItem>{{group.txtName}}
+                                                   *ngIf="group.txtName != project.groupName &&  group.txtName != 'All' "
+                                                   (click)="projectMoveto(project.id,project.revision,group.id)"
+                                                   ngbDropdownItem>{{group.txtName}}
                                                     ({{group.projectcount}})</a>
                                             </div>
                                         </div>
                                     </div>
                                 </a>
                                 <a class="subtitle-2-500" href="javascript:void(0);" style="padding: 12px 4px;"
-                                    ngbDropdownItem>
+                                   ngbDropdownItem>
                                     <i class="fe-plus me-1-1"></i>
                                     Add a new Bill
                                 </a>
                                 <a *ngIf="project.canDelete" class="subtitle-2-500" href="javascript:void(0);"
-                                    style="padding: 12px 4px;color: #EA001E;"
-                                    (click)="openProjectDeleteModal(project.id,project.revision,1)" ngbDropdownItem>
+                                   style="padding: 12px 4px;color: #EA001E;"
+                                   (click)="openProjectDeleteModal(project.id,project.revision,1)" ngbDropdownItem>
                                     <i class="fe-trash-2 me-1-1"></i>
                                     Delete project
                                 </a>
                                 <a *ngIf="!project.canDelete" class="subtitle-2-500" href="javascript:void(0);"
-                                    style="padding: 12px 4px;color: #EA001E;"
-                                    (click)="openProjectDeleteModal(project.id,project.revision,0)" ngbDropdownItem>
+                                   style="padding: 12px 4px;color: #EA001E;"
+                                   (click)="openProjectDeleteModal(project.id,project.revision,0)" ngbDropdownItem>
                                     <i class="fe-archive me-1-1"></i>
                                     Archive project
                                 </a>
@@ -69,20 +69,21 @@
                         </div>
                         <div class="float-end me-1-1 pe-2" style="padding-top: 2px;">
                             <i class="payaxis-unpin cursor-pointer" style="color:{{project.color}}"
-                                (click)="pinProject(project,false)"></i>
+                               (click)="pinProject(project,false)"></i>
                         </div>
                     </div>
-                    <div class="d-flex mt-2-1">
+                    <div class="d-flex mt-2-1" style="height: 58px;">
                         <div class="me-1-1 flex-shrink-0"
-                            style="width: 42px; height: 42px; line-height: 42px; text-align: center; border-radius: 8px; background-color: {{project.color}};">
+                             style="width: 42px; height: 42px; line-height: 42px;margin-top: 4px;text-align: center; border-radius: 8px; background-color: {{project.color}};">
                             <i class="{{project.icon}} font-26 text-white"></i>
                         </div>
-                        <div class="d-flex align-items-center flex-grow-1 overflow-hidden headline-24 cursor-pointer"
-                            (click)="navProjectDetail(project.id)">
-                            {{project.projectName}}
+                        <div class="d-flex align-items-center overflow-hidden" style="height: 50px;">
+                            <div class="align-items-start headline-24 cursor-pointer" (click)="navProjectDetail(project.id)" style="max-height: 50px;">
+                                {{project.projectName}}
+                            </div>
                         </div>
                     </div>
-                    <div class="mt-4-1">
+                    <div class="mt-2-1">
                         <div class="d-flex justify-content-between">
                             <div class="Subtitle-1-400">
                                 Budget
@@ -92,9 +93,10 @@
                                 {{project.projectBudget | currency}}
                             </div>
                         </div>
-                        <div class="progress progress-bar-alt-success progress-md" style="margin-top: 10px; background-color: #ffffff;">
+                        <div class="progress progress-bar-alt-success progress-md"
+                             style="margin-top: 10px; background-color: #ffffff;">
                             <div class="progress-bar bg-success wow" role="progressbar" aria-valuenow="20"
-                                aria-valuemin="0" aria-valuemax="100" style="width: 20%; visibility: visible;">
+                                 aria-valuemin="0" aria-valuemax="100" style="width: 20%; visibility: visible;">
                             </div><!-- /.progress-bar .progress-bar-success -->
                         </div><!-- /.progress .no-rounded -->
                     </div>
@@ -114,7 +116,7 @@
                             </div>
                             <div class="avatar-group-item position-relative" style="z-index: 2;">
                                 <div class="rounded-circle avatar-sm label-tips"
-                                    style="display: inline-flex;vertical-align: middle;justify-content: center;align-items: center;color: white;background-color: #2B2D30">
+                                     style="display: inline-flex;vertical-align: middle;justify-content: center;align-items: center;color: white;background-color: #2B2D30">
                                     +4
                                 </div>
                             </div>
@@ -122,7 +124,7 @@
                         <div class="d-flex align-items-center subtitle-2-500-12 text-optional">
                             Overdue
                             <span class="ms-1 text-center"
-                                style="min-width: 20px;height: 20px;border-radius: 10px;background-color: #F87171;color: white;padding: 4px;">4</span>
+                                  style="min-width: 20px;height: 20px;border-radius: 10px;background-color: #F87171;color: white;padding: 4px;">4</span>
                         </div>
                     </div>
                 </div>
@@ -134,50 +136,51 @@
             <div class="d-flex align-items-center">
                 <div style="font-size: 20px;font-weight: 600;line-height: 24px;letter-spacing: 0em;text-align: left;">
                     {{getGroupedProjectCount(selectedGroup)}} {{selectedGroup.txtName}} {{selectedGroup.projectcount ==
-                    1 ? 'Project' : 'Projects'}}
+                1 ? 'Project' : 'Projects'}}
                 </div>
-
-
+                
+                
                 <div class="filterDropdownMenu d-inline-block dropdown ms-3" ngbDropdown autoClose="outside"
-                    #filterDropdownMenu="ngbDropdown">
+                     #filterDropdownMenu="ngbDropdown">
                     <div class="dropdow-outline c-p search-text" ngbDropdownToggle>
                         <i class="fe-folder me-1-1"></i>
                         {{selectedGroup.txtName}}
                         <i class="fe-chevron-down font-16 ms-1-1"></i>
                     </div>
-                    <div id="groupDropdownMenu" class="dropdown-menu" style="max-height: 360px;overflow-y: auto;" ngbDropdownMenu>
+                    <div id="groupDropdownMenu" class="dropdown-menu" style="max-height: 360px;overflow-y: auto;"
+                         ngbDropdownMenu>
                         <a class="subtitle-2-500 c-p d-flex align-items-center justify-content-between"
-                            [ngClass]="{'selected':selectedGroup.id == group.id}"
-                            *ngFor="let group of companyGroupList; let i=index;"
-                            (click)="filterDropdownMenu.close();selectGroupProject(group);" ngbDropdownItem>
+                           [ngClass]="{'selected':selectedGroup.id == group.id}"
+                           *ngFor="let group of companyGroupList; let i=index;"
+                           (click)="filterDropdownMenu.close();selectGroupProject(group);" ngbDropdownItem>
                             <div class="me-2-1" style="padding: 2px 0px;">
                                 <input id="commercialCheck_{{i}}" type="checkbox" class="form-check-input c-p"
-                                    [(ngModel)]="group.checked">
+                                       [(ngModel)]="group.checked">
                                 <label class="form-check-label ms-1-1 c-p" for="commercialCheck_{{i}}">
                                     {{group.txtName}} ({{ getGroupedProjectCount(group)}})
                                 </label>
                             </div>
                             <div *ngIf="group.id != 'all' && group.id != '0'" class="groupDotsVertical"
-                                ngbDropdown>
+                                 ngbDropdown>
                                 <button class="btn btn-default float-end"
-                                    (click)="$event.stopPropagation();selectGroupProject(group);"
-                                    style="padding: 2px 3px;border-radius: 4px;background-color:#fff;"
-                                    ngbDropdownToggle>
+                                        (click)="$event.stopPropagation();selectGroupProject(group);"
+                                        style="padding: 2px 3px;border-radius: 4px;background-color:#fff;"
+                                        ngbDropdownToggle>
                                     <i class="fe-more-vertical- text-blackprimary"></i>
                                 </button>
                                 <div class="dropdown-menu" style="padding: 4px;" ngbDropdownMenu>
                                     <a class="subtitle-2-500 c-p d-flex align-items-center"
-                                        (click)="filterDropdownMenu.close();newGroup(group);" ngbDropdownItem>
+                                       (click)="filterDropdownMenu.close();newGroup(group);" ngbDropdownItem>
                                         <i class="fe-type me-1-1"></i>
                                         Rename
                                     </a>
                                     <a class="subtitle-2-500 c-p d-flex align-items-center"
-                                        (click)="filterDropdownMenu.close();createProject(group)" ngbDropdownItem>
+                                       (click)="filterDropdownMenu.close();createProject(group)" ngbDropdownItem>
                                         <i class="fe-edit me-1-1"></i>
                                         Add a new Project
                                     </a>
                                     <a class="subtitle-2-500 c-p d-flex align-items-center" style="color: #EA001E;"
-                                        (click)="filterDropdownMenu.close();deleteGroup(group, i)" ngbDropdownItem>
+                                       (click)="filterDropdownMenu.close();deleteGroup(group, i)" ngbDropdownItem>
                                         <i class="fe-trash-2 me-1-1"></i>
                                         Delete Group
                                     </a>
@@ -191,11 +194,11 @@
         <div class="col-md-6 text-end">
             <div class="d-inline-block ms-1-1">
                 <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords"
-                    style="padding: 10px 16px 10px 36px;" />
+                       style="padding: 10px 16px 10px 36px;"/>
             </div>
             <!-- end search-->
             <button class="btn btn-outline-primary ms-1-1 btn-text-12" (click)="newGroup('')"
-                style="padding: 7px 16px;"><i class="fe-plus-square me-1-1" style="vertical-align: bottom;"></i>New
+                    style="padding: 7px 16px;"><i class="fe-plus-square me-1-1" style="vertical-align: bottom;"></i>New
                 Group
             </button>
         </div>
@@ -206,51 +209,51 @@
                 <div class="card-body">
                     <div>
                         <span class="badge me-1 text-light btn-text-12"
-                            style="padding: 2px 6px;background-color: {{project.color}}26;color: {{project.color}} !important;">{{project.groupName}}</span>
+                              style="padding: 2px 6px;background-color: {{project.color}}26;color: {{project.color}} !important;">{{project.groupName}}</span>
                         <div class="float-end" ngbDropdown placement="bottom-end" style="padding-top: 4px;">
                             <a href="javascript:void(0);" class="arrow-none card-drop" ngbDropdownToggle>
                                 <i class="mdi mdi-dots-vertical text-blackprimary"></i>
                             </a>
                             <div ngbDropdownMenu style="padding: 4px 8px;">
                                 <a class="subtitle-2-500" href="javascript:void(0);" (click)="openSetColor(project)"
-                                    style="padding: 12px 4px;" ngbDropdownItem>
+                                   style="padding: 12px 4px;" ngbDropdownItem>
                                     <i class="fe-image me-1-1"></i>
                                     Set color & icon
                                 </a>
                                 <a class="subtitle-2-500 dropdown-item1" href="javascript:void(0);"
-                                    style="padding: 12px 4px;">
+                                   style="padding: 12px 4px;">
                                     <div ngbDropdown placement="end-top">
                                         <div style="width: 100%; color: #202020;" ngbDropdownToggle>
                                             <i class="fe-folder me-1-1"></i>
                                             Move to
                                         </div>
                                         <div *ngIf="companyGroupList.length > 2" ngbDropdownMenu
-                                            aria-labelledby="dropdownBasic" class="ms-2-1 mt1-36"
-                                            style="padding: 3px 4px;">
+                                             aria-labelledby="dropdownBasic" class="ms-2-1 mt1-36"
+                                             style="padding: 3px 4px;">
                                             <div *ngFor="let group of companyGroupList;">
                                                 <a href="javascript:void(0)"
-                                                    *ngIf="group.txtName != project.groupName &&  group.txtName != 'All'"
-                                                    (click)="projectMoveto(project.id,project.revision,group.id)"
-                                                    ngbDropdownItem>{{group.txtName}}
+                                                   *ngIf="group.txtName != project.groupName &&  group.txtName != 'All'"
+                                                   (click)="projectMoveto(project.id,project.revision,group.id)"
+                                                   ngbDropdownItem>{{group.txtName}}
                                                     ({{group.projectcount}})</a>
                                             </div>
                                         </div>
                                     </div>
                                 </a>
                                 <a class="subtitle-2-500" href="javascript:void(0);" style="padding: 12px 4px;"
-                                    ngbDropdownItem>
+                                   ngbDropdownItem>
                                     <i class="fe-plus me-1-1"></i>
                                     Add a new Bill
                                 </a>
                                 <a *ngIf="project.canDelete" class="subtitle-2-500" href="javascript:void(0);"
-                                    style="padding: 12px 4px;color: #EA001E;"
-                                    (click)="openProjectDeleteModal(project.id,project.revision,1)" ngbDropdownItem>
+                                   style="padding: 12px 4px;color: #EA001E;"
+                                   (click)="openProjectDeleteModal(project.id,project.revision,1)" ngbDropdownItem>
                                     <i class="fe-trash-2 me-1-1"></i>
                                     Delete project
                                 </a>
                                 <a *ngIf="!project.canDelete" class="subtitle-2-500" href="javascript:void(0);"
-                                    style="padding: 12px 4px;color: #EA001E;"
-                                    (click)="openProjectDeleteModal(project.id,project.revision,0)" ngbDropdownItem>
+                                   style="padding: 12px 4px;color: #EA001E;"
+                                   (click)="openProjectDeleteModal(project.id,project.revision,0)" ngbDropdownItem>
                                     <i class="fe-archive me-1-1"></i>
                                     Archive project
                                 </a>
@@ -258,16 +261,16 @@
                         </div>
                         <div class="float-end me-1-1 pe-2" style="padding-top: 2px;">
                             <i class="payaxis-pin cursor-pointer" style="color:#D1D8E2"
-                                (click)="pinProject(project,true)"></i>
+                               (click)="pinProject(project,true)"></i>
                         </div>
                     </div>
                     <div class="d-flex mt-2-1">
                         <div class="me-1-1 flex-shrink-0"
-                            style="width: 42px; height: 42px; line-height: 42px; text-align: center; border-radius: 8px; background-color: {{project.color}}33;">
+                             style="width: 42px; height: 42px; line-height: 42px; text-align: center; border-radius: 8px; background-color: {{project.color}}33;">
                             <i class="{{project.icon}} font-26 " style="color: {{project.color}}"></i>
                         </div>
                         <div class="d-flex align-items-center flex-grow-1 overflow-hidden headline-24  cursor-pointer"
-                            (click)="navProjectDetail(project.id)">
+                             (click)="navProjectDetail(project.id)">
                             {{project.projectName}}
                         </div>
                     </div>
@@ -283,7 +286,7 @@
                         </div>
                         <div class="progress progress-bar-alt-success progress-md" style="margin-top: 10px;">
                             <div class="progress-bar bg-success wow" role="progressbar" aria-valuenow="20"
-                                aria-valuemin="0" aria-valuemax="100" style="width: 20%; visibility: visible;">
+                                 aria-valuemin="0" aria-valuemax="100" style="width: 20%; visibility: visible;">
                             </div><!-- /.progress-bar .progress-bar-success -->
                         </div><!-- /.progress .no-rounded -->
                     </div>
@@ -303,7 +306,7 @@
                             </div>
                             <div class="avatar-group-item position-relative" style="z-index: 2;">
                                 <div class="rounded-circle avatar-sm label-tips"
-                                    style="display: inline-flex;vertical-align: middle;justify-content: center;align-items: center;color: white;background-color: #2B2D30">
+                                     style="display: inline-flex;vertical-align: middle;justify-content: center;align-items: center;color: white;background-color: #2B2D30">
                                     +4
                                 </div>
                             </div>
@@ -312,7 +315,7 @@
                             <!--                            {{project.status}}-->
                             Overdue
                             <span class="ms-1 text-center"
-                                style="min-width: 20px;height: 20px;border-radius: 10px;background-color: #F87171;color: white;padding: 4px;">4</span>
+                                  style="min-width: 20px;height: 20px;border-radius: 10px;background-color: #F87171;color: white;padding: 4px;">4</span>
                         </div>
                     </div>
                 </div>
@@ -355,7 +358,7 @@
 <!--#createProjectModal-->
 <ng-template #createProjectModal let-modal>
     <app-create-project [createProjectWithGroup]="createProjectWithGroup"
-        [modalRef]="modalRef"></app-create-project>
+                        [modalRef]="modalRef"></app-create-project>
 </ng-template>
 
 <!--#newGroupModal-->
@@ -366,25 +369,27 @@
 <!--#selectColor-->
 <ng-template #selectColor let-modal>
     <app-set-color [selectColor]="colorSelectItem.color" [selectIcon]="colorSelectItem.icon" [id]="colorSelectItem.id"
-        [revision]="colorSelectItem.revision" [modalRef]="colorRef"></app-set-color>
+                   [revision]="colorSelectItem.revision" [modalRef]="colorRef"></app-set-color>
 </ng-template>
 
 <!--#deleteModal-->
 <ng-template #deleteModal let-modal>
     <app-delete-modal [title]="deleteObj.title" [message]="deleteObj.message" [btnDelete]="deleteObj.btnDelete"
-                      [modalRef]="deleteModalRef" [serviceName]="deleteObj.serviceName" [serviceNameStr]="deleteObj.serviceNameStr"
+                      [modalRef]="deleteModalRef" [serviceName]="deleteObj.serviceName"
+                      [serviceNameStr]="deleteObj.serviceNameStr"
                       [params]="deleteObj.params"></app-delete-modal>
 </ng-template>
 
 
 <!--#infoModal-->
 <ng-template #infoModal let-modal>
-    <app-info-modal [title]="infoObj.title" [message]="infoObj.message" [btnOK]="infoObj.btnOK" [modalRef]="infoModalRef"></app-info-modal>
+    <app-info-modal [title]="infoObj.title" [message]="infoObj.message" [btnOK]="infoObj.btnOK"
+                    [modalRef]="infoModalRef"></app-info-modal>
 </ng-template>
 
 <!--#deleteProjectModal-->
 <ng-template #deleteProjectModal let-modal>
-    <input type="text" style="display: none;" />
+    <input type="text" style="display: none;"/>
     <div class="delete-modal-container">
         <div class="row">
             <div class="col-md-10">
@@ -403,7 +408,7 @@
             </div>
             <div>
                 <button class="btn btn-primary ms-2-1"
-                    (click)="projectDelete()">{{projectDeleteText.btnDelete}}</button>
+                        (click)="projectDelete()">{{projectDeleteText.btnDelete}}</button>
             </div>
         </div>
     </div>

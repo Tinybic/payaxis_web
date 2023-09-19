@@ -110,7 +110,7 @@ export class ProjectsComponent implements OnInit {
         this.idCompany = parseInt(localStorage.getItem('idcompany'));
         this.getProjectList();
         this.getCompanyGroupList('all');
-      }, 500);
+      }, 1000);
     }
   }
   
