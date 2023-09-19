@@ -112,6 +112,7 @@ export class VendorlistComponent {
   }
 
   getQuickboosVendors(realmid, redirectUri, url) {
+    this.loading = true;
     this.apolloService
       .mutate(quickbooks_downloadvendors, {
         idCompany: parseInt(localStorage.getItem('idcompany')),
@@ -129,7 +130,6 @@ export class VendorlistComponent {
           message = result.message;
         }
         this.toastrService.info(message, '');
-        this.loading = false;
       });
   }
 
@@ -161,7 +161,6 @@ export class VendorlistComponent {
       try {
         if (win.document.URL.indexOf('code') != -1) {
           let realmid = that.getQueryString('realmid', win.document.URL);
-
           that.getQuickboosVendors(
             realmid,
             backurl,
