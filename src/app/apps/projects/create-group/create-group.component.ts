@@ -55,7 +55,7 @@ export class CreateGroupComponent implements OnInit {
   
   submitNewGroupForm(){
     if(this.newGroupFormValues['name'].value == ''){
-      this.toastrService.warning('Name is required, please enter the Name.');
+      this.toastrService.info('Name is required, please enter the Name.');
       return;
     }
     let serviceName;

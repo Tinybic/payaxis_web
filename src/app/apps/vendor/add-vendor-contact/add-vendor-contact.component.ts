@@ -107,9 +107,9 @@ export class AddVendorContactComponent {
         }
         if(!result.error){
           this.modalRef.modalRef.close('save success');
-          this.toastrService.success('Save success', '');
+          this.toastrService.info('Save success', '');
         } else{
-          this.toastrService.error(result.message, '');
+          this.toastrService.info(result.message, '');
         }
       }).catch((error) => {
         this.error = error;

@@ -7,6 +7,7 @@ import { EventType } from 'src/app/core/constants/events';
 
 // services
 import { EventService } from 'src/app/core/service/event.service';
+import { GlobalFunctionsService } from "../../core/service/global-functions.service";
 
 import {
   companyproject_list,
@@ -20,6 +21,7 @@ import {
 } from '../../core/gql/project';
 import { ApolloService } from '../../core/service/apollo.service';
 import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-projects',
@@ -34,6 +36,8 @@ export class ProjectsComponent implements OnInit {
   @ViewChild('infoModal') infoModal: NgbModalRef;
   @ViewChild('selectColor') selectColor: NgbModalRef;
   @ViewChild('deleteProjectModal') deleteProjectModal: NgbModalRef;
+  
+  subscription: Subscription;
   
   modalRef: any;
   isLoading = true;
@@ -78,7 +82,8 @@ export class ProjectsComponent implements OnInit {
     private router: Router,
     private eventService: EventService,
     private apolloService: ApolloService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private globalService: GlobalFunctionsService
   ){}
   
   ngOnInit(): void{
@@ -106,11 +111,19 @@ export class ProjectsComponent implements OnInit {
         });
       }, 30);
     } else{
-      setTimeout(() => {
+      if(localStorage.getItem('idcompany')){
         this.idCompany = parseInt(localStorage.getItem('idcompany'));
         this.getProjectList();
         this.getCompanyGroupList('all');
-      }, 1000);
+      } else{
+        this.subscription = this.globalService.companyID$.subscribe(companyID => {
+          if(companyID !== 0){
+            this.idCompany = companyID;
+            this.getProjectList();
+            this.getCompanyGroupList('all');
+          }
+        })
+      }
     }
   }
   
