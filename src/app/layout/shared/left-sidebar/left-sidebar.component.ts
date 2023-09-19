@@ -74,7 +74,8 @@ export class LeftSidebarComponent implements OnInit {
         if (
           this.companyList.length > 0 &&
           (localStorage.getItem('idcompany') == '0' ||
-            localStorage.getItem('idcompany') == null)
+            localStorage.getItem('idcompany') == null||
+            localStorage.getItem('idUserOwner') == null)
         ) {
           localStorage.setItem('idcompany', this.companyList[0].id.toString());
           localStorage.setItem('companyName', this.companyList[0].txtName);

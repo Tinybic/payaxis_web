@@ -56,6 +56,7 @@ query profile_info {
       active
       memberyn
       welcomeyn
+      email
     }
   }
 }
