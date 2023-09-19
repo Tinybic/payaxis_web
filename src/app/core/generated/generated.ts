@@ -123,6 +123,12 @@ export type Mutation = {
   profile_2fa?: Maybe<Scalars['Boolean']['output']>;
   /** to activate the user profile */
   profile_activate: Response;
+  /** deactivate project_member */
+  project_member_deactivate: Projectinvitememberresult;
+  /** manage project_member access */
+  project_member_edit: Projectinvitememberresult;
+  /** new project_invitedmember */
+  project_member_invite: Projectinvitememberresult;
   /** download quickbooks vendors */
   quickbooks_downloadvendors: ResponseQuickbooks;
   /** upload quickbooks vendors */
@@ -438,6 +444,28 @@ export type MutationProfile_ActivateArgs = {
 
 
 /** structure to handle table sms */
+export type MutationProject_Member_DeactivateArgs = {
+  id: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationProject_Member_EditArgs = {
+  idProject: Scalars['Int']['input'];
+  projectmembers?: InputMaybe<Array<Projectmemberaccess>>;
+};
+
+
+/** structure to handle table sms */
+export type MutationProject_Member_InviteArgs = {
+  idCompany: Scalars['Int']['input'];
+  idProject: Scalars['Int']['input'];
+  inviteMembers?: InputMaybe<Array<Projectinvitemember>>;
+};
+
+
+/** structure to handle table sms */
 export type MutationQuickbooks_DownloadvendorsArgs = {
   idCompany: Scalars['Int']['input'];
   realmid: Scalars['String']['input'];
@@ -602,8 +630,12 @@ export type Query = {
   groupproject_list: Companygrouplist;
   /** retrieve profile for the loging user */
   profile_info: Resprofile;
+  /** get project members for project */
+  project_members: Projectmemberresult;
   /** get project budget list */
   projectbudget_list: Projectbudgetlist;
+  /** get project members email */
+  projectmember_emails: Projectemailsresult;
   /** query to retrieve an existing row */
   test1_find: Test1;
   /** query to retrieve all existing rows */
@@ -691,7 +723,18 @@ export type QueryGroupproject_ListArgs = {
 };
 
 
+export type QueryProject_MembersArgs = {
+  idProject: Scalars['Int']['input'];
+};
+
+
 export type QueryProjectbudget_ListArgs = {
+  idProject: Scalars['Int']['input'];
+};
+
+
+export type QueryProjectmember_EmailsArgs = {
+  emaillist?: InputMaybe<Array<Scalars['String']['input']>>;
   idProject: Scalars['Int']['input'];
 };
 
@@ -1095,6 +1138,7 @@ export type Profile = {
   active: Scalars['Boolean']['output'];
   avatar: Scalars['String']['output'];
   companyName: Scalars['String']['output'];
+  email: Scalars['String']['output'];
   firstName: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   lastName: Scalars['String']['output'];
@@ -1105,6 +1149,27 @@ export type Profile = {
   socialMediaToken: Scalars['String']['output'];
   twofa: Scalars['Boolean']['output'];
   welcomeyn: Scalars['Boolean']['output'];
+};
+
+/** structure to handle table project_member */
+export type Project_Member = {
+  __typename?: 'project_member';
+  active: Scalars['Boolean']['output'];
+  approvalAmount: Scalars['Float']['output'];
+  avatar: Scalars['String']['output'];
+  createdBy: Scalars['Int']['output'];
+  createdDate: Scalars['String']['output'];
+  firstName: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  idCompany: Scalars['Int']['output'];
+  idProject: Scalars['Int']['output'];
+  idRole: Scalars['Int']['output'];
+  idUser: Scalars['Int']['output'];
+  lastName: Scalars['String']['output'];
+  modifiedBy: Scalars['Int']['output'];
+  modifiedDate: Scalars['String']['output'];
+  revision: Scalars['Int']['output'];
+  role: Scalars['String']['output'];
 };
 
 export type Projectbooleanresult = {
@@ -1139,6 +1204,20 @@ export type Projectbudgets = {
   revision: Scalars['Int']['output'];
 };
 
+export type Projectemails = {
+  __typename?: 'projectemails';
+  email: Scalars['String']['output'];
+  memberyn: Scalars['Boolean']['output'];
+};
+
+export type Projectemailsresult = {
+  __typename?: 'projectemailsresult';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Array<Projectemails>>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
 export type Projectgrouplist = {
   __typename?: 'projectgrouplist';
   code: Scalars['Int']['output'];
@@ -1161,10 +1240,39 @@ export type Projectinforesult = {
   message: Scalars['String']['output'];
 };
 
+export type Projectinvitemember = {
+  approvalAmount: Scalars['Float']['input'];
+  email: Scalars['email_String_NotNull_maxLength_180_format_email']['input'];
+  idRole: Scalars['Int']['input'];
+};
+
+export type Projectinvitememberresult = {
+  __typename?: 'projectinvitememberresult';
+  code: Scalars['Int']['output'];
+  data: Scalars['Boolean']['output'];
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
 export type Projectlist = {
   __typename?: 'projectlist';
   code: Scalars['Int']['output'];
   data?: Maybe<Array<Companyproject>>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Projectmemberaccess = {
+  approvalAmount: Scalars['Float']['input'];
+  idRole: Scalars['Int']['input'];
+  idproject_member: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+export type Projectmemberresult = {
+  __typename?: 'projectmemberresult';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Array<Project_Member>>;
   error: Scalars['Boolean']['output'];
   message: Scalars['String']['output'];
 };
