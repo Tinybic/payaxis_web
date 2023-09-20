@@ -304,7 +304,14 @@ i {
 
 }
 
-::-webkit-scrollbar{
+.text-overflow-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+::-webkit-scrollbar {
   width: 0px;
 }
 
