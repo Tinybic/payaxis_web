@@ -598,6 +598,8 @@ export type MutationVendorcontact_UpdateArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  /** get bankname from routing */
+  bankname_routing: Banknameresult;
   /** get category-costcode list */
   categorycostcode_list: Companycategorylist;
   /** get company info for one company */
@@ -648,6 +650,12 @@ export type Query = {
   vendorcontact_info: Vendorcontactinforesult;
   /** get vendor_contact list */
   vendorcontact_list: Vendorcontactlist;
+};
+
+
+export type QueryBankname_RoutingArgs = {
+  idCompany: Scalars['Int']['input'];
+  routing: Scalars['String']['input'];
 };
 
 
@@ -767,6 +775,14 @@ export type Allocatebudget = {
   budgetAmount: Scalars['Float']['input'];
   budgetPercentage: Scalars['Float']['input'];
   idCategory: Scalars['Int']['input'];
+};
+
+export type Banknameresult = {
+  __typename?: 'banknameresult';
+  code: Scalars['Int']['output'];
+  data: Scalars['String']['output'];
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
 };
 
 export type Cialist = {
