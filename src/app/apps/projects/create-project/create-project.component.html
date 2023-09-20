@@ -1,5 +1,5 @@
-<div class="modal-body modal-form-control" style="padding: 32px 24px 24px;">
-    <div class="headline-24">{{project == '' ? 'Create a new Project':'Edit Project Details'}}</div>
+<div class="modal-body modal-form-control" style="padding: 32px 24px 140px;">
+    <div class="headline-24">{{project == '' ? 'Create a new Project' : 'Edit Project Details'}}</div>
     
     
     <div class="card mt-2-1 p-2-1">
@@ -66,16 +66,18 @@
                     </div>
                 </div>
                 <div class="col col-12">
-                    <div id="createProjectGroupDropdown" class="d-inline-block dropdown" style="width: 100%;" ngbDropdown>
+                    <div id="createProjectGroupDropdown" class="d-inline-block dropdown" style="width: 100%;"
+                         ngbDropdown>
                         <div class="dropdow-outline c-p search-text" style="width: 100%;background-color: #F8F9FC;"
                              ngbDropdownToggle>
                             <span [ngClass]="{'op-8': selectedGroup.idGroup == -1}">{{selectedGroup.txtName}}</span>
                             <i class="fe-chevron-down font-16 ms-1-1 float-end"></i>
                         </div>
-                        <div class="dropdown-menu" style="width: 100%;max-height: 360px;overflow-y: auto;" ngbDropdownMenu>
+                        <div class="dropdown-menu" style="width: 100%;max-height: 360px;overflow-y: auto;"
+                             ngbDropdownMenu>
                             <div class="subtitle-2-500 c-p" *ngFor="let group of groupList; let i=index;"
                                  (click)="selectGroupProject(group)" ngbDropdownItem>
-                                <label class="form-check-label ms-1-1">
+                                <label class="form-check-label ms-1-1 text-overflow-ellipsis" style="max-width: 480px;">
                                     {{group.txtName}} ({{group.projectcount}})
                                 </label>
                             </div>
@@ -86,7 +88,8 @@
             
             
             <div class="d-grid" style="width: calc(100% - 48px);position: fixed;bottom: 24px;right: 24px;">
-                <button class="btn btn-primary mb-1-1" type="submit" [disabled]="createProjectStep1Form.invalid || selectedGroup.idGroup == -1">Next
+                <button class="btn btn-primary mb-1-1" type="submit"
+                        [disabled]="createProjectStep1Form.invalid || selectedGroup.idGroup == -1">Next
                 </button>
                 <button class="btn btn-outline-primary" (click)="closeModal($event)">Cancel</button>
             </div>
@@ -199,7 +202,7 @@
                            i18n-placeholder
                            placeholder="Enter an Address"
                            [ngClass]="{'is-invalid': formStep3Values['editAddress'].invalid && formStep3Values['editAddress'].dirty}"/>
-                
+                    
                     <div *ngIf="formStep3Values['editAddress'].invalid && formStep3Values['editAddress'].dirty">
                         <div *ngIf="formStep3Values['editAddress'].errors?.['required']" i18n>
                             <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter address
@@ -230,10 +233,11 @@
                             {{selectedGroup.txtName}}
                             <i class="fe-chevron-down font-16 ms-1-1 float-end"></i>
                         </div>
-                        <div class="dropdown-menu" style="width: 100%;max-height: 360px;overflow-y: auto;" ngbDropdownMenu>
+                        <div class="dropdown-menu" style="width: 100%;max-height: 360px;overflow-y: auto;"
+                             ngbDropdownMenu>
                             <div class="subtitle-2-500 c-p" *ngFor="let group of groupList; let i=index;"
                                  (click)="selectGroupProject(group)" ngbDropdownItem>
-                                <label class="form-check-label ms-1-1">
+                                <label class="form-check-label ms-1-1 text-overflow-ellipsis" style="max-width: 480px;">
                                     {{group.txtName}} ({{group.projectcount}})
                                 </label>
                             </div>
@@ -256,7 +260,7 @@
                            allowNegativeNumbers="false"
                            i18n-placeholder placeholder="0"
                            [ngClass]="{'is-invalid': formStep3Values['editSqft'].invalid && formStep3Values['editSqft'].dirty}"/>
-            
+                    
                     <div *ngIf="formStep3Values['editSqft'].invalid && formStep3Values['editSqft'].dirty">
                         <div *ngIf="formStep3Values['editSqft'].errors?.['required']" i18n>
                             <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter Project Size,sqft
@@ -264,10 +268,11 @@
                     </div>
                 </div>
             </div>
-        
-        
+            
+            
             <div class="d-grid" style="width: calc(100% - 48px);position: fixed;bottom: 24px;right: 24px;">
-                <button class="btn btn-primary mb-1-1" type="submit" [disabled]="createProjectStep3Form.invalid || selectedGroup.idGroup == -1">Save
+                <button class="btn btn-primary mb-1-1" type="submit"
+                        [disabled]="createProjectStep3Form.invalid || selectedGroup.idGroup == -1">Save
                 </button>
                 <button class="btn btn-outline-primary" (click)="closeModal($event)">Cancel</button>
             </div>
@@ -282,7 +287,8 @@
 
 
 <ng-template #createBudgetModal let-modal>
-    <app-create-budget [project]="createProject" [budgetAllocation]="budgetAllocation" [modalRef]="createBudgetModalRef"></app-create-budget>
+    <app-create-budget [project]="createProject" [budgetAllocation]="budgetAllocation"
+                       [modalRef]="createBudgetModalRef" style="height: 100%;overflow-y: auto;"></app-create-budget>
 </ng-template>
 
 

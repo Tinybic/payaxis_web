@@ -95,11 +95,7 @@ export class LoginComponent implements OnInit {
               localStorage.setItem('id', result.id.toString());
               localStorage.setItem('avatar', result.avatar);
               localStorage.setItem('welcomeyn', result.welcomeyn.toString());
-              if(result.welcomeyn && !result.memberyn){
-                this.router.navigate(['apps/welcome']);
-              } else{
-                this.router.navigate(['apps/projects']);
-              }
+              this.router.navigate(['apps/projects']);
             }
             this.loading = false;
           });

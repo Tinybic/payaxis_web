@@ -24,10 +24,5 @@ export class WelcomeComponent implements OnInit {
     });
   }
 
-  goto(){
-    this.modalService.dismissAll();
-    localStorage.setItem('welcomeyn', 'false');
-    this.router.navigate(['apps/company'])
-  }
   
 }

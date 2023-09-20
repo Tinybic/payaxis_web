@@ -30,6 +30,7 @@ import { Subscription } from 'rxjs';
 })
 export class ProjectsComponent implements OnInit {
   @ViewChild('joinUsModal') joinUsModal: NgbModalRef;
+  @ViewChild('welcomeModal') welcomeModal: NgbModalRef;
   @ViewChild('createProjectModal') createProjectModal: NgbModalRef;
   @ViewChild('newGroupModal') newGroupModal: NgbModalRef;
   @ViewChild('deleteModal') deleteModal: NgbModalRef;
@@ -103,13 +104,23 @@ export class ProjectsComponent implements OnInit {
     });
     if(localStorage.getItem('welcomeyn') === 'true'){
       this.isLoading = false;
-      setTimeout(() => {
-        this.modalService.open(this.joinUsModal, {
-          backdrop: 'static',
-          centered: true,
-          windowClass: 'centerModal'
-        });
-      }, 30);
+      if(localStorage.getItem('memberyn') === 'true'){
+        setTimeout(() => {
+          this.modalService.open(this.joinUsModal, {
+            backdrop: 'static',
+            centered: true,
+            windowClass: 'centerModal'
+          });
+        }, 30);
+      } else{
+        setTimeout(() => {
+          this.modalService.open(this.welcomeModal, {
+            backdrop: 'static',
+            size: '443',
+            centered: true
+          });
+        }, 30);
+      }
     } else{
       if(localStorage.getItem('idcompany')){
         this.idCompany = parseInt(localStorage.getItem('idcompany'));
@@ -201,13 +212,26 @@ export class ProjectsComponent implements OnInit {
     );
   }
   
+  openGroupActionDropdown(e, i, groupActionDropdown){
+    e.stopPropagation();
+    let ele1 = document.getElementById('groupDropdownMenu');
+    let ele = document.getElementById("groupActionDropdown");
+    ele.style.left = ele1.offsetWidth + 8 + 'px';
+    ele.style.top = ele1.childNodes[i]['offsetTop'] + 40 - ele1.scrollTop + 'px';
+    setTimeout(() => {
+      if(!groupActionDropdown.isOpen()){
+        groupActionDropdown.open();
+      }
+    }, 20)
+  }
+  
   selectGroupProject(group){
     this.selectedGroup = group;
     setTimeout(() => {
       this.companyGroupList.map((item) => {
         item.checked = item.id == group.id;
       });
-    }, 200);
+    }, 20);
   }
   
   filterGroupProjectList = (project) => {
@@ -251,7 +275,7 @@ export class ProjectsComponent implements OnInit {
     );
   }
   
-  deleteGroup(group, i){
+  deleteGroup(group){
     this.deleteObj = {
       title: 'Delete Group',
       message:
@@ -271,7 +295,7 @@ export class ProjectsComponent implements OnInit {
     });
     this.deleteModalRef.result.then(
       (result) => {
-        this.companyGroupList.splice(i, 1);
+        // this.companyGroupList.splice(i, 1);
         this.getCompanyGroupList('all');
       },
       (reason) => {
@@ -437,5 +461,12 @@ export class ProjectsComponent implements OnInit {
   
   navProjectDetail(id){
     this.router.navigate(['/apps/projects/detail/' + id]);
+  }
+  
+  
+  goto(){
+    this.modalService.dismissAll();
+    localStorage.setItem('welcomeyn', 'false');
+    this.router.navigate(['apps/setting'])
   }
 }

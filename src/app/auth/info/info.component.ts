@@ -151,7 +151,7 @@ export class InfoComponent implements OnInit {
                       result.welcomeyn.toString()
                     );
 
-                    this.router.navigate(['apps/welcome']);
+                    this.router.navigate(['apps/projects']);
                   }
                   this.loading = false;
                 });
