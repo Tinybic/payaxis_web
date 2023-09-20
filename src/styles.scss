@@ -91,10 +91,13 @@
   cursor: pointer;
 }
 
-.auth-button {
-  position: fixed;
-  bottom: 24px;
-  width: 481px;
+
+@media (min-height:801px){
+  .auth-button {
+    position: fixed;
+    bottom: 24px;
+    width: 481px;
+  }
 }
 
 .swal2-close {
@@ -303,4 +306,9 @@ i {
 
 ::-webkit-scrollbar{
   width: 0px;
+}
+
+
+.modal-content{
+  overflow-y: auto;
 }
