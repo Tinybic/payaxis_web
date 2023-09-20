@@ -7,6 +7,7 @@ import {
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import {
+  bankname_routing,
   companypayment_deactivate,
   companypayment_list,
   companypayment_new,
@@ -308,5 +309,19 @@ export class PaymentComponent {
   saveAndClose() {
     this.cancelRef.close();
     this.savePayment();
+  }
+
+  getBankName() {
+    this.apolloService
+      .query(bankname_routing, {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
+        routing: this.formValues['routing'].value,
+      })
+      .then((res) => {
+        const result = res.bankname_routing;
+        if (!result.error) {
+          this.formValues['bankName'].setValue(result.data);
+        }
+      });
   }
 }

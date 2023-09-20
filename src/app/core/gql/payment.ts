@@ -127,10 +127,21 @@ const companypayment_deactivate = gql`
   }
 `;
 
+const bankname_routing = gql`
+  query bankname_routing($idCompany: Int!, $routing: String!) {
+    bankname_routing(idCompany: $idCompany, routing: $routing) {
+      error
+      code
+      message
+      data
+    }
+  }
+`;
 export {
   companypayment_new,
   companypayment_list,
   companypayment_update,
   companypayment_setdefault,
   companypayment_deactivate,
+  bankname_routing,
 };
