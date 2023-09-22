@@ -125,6 +125,8 @@ export type Mutation = {
   companyrole_new: Roleresult;
   /** update companyrole */
   companyrole_update: Roleresult;
+  /** update permissionrole */
+  permissionrole_update: Roleresult;
   /** to activate the user profile */
   profile_2fa?: Maybe<Scalars['Boolean']['output']>;
   /** to activate the user profile */
@@ -442,6 +444,7 @@ export type MutationCompanyrole_DeactivateArgs = {
 /** structure to handle table sms */
 export type MutationCompanyrole_NewArgs = {
   idCompany: Scalars['Int']['input'];
+  permissionaccess?: InputMaybe<Array<Permissionaccess>>;
   txtName: Scalars['txtName_String_NotNull_maxLength_128']['input'];
 };
 
@@ -449,8 +452,18 @@ export type MutationCompanyrole_NewArgs = {
 /** structure to handle table sms */
 export type MutationCompanyrole_UpdateArgs = {
   id: Scalars['Int']['input'];
+  permissionaccess?: InputMaybe<Array<Permissionaccess>>;
   revision: Scalars['Int']['input'];
   txtName: Scalars['txtName_String_NotNull_maxLength_128']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationPermissionrole_UpdateArgs = {
+  access: Scalars['Boolean']['input'];
+  idCompany: Scalars['Int']['input'];
+  idRole: Scalars['Int']['input'];
+  permissionId: Scalars['Int']['input'];
 };
 
 
@@ -1176,6 +1189,18 @@ export type Permission = {
   __typename?: 'permission';
   permissionId: Scalars['Int']['output'];
   permissionName: Scalars['String']['output'];
+  roleaccess?: Maybe<Array<Permissionrole>>;
+};
+
+export type Permissionaccess = {
+  access: Scalars['Boolean']['input'];
+  permissionId: Scalars['Int']['input'];
+};
+
+export type Permissionrole = {
+  __typename?: 'permissionrole';
+  access: Scalars['Boolean']['output'];
+  idRole: Scalars['Int']['output'];
 };
 
 /** structure to handle table user account */

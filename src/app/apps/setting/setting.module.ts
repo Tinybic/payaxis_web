@@ -10,8 +10,9 @@ import { NgbDropdownModule, NgbModalModule, NgbNavModule, NgbTypeaheadModule } f
 import { AvatarModule } from 'src/app/shared/avatar/avatar.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UiModule } from 'src/app/shared/ui/ui.module';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from "ngx-mask";
+import { AddRoleComponent } from './add-role/add-role.component';
 import { SharedModule } from "../../shared/shared.module";
-
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { SharedModule } from "../../shared/shared.module";
     ProfileComponent,
     CostcodeComponent,
     PaymentComponent,
-    RolesComponent
+    RolesComponent,
+    AddRoleComponent,
   ],
   imports: [
     CommonModule,
@@ -31,8 +33,13 @@ import { SharedModule } from "../../shared/shared.module";
     NgbDropdownModule,
     AvatarModule,
     SettingRoutingModule,
+    UiModule,
     SharedModule,
-    UiModule
+    NgxMaskDirective,
+    NgxMaskPipe,
+  ],
+  providers:[
+    provideNgxMask()
   ]
 })
 export class SettingModule { }

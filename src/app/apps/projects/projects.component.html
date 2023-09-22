@@ -378,11 +378,9 @@
 </ng-template>
 
 <!--#deleteModal-->
-<ng-template #deleteModal let-modal>
-    <app-delete-modal [title]="deleteObj.title" [message]="deleteObj.message" [btnDelete]="deleteObj.btnDelete"
-                      [modalRef]="deleteModalRef" [serviceName]="deleteObj.serviceName"
-                      [serviceNameStr]="deleteObj.serviceNameStr"
-                      [params]="deleteObj.params"></app-delete-modal>
+<ng-template #confirmModal let-modal>
+    <app-confirm-modal [title]="deleteObj.title" [message]="deleteObj.message" [btnConfirm]="deleteObj.btnConfirm"
+                      [modalRef]="deleteModalRef" [serviceName]="deleteObj.serviceName" [params]="deleteObj.params"></app-confirm-modal>
 </ng-template>
 
 
