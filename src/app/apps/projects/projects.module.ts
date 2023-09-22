@@ -17,7 +17,6 @@ import { SharedModule } from "../../shared/shared.module";
 import { UiModule } from "../../shared/ui/ui.module";
 import { CreateGroupComponent } from './create-group/create-group.component';
 import { SetColorComponent } from './set-color/set-color.component';
-import { DeleteModalComponent } from "../../shared/delete-modal/delete-modal.component";
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { InfoModalComponent } from "../../shared/info-modal/info-modal.component";
 
@@ -30,7 +29,6 @@ import { InfoModalComponent } from "../../shared/info-modal/info-modal.component
     CreateBudgetComponent,
     CreateGroupComponent,
     SetColorComponent,
-    DeleteModalComponent,
     ProjectDetailComponent,
     InfoModalComponent
   ],

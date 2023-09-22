@@ -33,7 +33,7 @@ export class ProjectsComponent implements OnInit {
   @ViewChild('welcomeModal') welcomeModal: NgbModalRef;
   @ViewChild('createProjectModal') createProjectModal: NgbModalRef;
   @ViewChild('newGroupModal') newGroupModal: NgbModalRef;
-  @ViewChild('deleteModal') deleteModal: NgbModalRef;
+  @ViewChild('confirmModal') deleteModal: NgbModalRef;
   @ViewChild('infoModal') infoModal: NgbModalRef;
   @ViewChild('selectColor') selectColor: NgbModalRef;
   @ViewChild('deleteProjectModal') deleteProjectModal: NgbModalRef;
@@ -57,9 +57,8 @@ export class ProjectsComponent implements OnInit {
   deleteObj = {
     title: '',
     message: '',
-    btnDelete: '',
+    btnConfirm: '',
     serviceName: {},
-    serviceNameStr: '',
     params: {}
   };
   
@@ -280,9 +279,8 @@ export class ProjectsComponent implements OnInit {
       title: 'Delete Group',
       message:
         'All projects within this group will be moved to ungrouped category. Do you wish to proceed?',
-      btnDelete: 'Delete Group',
+      btnConfirm: 'Delete Group',
       serviceName: companygroup_deactivate,
-      serviceNameStr: 'companygroup_deactivate',
       params: {
         idCompany_group: group.id,
         revision: group.revision

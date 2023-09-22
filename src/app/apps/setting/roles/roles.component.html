@@ -3,66 +3,75 @@
         <div class="font-20 bold-600">Roles</div>
     </div>
     <div class="col-md-4 text-end">
+        <div class="d-inline-block form-check form-switch line-24  me-2-1">
+            <input id="archiveSwitch" type="checkbox" class="form-check-input me-1-1" [(ngModel)]="showArchived" />
+            <label for="archiveSwitch" class="form-check-label align-middle subtitle-2-500">Show Archived</label>
+        </div>
         <div class="d-inline-block ms-1-1">
             <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords" style="padding: 10px 16px 10px 36px;"/>
         </div>
         <!-- end search-->
-        <button class="btn btn-primary ms-2-1 btn-text-12" (click)="openRoleModal(0)"
-                style="margin-top: -1px;padding: 10px 16px;"><i
+        <button class="btn btn-primary ms-2-1 btn-text-12" (click)="newRole()" style="margin-top: -1px;padding: 10px 16px;" [disabled]="newRoleStatus"><i
                 class="fe-plus-square me-1-1" style="vertical-align: bottom;"></i>New Role
         </button>
     </div>
 </div>
 <div class="mt-2-1" style="height: calc(100% - 240px);">
-    <table class="advanced-table no-border">
+    <table class="role-table advanced-table no-border">
         <thead>
         <tr>
             <th class="sortable"
-                [ngClass]="{'sorting_asc':sortCloumn == 'txtName' && direction == 'asc','sorting_desc':sortCloumn == 'txtName' && direction == 'desc'}"
-                (click)="onSort('txtName')" style="width: 20%;">Name
+                [ngClass]="{'sorting_asc':sortCloumn == 'txtName' && direction == 'asc','sorting_desc':sortCloumn == 'txtName' && direction == 'desc'}" (click)="onSort('txtName')" style="width: 130px;">Permissions
             </th>
-            <th class="sortable"
-                [ngClass]="{'sorting_asc':sortCloumn == 'email' && direction == 'asc','sorting_desc':sortCloumn == 'email' && direction == 'desc'}"
-                (click)="onSort('email')" style="width: 20%;">Email
+            <th *ngFor="let role of roles; let i=index;">
+                <div *ngIf="!role.isEditing" class="th-header">
+                    {{role.txtName}}
+                    <div *ngIf="role.access > 2 && role.active" class="archived-text subtitle-2-600 text-optional ms-1-1">Archived</div>
+                    <div ngbDropdown>
+                        <button class="ms-1-1" style="padding: 0;border: none;" ngbDropdownToggle>
+                            <i class="fe-more-vertical- cursor-pointer"></i>
+                        </button>
+                        <div ngbDropdownMenu style="padding: 0;">
+                            <a class="subtitle-2-500" href="javascript:void(0);" (click)="duplicateRole(role)" style="padding: 12px;" ngbDropdownItem>
+                                <i class="fe-copy me-1-1"></i>
+                                Duplicate
+                            </a>
+                            <a *ngIf="role.access > 1" class="subtitle-2-500" href="javascript:void(0);" (click)="role.isEditing=true;initialRoleName=role.txtName;" style="padding: 12px;" ngbDropdownItem>
+                                <i class="fe-edit-1 me-1-1"></i>
+                                Edit name
+                            </a>
+                            <a *ngIf="role.access > 2 && !role.active" class="subtitle-2-500" href="javascript:void(0);" (click)="toggleRoleArchive(role);" style="padding: 12px;" ngbDropdownItem>
+                                <i class="fe-x me-1-1"></i>
+                                Archive
+                            </a>
+                            <a *ngIf="role.access > 2 && role.active" class="subtitle-2-500" href="javascript:void(0);" (click)="toggleRoleArchive(role)" style="padding: 12px;" ngbDropdownItem>
+                                <i class="fe-refresh-ccw me-1-1"></i>
+                                Restore
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="role.isEditing">
+                    <input class="search-text" placeholder="Role Name" [(ngModel)]="role.txtName" style="width: 140px;border-radius: 8px;padding: 4px 8px;border: 1px solid #E1E6EF;outline: none;"/>
+                    <i class="fe-check font-16 ms-1-1" (click)="editRoleName(role)" style="color: #22C55E;"></i>
+                    <i class="fe-x font-16 ms-1-1" (click)="role.isEditing=false;role.txtName=initialRoleName;" style="color: #F87171;"></i>
+                </div>
             </th>
-            <th class="sortable"
-                [ngClass]="{'sorting_asc':sortCloumn == 'phone' && direction == 'asc','sorting_desc':sortCloumn == 'phone' && direction == 'desc'}"
-                (click)="onSort('phone')" style="width: 20%;">Phone
+            <th *ngIf="newRoleStatus" style="width: 216px;">
+                <input class="search-text" placeholder="Role Name" [(ngModel)]="roleName" style="width: 140px;border-radius: 8px;padding: 4px 8px;border: 1px solid #E1E6EF;outline: none;"/>
+                <i class="fe-check font-16 ms-1-1" (click)="saveRole()" style="color: #22C55E;"></i>
+                <i class="fe-x font-16 ms-1-1" (click)="cancelNewRole()" style="color: #F87171;"></i>
             </th>
-            <th class="sortable"
-                [ngClass]="{'sorting_asc':sortCloumn == 'notes' && direction == 'asc','sorting_desc':sortCloumn == 'notes' && direction == 'desc'}"
-                (click)="onSort('notes')" style="width: 30%;">Notes
-            </th>
-            <th></th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let item of roles | callback: filterTable; let i = index">
-            <td>
-                <div class="d-flex flex-row">
-                    {{item.contactName}}
-                </div>
+        <tr *ngFor="let permission of permissions | callback: filterTable; let i = index">
+            <td>{{permission.permissionName}}</td>
+            <td *ngFor="let role of permission.roleaccess; let ii=index;" class="text-center">
+                <input class="form-check-input" type="checkbox" [(ngModel)]="role.access" (change)="togglePermissionRole(permission.permissionId, role)" />
             </td>
-            <td>
-                <div class="d-flex flex-row">
-                    {{item.email}}
-                </div>
-            </td>
-            <td>
-                <div class="d-flex flex-row">
-                    {{item.phone | mask: '(000) 000-0000'}}
-                </div>
-            </td>
-            <td>
-                <div class="d-flex flex-row">
-                    {{item.notes}}
-                </div>
-            </td>
-            <td class="text-end">
-                <i class="fe-edit" (click)="$event.stopPropagation();openRoleModal(item.id)"
-                   style="cursor: pointer;"></i>
-                <i class="fe-trash-2 ms-1-1" (click)="$event.stopPropagation();openDeleteRole(i)"
-                   style="cursor: pointer;"></i>
+            <td *ngIf="newRoleStatus" class="text-center">
+                <input class="form-check-input" type="checkbox" [(ngModel)]="permission.access"/>
             </td>
         </tr>
         </tbody>
@@ -73,25 +82,19 @@
         <div class="Paragraph-2 text-typeblackdeactivated mt-1-1">Create new roles in a few clicks
         </div>
         <div class="mt-1-1">
-            <button class="btn btn-outline-primary ms-2-1 btn-text-12" (click)="openRoleModal(0)"><i
-                    class="fe-plus-square me-1-1" style="vertical-align: bottom;"></i>Add Contact
+            <button class="btn btn-outline-primary ms-2-1 btn-text-12" (click)="newRole()"><i
+                    class="fe-plus-square me-1-1" style="vertical-align: bottom;"></i>New Role
             </button>
         </div>
     </div>
 </div>
 
+<!-- #addRoleModal -->
 <ng-template #addRoleModal let-modal>
     <app-add-role [params]={rolesParams} [modalRef]={modalRef}></app-add-role>
 </ng-template>
 
-<ng-template #deleteRoleModal let-modal>
-    <div class="modal-body" style="padding: 16px 24px;">
-        <div class="headline-24">Deleting Role</div>
-        <div class="Subtitle-1-400 mt-3-1 text-start">Account Manager Role will be deleted.</div>
-        <div class="mt-3-1 text-end">
-            <button class="btn btn-link-primary text-primary" (click)="cancel()" style="padding: 12px 40px;">Cancel
-            </button>
-            <button class="btn btn-primary" (click)="confirm()" style="padding: 12px 30px;">Confirm</button>
-        </div>
-    </div>
+<!--#archiveModal-->
+<ng-template #archiveModal let-modal>
+    <app-confirm-modal [title]="archiveObj.title" [message]="archiveObj.message" [btnConfirm]="archiveObj.btnConfirm" [params]="archiveObj.params" [serviceName]="archiveObj.serviceName" [btnSide]="archiveObj.btnSide" [modalRef]="archiveModalRef"></app-confirm-modal>
 </ng-template>

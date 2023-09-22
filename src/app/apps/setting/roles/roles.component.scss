@@ -1,0 +1,30 @@
+.role-table {
+  thead {
+    tr {
+      th {
+        height: 48px;
+        text-align: center;
+        line-height: 24px;
+        padding: 10px 8px;
+
+        .th-header {
+          display: flex;
+          justify-content: center;
+          .archived-text {
+            border-radius: 8px;
+            padding: 0 8px;
+            background-color: #F1F3F9;
+            color: #20202080;
+          }
+
+          div {
+            button {
+              background-color: #064088;
+              color: #60A5FA;
+            }
+          }
+        }
+      }
+    }
+  }
+}

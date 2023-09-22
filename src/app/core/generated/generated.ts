@@ -119,16 +119,24 @@ export type Mutation = {
   companyproject_updatebudget: Projectresult;
   /** update companyproject detail */
   companyproject_updatedetail: Projectresult;
+  /** deactivate companyrole */
+  companyrole_deactivate: Roleresult;
+  /** new companyrole */
+  companyrole_new: Roleresult;
+  /** update companyrole */
+  companyrole_update: Roleresult;
+  /** update permissionrole */
+  permissionrole_update: Roleresult;
   /** to activate the user profile */
   profile_2fa?: Maybe<Scalars['Boolean']['output']>;
   /** to activate the user profile */
   profile_activate: Response;
-  /** deactivate project_member */
-  project_member_deactivate: Projectinvitememberresult;
-  /** manage project_member access */
-  project_member_edit: Projectinvitememberresult;
-  /** new project_invitedmember */
-  project_member_invite: Projectinvitememberresult;
+  /** deactivate project member */
+  projectmember_deactivate: Projectinvitememberresult;
+  /** edit project member access */
+  projectmember_edit: Projectinvitememberresult;
+  /** invite project member */
+  projectmember_invite: Projectinvitememberresult;
   /** download quickbooks vendors */
   quickbooks_downloadvendors: ResponseQuickbooks;
   /** upload quickbooks vendors */
@@ -426,6 +434,40 @@ export type MutationCompanyproject_UpdatedetailArgs = {
 
 
 /** structure to handle table sms */
+export type MutationCompanyrole_DeactivateArgs = {
+  archive: Scalars['Boolean']['input'];
+  id: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationCompanyrole_NewArgs = {
+  idCompany: Scalars['Int']['input'];
+  permissionaccess?: InputMaybe<Array<Permissionaccess>>;
+  txtName: Scalars['txtName_String_NotNull_maxLength_128']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationCompanyrole_UpdateArgs = {
+  id: Scalars['Int']['input'];
+  permissionaccess?: InputMaybe<Array<Permissionaccess>>;
+  revision: Scalars['Int']['input'];
+  txtName: Scalars['txtName_String_NotNull_maxLength_128']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationPermissionrole_UpdateArgs = {
+  access: Scalars['Boolean']['input'];
+  idCompany: Scalars['Int']['input'];
+  idRole: Scalars['Int']['input'];
+  permissionId: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
 export type MutationProfile_2faArgs = {
   mobile: Scalars['mobile_String_NotNull_pattern_093093094']['input'];
 };
@@ -444,21 +486,21 @@ export type MutationProfile_ActivateArgs = {
 
 
 /** structure to handle table sms */
-export type MutationProject_Member_DeactivateArgs = {
+export type MutationProjectmember_DeactivateArgs = {
   id: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
 };
 
 
 /** structure to handle table sms */
-export type MutationProject_Member_EditArgs = {
+export type MutationProjectmember_EditArgs = {
   idProject: Scalars['Int']['input'];
   projectmembers?: InputMaybe<Array<Projectmemberaccess>>;
 };
 
 
 /** structure to handle table sms */
-export type MutationProject_Member_InviteArgs = {
+export type MutationProjectmember_InviteArgs = {
   idCompany: Scalars['Int']['input'];
   idProject: Scalars['Int']['input'];
   inviteMembers?: InputMaybe<Array<Projectinvitemember>>;
@@ -608,8 +650,8 @@ export type Query = {
   company_list: Companylist;
   /** get company members for company */
   company_members: Companymemberresult;
-  /** get company members for company */
-  company_roles: Companyrolesresult;
+  /** get company roles */
+  company_roles: Rolesresult;
   /** get company_category list */
   companycategory_list: Companycategorylist;
   /** get company_costcode list */
@@ -626,6 +668,8 @@ export type Query = {
   companyproject_info: Projectinforesult;
   /** get companyproject list */
   companyproject_list: Projectlist;
+  /** get company role list */
+  companyrole_list: Rolelistresult;
   /** get url for a new file */
   get_file_url: FileResponse;
   /** get projectgroup list */
@@ -636,8 +680,6 @@ export type Query = {
   project_members: Projectmemberresult;
   /** get project budget list */
   projectbudget_list: Projectbudgetlist;
-  /** get project members email */
-  projectmember_emails: Projectemailsresult;
   /** query to retrieve an existing row */
   test1_find: Test1;
   /** query to retrieve all existing rows */
@@ -720,6 +762,11 @@ export type QueryCompanyproject_ListArgs = {
 };
 
 
+export type QueryCompanyrole_ListArgs = {
+  idCompany: Scalars['Int']['input'];
+};
+
+
 export type QueryGet_File_UrlArgs = {
   fileName: Scalars['String']['input'];
   folder?: InputMaybe<Folder>;
@@ -737,12 +784,6 @@ export type QueryProject_MembersArgs = {
 
 
 export type QueryProjectbudget_ListArgs = {
-  idProject: Scalars['Int']['input'];
-};
-
-
-export type QueryProjectmember_EmailsArgs = {
-  emaillist?: InputMaybe<Array<Scalars['String']['input']>>;
   idProject: Scalars['Int']['input'];
 };
 
@@ -867,6 +908,7 @@ export type Company_Member = {
   avatar: Scalars['String']['output'];
   createdBy: Scalars['Int']['output'];
   createdDate: Scalars['String']['output'];
+  email: Scalars['String']['output'];
   firstName: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   idCompany: Scalars['Int']['output'];
@@ -877,20 +919,6 @@ export type Company_Member = {
   modifiedDate: Scalars['String']['output'];
   revision: Scalars['Int']['output'];
   role: Scalars['String']['output'];
-};
-
-export type Company_Role = {
-  __typename?: 'company_role';
-  active: Scalars['Boolean']['output'];
-  createdBy: Scalars['Int']['output'];
-  createdDate: Scalars['String']['output'];
-  id: Scalars['Int']['output'];
-  idCompany: Scalars['Int']['output'];
-  idRole: Scalars['Int']['output'];
-  modifiedBy: Scalars['Int']['output'];
-  modifiedDate: Scalars['String']['output'];
-  revision: Scalars['Int']['output'];
-  txtName: Scalars['String']['output'];
 };
 
 export type Companycategory = {
@@ -1029,12 +1057,21 @@ export type Companyproject = {
   status: Scalars['String']['output'];
 };
 
-export type Companyrolesresult = {
-  __typename?: 'companyrolesresult';
-  code: Scalars['Int']['output'];
-  data?: Maybe<Array<Company_Role>>;
-  error: Scalars['Boolean']['output'];
-  message: Scalars['String']['output'];
+/** structure to handle table company_role */
+export type Companyrole = {
+  __typename?: 'companyrole';
+  access: Scalars['Int']['output'];
+  active: Scalars['Boolean']['output'];
+  createdBy: Scalars['Int']['output'];
+  createdDate: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  idCompany: Scalars['Int']['output'];
+  idRole: Scalars['Int']['output'];
+  modifiedBy: Scalars['Int']['output'];
+  modifiedDate: Scalars['String']['output'];
+  revision: Scalars['Int']['output'];
+  txtName: Scalars['String']['output'];
+  usedCount: Scalars['Int']['output'];
 };
 
 /** structure to handle responses when updating information */
@@ -1148,6 +1185,24 @@ export type Paymenttermslist = {
   txtName: Scalars['String']['output'];
 };
 
+export type Permission = {
+  __typename?: 'permission';
+  permissionId: Scalars['Int']['output'];
+  permissionName: Scalars['String']['output'];
+  roleaccess?: Maybe<Array<Permissionrole>>;
+};
+
+export type Permissionaccess = {
+  access: Scalars['Boolean']['input'];
+  permissionId: Scalars['Int']['input'];
+};
+
+export type Permissionrole = {
+  __typename?: 'permissionrole';
+  access: Scalars['Boolean']['output'];
+  idRole: Scalars['Int']['output'];
+};
+
 /** structure to handle table user account */
 export type Profile = {
   __typename?: 'profile';
@@ -1175,6 +1230,7 @@ export type Project_Member = {
   avatar: Scalars['String']['output'];
   createdBy: Scalars['Int']['output'];
   createdDate: Scalars['String']['output'];
+  email: Scalars['String']['output'];
   firstName: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   idCompany: Scalars['Int']['output'];
@@ -1260,6 +1316,7 @@ export type Projectinvitemember = {
   approvalAmount: Scalars['Float']['input'];
   email: Scalars['email_String_NotNull_maxLength_180_format_email']['input'];
   idRole: Scalars['Int']['input'];
+  idUser: Scalars['Int']['input'];
 };
 
 export type Projectinvitememberresult = {
@@ -1328,6 +1385,42 @@ export type Resprofile = {
   __typename?: 'resprofile';
   code: Scalars['Int']['output'];
   data?: Maybe<Profile>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Roleidrevision = {
+  __typename?: 'roleidrevision';
+  id: Scalars['Int']['output'];
+  revision: Scalars['Int']['output'];
+};
+
+export type Rolelistresult = {
+  __typename?: 'rolelistresult';
+  code: Scalars['Int']['output'];
+  data: Rolepermission;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Rolepermission = {
+  __typename?: 'rolepermission';
+  permissions?: Maybe<Array<Permission>>;
+  roles?: Maybe<Array<Companyrole>>;
+};
+
+export type Roleresult = {
+  __typename?: 'roleresult';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Roleidrevision>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Rolesresult = {
+  __typename?: 'rolesresult';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Array<Companyrole>>;
   error: Scalars['Boolean']['output'];
   message: Scalars['String']['output'];
 };

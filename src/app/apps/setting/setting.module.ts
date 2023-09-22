@@ -21,7 +21,7 @@ import { SharedModule } from "../../shared/shared.module";
     CostcodeComponent,
     PaymentComponent,
     RolesComponent,
-    AddRoleComponent
+    AddRoleComponent,
   ],
   imports: [
     CommonModule,

@@ -4,19 +4,19 @@ import { ApolloService } from "../../core/service/apollo.service";
 import { ToastrService } from "ngx-toastr";
 
 @Component({
-  selector: 'app-delete-modal',
-  templateUrl: './delete-modal.component.html',
-  styleUrls: ['./delete-modal.component.scss']
+  selector: 'app-confirm-modal',
+  templateUrl: './confirm-modal.component.html',
+  styleUrls: ['./confirm-modal.component.scss']
 })
-export class DeleteModalComponent {
+export class ConfirmModalComponent {
   @Input() modalRef;
   @Input() title;
-  @Input() btnDelete;
-  @Input() btnCancel;
   @Input() message;
+  @Input() btnConfirm;
+  @Input() btnCancel;
+  @Input() btnSide;
   @Input() params;
   @Input() serviceName;
-  @Input() serviceNameStr;
   
   
   constructor(
@@ -27,10 +27,10 @@ export class DeleteModalComponent {
   
   delete(){
     this.apolloService.mutate(this.serviceName, this.params).then((res) => {
-      const result = res[this.serviceNameStr];
+      let result: any = Object.values(res)[0];
       if(!result.error){
         this.toastrService.info(result.message, '');
-        this.modalRef.close();
+        this.modalRef.close(result);
       } else{
         this.toastrService.info(result.message, '');
       }

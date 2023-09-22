@@ -1,11 +1,10 @@
 import { Component, Input, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ApolloService } from "../../../core/service/apollo.service";
-import { NgbActiveModal, NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { NgbActiveModal, NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { GlobalFunctionsService } from "../../../core/service/global-functions.service";
-import { Company_Role } from "../../../core/generated/generated";
-import { company_roles } from "../../../core/gql/roles";
-import { company_info } from "../../../core/gql/company";
+import { companyrole_list, companyrole_new, companyrole_update, companyrole_deactivate, permissionrole_update } from "../../../core/gql/roles";
+
 
 @Component({
   selector: 'app-roles',
@@ -15,7 +14,7 @@ import { company_info } from "../../../core/gql/company";
 })
 export class RolesComponent {
   @ViewChild('addRoleModal') addRoleModal: any;
-  @ViewChild('deleteRoleModal') deleteRoleModal: any;
+  @ViewChild('archiveModal') archiveModal: NgbModalRef;
   
   
   modalRef: any;
@@ -25,11 +24,27 @@ export class RolesComponent {
   keywords = '';
   direction = '';
   sortCloumn = '';
-  roles: Company_Role[] = [];
+  roles: any = [];
+  permissions: any = [];
   rolesParams = {
     idCompany: 0,
-    idRole: 0,
+    idRole: 0
   }
+  loading = true;
+  showArchived = false;
+  roleName = '';
+  initialRoleName = '';
+  newRoleStatus = false;
+  
+  archiveObj = {
+    title: '',
+    message: '',
+    btnConfirm: '',
+    serviceName: {},
+    params: {},
+    btnSide: 'end'
+  };
+  archiveModalRef: NgbModalRef;
   
   
   constructor(
@@ -48,16 +63,16 @@ export class RolesComponent {
   }
   
   getRoles(){
-    this.apolloService.query(company_roles, {idCompany: this.idCompany}).then((res) => {
-      const result = res.company_roles;
+    this.apolloService.query(companyrole_list, {idCompany: this.idCompany}).then((res) => {
+      const result = res.companyrole_list;
       if(!result.error){
-        this.roles = result.data;
+        this.roles = result.data.roles;
+        this.permissions = result.data.permissions;
       }
     })
   }
   
-  
-  filterTable = (role: Company_Role) => {
+  filterTable = (role) => {
     let values = Object.values(role);
     return values.some(v => v.toString().toLowerCase().includes(this.keywords.toLowerCase()));
   }
@@ -69,26 +84,142 @@ export class RolesComponent {
     this.direction = result.direction;
   }
   
-  openRoleModal(idRole){
-    this.modalRef = this.modalService.open(this.addRoleModal, {
-      modalDialogClass: 'modal-right',
-      size: '483',
-      centered: true,
-      backdrop: 'static'
-    })
-    
-    this.modalRef.result.then((result) => {
-      this.getRoles();
-    }, (reason) => {
-      console.log(reason);
-    })
-    
-    this.rolesParams = {
-      idCompany: this.idCompany,
-      idRole: idRole,
-    }
+  newRole(){
+    this.roleName = '';
+    this.newRoleStatus = true;
   }
   
+  saveRole(){
+    if(this.roleName.trim().length == 0){
+      this.toastrService.info('Role name is required.', '')
+      return;
+    }
+    
+    let permissionAccess = [];
+    this.permissions.map((permission) => {
+      permissionAccess.push({
+        permissionId: permission.permissionId,
+        access: permission.access ? true : false
+      })
+    })
+    this.apolloService.mutate(companyrole_new, {
+      idCompany: this.idCompany,
+      txtName: this.roleName,
+      permissionaccess: permissionAccess
+    }).then((res) => {
+      const result = res.companyrole_new;
+      if(!result.error){
+        this.newRoleStatus = false;
+        this.getRoles();
+      } else{
+        this.toastrService.info(result.message, '');
+      }
+    })
+  }
+  
+  cancelNewRole(){
+    this.newRoleStatus = false;
+    this.permissions.map((permission) => {
+      permission.access = false;
+    })
+  }
+  
+  duplicateRole(role){
+    this.newRoleStatus = true;
+    this.roleName = role.txtName + '(copy)';
+    this.permissions.map((permission) => {
+      permission.roleaccess.map((permissionRole) => {
+        if(permissionRole.idRole == role.idRole){
+          permission.access = permissionRole.access;
+        }
+      })
+    })
+  }
+  
+  editRoleName(role){
+    if(role.txtName.trim().length == 0){
+      this.toastrService.info('Role name is required.', '')
+      return;
+    }
+    let permissionAccess = [];
+    this.permissions.map((permission) => {
+      permission.roleaccess.map((permissionRole) => {
+        if(permissionRole.idRole == role.id){
+          permissionAccess.push({
+            permissionId: permission.permissionId,
+            access: permissionRole.access ? true : false
+          })
+        }
+      })
+    })
+    
+    this.apolloService.mutate(companyrole_update, {
+      id: role.id,
+      revision: role.revision,
+      txtName: role.txtName,
+      permissionaccess: permissionAccess
+    }).then((res) => {
+      const result = res.companyrole_update;
+      if(!result.error){
+        role.isEditing = false;
+        role.revision = result.data.revision;
+      } else{
+        this.toastrService.info(result.message, '');
+      }
+    })
+  }
+  
+  toggleRoleArchive(role){
+    let message = 'Worker Role will be archived.';
+    if(role.active){
+      message = 'Worker Role will be restored.';
+    } else{
+      if(role.userCount > 3){
+        message = 'Worker Role will be archived. ' + role.userCount + ' Team Members assigned to this Role will be classified as Viewer. You can restore it on the Members page.'
+      }
+    }
+    
+    this.archiveObj = {
+      title: 'Archiving Role',
+      message: message,
+      btnConfirm: 'Confirm',
+      btnSide: 'end',
+      params: {
+        id: role.id,
+        revision: role.revision,
+        archive: !role.active
+      },
+      serviceName: companyrole_deactivate
+    }
+    this.archiveModalRef = this.modalService.open(this.archiveModal, {
+      size: '443',
+      centered: true
+    });
+    this.archiveModalRef.result.then(
+      (result) => {
+        role.active = !role.active;
+        role.revision = result.data.revision;
+      },
+      (reason) => {
+        console.log(reason);
+      }
+    );
+  }
+  
+  togglePermissionRole(permissionId, role){
+    this.apolloService.mutate(permissionrole_update, {
+      idCompany: this.idCompany,
+      permissionId: permissionId,
+      idRole: role.idRole,
+      access: role.access
+    }).then((res) => {
+      const result = res.permissionrole_update;
+      if(!result.error){
+      } else{
+        this.toastrService.info(result.message, '');
+      }
+    })
+  }
   
   deleteRole(i){
     // this.apolloService.mutate(vendor_contact_deactivate, {
@@ -106,24 +237,4 @@ export class RolesComponent {
     //   this.toastrService.error(error, '');
     // });
   }
-  
-  openDeleteRole(i){
-    this.deleteModalRef = this.modalService.open(this.deleteRoleModal, {
-      centered: true,
-      size: '483',
-      backdrop: 'static'
-    })
-    this.deleteModalRef.result.then((result) => {
-      this.deleteRole(i);
-    }, (reason) => {})
-  }
-  
-  cancel(){
-    this.deleteModalRef.dismiss('cancel');
-  }
-  
-  confirm(){
-    this.deleteModalRef.close('confirm');
-  }
-  
 }
