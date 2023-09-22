@@ -26,7 +26,7 @@
             <th *ngFor="let role of roles; let i=index;">
                 <div *ngIf="!role.isEditing" class="th-header">
                     {{role.txtName}}
-                    <div *ngIf="role.access > 2 && role.active" class="archived-text subtitle-2-600 text-optional ms-1-1">Archived</div>
+                    <div *ngIf="role.access > 2 && !role.active" class="archived-text subtitle-2-600 text-optional ms-1-1">Archived</div>
                     <div ngbDropdown>
                         <button class="ms-1-1" style="padding: 0;border: none;" ngbDropdownToggle>
                             <i class="fe-more-vertical- cursor-pointer"></i>
@@ -40,11 +40,11 @@
                                 <i class="fe-edit-1 me-1-1"></i>
                                 Edit name
                             </a>
-                            <a *ngIf="role.access > 2 && !role.active" class="subtitle-2-500" href="javascript:void(0);" (click)="toggleRoleArchive(role);" style="padding: 12px;" ngbDropdownItem>
+                            <a *ngIf="role.access > 2 && role.active" class="subtitle-2-500" href="javascript:void(0);" (click)="toggleRoleArchive(role);" style="padding: 12px;" ngbDropdownItem>
                                 <i class="fe-x me-1-1"></i>
                                 Archive
                             </a>
-                            <a *ngIf="role.access > 2 && role.active" class="subtitle-2-500" href="javascript:void(0);" (click)="toggleRoleArchive(role)" style="padding: 12px;" ngbDropdownItem>
+                            <a *ngIf="role.access > 2 && !role.active" class="subtitle-2-500" href="javascript:void(0);" (click)="toggleRoleArchive(role)" style="padding: 12px;" ngbDropdownItem>
                                 <i class="fe-refresh-ccw me-1-1"></i>
                                 Restore
                             </a>
