@@ -264,7 +264,7 @@
             <div>
                 <tag-input placeholder="add member" secondaryPlaceholder="select member" [identifyBy]="'idUser'" [theme]="'foundation-theme'"
                     [(ngModel)]='inviteList' [onlyFromAutocomplete]="true">
-                    <tag-input-dropdown [displayBy]="'name'" [zIndex]="9999" [identifyBy]="'idUser'" 
+                    <tag-input-dropdown [displayBy]="'name'" [zIndex]="9999" [identifyBy]="'idUser'"  [showDropdownIfEmpty] = "true"
                         [matchingFn]="matchDropdown" [appendToBody]="true" [autocompleteItems]="companyMembers">
                         <ng-template let-item="item" let-index="index">
                             <div class="d-flex dropdownitem" >
@@ -273,7 +273,7 @@
                                         [size]="32" alt="user-img"></app-avatar></div>
                                 <div class="ms-1-1 pt-1-1">
                                     <div class="Subtitle-1 text-start">{{item.firstName}} {{item.lastName}}</div>
-                                    <div class="subtitle-2-400-12">{{item.email}}</div>
+                                    <div class="subtitle-2-400-12 text-typeblack80">{{item.email}}</div>
                                 </div>
                             </div>
                         </ng-template>

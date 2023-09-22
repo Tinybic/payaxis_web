@@ -83,7 +83,7 @@ $foundation-icon-theme: (
 
 .ng2-dropdown-menu {
     width: 446px !important;
-    padding: 16px !important;
+    padding: 0 !important;
     box-shadow: none !important;
     margin-top: 10px;
     margin-left: 5px !important;
@@ -97,6 +97,9 @@ $foundation-icon-theme: (
 .ng2-menu-item {
     padding: 6px 12px 12px 12px !important;
     height: 66px !important;
+}
+.ng2-dropdown-menu__options-container{
+    padding: 16px !important;
 }
 
 ng2-menu-item :hover {
