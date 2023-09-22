@@ -79,3 +79,17 @@ $foundation-icon-theme: (
 ::ng-deep tag-input .ng2-tag-input.ng2-tag-input--focused{
     border-bottom: 0px;
 }
+
+.ng2-dropdown-menu{
+    width: 446px !important;
+    padding: 16px !important;
+    box-shadow: none !important;
+    margin-top: 10px;
+    margin-left: 5px !important;
+    border:1px solid #E1E6EF; 
+    border-radius: 8px !important;
+}
+
+.ng2-dropdown-item{
+    padding: 2px 12px !important;
+}

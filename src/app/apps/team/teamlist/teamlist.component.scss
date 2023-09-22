@@ -3,7 +3,8 @@
 }
 
 .modal-body {
-   height: 800px;
+   height: 80vh;
+   max-height: 800px;
    background-color: #F7FAFC;
    padding: 24px;
    display: flex;

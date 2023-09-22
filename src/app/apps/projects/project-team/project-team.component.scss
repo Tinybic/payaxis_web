@@ -1,0 +1,34 @@
+.modal-body {
+    height: 80vh;
+    max-height: 800px;
+    background-color: #F7FAFC;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+ }
+ 
+ .swal2-alert-content,
+ .swal2-html-container {
+    text-align: left !important;
+ }
+ 
+ .formContainer {
+    background-color: #fff;
+    padding: 16px;
+    flex: 1
+ }
+ 
+ .bottomButton {
+    position: absolute;
+    bottom: 40px;
+ }
+ 
+ .bottomButton button {
+    width: 445px;
+ }
+ 
+ .emaillistInfo {
+    border: 1px solid #2B52DD;
+    border-radius: 8px;
+    padding: 4px 16px 12px 8px
+ }

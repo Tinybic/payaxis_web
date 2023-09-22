@@ -29,8 +29,6 @@ import { getNewFileName, get_file_url } from 'src/app/core/gql/file';
 import { HttpService } from 'src/app/core/service/http.service';
 import { RtlScrollAxisType } from '@angular/cdk/platform';
 
-
-
 @Component({
   selector: 'app-vendoradd',
   templateUrl: './vendoradd.component.html',
@@ -82,7 +80,6 @@ export class VendoraddComponent {
   statesList = [];
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
-
 
   constructor(
     private apolloService: ApolloService,
@@ -401,13 +398,16 @@ export class VendoraddComponent {
 
   archiveRef;
   openArchiveModal() {
-    this.archiveRef = this.deleteRef = this.modalService.open(
-      this.archiveModal,
-      {
-        size: '443',
-        centered: true,
-      }
-    );
+    if (this.idvendor > 0) {
+      this.archiveRef = this.deleteRef = this.modalService.open(
+        this.archiveModal,
+        {
+          backdrop: 'static',
+          size: '443',
+          centered: true,
+        }
+      );
+    }
   }
 
   cancelArchive() {
@@ -432,5 +432,4 @@ export class VendoraddComponent {
     }
     this.archiveRef.close();
   }
-  
 }

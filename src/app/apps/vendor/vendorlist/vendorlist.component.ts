@@ -51,12 +51,14 @@ export class VendorlistComponent {
     }
   }
 
-  searchTable() {
-    this.vendorlist = this.VENDOR_LIST;
-    this.vendorlist = this.vendorlist.filter((vendor) =>
+
+  filterTable = (vendor: any) => {
+    let values = Object.values(vendor);
+    return values.some((v) =>
       vendor.vendorName.toLowerCase().includes(this.keywords.toLowerCase())
     );
-  }
+  };
+
   compare(v1: string | number, v2: string | number): any {
     return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
   }
@@ -78,6 +80,7 @@ export class VendorlistComponent {
   openAddModal() {
     this.idvendor = 0;
     this.modalRef = this.modalService.open(this.inviteVendor, {
+      backdrop: 'static',
       modalDialogClass: 'modal-right',
       size: '90vw',
       centered: true,
@@ -96,6 +99,7 @@ export class VendorlistComponent {
   openEditModal(id) {
     this.idvendor = id;
     this.modalRef = this.modalService.open(this.inviteVendor, {
+      backdrop: 'static',
       modalDialogClass: 'modal-right',
       size: '90vw',
       centered: true,
@@ -168,9 +172,11 @@ export class VendorlistComponent {
           );
           window.clearInterval(pollOAuth);
           win.close();
-        }
-        else if(win.document.URL.indexOf('error=access_denied') != -1){
-          that.toastrService.info('Authorization is required, please try again','');
+        } else if (win.document.URL.indexOf('error=access_denied') != -1) {
+          that.toastrService.info(
+            'Authorization is required, please try again',
+            ''
+          );
           window.clearInterval(pollOAuth);
           win.close();
         }
