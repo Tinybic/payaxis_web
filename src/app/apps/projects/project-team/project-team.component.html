@@ -262,12 +262,12 @@
 
         <div *ngIf="step =='step1'" class="formContainer">
             <div>
-                <tag-input placeholder="add member" secondaryPlaceholder="select member" [theme]="'foundation-theme'"
+                <tag-input placeholder="add member" secondaryPlaceholder="select member" [identifyBy]="'idUser'" [theme]="'foundation-theme'"
                     [(ngModel)]='inviteList' [onlyFromAutocomplete]="true">
-                    <tag-input-dropdown [displayBy]="'name'" [zIndex]="9999" [keepOpen]="true"
-                        [matchingFn]="matchDropdown" [showDropdownIfEmpty]="true" [autocompleteItems]="companyMembers">
+                    <tag-input-dropdown [displayBy]="'name'" [zIndex]="9999" [identifyBy]="'idUser'" 
+                        [matchingFn]="matchDropdown" [appendToBody]="true" [autocompleteItems]="companyMembers">
                         <ng-template let-item="item" let-index="index">
-                            <div class="d-flex" style="margin-left: -12px; margin-top: -6px; height: 66px;">
+                            <div class="d-flex dropdownitem" >
                                 <div><app-avatar [bgColor]="bgColors[index % 6]" [url]="item.avatar"
                                         [firstName]="item.firstName" [lastName]="item.lastName" color="text-white"
                                         [size]="32" alt="user-img"></app-avatar></div>
