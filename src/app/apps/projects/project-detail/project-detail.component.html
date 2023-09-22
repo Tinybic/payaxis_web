@@ -8,7 +8,7 @@
         </div>
     </div>
     <div class="col-md-6 text-end line-56">
-        <div class="d-inline-block" ngbDropdown>
+        <div *ngIf="tabs == 1" class="d-inline-block" ngbDropdown>
             <button class="btn btn-primary ms-2-1" ngbDropdownToggle>New Order<i
                     class="fe-chevron-down ms-1-1"></i></button>
             <div ngbDropdownMenu style="padding: 4px 8px;">
@@ -22,7 +22,7 @@
                 </a>
             </div>
         </div>
-        <div class="d-inline-block ms-2-1" ngbDropdown>
+        <div *ngIf="tabs == 1" class="d-inline-block ms-2-1" ngbDropdown>
             <span ngbDropdownToggle><i class="fe-more-vertical- font-24 cursor-pointer"></i></span>
             <div ngbDropdownMenu style="padding: 4px 8px;">
                 <a class="subtitle-2-500" href="javascript:void(0);" (click)="editProjectDetails()" style="padding: 12px 4px;" ngbDropdownItem>
@@ -40,6 +40,7 @@
                 </a>
             </div>
         </div>
+        <button class="btn btn-primary" *ngIf="tabs == 4" (click) = "inviteMembers()"><i class="fe-plus-square me-1-1"></i>Invite Member</button>
     </div>
 </div>
 <div class="row mt-1-1">
@@ -239,6 +240,9 @@
                 <a ngbNavLink>
                     Team
                 </a>
+                <ng-template ngbNavContent>
+                    <app-project-team></app-project-team>
+                </ng-template>
             </li>
             <li [ngbNavItem]="5">
                 <a ngbNavLink>

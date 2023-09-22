@@ -12,7 +12,6 @@ import {
 } from '../helper/utils';
 
 // types
-import { User } from 'src/app/core/models/auth.models';
 import { MenuItem } from '../models/menu.model';
 import { company_list } from 'src/app/core/gql/company';
 // data
@@ -44,7 +43,6 @@ export class LeftSidebarComponent implements OnInit {
 
   leftSidebarClass = 'sidebar-enable';
   activeMenuItems: string[] = [];
-  loggedInUser: User | null = {};
   menuItems: MenuItem[] = [];
   userAvatar: string = localStorage.getItem('avatar');
   firstName: string = localStorage.getItem('firstName');

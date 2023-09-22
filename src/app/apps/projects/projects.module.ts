@@ -19,6 +19,10 @@ import { CreateGroupComponent } from './create-group/create-group.component';
 import { SetColorComponent } from './set-color/set-color.component';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { InfoModalComponent } from "../../shared/info-modal/info-modal.component";
+import { ProjectTeamComponent } from './project-team/project-team.component';
+import { AvatarModule } from 'src/app/shared/avatar/avatar.module';
+import { DropdowndataModule } from 'src/app/shared/dropdowndata/dropdowndata.module';
+import { TagInputModule } from 'ngx-chips';
 
 
 @NgModule({
@@ -30,7 +34,8 @@ import { InfoModalComponent } from "../../shared/info-modal/info-modal.component
     CreateGroupComponent,
     SetColorComponent,
     ProjectDetailComponent,
-    InfoModalComponent
+    InfoModalComponent,
+    ProjectTeamComponent
   ],
   imports: [
     CommonModule,
@@ -45,7 +50,10 @@ import { InfoModalComponent } from "../../shared/info-modal/info-modal.component
     NgxMaskPipe,
     SharedModule,
     UiModule,
-    NgbNavModule
+    NgbNavModule,
+    AvatarModule,
+    DropdowndataModule,
+    TagInputModule,
   ],
   providers:[
     provideNgxMask()

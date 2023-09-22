@@ -2,23 +2,25 @@ import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { EventType } from 'src/app/core/constants/events';
 import {
   companyproject_info,
-  projectbudget_list
+  projectbudget_list,
 } from 'src/app/core/gql/project';
 import { ApolloService } from 'src/app/core/service/apollo.service';
+import { EventService } from 'src/app/core/service/event.service';
 
 @Component({
   selector: 'app-project-detail',
   templateUrl: './project-detail.component.html',
-  styleUrls: ['./project-detail.component.scss']
+  styleUrls: ['./project-detail.component.scss'],
 })
 export class ProjectDetailComponent {
   @ViewChild('editProjectModal') editProjectModal: NgbModalRef;
   @ViewChild('editBudgetModal') editBudgetModal: NgbModalRef;
   tabs = 1;
   keywords = '';
-  
+
   project = {
     id: 0,
     revision: 0,
@@ -35,79 +37,91 @@ export class ProjectDetailComponent {
     pinyn: false,
     status: '',
     active: false,
-    canDelete: false
+    canDelete: false,
   };
-  
+
   budgetList = [];
   isLoading = true;
-  
+
   editProjectModalRef: NgbModalRef;
   editBudgetModalRef: NgbModalRef;
-  
+
   constructor(
     private modalService: NgbModal,
     private router: Router,
     private apolloService: ApolloService,
     private toastrService: ToastrService,
-    private activatedRoute: ActivatedRoute
-  ){}
-  
-  ngOnInit(): void{
+    private activatedRoute: ActivatedRoute,
+    private eventService: EventService
+  ) {}
+
+  ngOnInit(): void {
     this.activatedRoute.params.subscribe((params) => {
       const idProject = parseInt(params['id']);
       this.getProjectInfo(idProject);
       this.getProjectBudgetList(idProject);
     });
   }
-  
-  getProjectInfo(id){
-    this.apolloService.query(companyproject_info, {id: id}).then((res) => {
+
+  getProjectInfo(id) {
+    this.apolloService.query(companyproject_info, { id: id }).then((res) => {
       const result = res.companyproject_info;
-      if(!result.error){
+      if (!result.error) {
         this.project = result.data;
+        localStorage.setItem('projectName', this.project.projectName);
       }
     });
   }
-  
-  getProjectBudgetList(id){
-    this.apolloService.query(projectbudget_list, {idProject: id}).then((res) => {
-      const result = res.projectbudget_list;
-      if(!result.error){
-        this.budgetList = result.data;
-      }
-      this.isLoading = false;
-    });
+
+  getProjectBudgetList(id) {
+    this.apolloService
+      .query(projectbudget_list, { idProject: id })
+      .then((res) => {
+        const result = res.projectbudget_list;
+        if (!result.error) {
+          this.budgetList = result.data;
+        }
+        this.isLoading = false;
+      });
   }
-  
-  editProjectDetails(){
+
+  editProjectDetails() {
     this.editProjectModalRef = this.modalService.open(this.editProjectModal, {
       modalDialogClass: 'modal-right',
       size: '640',
       centered: true,
-      backdrop: 'static'
-    })
-    this.editProjectModalRef.result.then((result) => {
+      backdrop: 'static',
+    });
+    this.editProjectModalRef.result.then(
+      (result) => {
         // get project
         this.getProjectInfo(this.project.id);
-      }, (reason) => {
+      },
+      (reason) => {
         console.log(reason);
       }
     );
   }
-  
-  editProjectBudget(){
+
+  editProjectBudget() {
     this.editBudgetModalRef = this.modalService.open(this.editBudgetModal, {
       modalDialogClass: 'modal-right',
       size: '640',
       centered: true,
-      backdrop: 'static'
-    })
-    this.editBudgetModalRef.result.then((result) => {
-      // get project
-      this.getProjectInfo(this.project.id);
-    }, (reason) => {
-      console.log(reason);
-    })
+      backdrop: 'static',
+    });
+    this.editBudgetModalRef.result.then(
+      (result) => {
+        // get project
+        this.getProjectInfo(this.project.id);
+      },
+      (reason) => {
+        console.log(reason);
+      }
+    );
   }
-  
+
+  inviteMembers() {
+    this.eventService.broadcast(EventType.PROJECT_DEDAIL_INVITE, true);
+  }
 }

@@ -6,6 +6,7 @@ import { VendorRoutingModule } from './vendor-routing.module';
 import { NgbDropdownModule,  NgbModalModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { VendoraddModule } from './vendoradd/vendoradd.module';
 import { UiModule } from 'src/app/shared/ui/ui.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { UiModule } from 'src/app/shared/ui/ui.module';
     NgbDropdownModule,
     NgbModalModule,
     VendoraddModule,
-    UiModule
+    UiModule,
+    SharedModule
   ]
 })
 export class VendorModule { }

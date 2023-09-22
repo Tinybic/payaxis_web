@@ -1,17 +1,4 @@
-<div class="row">
-    <div class="col-md-6 headline">
-        Members
-    </div>
-    <div class="col-md-6 text-end">
-        <button class="btn btn-outline-primary" *ngIf="!editFlag " (click)="startEdit()"><i
-                class="fe-edit me-1-1"></i>Edit</button>
-        <button class="btn btn-primary" *ngIf="editFlag" (click)="saveEdit()">Save</button>
-        <button class="btn btn-primary ms-2-1">New Bill<i class="fe-chevron-down ms-1-1"></i></button>
-        <i class="fe-more-vertical- font-24 ms-2-1 cursor-pointer" (click)="inviteMembers()"></i>
-    </div>
-</div>
-
-<div class="row">
+<div class="row mt-2-1">
     <div class="col-md-4">
         <div class="dropdown" ngbDropdown #statusDrop="ngbDropdown">
             <a href="javascript:void(0)" class="bold-600 font-20 text-black line-60"
@@ -49,7 +36,7 @@
     </div>
     <div class="col-md-8 text-end mt-2-1">
 
-        <div class="dropdown" ngbDropdown #roleDrop="ngbDropdown">
+        <div class="dropdown d-inline-block" ngbDropdown #roleDrop="ngbDropdown">
             <a class="dropdow-outline" href="javascript:void(0)" ngbDropdownToggle>
                 <i class="fe-user font-16 me-1-1"></i>
                 {{roleFilter}}
@@ -77,7 +64,7 @@
             </div>
         </div>
         <!--end filter 1-->
-        <div class="dropdown ms-1-1" ngbDropdown>
+        <div class="dropdown ms-1-1 d-inline-block" ngbDropdown>
             <a class="dropdow-outline" href="javascript:void(0)" ngbDropdownToggle>
                 <i class="fe-folder font-16 me-1-1"></i>
                 Project
@@ -127,7 +114,7 @@
             </div>
         </div>
         <!--end filter 2-->
-        <div class="dropdown ms-1-1" ngbDropdown #approvalDrop="ngbDropdown">
+        <div class="dropdown ms-1-1 d-inline-block" ngbDropdown #approvalDrop="ngbDropdown">
             <a class="dropdow-outline" href="javascript:void(0)" ngbDropdownToggle>
                 <i class="fe-dollar-sign font-16 me-1-1"></i>
                 {{approvalAmountFilter}}
@@ -191,8 +178,8 @@
             </div>
         </div>
         <!--end filter 3-->
-        <div class="d-inline-block ms-1-1">
-            <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords"/>
+        <div class="d-inline-block ms-1-1 d-inline-block">
+            <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords" />
         </div>
         <!-- end search-->
     </div>
@@ -219,13 +206,14 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of members | callback: filterTable; let i = index">
+                <tr *ngFor="let item of members| callback: filterTable; let i = index">
                     <td><input class="form-check" type="checkbox" /></td>
                     <td>
                         <div class="d-flex flex-row">
                             <div class="me-1-1">
                                 <app-avatar [bgColor]="bgColors[i % 6]" [url]="item.avatar" [firstName]="item.firstName"
-                                    [lastName]="item.lastName" color="text-white" [size]="32" alt="user-img"></app-avatar>
+                                    [lastName]="item.lastName" color="text-white" [size]="32"
+                                    alt="user-img"></app-avatar>
                             </div>
                             <div>
                                 <div class="bold-600">{{item.firstName}}&nbsp;{{item.lastName}}</div>
@@ -245,7 +233,8 @@
                         <span *ngIf="!editFlag || item.role == 'Owner'">${{item.approvalAmount}}</span>
                     </td>
                     <td>{{item.active?'Active':'InActive'}}</td>
-                    <td><i class=" fe-trash-2 cursor-pointer" *ngIf="idUser==idUserOwner && item.role != 'Owner' && item.active"
+                    <td><i class=" fe-trash-2 cursor-pointer"
+                            *ngIf="idUser==idUserOwner && item.role != 'Owner' && item.active"
                             (click)="deactive(i)"></i></td>
                 </tr>
             </tbody>
@@ -267,22 +256,36 @@
     </div>
 </div>
 
-
 <ng-template #inviteMember let-modal>
     <div class="modal-body">
-        <div class="headline mt-1-1 mb-1-1">Invite Members to [{{companyName}}]</div>
+        <div class="headline mt-1-1 mb-1-1">Invite Members to [{{projectName}}]</div>
 
         <div *ngIf="step =='step1'" class="formContainer">
             <div>
-                <tag-input [validators]="validators" [addOnBlur]="true" [theme]="'foundation-theme'" [separatorKeys]="[',',' ']" [(ngModel)]='emailList' placeholder = "add email" secondaryPlaceholder="Email, separate with comma" ></tag-input>
+                <tag-input placeholder="add member" secondaryPlaceholder="select member" [identifyBy]="'idUser'" [theme]="'foundation-theme'"
+                    [(ngModel)]='inviteList' [onlyFromAutocomplete]="true">
+                    <tag-input-dropdown [displayBy]="'name'" [zIndex]="9999" [identifyBy]="'idUser'"  [showDropdownIfEmpty] = "true"
+                        [matchingFn]="matchDropdown" [appendToBody]="true" [autocompleteItems]="companyMembers">
+                        <ng-template let-item="item" let-index="index">
+                            <div class="d-flex dropdownitem" >
+                                <div><app-avatar [bgColor]="bgColors[index % 6]" [url]="item.avatar"
+                                        [firstName]="item.firstName" [lastName]="item.lastName" color="text-white"
+                                        [size]="32" alt="user-img"></app-avatar></div>
+                                <div class="ms-1-1 pt-1-1">
+                                    <div class="Subtitle-1 text-start">{{item.firstName}} {{item.lastName}}</div>
+                                    <div class="subtitle-2-400-12 text-typeblack80">{{item.email}}</div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </tag-input-dropdown>
+                </tag-input>
             </div>
             <div class="bottomButton">
                 <div>
-                    <button class="btn btn-primary" [disabled]="emailList.length == 0" (click)="step1()">Next</button>
+                    <button class="btn btn-primary" [disabled]="inviteList.length == 0" (click)="step1()">Next</button>
                 </div>
                 <div>
-                    <button class="btn btn-outline-primary mt-1-1"
-                        (click)="cancelModal()">Cancel</button>
+                    <button class="btn btn-outline-primary mt-1-1" (click)="cancelModal()">Cancel</button>
                 </div>
             </div>
         </div>
@@ -310,17 +313,15 @@
         <div *ngIf="step =='step3'" class="formContainer">
             <div class="row mt-1-1" *ngFor="let item of userList; let i = index">
                 <div class="col-md-1">
-                    <div [ngClass]="bgColors[i % 6]" class=" rounded-circle"
-                        style="width:32px; height: 32px; padding: 8px;">
-                        <i class="fe-user text-white  font-16"></i>
-                    </div>
+                    <app-avatar [bgColor]="bgColors[i % 6]" [url]="item.avatar" [firstName]="item.firstName"
+                        [lastName]="item.lastName" color="text-white" [size]="32" alt="user-img"></app-avatar>
                 </div>
                 <div class="col-md-4 line-32 overflow-hidden">
-                     <span *ngIf="!item.memberyn">{{item.email}}</span>
-                     <del *ngIf="item.memberyn">{{item.email}}</del>
+                    <span >{{item.firstName}} {{item.lastName}}</span>
                 </div>
                 <div class="col-md-4 text-end subtitle-2-600 line-32 ">
-                    <div *ngIf="!item.memberyn" style="background-color: #F8F9FC;border-radius: 8px;display: inline-block;padding: 0px 8px;">
+                    <div *ngIf="!item.memberyn"
+                        style="background-color: #F8F9FC;border-radius: 8px;display: inline-block;padding: 0px 8px;">
                         <app-dropdowndata [displayText]="item.approvalAmountText" [data]="approvalAmount"
                             [color]="'text-primary'" (selectValue)="step3Approval(item,$event)"></app-dropdowndata>
                     </div>
@@ -336,8 +337,7 @@
                     <button class="btn btn-primary" (click)="send()">Send Invite</button>
                 </div>
                 <div>
-                    <button class="btn btn-outline-primary mt-1-1"
-                        (click)="cancelModal()">Cancel</button>
+                    <button class="btn btn-outline-primary mt-1-1" (click)="cancelModal()">Cancel</button>
                 </div>
             </div>
         </div>

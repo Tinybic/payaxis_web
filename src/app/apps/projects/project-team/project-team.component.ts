@@ -14,15 +14,23 @@ import { SweetAlertOptions } from 'sweetalert2';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { company_roles } from 'src/app/core/gql/company';
 import { FormControl } from '@angular/forms';
+import {
+  project_members,
+  projectmember_deactivate,
+  projectmember_invite,
+} from 'src/app/core/gql/project-detail';
+import { ActivatedRoute } from '@angular/router';
+import { EventService } from 'src/app/core/service/event.service';
+import { EventType } from 'src/app/core/constants/events';
 @Component({
-  selector: 'app-teamlist',
-  templateUrl: './teamlist.component.html',
+  selector: 'app-project-team',
+  templateUrl: './project-team.component.html',
   styleUrls: [
-    './teamlist.component.scss',
+    './project-team.component.scss',
     '../../../../assets/scss/custom/structure/_foundation-themes.scss',
   ],
 })
-export class TeamlistComponent {
+export class ProjectTeamComponent {
   @ViewChild('inviteMember') inviteMember: any;
   @ViewChild('deleteModal') deleteModal: any;
 
@@ -42,13 +50,13 @@ export class TeamlistComponent {
   pendingCount: number = 0;
   showCount: number = 0;
   email: string = '';
-  emailList = [];
+  inviteList = [];
   step: string = 'step1';
-  keywords = '';
+  keywords: string = '';
   userList = [];
   direction = 'asc';
   sortCloumn = '';
-  companyName = '';
+  projectName = '';
   idUserOwner = '';
   idUser = '';
   roleItems = [];
@@ -58,11 +66,20 @@ export class TeamlistComponent {
   approvalAmountFilter = 'Approval Amount';
   roleFilter = 'Approval';
   loading = true;
+  idProject = 0;
+  companyMembers = [];
+
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
-    private toastrService: ToastrService
-  ) {}
+    private toastrService: ToastrService,
+    private activatedRoute: ActivatedRoute,
+    private eventService: EventService
+  ) {
+    this.eventService.on(EventType.PROJECT_DEDAIL_INVITE).subscribe(() => {
+      this.inviteMembers();
+    });
+  }
 
   startEdit() {
     if (this.idUser == this.idUserOwner) this.editFlag = true;
@@ -116,7 +133,7 @@ export class TeamlistComponent {
       this.edit = [];
       this.editFlag = false;
       this.toastrService.info(message, '');
-      this.getCompanyMembers();
+      this.getProjectMembers();
     });
   }
 
@@ -152,9 +169,14 @@ export class TeamlistComponent {
   }
 
   ngOnInit(): void {
+    this.getRoles();
+    this.getProjectMembers();
+  }
+
+  getRoles() {
     this.idUser = localStorage.getItem('id');
     this.idUserOwner = localStorage.getItem('idUserOwner');
-    this.companyName = localStorage.getItem('companyName');
+    this.projectName = localStorage.getItem('projectName');
 
     this.apolloService
       .query(company_roles, {
@@ -175,17 +197,19 @@ export class TeamlistComponent {
         }
       });
 
-    this.getCompanyMembers();
+    this.getProjectMembers();
   }
 
-  getCompanyMembers() {
-    if (localStorage.getItem('idcompany')) {
+  getProjectMembers() {
+    this.activatedRoute.params.subscribe((params) => {
+      this.idProject = parseInt(params['id']);
+      const idProject = parseInt(params['id']);
       this.apolloService
-        .query(company_members, {
-          idCompany: parseInt(localStorage.getItem('idcompany')),
+        .query(project_members, {
+          idProject: idProject,
         })
         .then((res) => {
-          const result = res.company_members;
+          const result = res.project_members;
           if (!result.error) {
             this.members = result.data;
             this.COMPANY_MEMBERS = JSON.parse(JSON.stringify(result.data));
@@ -199,6 +223,34 @@ export class TeamlistComponent {
             ).length;
             this.showCount = this.allCount;
             this.loading = false;
+          }
+        });
+    });
+  }
+
+  getCompanyMembers() {
+    if (localStorage.getItem('idcompany')) {
+      this.apolloService
+        .query(company_members, {
+          idCompany: parseInt(localStorage.getItem('idcompany')),
+        })
+        .then((res) => {
+          const result = res.company_members;
+          if (!result.error) {
+            this.companyMembers = result.data;
+
+            this.companyMembers = this.companyMembers
+              .concat(this.members)
+              .filter((item) => {
+                return !(
+                  this.companyMembers.some((a) => a.idUser == item.idUser) &&
+                  this.members.some((a) => a.idUser == item.idUser)
+                );
+              });
+
+            this.companyMembers.forEach((item) => {
+              item.name = item.firstName + ' ' + item.lastName;
+            });
           }
         });
     }
@@ -220,15 +272,15 @@ export class TeamlistComponent {
 
   deactiveMembers() {
     this.apolloService
-      .mutate(company_member_deactivate, {
+      .mutate(projectmember_deactivate, {
         id: this.members[this.deleteIndex].id,
         revision: this.members[this.deleteIndex].revision,
       })
       .then((res) => {
         let message = '';
-        const result = res.company_member_deactivate;
+        const result = res.projectmember_deactivate;
         message = result.message;
-        this.getCompanyMembers();
+        this.getProjectMembers();
         this.toastrService.info(message, '');
         this.modalService.dismissAll();
       });
@@ -257,45 +309,40 @@ export class TeamlistComponent {
     });
   }
 
-
-  filterTable = (member: any) => {
-    let values = Object.values(member);
-    return values.some(
-      (v) =>
+  searchTable() {
+    this.members = this.COMPANY_MEMBERS;
+    this.members = this.members.filter(
+      (member) =>
         member.firstName.toLowerCase().includes(this.keywords.toLowerCase()) ||
         member.lastName.toLowerCase().includes(this.keywords.toLowerCase())
     );
-  };
-
-  openVerticallyCentered(content: TemplateRef<NgbModal>): void {
-    this.modalService.open(content, { backdrop: 'static', size: '530', centered: true });
   }
 
+  openVerticallyCentered(content: TemplateRef<NgbModal>): void {
+    this.modalService.open(content, {
+      backdrop: 'static',
+      size: '530',
+      centered: true,
+    });
+  }
 
   inviteMembers() {
-    if (this.idUser == this.idUserOwner)
+    if (this.idUser == this.idUserOwner) {
+      this.getCompanyMembers();
       this.openVerticallyCentered(this.inviteMember);
+    }
   }
 
   cancelModal() {
     this.modalService.dismissAll();
-    this.emailList = [];
+    this.inviteList = [];
     this.step = 'step1';
   }
 
-  isEmail(email: string) {
-    const expression: RegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-    return expression.test(email);
-  }
-
   deleteEmail(index) {
-    this.emailList.splice(index, 1);
+    this.inviteList.splice(index, 1);
   }
 
-  public validators = [this.must_be_email];
-  public errorMessages = {
-    must_be_email: 'Enter valid email adress!',
-  };
   private must_be_email(control: FormControl) {
     var EMAIL_REGEXP =
       /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
@@ -309,32 +356,21 @@ export class TeamlistComponent {
   }
 
   step1() {
-    let data = [];
     this.userList = [];
-    this.emailList.forEach((item) => {
-      data.push(item.value);
-    });
-    this.apolloService
-      .query(companymember_emails, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
-        emaillist: data,
-      })
-      .then((res) => {
-        if (!res.companymember_emails.error) {
-          res.companymember_emails.data.forEach((item) => {
-            this.userList.push({
-              email: item.email,
-              memberyn: item.memberyn,
-              idRole: this.roleItems[0].id,
-              role: this.roleItems[0].text,
-              approvalAmount: 0,
-              approvalAmountText: 'Approval Limit',
-            });
-          });
-
-          this.step = 'step3';
-        }
+    this.inviteList.forEach((item) => {
+      this.userList.push({
+        idUser: item.idUser,
+        email: item.email,
+        firstName: item.firstName,
+        lastName: item.lastName,
+        avatar: item.avatar,
+        idRole: this.roleItems[0].id,
+        role: this.roleItems[0].text,
+        approvalAmount: 0,
+        approvalAmountText: 'Approval Limit',
       });
+    });
+    this.step = 'step3';
   }
 
   step3Approval(item, event) {
@@ -348,12 +384,11 @@ export class TeamlistComponent {
 
   send() {
     this.modalService.dismissAll();
-    this.userList = this.userList.filter((item) => !item.memberyn);
-    console.log(this.userList);
     const inviteMembers = this.userList.map((item) => {
       return Object.assign(
         {},
         {
+          idUser: item.idUser,
           email: item.email,
           idRole: item.idRole,
           approvalAmount: item.approvalAmount,
@@ -363,21 +398,40 @@ export class TeamlistComponent {
 
     const data = {
       idCompany: parseInt(localStorage.getItem('idcompany')),
+      idProject: this.idProject,
       inviteMembers: inviteMembers,
     };
 
-    this.apolloService.mutate(company_member_invite, data).then((res) => {
+    this.apolloService.mutate(projectmember_invite, data).then((res) => {
       let message = '';
-      const result = res.company_member_invite;
+      const result = res.projectmember_invite;
       if (!result.error) {
         message = this.userList.length + ' invitation has been sent';
+        this.getProjectMembers();
       } else {
         message = result.message;
       }
       this.step = 'step1';
       this.email = '';
-      this.emailList = [];
+      this.inviteList = [];
       this.toastrService.info(message, '');
     });
+  }
+
+  filterTable = (member: any) => {
+    let values = Object.values(member);
+    return values.some(
+      (v) =>
+        member.firstName.toLowerCase().includes(this.keywords.toLowerCase()) ||
+        member.lastName.toLowerCase().includes(this.keywords.toLowerCase())
+    );
+  };
+
+  matchDropdown(value, target) {
+    return (
+      target.lastName.toLowerCase().indexOf(value.toLowerCase()) >= 0 ||
+      target.firstName.toLowerCase().indexOf(value.toLowerCase()) >= 0 ||
+      target.email.toLowerCase().indexOf(value.toLowerCase()) >= 0
+    );
   }
 }
