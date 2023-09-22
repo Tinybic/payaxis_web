@@ -22,6 +22,7 @@ const company_members = gql`
         role
         approvalAmount
         active
+        email
       }
     }
   }

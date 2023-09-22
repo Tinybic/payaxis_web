@@ -7,7 +7,6 @@ import { EventService } from 'src/app/core/service/event.service';
 import { EventType } from 'src/app/core/constants/events';
 
 // types
-import { User } from 'src/app/core/models/auth.models';
 import { NotificationItem } from '../models/notification.model';
 import { ProfileOptionItem } from '../models/profileoption.model';
 import { SearchResultItem, SearchUserItem } from '../models/search.model';
@@ -28,7 +27,6 @@ export class TopbarComponent implements OnInit {
   searchResults: SearchResultItem[] = [];
   searchUsers: SearchUserItem[] = [];
   pageTitle: string = '';
-  loggedInUser: User | null = null;
   topnavCollapsed: boolean = false;
 
   @Input() layoutType: string = 'vertical';

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { User } from 'src/app/core/models/auth.models';
 
 @Component({
   selector: 'app-landing-navbar',
@@ -10,7 +9,6 @@ import { User } from 'src/app/core/models/auth.models';
 export class NavbarComponent implements OnInit {
 
   mobileMenuOpen: boolean = false;
-  loggedInUser: User | null = null;
 
   constructor (
     private route: ActivatedRoute

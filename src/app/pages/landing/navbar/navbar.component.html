@@ -41,8 +41,6 @@
                         class="nav-link" (click)="toggleMenu($event)">Contact</a>
                 </li>
             </ul>
-            <button class="btn btn-info navbar-btn" [routerLink]="['/auth/login']" *ngIf="!loggedInUser">Login</button>
-            <button class="btn btn-info navbar-btn" [routerLink]="['/auth/logout']" *ngIf="loggedInUser">Logout</button>
         </div>
     </div>
 </nav>

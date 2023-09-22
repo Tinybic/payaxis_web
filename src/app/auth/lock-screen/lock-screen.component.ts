@@ -5,9 +5,6 @@ import { first } from 'rxjs/operators';
 
 // service
 
-// types
-import { User } from 'src/app/core/models/auth.models';
-
 
 @Component({
   selector: 'app-auth-lock-screen',

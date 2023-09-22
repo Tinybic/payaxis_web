@@ -89,8 +89,7 @@
     </div>
     <div class="col-md-4 text-end mt-2-1">
         <div class="d-inline-block ms-1-1">
-            <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords"
-                (keyup)="searchTable()" />
+            <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords"/>
         </div>
         <!-- end search-->
     </div>
@@ -117,7 +116,7 @@
                 </tr>
             </thead>
             <tbody *ngIf="!loading">
-                <tr class="cursor-pointer" *ngFor="let item of vendorlist; let i = index"
+                <tr class="cursor-pointer" *ngFor="let item of vendorlist | callback:filterTable; let i = index"
                     (click)="openEditModal(item.id)">
                     <td><input class="form-check" type="checkbox" /></td>
                     <td>
