@@ -27,4 +27,14 @@
       }
     }
   }
+  tbody {
+    tr{
+      td{
+        .form-check-input:checked:disabled {
+          background-color: #2B52DDCC;
+          border-color: #2B52DDCC;
+        }
+      }
+    }
+  }
 }

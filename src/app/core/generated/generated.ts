@@ -435,7 +435,7 @@ export type MutationCompanyproject_UpdatedetailArgs = {
 
 /** structure to handle table sms */
 export type MutationCompanyrole_DeactivateArgs = {
-  archive: Scalars['Boolean']['input'];
+  active: Scalars['Boolean']['input'];
   id: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
 };

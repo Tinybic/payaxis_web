@@ -73,8 +73,8 @@ const companyrole_update = gql`
 }
 `
 const companyrole_deactivate = gql`
-  mutation companyrole_deactivate($id: Int!, $revision: Int!, $archive: Boolean!) {
-    companyrole_deactivate(id: $id, revision: $revision, archive: $archive) {
+  mutation companyrole_deactivate($id: Int!, $revision: Int!, $active: Boolean!) {
+    companyrole_deactivate(id: $id, revision: $revision, active: $active) {
       error
       code
       message
