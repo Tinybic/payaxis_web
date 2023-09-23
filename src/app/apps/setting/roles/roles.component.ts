@@ -24,6 +24,8 @@ export class RolesComponent {
   keywords = '';
   direction = '';
   sortCloumn = '';
+  initialRoles: any = [];
+  initialPermissions: any = [];
   roles: any = [];
   permissions: any = [];
   rolesParams = {
@@ -62,19 +64,44 @@ export class RolesComponent {
     }
   }
   
+  filterPermissions = () => {
+    let permissions = [];
+    let initialPermissions = JSON.parse(JSON.stringify(this.initialPermissions));
+    initialPermissions.map((permission) => {
+      permission.roleaccess = permission.roleaccess.filter(item => {
+        return this.roles.some(role => role.idRole == item.idRole);
+      })
+      permissions.push(permission);
+    })
+    this.permissions = permissions;
+  }
+  
+  filterArchivedRoles(){
+    let roles = this.initialRoles.filter(item => {
+      if(this.showArchived){
+        return this.showArchived
+      } else{
+        return item.active
+      }
+    });
+    
+    this.roles = roles.filter(role =>{
+      let values = Object.values(role);
+      return values.some(v => v.toString().toLowerCase().includes(this.keywords.toLowerCase()));
+    })
+    
+    this.filterPermissions();
+  }
+  
   getRoles(){
     this.apolloService.query(companyrole_list, {idCompany: this.idCompany}).then((res) => {
       const result = res.companyrole_list;
       if(!result.error){
-        this.roles = result.data.roles;
-        this.permissions = result.data.permissions;
+        this.initialRoles = result.data.roles;
+        this.initialPermissions = result.data.permissions;
+        this.filterArchivedRoles();
       }
     })
-  }
-  
-  filterTable = (role) => {
-    let values = Object.values(role);
-    return values.some(v => v.toString().toLowerCase().includes(this.keywords.toLowerCase()));
   }
   
   onSort(column){
@@ -172,11 +199,11 @@ export class RolesComponent {
   toggleRoleArchive(role){
     let message = 'Worker Role will be archived.';
     if(role.active){
-      message = 'Worker Role will be restored.';
-    } else{
       if(role.userCount > 3){
         message = 'Worker Role will be archived. ' + role.userCount + ' Team Members assigned to this Role will be classified as Viewer. You can restore it on the Members page.'
       }
+    } else{
+      message = 'Worker Role will be restored.';
     }
     
     this.archiveObj = {
@@ -187,7 +214,7 @@ export class RolesComponent {
       params: {
         id: role.id,
         revision: role.revision,
-        archive: !role.active
+        active: !role.active
       },
       serviceName: companyrole_deactivate
     }
@@ -219,22 +246,5 @@ export class RolesComponent {
         this.toastrService.info(result.message, '');
       }
     })
-  }
-  
-  deleteRole(i){
-    // this.apolloService.mutate(vendor_contact_deactivate, {
-    //   idVendor_contact: this.roles[i].id,
-    //   revision: this.roles[i].revision
-    // }).then((res) => {
-    //   const result = res.vendor_contact_deactivate;
-    //   if(!result.error){
-    //     this.toastrService.success('Delete success', '');
-    //     this.roles.splice(i, 1);
-    //   } else{
-    //     this.toastrService.error(result.message, '');
-    //   }
-    // }).catch((error) => {
-    //   this.toastrService.error(error, '');
-    // });
   }
 }
