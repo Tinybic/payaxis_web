@@ -4,14 +4,17 @@
     <app-left-sidebar [includeUserProfile]="showSidebarUserInfo"></app-left-sidebar>
 
     <div class="content-page">
-        <div class="content">
-            <!-- content -->
-            <div class="container-fluid ps-0 pe-0" *ngIf="reRender">
-                <router-outlet></router-outlet>
+        <ngx-simplebar style="height: calc(100vh - 88px); overflow-x: hidden ">
+            <div class="content">
+                <!-- content -->
+                <div class="container-fluid ps-0 pe-0" *ngIf="reRender">
+                    <router-outlet></router-outlet>
+                </div>
             </div>
-        </div>
+        </ngx-simplebar>
         <!-- footer -->
     </div>
+
 </div>
 <!-- END wrapper -->
 
