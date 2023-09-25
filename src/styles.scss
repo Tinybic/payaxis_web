@@ -11,7 +11,6 @@
   font-display: block;
 }
 
-
 [class^="payaxis-"],
 [class*=" payaxis-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
@@ -311,9 +310,9 @@ i {
 }
 
 
-::-webkit-scrollbar {
-  width: 0px;
-}
+//::-webkit-scrollbar {
+//  width: 0px;
+//}
 
 
 .modal-content{

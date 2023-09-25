@@ -1540,13 +1540,6 @@
   dependencies:
     regenerator-runtime "^0.13.11"
 
-"@babel/runtime@^7.11.2":
-  version "7.17.2"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.17.2.tgz#66f68591605e59da47523c631416b18508779941"
-  integrity sha512-hzeyJyMA1YGdJTuWU0e/j4wKXrU4OMFvY2MSlaI9B7VQb0r5cxTE3EAIS2Q7Tn2RIcDkRvTA/v2JsAEhxe99uw==
-  dependencies:
-    regenerator-runtime "^0.13.4"
-
 "@babel/runtime@^7.8.4":
   version "7.16.7"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.16.7.tgz#03ff99f64106588c9c403c6ecb8c3bafbbdff1fa"
@@ -2755,6 +2748,18 @@
   resolved "https://registry.yarnpkg.com/@types/json-stable-stringify/-/json-stable-stringify-1.0.34.tgz#c0fb25e4d957e0ee2e497c1f553d7f8bb668fd75"
   integrity sha512-s2cfwagOQAS8o06TcwKfr9Wx11dNGbH2E9vJz1cqV+a/LOyhWNLUNd6JSRYNzvB4d29UuJX2M0Dj9vE1T8fRXw==
 
+"@types/lodash-es@^4.17.6":
+  version "4.17.9"
+  resolved "https://registry.npmmirror.com/@types/lodash-es/-/lodash-es-4.17.9.tgz#49dbe5112e23c54f2b387d860b7d03028ce170c2"
+  integrity sha512-ZTcmhiI3NNU7dEvWLZJkzG6ao49zOIjEgIE0RgV7wbPxU0f2xT3VSAHw2gmst8swH6V0YkLRGp4qPlX/6I90MQ==
+  dependencies:
+    "@types/lodash" "*"
+
+"@types/lodash@*":
+  version "4.14.199"
+  resolved "https://registry.npmmirror.com/@types/lodash/-/lodash-4.14.199.tgz#c3edb5650149d847a277a8961a7ad360c474e9bf"
+  integrity sha512-Vrjz5N5Ia4SEzWWgIVwnHNEnb1UE1XMkvY5DGXrAeOGE9imk0hgTHh5GyDjLDJi9OTCn9oo9dXH1uToK1VRfrg==
+
 "@types/mime@*":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-3.0.1.tgz#5f8f2bca0a5863cb69bc0b0acd88c96cb1d4ae10"
@@ -3694,8 +3699,8 @@ camelcase@^5.0.0, camelcase@^5.3.1:
 
 can-use-dom@^0.1.0:
   version "0.1.0"
-  resolved "https://registry.yarnpkg.com/can-use-dom/-/can-use-dom-0.1.0.tgz#22cc4a34a0abc43950f42c6411024a3f6366b45a"
-  integrity sha1-IsxKNKCrxDlQ9CxkEQJKP2NmtFo=
+  resolved "https://registry.npmmirror.com/can-use-dom/-/can-use-dom-0.1.0.tgz#22cc4a34a0abc43950f42c6411024a3f6366b45a"
+  integrity sha512-ceOhN1DL7Y4O6M0j9ICgmTYziV89WMd96SvSl0REd8PMgrY0B/WBOPoed5S1KUmJqXgUXh8gzSe6E3ae27upsQ==
 
 caniuse-lite@^1.0.30001286:
   version "1.0.30001303"
@@ -6037,7 +6042,7 @@ locate-path@^5.0.0:
   dependencies:
     p-locate "^4.1.0"
 
-lodash-es@^4.17.15:
+lodash-es@^4.17.15, lodash-es@^4.17.21:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
   integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
@@ -7957,22 +7962,23 @@ sigstore@^1.0.0:
     "@sigstore/tuf" "^1.0.1"
     make-fetch-happen "^11.0.1"
 
-simplebar-angular@^3.0.0-beta.10:
-  version "3.0.0-beta.10"
-  resolved "https://registry.yarnpkg.com/simplebar-angular/-/simplebar-angular-3.0.0-beta.10.tgz#8c404e682b9ed39f223ea7cc9d3e2b0131fba30b"
-  integrity sha512-KWQCaCDFHJtD0KptgU4fkx1qXI28GYSTOiMStjEFtucRNvrMrtasHuddGYcAsVL6bpWZRpqFkGWZmK3UypNHGQ==
+simplebar-angular@^3.2.4:
+  version "3.2.4"
+  resolved "https://registry.npmmirror.com/simplebar-angular/-/simplebar-angular-3.2.4.tgz#06fc7501125116d8928f88a54c2ef69f0c3a04e2"
+  integrity sha512-cBjr+GD2c4RaO85Yyo0Y1PsKeRdIgu5tgXp3FiNqyUwlisQUKZVweDiVuCtlec4nJTIwNJSoPV6yW8S1ek1B/A==
   dependencies:
-    simplebar-core "^1.0.7"
-    tslib "^2.0.0"
+    simplebar-core "^1.2.4"
+    tslib "^2.3.0"
 
-simplebar-core@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/simplebar-core/-/simplebar-core-1.0.7.tgz#762cd0db534525184a5f96492664d40f27ce4fb5"
-  integrity sha512-hO1/nStBwXRwxeu7TT8PFVe1INEi2+RFf1Tjn1EvTwRB9yf84dJyWC7CFJfRvO2F/8Cdp0tg6MHVUGVbqFdebQ==
+simplebar-core@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.npmmirror.com/simplebar-core/-/simplebar-core-1.2.4.tgz#1fe965716a426f812c1a112ce28d98b9a643797b"
+  integrity sha512-P+Sqshef4fq3++gQ82TgNYcgl3qZFSCP5jS2/8NMmw18oagXOijMzs1G+vm6RUY3oMvpwH3wGoqh9u6SyDjHfQ==
   dependencies:
-    "@babel/runtime" "^7.11.2"
+    "@types/lodash-es" "^4.17.6"
     can-use-dom "^0.1.0"
-    lodash-es "^4.17.15"
+    lodash "^4.17.21"
+    lodash-es "^4.17.21"
 
 slash@^3.0.0:
   version "3.0.0"

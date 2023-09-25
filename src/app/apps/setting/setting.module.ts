@@ -13,6 +13,7 @@ import { UiModule } from 'src/app/shared/ui/ui.module';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from "ngx-mask";
 import { AddRoleComponent } from './add-role/add-role.component';
 import { SharedModule } from "../../shared/shared.module";
+import { SimplebarAngularModule } from "simplebar-angular";
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import { SharedModule } from "../../shared/shared.module";
     SharedModule,
     NgxMaskDirective,
     NgxMaskPipe,
+    SimplebarAngularModule
   ],
   providers:[
     provideNgxMask()
