@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import { VerticalLayoutComponent } from './layout/layout.component';
+import { SimplebarAngularModule } from 'simplebar-angular';
 
 @NgModule({
   declarations: [
@@ -11,7 +12,8 @@ import { VerticalLayoutComponent } from './layout/layout.component';
   imports: [
     CommonModule,
     RouterModule,
-    SharedModule
+    SharedModule,
+    SimplebarAngularModule
   ],
   exports: [
     VerticalLayoutComponent
