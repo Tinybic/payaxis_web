@@ -5,10 +5,10 @@ import { Pipe, PipeTransform } from '@angular/core';
   pure: false
 })
 export class CallbackPipe implements PipeTransform {
-  transform(items: any[], callback: (item: any) => boolean): any {
+  transform(items: any[], callback: (item: any, i?: any) => boolean): any {
     if (!items || !callback) {
       return items;
     }
-    return items.filter(item => callback(item));
+    return items.filter((item, i) => callback(item, i));
   }
 }

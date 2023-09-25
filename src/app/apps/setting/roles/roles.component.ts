@@ -47,6 +47,9 @@ export class RolesComponent {
     btnSide: 'end'
   };
   archiveModalRef: NgbModalRef;
+  scrollOptions = {
+    forceVisible: true
+  }
   
   
   constructor(
@@ -85,7 +88,7 @@ export class RolesComponent {
       }
     });
     
-    this.roles = roles.filter(role =>{
+    this.roles = roles.filter(role => {
       let values = Object.values(role);
       return values.some(v => v.toString().toLowerCase().includes(this.keywords.toLowerCase()));
     })
@@ -224,8 +227,9 @@ export class RolesComponent {
     });
     this.archiveModalRef.result.then(
       (result) => {
-        role.active = !role.active;
-        role.revision = result.data.revision;
+        // role.active = !role.active;
+        // role.revision = result.data.revision;
+        this.getRoles();
       },
       (reason) => {
         console.log(reason);
