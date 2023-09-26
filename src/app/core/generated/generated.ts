@@ -367,6 +367,7 @@ export type MutationCompanyproject_ColoriconArgs = {
   color: Scalars['String']['input'];
   icon: Scalars['String']['input'];
   id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
 };
 
@@ -374,6 +375,7 @@ export type MutationCompanyproject_ColoriconArgs = {
 /** structure to handle table sms */
 export type MutationCompanyproject_DeactivateArgs = {
   id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
 };
 
@@ -381,6 +383,7 @@ export type MutationCompanyproject_DeactivateArgs = {
 /** structure to handle table sms */
 export type MutationCompanyproject_DeleteArgs = {
   id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
 };
 
@@ -388,6 +391,7 @@ export type MutationCompanyproject_DeleteArgs = {
 /** structure to handle table sms */
 export type MutationCompanyproject_MovetoArgs = {
   id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
   idGroup: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
 };
@@ -408,6 +412,7 @@ export type MutationCompanyproject_NewArgs = {
 /** structure to handle table sms */
 export type MutationCompanyproject_PinArgs = {
   id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
   pinyn: Scalars['Boolean']['input'];
   revision: Scalars['Int']['input'];
 };
@@ -417,6 +422,7 @@ export type MutationCompanyproject_PinArgs = {
 export type MutationCompanyproject_UpdatebudgetArgs = {
   budgetAllocation?: InputMaybe<Array<Allocatebudget>>;
   id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
   projectBudget: Scalars['Float']['input'];
   revision: Scalars['Int']['input'];
 };
@@ -425,6 +431,7 @@ export type MutationCompanyproject_UpdatebudgetArgs = {
 /** structure to handle table sms */
 export type MutationCompanyproject_UpdatedetailArgs = {
   id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
   idGroup: Scalars['Int']['input'];
   projectAddress: Scalars['projectAddress_String_NotNull_maxLength_255']['input'];
   projectName: Scalars['projectName_String_NotNull_maxLength_128']['input'];
@@ -844,6 +851,7 @@ export type Company = {
   __typename?: 'company';
   active: Scalars['Boolean']['output'];
   avatar: Scalars['String']['output'];
+  companyAccess?: Maybe<Array<Companypermission>>;
   contactNumber: Scalars['String']['output'];
   createdBy: Scalars['Int']['output'];
   createdDate: Scalars['String']['output'];
@@ -1030,6 +1038,13 @@ export type Companypayment = {
   payType: Scalars['String']['output'];
   revision: Scalars['Int']['output'];
   routing: Scalars['String']['output'];
+};
+
+export type Companypermission = {
+  __typename?: 'companypermission';
+  access: Scalars['Boolean']['output'];
+  permissionId: Scalars['Int']['output'];
+  permissionName: Scalars['String']['output'];
 };
 
 /** structure to handle table company_project */

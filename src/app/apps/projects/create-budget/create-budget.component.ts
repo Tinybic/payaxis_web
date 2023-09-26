@@ -254,6 +254,7 @@ export class CreateBudgetComponent {
     } else{
       serviceName = companyproject_updatebudget;
       params = {
+        idCompany: this.idCompany,
         id: this.project.id,
         revision: this.project.revision,
         projectBudget: this.project.projectBudget,

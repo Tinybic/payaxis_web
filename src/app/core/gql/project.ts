@@ -64,6 +64,7 @@ const companyproject_new = gql`
 
 const companyproject_updatedetail = gql`
   mutation companyproject_updatedetail(
+    $idCompany: Int!
     $id: Int!
     $revision: Int!
     $projectName: projectName_String_NotNull_maxLength_128!
@@ -72,6 +73,7 @@ const companyproject_updatedetail = gql`
     $projectSqft: Float!
   ) {
     companyproject_updatedetail(
+      idCompany: $idCompany
       id: $id
       revision: $revision
       projectName: $projectName
@@ -92,12 +94,14 @@ const companyproject_updatedetail = gql`
 
 const companyproject_updatebudget = gql`
   mutation companyproject_updatebudget(
+    $idCompany: Int!
     $id: Int!
     $revision: Int!
     $projectBudget: Float!
     $budgetAllocation: [allocatebudget!]
   ) {
     companyproject_updatebudget(
+      idCompany: $idCompany
       id: $id
       revision: $revision
       projectBudget: $projectBudget
@@ -116,12 +120,14 @@ const companyproject_updatebudget = gql`
 
 const companyproject_coloricon = gql`
   mutation companyproject_coloricon(
+    $idCompany: Int!
     $id: Int!
     $revision: Int!
     $color: String!
     $icon: String!
   ) {
     companyproject_coloricon(
+      idCompany: $idCompany
       id: $id
       revision: $revision
       color: $color
@@ -139,8 +145,18 @@ const companyproject_coloricon = gql`
 `;
 
 const companyproject_pin = gql`
-  mutation companyproject_pin($id: Int!, $revision: Int!, $pinyn: Boolean!) {
-    companyproject_pin(id: $id, revision: $revision, pinyn: $pinyn) {
+  mutation companyproject_pin(
+    $idCompany: Int!
+    $id: Int!
+    $revision: Int!
+    $pinyn: Boolean!
+  ) {
+    companyproject_pin(
+      idCompany: $idCompany
+      id: $id
+      revision: $revision
+      pinyn: $pinyn
+    ) {
       error
       code
       message
@@ -153,8 +169,18 @@ const companyproject_pin = gql`
 `;
 
 const companyproject_moveto = gql`
-  mutation companyproject_moveto($id: Int!, $revision: Int!, $idGroup: Int!) {
-    companyproject_moveto(id: $id, revision: $revision, idGroup: $idGroup) {
+  mutation companyproject_moveto(
+    $idCompany: Int!
+    $id: Int!
+    $revision: Int!
+    $idGroup: Int!
+  ) {
+    companyproject_moveto(
+      idCompany: $idCompany
+      id: $id
+      revision: $revision
+      idGroup: $idGroup
+    ) {
       error
       code
       message
@@ -167,8 +193,8 @@ const companyproject_moveto = gql`
 `;
 
 const companyproject_delete = gql`
-  mutation companyproject_delete($id: Int!, $revision: Int!) {
-    companyproject_delete(id: $id, revision: $revision) {
+  mutation companyproject_delete($idCompany: Int!, $id: Int!, $revision: Int!) {
+    companyproject_delete(idCompany: $idCompany, id: $id, revision: $revision) {
       error
       code
       message
@@ -178,8 +204,16 @@ const companyproject_delete = gql`
 `;
 
 const companyproject_deactivate = gql`
-  mutation companyproject_deactivate($id: Int!, $revision: Int!) {
-    companyproject_deactivate(id: $id, revision: $revision) {
+  mutation companyproject_deactivate(
+    $idCompany: Int!
+    $id: Int!
+    $revision: Int!
+  ) {
+    companyproject_deactivate(
+      idCompany: $idCompany
+      id: $id
+      revision: $revision
+    ) {
       error
       code
       message

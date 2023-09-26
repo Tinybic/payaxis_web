@@ -30,7 +30,7 @@ import {
   TopbarTheme,
 } from '../config/layout.model';
 import { ToastrService } from 'ngx-toastr';
-import { GlobalFunctionsService } from "src/app/core/service/global-functions.service";
+import { GlobalFunctionsService } from 'src/app/core/service/global-functions.service';
 
 @Component({
   selector: 'app-left-sidebar',
@@ -67,8 +67,7 @@ export class LeftSidebarComponent implements OnInit {
     });
   }
 
-
-getCompanyList() {
+  getCompanyList() {
     if (localStorage.getItem('token')) {
       this.apolloService.query(company_list, {}).then((res) => {
         if (!res.company_list.error) {
@@ -87,8 +86,14 @@ getCompanyList() {
             localStorage.setItem(
               'idUserOwner',
               this.companyList[0].idUserOwner
-            );            
-            this.globalService.setCompanyID(parseInt(this.companyList[0].id.toString()));
+            );
+            localStorage.setItem(
+              'companyAccess',
+              JSON.stringify(this.companyList[0].companyAccess)
+            );
+            this.globalService.setCompanyID(
+              parseInt(this.companyList[0].id.toString())
+            );
           } else {
             for (let i = 0; i < this.companyList.length; i++) {
               if (
@@ -102,6 +107,10 @@ getCompanyList() {
                 localStorage.setItem(
                   'idUserOwner',
                   this.companyList[i].idUserOwner
+                );
+                localStorage.setItem(
+                  'companyAccess',
+                  JSON.stringify(this.companyList[i].companyAccess)
                 );
                 break;
               }
@@ -117,10 +126,11 @@ getCompanyList() {
     this.getCompanyList();
   }
 
-  selectCompanyName(id, name, idUserOwner) {
+  selectCompanyName(id, name, idUserOwner, companyAccess) {
     localStorage.setItem('idcompany', id);
     localStorage.setItem('companyName', name);
     localStorage.setItem('idUserOwner', idUserOwner);
+    localStorage.setItem('companyAccess', JSON.stringify(companyAccess));
     this.globalService.setCompanyID(parseInt(id));
     this.toastrService.info('Switch to Company ' + name, 'Successful');
     this.router.navigate(['apps/projects']).then(() => {

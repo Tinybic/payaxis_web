@@ -28,6 +28,7 @@ export class SetColorComponent {
   save() {
     this.apolloService
       .mutate(companyproject_coloricon, {
+        idCompany:parseInt(localStorage.getItem('idcompany')),
         id: this.id,
         revision: this.revision,
         color: this.selectColor,
