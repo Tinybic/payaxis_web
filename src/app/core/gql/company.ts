@@ -104,67 +104,70 @@ const company_list = gql`
         txtName
         active
         idUserOwner
+        companyAccess {
+          permissionId
+          permissionName
+          access
+        }
       }
     }
   }
 `;
 
 const company_info = gql`
-query company_info($id: Int!) {
-  company_info(id: $id) {
-    error
-    code
-    message
-    data {
-      company {
-        id
-        revision
-        idUserOwner
-        avatar
-        txtName
-        taxId
-        idMasterCompany
-        industry
-        paymentTerms
-        website
-        txtAddress
-        suiteNumber
-        txtCity
-        txtState
-        txtZipcode
-        contactNumber
-        email
-        description
-        active
-      }
-      companyName
-      comboxIndustry {
-        id
-        txtName
-      }
-      comboxPaymentTerms {
-        id
-        txtName
+  query company_info($id: Int!) {
+    company_info(id: $id) {
+      error
+      code
+      message
+      data {
+        company {
+          id
+          revision
+          idUserOwner
+          avatar
+          txtName
+          taxId
+          idMasterCompany
+          industry
+          paymentTerms
+          website
+          txtAddress
+          suiteNumber
+          txtCity
+          txtState
+          txtZipcode
+          contactNumber
+          email
+          description
+          active
+        }
+        companyName
+        comboxIndustry {
+          id
+          txtName
+        }
+        comboxPaymentTerms {
+          id
+          txtName
+        }
       }
     }
   }
-}
-
 `;
 
 const company_roles = gql`
-query company_roles($idCompany: Int!) {
-  company_roles(idCompany: $idCompany) {
-    error
-    code
-    message
-    data {
-      idRole
-      txtName
+  query company_roles($idCompany: Int!) {
+    company_roles(idCompany: $idCompany) {
+      error
+      code
+      message
+      data {
+        idRole
+        txtName
+      }
     }
   }
-}
-
 `;
 
-export { companyNew, companyUpate, company_list,company_info,company_roles };
+export { companyNew, companyUpate, company_list, company_info, company_roles };

@@ -48,7 +48,7 @@
 
             <div class="companyList">
                 <div class="mt-1-1 cursor-pointer" style="height: 40px; overflow: hidden;"
-                    *ngFor="let item of companyList" (click)="selectCompanyName(item.id,item.txtName,item.idUserOwner)">
+                    *ngFor="let item of companyList" (click)="selectCompanyName(item.id,item.txtName,item.idUserOwner,item.companyAccess)">
                     <app-avatar [url]="item.avatar" [companyName]="item.txtName" [size]="40" alt="user-img"
                         class="ms-2"></app-avatar>
 

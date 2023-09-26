@@ -276,6 +276,7 @@ export class CreateProjectComponent {
     }
     
     this.apolloService.mutate(companyproject_updatedetail, {
+      idCompany:this.idCompany,
       id: this.project.id,
       revision: this.project.revision,
       projectName: this.formStep3Values['editName'].value,
