@@ -64,7 +64,7 @@ const companycategory_update = gql`
 `;
 
 const companycostcode_new = gql`
-  mutation refactored847(
+  mutation companycostcode_new(
     $idCompany: Int!
     $costCode: costCode_String_NotNull_maxLength_15!
     $txtName: txtName_String_NotNull_maxLength_128!
