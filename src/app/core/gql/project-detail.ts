@@ -47,8 +47,16 @@ const projectmember_invite = gql`
   }
 `;
 const projectmember_deactivate = gql`
-  mutation projectmember_deactivate($id: Int!, $revision: Int!) {
-    projectmember_deactivate(id: $id, revision: $revision) {
+  mutation projectmember_deactivate(
+    $idCompany: Int!
+    $id: Int!
+    $revision: Int!
+  ) {
+    projectmember_deactivate(
+      idCompany: $idCompany
+      id: $id
+      revision: $revision
+    ) {
       error
       code
       message

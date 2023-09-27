@@ -173,6 +173,7 @@ export class CostcodeComponent {
     ) {
       this.apolloService
         .mutate(companycategory_update, {
+          idCompany: this.costcode.idCompany,
           id: this.costCodeCategoryList[index].id,
           revision: this.costCodeCategoryList[index].revision,
           txtName: this.costCodeCategoryList[index].txtName,
@@ -278,6 +279,7 @@ export class CostcodeComponent {
     } else {
       this.apolloService
         .mutate(companycategory_deactivate, {
+          idCompany: this.costcode.idCompany,
           idCompany_category:
             this.costCodeCategoryList[this.deleteCategoryIndex].id,
           revision:
@@ -418,6 +420,7 @@ export class CostcodeComponent {
     } else {
       this.apolloService
         .mutate(companycostcode_update, {
+          idCompany: this.costcode.idCompany,
           id: this.costcode.id,
           revision: this.costcode.revision,
           txtName: this.costcode.txtName,
@@ -459,6 +462,7 @@ export class CostcodeComponent {
   deleteCostCode() {
     this.apolloService
       .mutate(companycostcode_deactivate, {
+        idCompany: this.costcode.idCompany,
         idCompany_costcode: this.costcodelist[this.deleteCostcodeIndex].id,
         revision: this.costcodelist[this.deleteCostcodeIndex].revision,
       })
@@ -562,6 +566,7 @@ export class CostcodeComponent {
   activeCostCode(item) {
     this.apolloService
       .mutate(companycostcode_activate, {
+        idCompany: this.costcode.idCompany,
         idCompany_costcode: item.id,
         revision: item.revision,
       })

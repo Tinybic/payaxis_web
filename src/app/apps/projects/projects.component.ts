@@ -86,7 +86,8 @@ export class ProjectsComponent extends Base implements OnInit {
     private apolloService: ApolloService,
     private toastrService: ToastrService,
     private globalService: GlobalFunctionsService
-  ) {super();
+  ) {
+    super();
   }
 
   ngOnInit(): void {
@@ -293,6 +294,7 @@ export class ProjectsComponent extends Base implements OnInit {
       btnConfirm: 'Delete Group',
       serviceName: companygroup_deactivate,
       params: {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
         idCompany_group: group.id,
         revision: group.revision,
       },

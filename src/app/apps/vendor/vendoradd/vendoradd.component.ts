@@ -383,6 +383,7 @@ export class VendoraddComponent {
     if (item.id) {
       this.apolloService
         .mutate(vendor_file_delete, {
+          idCompany: this.vendor.idCompany,
           idVendor_file: item.id,
           revision: item.revision,
         })
@@ -418,6 +419,7 @@ export class VendoraddComponent {
     if (this.idvendor > 0 && this.revision > 0) {
       this.apolloService
         .mutate(vendor_archive, {
+          idCompany: this.vendor.idCompany,
           id: this.idvendor,
           revision: this.revision,
         })

@@ -28,18 +28,18 @@ const company_members = gql`
   }
 `;
 
-const companymember_emails= gql`
-query companymember_emails($idCompany: Int!, $emaillist: [String!]) {
-  companymember_emails(idCompany: $idCompany, emaillist: $emaillist) {
-    error
-    code
-    message
-    data {
-      email
-      memberyn
+const companymember_emails = gql`
+  query companymember_emails($idCompany: Int!, $emaillist: [String!]) {
+    companymember_emails(idCompany: $idCompany, emaillist: $emaillist) {
+      error
+      code
+      message
+      data {
+        email
+        memberyn
+      }
     }
   }
-}
 `;
 
 const company_member_invite = gql`
@@ -60,8 +60,16 @@ const company_member_invite = gql`
 `;
 
 const company_member_deactivate = gql`
-  mutation company_member_deactivate($id: Int!, $revision: Int!) {
-    company_member_deactivate(id: $id, revision: $revision) {
+  mutation company_member_deactivate(
+    $idCompany: Int!
+    $id: Int!
+    $revision: Int!
+  ) {
+    company_member_deactivate(
+      idCompany: $idCompany
+      id: $id
+      revision: $revision
+    ) {
       error
       code
       message
@@ -92,5 +100,5 @@ export {
   company_member_invite,
   company_member_deactivate,
   company_member_edit,
-  companymember_emails
+  companymember_emails,
 };

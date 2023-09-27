@@ -3,8 +3,8 @@
         My Company
     </div>
     <div class="col-md-6 text-end">
-        <button *ngIf="tabs == 1" class="btn btn-outline-primary">Cancel</button>
-        <button *ngIf="tabs == 1" class="btn btn-primary ms-2-1" (click)="saveCompany()">Save</button>
+        <button *ngIf="tabs == 1 && canEdit" class="btn btn-outline-primary">Cancel</button>
+        <button *ngIf="tabs == 1 && canEdit" class="btn btn-primary ms-2-1" (click)="saveCompany()">Save</button>
     </div>
 </div>
 <div class="row mt-1-1">

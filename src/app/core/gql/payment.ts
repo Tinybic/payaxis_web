@@ -34,6 +34,7 @@ const companypayment_new = gql`
 
 const companypayment_update = gql`
   mutation companypayment_update(
+    $idCompany: Int!
     $id: Int!
     $revision: Int!
     $account: account_String_NotNull_maxLength_25!
@@ -44,6 +45,7 @@ const companypayment_update = gql`
     $defaultPay: Boolean!
   ) {
     companypayment_update(
+      idCompany: $idCompany
       id: $id
       revision: $revision
       account: $account
@@ -96,11 +98,13 @@ const companypayment_list = gql`
 
 const companypayment_setdefault = gql`
   mutation companypayment_setdefault(
+    $idCompany: Int!
     $id: Int!
     $revision: Int!
     $defaultPay: Boolean!
   ) {
     companypayment_setdefault(
+      idCompany: $idCompany
       id: $id
       revision: $revision
       defaultPay: $defaultPay
@@ -117,8 +121,16 @@ const companypayment_setdefault = gql`
 `;
 
 const companypayment_deactivate = gql`
-  mutation companypayment_deactivate($id: Int!, $revision: Int!) {
-    companypayment_deactivate(id: $id, revision: $revision) {
+  mutation companypayment_deactivate(
+    $idCompany: Int!
+    $id: Int!
+    $revision: Int!
+  ) {
+    companypayment_deactivate(
+      idCompany: $idCompany
+      id: $id
+      revision: $revision
+    ) {
       error
       code
       message
