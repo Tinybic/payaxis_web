@@ -91,6 +91,7 @@ export class AddVendorContactComponent {
   onSubmit(){
     if(this.addVendorContactForm.valid){
       this.apolloService.mutate(this.idcontact > 0 ? vendorcontact_update : vendorcontact_new, {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
         idVendor: this.idvendor,
         id: this.idcontact,
         revision: this.revision,

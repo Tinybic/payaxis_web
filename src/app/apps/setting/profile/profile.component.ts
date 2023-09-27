@@ -28,12 +28,13 @@ import { ToastrService } from 'ngx-toastr';
 import { EventService } from 'src/app/core/service/event.service';
 import { EventType } from 'src/app/core/constants/events';
 import { HttpService } from 'src/app/core/service/http.service';
+import { Base } from 'src/app/core/base';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
 })
-export class ProfileComponent implements OnInit, OnDestroy {
+export class ProfileComponent extends Base implements OnInit, OnDestroy {
   @ViewChild('instance', { static: true }) instance!: NgbTypeahead;
   @ViewChild('fileInput', { static: false })
   fileInput: ElementRef<HTMLInputElement>;
@@ -77,9 +78,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private toastrService: ToastrService,
     private eventService: EventService,
     private httpService: HttpService
-  ) {}
+  ) {super()}
 
+
+  canEdit = false;
   ngOnInit(): void {
+    this.canEdit = super.setRole('Edit Company details');
     this.statesList = STATES;
     let gql = company_info;
     let data = {};

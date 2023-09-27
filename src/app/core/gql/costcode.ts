@@ -23,7 +23,10 @@ const companycategory_list = gql`
 `;
 
 const companycategory_new = gql`
-  mutation companycategory_new($idCompany: Int!, $txtName: txtName_String_NotNull_maxLength_128!) {
+  mutation companycategory_new(
+    $idCompany: Int!
+    $txtName: txtName_String_NotNull_maxLength_128!
+  ) {
     companycategory_new(idCompany: $idCompany, txtName: $txtName) {
       error
       code
@@ -38,11 +41,17 @@ const companycategory_new = gql`
 
 const companycategory_update = gql`
   mutation companycategory_update(
+    $idCompany: Int!
     $id: Int!
     $revision: Int!
     $txtName: txtName_String_NotNull_maxLength_128!
   ) {
-    companycategory_update(id: $id, revision: $revision, txtName: $txtName) {
+    companycategory_update(
+      idCompany: $idCompany
+      id: $id
+      revision: $revision
+      txtName: $txtName
+    ) {
       error
       code
       message
@@ -55,7 +64,7 @@ const companycategory_update = gql`
 `;
 
 const companycostcode_new = gql`
-  mutation refactored847(
+  mutation companycostcode_new(
     $idCompany: Int!
     $costCode: costCode_String_NotNull_maxLength_15!
     $txtName: txtName_String_NotNull_maxLength_128!
@@ -82,6 +91,7 @@ const companycostcode_new = gql`
 
 const companycostcode_update = gql`
   mutation companycostcode_update(
+    $idCompany: Int!
     $id: Int!
     $revision: Int!
     $txtName: txtName_String_NotNull_maxLength_128!
@@ -89,6 +99,7 @@ const companycostcode_update = gql`
     $txtNotes: txtNotes_String_NotNull_maxLength_512!
   ) {
     companycostcode_update(
+      idCompany: $idCompany
       id: $id
       revision: $revision
       txtName: $txtName
@@ -108,10 +119,12 @@ const companycostcode_update = gql`
 
 const companycategory_deactivate = gql`
   mutation companycategory_deactivate(
+    $idCompany: Int!
     $idCompany_category: Int!
     $revision: Int!
   ) {
     companycategory_deactivate(
+      idCompany: $idCompany
       idCompany_category: $idCompany_category
       revision: $revision
     ) {
@@ -125,10 +138,12 @@ const companycategory_deactivate = gql`
 
 const companycostcode_deactivate = gql`
   mutation companycostcode_deactivate(
+    $idCompany: Int!
     $idCompany_costcode: Int!
     $revision: Int!
   ) {
     companycostcode_deactivate(
+      idCompany: $idCompany
       idCompany_costcode: $idCompany_costcode
       revision: $revision
     ) {
@@ -208,10 +223,12 @@ const categorycostcode_list = gql`
 
 const companycostcode_activate = gql`
   mutation companycostcode_activate(
+    $idCompany: Int!
     $idCompany_costcode: Int!
     $revision: Int!
   ) {
     companycostcode_activate(
+      idCompany: $idCompany
       idCompany_costcode: $idCompany_costcode
       revision: $revision
     ) {

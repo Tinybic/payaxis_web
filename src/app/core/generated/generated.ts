@@ -171,6 +171,7 @@ export type Mutation = {
 /** structure to handle table sms */
 export type MutationCompany_Member_DeactivateArgs = {
   id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
 };
 
@@ -231,6 +232,7 @@ export type MutationCompany_UpdateArgs = {
 
 /** structure to handle table sms */
 export type MutationCompanycategory_DeactivateArgs = {
+  idCompany: Scalars['Int']['input'];
   idCompany_category: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
 };
@@ -246,6 +248,7 @@ export type MutationCompanycategory_NewArgs = {
 /** structure to handle table sms */
 export type MutationCompanycategory_UpdateArgs = {
   id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
   txtName: Scalars['txtName_String_NotNull_maxLength_128']['input'];
 };
@@ -253,6 +256,7 @@ export type MutationCompanycategory_UpdateArgs = {
 
 /** structure to handle table sms */
 export type MutationCompanycostcode_ActivateArgs = {
+  idCompany: Scalars['Int']['input'];
   idCompany_costcode: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
 };
@@ -260,6 +264,7 @@ export type MutationCompanycostcode_ActivateArgs = {
 
 /** structure to handle table sms */
 export type MutationCompanycostcode_DeactivateArgs = {
+  idCompany: Scalars['Int']['input'];
   idCompany_costcode: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
 };
@@ -293,6 +298,7 @@ export type MutationCompanycostcode_NewArgs = {
 export type MutationCompanycostcode_UpdateArgs = {
   id: Scalars['Int']['input'];
   idCategory: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
   txtName: Scalars['txtName_String_NotNull_maxLength_128']['input'];
   txtNotes: Scalars['txtNotes_String_NotNull_maxLength_512']['input'];
@@ -301,6 +307,7 @@ export type MutationCompanycostcode_UpdateArgs = {
 
 /** structure to handle table sms */
 export type MutationCompanygroup_DeactivateArgs = {
+  idCompany: Scalars['Int']['input'];
   idCompany_group: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
 };
@@ -316,6 +323,7 @@ export type MutationCompanygroup_NewArgs = {
 /** structure to handle table sms */
 export type MutationCompanygroup_UpdateArgs = {
   id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
   txtName: Scalars['txtName_String_NotNull_maxLength_128']['input'];
 };
@@ -324,6 +332,7 @@ export type MutationCompanygroup_UpdateArgs = {
 /** structure to handle table sms */
 export type MutationCompanypayment_DeactivateArgs = {
   id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
 };
 
@@ -345,6 +354,7 @@ export type MutationCompanypayment_NewArgs = {
 export type MutationCompanypayment_SetdefaultArgs = {
   defaultPay: Scalars['Boolean']['input'];
   id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
 };
 
@@ -357,6 +367,7 @@ export type MutationCompanypayment_UpdateArgs = {
   email: Scalars['email_String_NotNull_maxLength_180_format_email']['input'];
   holderName: Scalars['holderName_String_NotNull_maxLength_128']['input'];
   id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
   routing: Scalars['routing_String_NotNull_maxLength_15']['input'];
 };
@@ -444,6 +455,7 @@ export type MutationCompanyproject_UpdatedetailArgs = {
 export type MutationCompanyrole_DeactivateArgs = {
   active: Scalars['Boolean']['input'];
   id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
 };
 
@@ -459,6 +471,7 @@ export type MutationCompanyrole_NewArgs = {
 /** structure to handle table sms */
 export type MutationCompanyrole_UpdateArgs = {
   id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
   permissionaccess?: InputMaybe<Array<Permissionaccess>>;
   revision: Scalars['Int']['input'];
   txtName: Scalars['txtName_String_NotNull_maxLength_128']['input'];
@@ -495,12 +508,14 @@ export type MutationProfile_ActivateArgs = {
 /** structure to handle table sms */
 export type MutationProjectmember_DeactivateArgs = {
   id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
 };
 
 
 /** structure to handle table sms */
 export type MutationProjectmember_EditArgs = {
+  idCompany: Scalars['Int']['input'];
   idProject: Scalars['Int']['input'];
   projectmembers?: InputMaybe<Array<Projectmemberaccess>>;
 };
@@ -568,12 +583,14 @@ export type MutationTest1_UpdateArgs = {
 /** structure to handle table sms */
 export type MutationVendor_ArchiveArgs = {
   id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
 };
 
 
 /** structure to handle table sms */
 export type MutationVendor_Contact_DeactivateArgs = {
+  idCompany: Scalars['Int']['input'];
   idVendor_contact: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
 };
@@ -581,6 +598,7 @@ export type MutationVendor_Contact_DeactivateArgs = {
 
 /** structure to handle table sms */
 export type MutationVendor_File_DeleteArgs = {
+  idCompany: Scalars['Int']['input'];
   idVendor_file: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
 };
@@ -609,6 +627,7 @@ export type MutationVendor_NewArgs = {
 export type MutationVendor_UpdateArgs = {
   email: Scalars['email_String_NotNull_maxLength_180_format_email']['input'];
   id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
   phone: Scalars['phone_String_NotNull_maxLength_20']['input'];
   primaryContact: Scalars['primaryContact_String_NotNull_maxLength_50']['input'];
   revision: Scalars['Int']['input'];
@@ -629,6 +648,7 @@ export type MutationVendor_UpdateArgs = {
 export type MutationVendorcontact_NewArgs = {
   contactName: Scalars['contactName_String_NotNull_maxLength_128']['input'];
   email: Scalars['email_String_NotNull_maxLength_180_format_email']['input'];
+  idCompany: Scalars['Int']['input'];
   idVendor: Scalars['Int']['input'];
   notes: Scalars['notes_String_NotNull_maxLength_250']['input'];
   phone: Scalars['phone_String_NotNull_maxLength_20']['input'];
@@ -640,6 +660,7 @@ export type MutationVendorcontact_UpdateArgs = {
   contactName: Scalars['contactName_String_NotNull_maxLength_128']['input'];
   email: Scalars['email_String_NotNull_maxLength_180_format_email']['input'];
   id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
   notes: Scalars['notes_String_NotNull_maxLength_250']['input'];
   phone: Scalars['phone_String_NotNull_maxLength_20']['input'];
   revision: Scalars['Int']['input'];

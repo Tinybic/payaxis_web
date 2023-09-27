@@ -184,6 +184,7 @@ export class RolesComponent {
     })
     
     this.apolloService.mutate(companyrole_update, {
+      idCompany: parseInt(localStorage.getItem('idcompany')),
       id: role.id,
       revision: role.revision,
       txtName: role.txtName,
@@ -215,6 +216,7 @@ export class RolesComponent {
       btnConfirm: 'Confirm',
       btnSide: 'end',
       params: {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
         id: role.id,
         revision: role.revision,
         active: !role.active

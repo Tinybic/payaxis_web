@@ -161,6 +161,7 @@ export class PaymentComponent {
   SetDefault() {
     this.apolloService
       .mutate(companypayment_setdefault, {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
         id: this.id,
         revision: this.revision,
         defaultPay: this.defaultPay,
@@ -256,6 +257,7 @@ export class PaymentComponent {
   deletePaymentItem() {
     this.apolloService
       .mutate(companypayment_deactivate, {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
         id: this.id,
         revision: this.revision,
       })

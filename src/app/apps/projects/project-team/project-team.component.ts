@@ -273,6 +273,7 @@ export class ProjectTeamComponent {
   deactiveMembers() {
     this.apolloService
       .mutate(projectmember_deactivate, {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
         id: this.members[this.deleteIndex].id,
         revision: this.members[this.deleteIndex].revision,
       })

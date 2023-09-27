@@ -263,11 +263,17 @@ const companygroup_new = gql`
 
 const companygroup_update = gql`
   mutation companygroup_update(
+    $idCompany: Int!
     $id: Int!
     $revision: Int!
     $txtName: txtName_String_NotNull_maxLength_128!
   ) {
-    companygroup_update(id: $id, revision: $revision, txtName: $txtName) {
+    companygroup_update(
+      idCompany: $idCompany
+      id: $id
+      revision: $revision
+      txtName: $txtName
+    ) {
       error
       code
       message
@@ -280,8 +286,13 @@ const companygroup_update = gql`
 `;
 
 const companygroup_deactivate = gql`
-  mutation companygroup_deactivate($idCompany_group: Int!, $revision: Int!) {
+  mutation companygroup_deactivate(
+    $idCompany: Int!
+    $idCompany_group: Int!
+    $revision: Int!
+  ) {
     companygroup_deactivate(
+      idCompany: $idCompany
       idCompany_group: $idCompany_group
       revision: $revision
     ) {

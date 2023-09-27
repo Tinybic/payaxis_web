@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { Base } from 'src/app/core/base';
 import { EventType } from 'src/app/core/constants/events';
 import {
   companyproject_info,
@@ -15,7 +16,7 @@ import { EventService } from 'src/app/core/service/event.service';
   templateUrl: './project-detail.component.html',
   styleUrls: ['./project-detail.component.scss'],
 })
-export class ProjectDetailComponent {
+export class ProjectDetailComponent extends Base {
   @ViewChild('editProjectModal') editProjectModal: NgbModalRef;
   @ViewChild('editBudgetModal') editBudgetModal: NgbModalRef;
   tabs = 1;
@@ -53,9 +54,11 @@ export class ProjectDetailComponent {
     private toastrService: ToastrService,
     private activatedRoute: ActivatedRoute,
     private eventService: EventService
-  ) {}
+  ) {super()}
 
+  canEdit = false;
   ngOnInit(): void {
+    this.canEdit = super.setRole('Edit Projects');
     this.activatedRoute.params.subscribe((params) => {
       const idProject = parseInt(params['id']);
       this.getProjectInfo(idProject);

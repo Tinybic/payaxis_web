@@ -46,6 +46,7 @@ const vendor_new = gql`
 
 const vendor_update = gql`
   mutation vendor_update(
+    $idCompany: Int!
     $id: Int!
     $revision: Int!
     $vendorName: vendorName_String_NotNull_maxLength_128!
@@ -63,6 +64,7 @@ const vendor_update = gql`
     $vendorfiles: [vendorfile!]
   ) {
     vendor_update(
+      idCompany: $idCompany
       id: $id
       revision: $revision
       vendorName: $vendorName
@@ -152,8 +154,16 @@ const vendor_info = gql`
 `;
 
 const vendor_file_delete = gql`
-  mutation vendor_file_delete($idVendor_file: Int!, $revision: Int!) {
-    vendor_file_delete(idVendor_file: $idVendor_file, revision: $revision) {
+  mutation vendor_file_delete(
+    $idCompany: Int!
+    $idVendor_file: Int!
+    $revision: Int!
+  ) {
+    vendor_file_delete(
+      idCompany: $idCompany
+      idVendor_file: $idVendor_file
+      revision: $revision
+    ) {
       error
       code
       message
@@ -163,8 +173,8 @@ const vendor_file_delete = gql`
 `;
 
 const vendor_archive = gql`
-  mutation vendor_archive($id: Int!, $revision: Int!) {
-    vendor_archive(id: $id, revision: $revision) {
+  mutation vendor_archive($idCompany: Int!, $id: Int!, $revision: Int!) {
+    vendor_archive(idCompany: $idCompany, id: $id, revision: $revision) {
       error
       code
       message

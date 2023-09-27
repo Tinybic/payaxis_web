@@ -94,6 +94,7 @@ export class VendorContactsComponent {
   
   deleteVendorContact(i){
     this.apolloService.mutate(vendor_contact_deactivate, {
+      idCompany: parseInt(localStorage.getItem('idcompany')),
       idVendor_contact: this.vendorContacts[i].id,
       revision: this.vendorContacts[i].revision
     }).then((res) => {

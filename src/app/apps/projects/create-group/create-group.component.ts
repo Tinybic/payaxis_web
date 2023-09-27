@@ -69,6 +69,7 @@ export class CreateGroupComponent implements OnInit {
     }else {
       serviceName = companygroup_update;
       params = {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
         id: this.group.id,
         revision: this.group.revision,
         txtName: this.newGroupFormValues['name'].value
