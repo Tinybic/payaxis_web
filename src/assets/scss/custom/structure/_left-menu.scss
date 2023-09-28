@@ -37,7 +37,9 @@
     background-color: #3C3C42;
     height: 1px;
 }
-
+.left-side-menu .simplebar-mask,.left-side-menu .simplebar-content-wrapper{
+    overflow: visible !important;
+}
 //Content Page
 .content-page {
     margin-left: $leftbar-width;

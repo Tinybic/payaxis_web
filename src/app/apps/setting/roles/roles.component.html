@@ -11,7 +11,7 @@
             <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords" (keyup)="filterArchivedRoles()" style="padding: 10px 16px 10px 36px;"/>
         </div>
         <!-- end search-->
-        <button class="btn btn-primary ms-2-1 btn-text-12" (click)="newRole()"
+        <button class="btn btn-primary ms-2-1 btn-text-12" (click)="newRole()" *ngIf="canEdit"
                 style="margin-top: -1px;padding: 10px 16px;" [disabled]="newRoleStatus"><i
                 class="fe-plus-square me-1-1" style="vertical-align: bottom;"></i>New Role
         </button>
@@ -35,7 +35,7 @@
                         <button class="ms-1-1" style="padding: 0;border: none;" ngbDropdownToggle>
                             <i class="fe-more-vertical- cursor-pointer"></i>
                         </button>
-                        <div ngbDropdownMenu style="padding: 0;">
+                        <div ngbDropdownMenu style="padding: 0;" *ngIf="canEdit">
                             <a class="subtitle-2-500" href="javascript:void(0);" (click)="duplicateRole(role)"
                                style="padding: 12px;" ngbDropdownItem>
                                 <i class="fe-copy me-1-1"></i>

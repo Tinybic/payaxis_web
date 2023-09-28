@@ -1,8 +1,8 @@
 import { gql } from 'apollo-angular';
 
 const project_members = gql`
-  query project_members($idProject: Int!) {
-    project_members(idProject: $idProject) {
+  query project_members($idCompany: Int!, $idProject: Int!) {
+    project_members(idCompany: $idCompany, idProject: $idProject) {
       error
       code
       message

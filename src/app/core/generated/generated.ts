@@ -81,8 +81,6 @@ export type Mutation = {
   companycostcode_activate: Costcodedeactivateeresult;
   /** deactivate company_costcode */
   companycostcode_deactivate: Costcodedeactivateeresult;
-  /** import company_costcode from QuickBooks */
-  companycostcode_import: Costcoderesult;
   /** import company_costcode from CSV */
   companycostcode_importcsv: Costcoderesult;
   /** new company_costcode */
@@ -90,11 +88,11 @@ export type Mutation = {
   /** update company_costcode */
   companycostcode_update: Costcoderesult;
   /** deactivate company_group */
-  companygroup_deactivate: Projectbooleanresult;
+  companygroup_deactivate: Combooleanresult;
   /** new company_group */
-  companygroup_new: Projectresult;
+  companygroup_new: Comresult;
   /** update company_group */
-  companygroup_update: Projectresult;
+  companygroup_update: Comresult;
   /** deactivate companypayment */
   companypayment_deactivate: Paymentbooleanresult;
   /** new companypayment */
@@ -267,13 +265,6 @@ export type MutationCompanycostcode_DeactivateArgs = {
   idCompany: Scalars['Int']['input'];
   idCompany_costcode: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
-};
-
-
-/** structure to handle table sms */
-export type MutationCompanycostcode_ImportArgs = {
-  idCompany: Scalars['Int']['input'];
-  importCostcodes?: InputMaybe<Array<Importcostcode>>;
 };
 
 
@@ -700,8 +691,6 @@ export type Query = {
   companyrole_list: Rolelistresult;
   /** get url for a new file */
   get_file_url: FileResponse;
-  /** get projectgroup list */
-  groupproject_list: Companygrouplist;
   /** retrieve profile for the loging user */
   profile_info: Resprofile;
   /** get project members for project */
@@ -801,12 +790,8 @@ export type QueryGet_File_UrlArgs = {
 };
 
 
-export type QueryGroupproject_ListArgs = {
-  idCompany: Scalars['Int']['input'];
-};
-
-
 export type QueryProject_MembersArgs = {
+  idCompany: Scalars['Int']['input'];
   idProject: Scalars['Int']['input'];
 };
 
@@ -858,6 +843,14 @@ export type Cialist = {
   __typename?: 'cialist';
   id: Scalars['Int']['output'];
   txtName: Scalars['String']['output'];
+};
+
+export type Combooleanresult = {
+  __typename?: 'combooleanresult';
+  code: Scalars['Int']['output'];
+  data: Scalars['Boolean']['output'];
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
 };
 
 export type Cominforesult = {
@@ -1322,14 +1315,6 @@ export type Projectemailsresult = {
   __typename?: 'projectemailsresult';
   code: Scalars['Int']['output'];
   data?: Maybe<Array<Projectemails>>;
-  error: Scalars['Boolean']['output'];
-  message: Scalars['String']['output'];
-};
-
-export type Projectgrouplist = {
-  __typename?: 'projectgrouplist';
-  code: Scalars['Int']['output'];
-  data?: Maybe<Array<Companygroup>>;
   error: Scalars['Boolean']['output'];
   message: Scalars['String']['output'];
 };

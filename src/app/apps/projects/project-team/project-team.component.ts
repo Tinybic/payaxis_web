@@ -206,6 +206,7 @@ export class ProjectTeamComponent {
       const idProject = parseInt(params['id']);
       this.apolloService
         .query(project_members, {
+          idCompany: parseInt(localStorage.getItem('idcompany')),
           idProject: idProject,
         })
         .then((res) => {

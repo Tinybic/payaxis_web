@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { Base } from 'src/app/core/base';
 import {
   quickbooks_downloadvendors,
   vendor_list,
@@ -13,7 +14,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './vendorlist.component.html',
   styleUrls: ['./vendorlist.component.scss'],
 })
-export class VendorlistComponent {
+export class VendorlistComponent extends Base {
   @ViewChild('inviteVendor') inviteVendor: any;
 
   keywords = '';
@@ -23,13 +24,21 @@ export class VendorlistComponent {
   VENDOR_LIST = [];
   idvendor = 0;
   loading = true;
+  canEdit = false;
+
+  canImport = false;
+
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
     private toastrService: ToastrService
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
+    this.canEdit = super.setRole('Edit Vendors');
+    this.canImport = super.setRole('Sync with accounting software');
     this.getVendorList();
   }
 
@@ -50,7 +59,6 @@ export class VendorlistComponent {
         });
     }
   }
-
 
   filterTable = (vendor: any) => {
     let values = Object.values(vendor);
@@ -97,22 +105,24 @@ export class VendorlistComponent {
   }
 
   openEditModal(id) {
-    this.idvendor = id;
-    this.modalRef = this.modalService.open(this.inviteVendor, {
-      backdrop: 'static',
-      modalDialogClass: 'modal-right',
-      size: '90vw',
-      centered: true,
-    });
+    if (this.canEdit) {
+      this.idvendor = id;
+      this.modalRef = this.modalService.open(this.inviteVendor, {
+        backdrop: 'static',
+        modalDialogClass: 'modal-right',
+        size: '90vw',
+        centered: true,
+      });
 
-    this.modalRef.result.then(
-      (res) => {
-        this.getVendorList();
-      },
-      (dismiss) => {
-        this.getVendorList();
-      }
-    );
+      this.modalRef.result.then(
+        (res) => {
+          this.getVendorList();
+        },
+        (dismiss) => {
+          this.getVendorList();
+        }
+      );
+    }
   }
 
   getQuickboosVendors(realmid, redirectUri, url) {

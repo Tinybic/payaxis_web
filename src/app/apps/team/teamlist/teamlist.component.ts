@@ -14,6 +14,7 @@ import { SweetAlertOptions } from 'sweetalert2';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { company_roles } from 'src/app/core/gql/company';
 import { FormControl } from '@angular/forms';
+import { Base } from 'src/app/core/base';
 @Component({
   selector: 'app-teamlist',
   templateUrl: './teamlist.component.html',
@@ -22,7 +23,7 @@ import { FormControl } from '@angular/forms';
     '../../../../assets/scss/custom/structure/_foundation-themes.scss',
   ],
 })
-export class TeamlistComponent {
+export class TeamlistComponent extends Base {
   @ViewChild('inviteMember') inviteMember: any;
   @ViewChild('deleteModal') deleteModal: any;
 
@@ -58,11 +59,14 @@ export class TeamlistComponent {
   approvalAmountFilter = 'Approval Amount';
   roleFilter = 'Approval';
   loading = true;
+
+
+  canEdit = false;
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
     private toastrService: ToastrService
-  ) {}
+  ) {super()}
 
   startEdit() {
     if (this.idUser == this.idUserOwner) this.editFlag = true;
@@ -152,6 +156,8 @@ export class TeamlistComponent {
   }
 
   ngOnInit(): void {
+
+    this.canEdit = super.setRole('Manage company users');
     this.idUser = localStorage.getItem('id');
     this.idUserOwner = localStorage.getItem('idUserOwner');
     this.companyName = localStorage.getItem('companyName');
@@ -274,7 +280,7 @@ export class TeamlistComponent {
 
 
   inviteMembers() {
-    if (this.idUser == this.idUserOwner)
+    if (this.idUser == this.idUserOwner && this.canEdit)
       this.openVerticallyCentered(this.inviteMember);
   }
 
