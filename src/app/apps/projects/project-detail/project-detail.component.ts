@@ -60,7 +60,7 @@ export class ProjectDetailComponent extends Base {
   canInviteMember = false;
   ngOnInit(): void {
     this.canEdit = super.setRole('Edit Projects');
-    this.canInviteMember = super.setRole('"Manage project users');
+    this.canInviteMember = super.setRole('Manage project users');
     this.activatedRoute.params.subscribe((params) => {
       const idProject = parseInt(params['id']);
       this.getProjectInfo(idProject);
