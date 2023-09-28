@@ -81,7 +81,7 @@
             <td>{{permission.permissionName}}</td>
             <td *ngFor="let roleaccess of permission.roleaccess; let ii=index;" class="text-center">
                 <input class="form-check-input" type="checkbox" [(ngModel)]="roleaccess.access"
-                       (change)="togglePermissionRole(permission.permissionId, roleaccess)" [disabled]="roleaccess.idRole==2"/>
+                       (change)="togglePermissionRole(permission.permissionId, roleaccess)" [disabled]="roleaccess.idRole==2 || !canEdit"/>
             </td>
             <td *ngIf="newRoleStatus" class="text-center">
                 <input class="form-check-input" type="checkbox" [(ngModel)]="permission.access"/>
