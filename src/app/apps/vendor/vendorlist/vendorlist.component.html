@@ -10,7 +10,7 @@
 
             <input id="csvupload" type="file" accept=".csv" class="d-none" />
             <div ngbDropdownMenu style="width: 255px; ">
-                <div class="line-32 bold-600 cursor-pointer" (click)="importFromQB()" ngbDropdownItem>Import from
+                <div class="line-32 bold-600 cursor-pointer" *ngIf="canImport" (click)="importFromQB()" ngbDropdownItem>Import from
                     QuickBooks <img class="float-end mt-1" src="/assets/images/icon/qb.png" /></div>
                 <div class="line-32 bold-600 cursor-pointer" ngbDropdownItem>Import from CSV <img class="float-end mt-1"
                         src="/assets/images/icon/csv.png" /></div>
@@ -30,7 +30,7 @@
                         class="float-end mt-1" src="/assets/images/icon/csv.png" /></div>
             </div>
         </div>
-        <button class="btn btn-primary ms-2-1" (click)="openAddModal()">New Vendor</button>
+        <button class="btn btn-primary ms-2-1" (click)="openAddModal()" *ngIf="canEdit">New Vendor</button>
     </div>
 </div>
 
@@ -161,7 +161,7 @@
                         <div class="Paragraph-2 text-typeblackdeactivated mt-40 ">or import items from the file</div>
 
                         <div class="d-flex justify-content-around importContain mb-3">
-                            <div class="importDiv" (click)="importFromQB()">
+                            <div class="importDiv" (click)="importFromQB()" *ngIf="canImport">
                                 <img class="mt-2-1" src="/assets/images/icon/qb.png" />
                                 <div class="text-primary bold-600 mt-2-1">Import from QuickBooks</div>
                             </div>

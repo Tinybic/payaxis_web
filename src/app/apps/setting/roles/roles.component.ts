@@ -4,6 +4,7 @@ import { NgbActiveModal, NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstra
 import { ToastrService } from "ngx-toastr";
 import { GlobalFunctionsService } from "../../../core/service/global-functions.service";
 import { companyrole_list, companyrole_new, companyrole_update, companyrole_deactivate, permissionrole_update } from "../../../core/gql/roles";
+import { Base } from 'src/app/core/base';
 
 
 @Component({
@@ -12,7 +13,7 @@ import { companyrole_list, companyrole_new, companyrole_update, companyrole_deac
   styleUrls: ['./roles.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class RolesComponent {
+export class RolesComponent extends Base {
   @ViewChild('addRoleModal') addRoleModal: any;
   @ViewChild('archiveModal') archiveModal: NgbModalRef;
   
@@ -38,6 +39,9 @@ export class RolesComponent {
   initialRoleName = '';
   newRoleStatus = false;
   
+  canEdit =  false;
+
+
   archiveObj = {
     title: '',
     message: '',
@@ -58,9 +62,10 @@ export class RolesComponent {
     public activeModal: NgbActiveModal,
     private toastrService: ToastrService,
     private globalFuns: GlobalFunctionsService
-  ){}
+  ){super()}
   
   ngOnInit(): void{
+    this.canEdit = super.setRole('Edit User roles');
     if(localStorage.getItem('idcompany')){
       this.idCompany = parseInt(localStorage.getItem('idcompany'));
       this.getRoles();
