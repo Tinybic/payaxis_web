@@ -54,7 +54,7 @@ export class TeamlistComponent extends Base {
   idUser = '';
   roleItems = [];
   approvalAmount = APPROVALAMOUNT;
-  editFlag: boolean = false;
+  editFlag: boolean = true;
   edit = [];
   approvalAmountFilter = 'Approval Amount';
   roleFilter = 'Approval';
@@ -76,11 +76,13 @@ export class TeamlistComponent extends Base {
     item.idRole = value.id;
     item.role = value.text;
     this.pushEditArray(item);
+    this.saveEdit();
   }
 
   editApprovalAmount(item, value) {
     item.approvalAmount = value.id;
     this.pushEditArray(item);
+    this.saveEdit();
   }
 
   pushEditArray(info) {
@@ -118,7 +120,6 @@ export class TeamlistComponent extends Base {
         message = result.message;
       }
       this.edit = [];
-      this.editFlag = false;
       this.toastrService.info(message, '');
       this.getCompanyMembers();
     });
@@ -138,6 +139,7 @@ export class TeamlistComponent extends Base {
   }
 
   changeRoleFilter(filter: string) {
+    console.log(filter)
     this.roleFilter = filter;
     this.members = this.COMPANY_MEMBERS;
     if (filter != 'All') {

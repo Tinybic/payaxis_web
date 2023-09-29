@@ -322,19 +322,17 @@
                 <div class="col-md-4 text-end subtitle-2-600 line-32 ">
                     <div *ngIf="!item.memberyn"
                         style="background-color: #F8F9FC;border-radius: 8px;display: inline-block;padding: 0px 8px;">
-                        <app-dropdowndata [displayText]="item.approvalAmountText" [data]="approvalAmount"
-                            [color]="'text-primary'" (selectValue)="step3Approval(item,$event)"></app-dropdowndata>
+                        {{item.approvalAmountText}}
                     </div>
                 </div>
                 <div *ngIf="!item.memberyn" class="col-md-3 text-end subtitle-2-600 line-32">
-                    <app-dropdowndata [displayText]="item.role" [data]="roleItems"
-                        (selectValue)="step3Role(item,$event)"></app-dropdowndata>
+                    {{item.role}}
                 </div>
             </div>
 
             <div class="bottomButton">
                 <div>
-                    <button class="btn btn-primary" (click)="send()">Send Invite</button>
+                    <button class="btn btn-primary" (click)="send()">Save</button>
                 </div>
                 <div>
                     <button class="btn btn-outline-primary mt-1-1" (click)="cancelModal()">Cancel</button>

@@ -17,6 +17,7 @@ import { FormControl } from '@angular/forms';
 import {
   project_members,
   projectmember_deactivate,
+  projectmember_edit,
   projectmember_invite,
 } from 'src/app/core/gql/project-detail';
 import { ActivatedRoute } from '@angular/router';
@@ -89,11 +90,13 @@ export class ProjectTeamComponent {
     item.idRole = value.id;
     item.role = value.text;
     this.pushEditArray(item);
+    this.saveEdit();
   }
 
   editApprovalAmount(item, value) {
     item.approvalAmount = value.id;
     this.pushEditArray(item);
+    this.saveEdit();
   }
 
   pushEditArray(info) {
@@ -120,18 +123,18 @@ export class ProjectTeamComponent {
 
     const data = {
       idCompany: parseInt(localStorage.getItem('idcompany')),
+      idProject: this.idProject,
       companymembers: members,
     };
-    this.apolloService.mutate(company_member_edit, data).then((res) => {
+    this.apolloService.mutate(projectmember_edit, data).then((res) => {
       let message = '';
-      const result = res.company_member_edit;
+      const result = res.projectmember_edit;
       if (!result.error) {
         message = this.edit.length + ' members has been update';
       } else {
         message = result.message;
       }
       this.edit = [];
-      this.editFlag = false;
       this.toastrService.info(message, '');
       this.getProjectMembers();
     });
@@ -238,7 +241,7 @@ export class ProjectTeamComponent {
         .then((res) => {
           const result = res.company_members;
           if (!result.error) {
-            this.companyMembers = result.data;
+            this.companyMembers = result.data.filter((item) => item.idUser > 0);
 
             this.companyMembers = this.companyMembers
               .concat(this.members)
@@ -357,6 +360,15 @@ export class ProjectTeamComponent {
     return null;
   }
 
+  getRoleName(id) {
+    for (let i = 0; i < this.roleItems.length; i++) {
+      if (this.roleItems[i].id == id) {
+        return this.roleItems[i].text;
+      }
+    }
+    return '';
+  }
+
   step1() {
     this.userList = [];
     this.inviteList.forEach((item) => {
@@ -366,10 +378,10 @@ export class ProjectTeamComponent {
         firstName: item.firstName,
         lastName: item.lastName,
         avatar: item.avatar,
-        idRole: this.roleItems[0].id,
-        role: this.roleItems[0].text,
-        approvalAmount: 0,
-        approvalAmountText: 'Approval Limit',
+        idRole: item.idRole,
+        role: this.getRoleName(item.idRole),
+        approvalAmount: item.approvalAmount,
+        approvalAmountText: '$' + item.approvalAmount,
       });
     });
     this.step = 'step3';

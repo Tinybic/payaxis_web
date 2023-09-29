@@ -64,5 +64,19 @@ const projectmember_deactivate = gql`
     }
   }
 `;
+const projectmember_edit = gql`
+mutation projectmember_edit($idCompany: Int!, $idProject: Int!, $projectmembers: [projectmemberaccess!]) {
+  projectmember_edit(
+    idCompany: $idCompany
+    idProject: $idProject
+    projectmembers: $projectmembers
+  ) {
+    error
+    code
+    message
+    data
+  }
+}
+`;
 
-export { project_members, projectmember_invite, projectmember_deactivate };
+export { project_members, projectmember_invite, projectmember_deactivate,projectmember_edit };
