@@ -167,7 +167,7 @@ export class InfoComponent implements OnInit {
   }
 
   openVerticallyCentered(content: TemplateRef<NgbModal>): void {
-    this.modalService.open(content, { centered: true });
+    this.modalService.open(content, { backdrop: 'static', centered: true });
   }
 
   /**
