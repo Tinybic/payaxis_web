@@ -33,26 +33,7 @@
     padding: 4px 16px 12px 8px
  }
 
- ::-webkit-scrollbar {
-   width: 4px;
- }
 
- /* Track */
- ::-webkit-scrollbar-track {
-   background: #E5E7EB;
-   border-radius:4px;
- }
-
- /* Handle */
- ::-webkit-scrollbar-thumb {
-   background: #9CA3AF;
-   border-radius:4px;
- }
-
- /* Handle on hover */
- ::-webkit-scrollbar-thumb:hover {
-   background: #555;
- }
 
  .dropdownitem:hover{
    background-color: #2B52DD;

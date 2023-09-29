@@ -54,19 +54,20 @@ export class TeamlistComponent extends Base {
   idUser = '';
   roleItems = [];
   approvalAmount = APPROVALAMOUNT;
-  editFlag: boolean = false;
+  editFlag: boolean = true;
   edit = [];
   approvalAmountFilter = 'Approval Amount';
   roleFilter = 'Approval';
   loading = true;
-
 
   canEdit = false;
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
     private toastrService: ToastrService
-  ) {super()}
+  ) {
+    super();
+  }
 
   startEdit() {
     if (this.idUser == this.idUserOwner) this.editFlag = true;
@@ -76,11 +77,13 @@ export class TeamlistComponent extends Base {
     item.idRole = value.id;
     item.role = value.text;
     this.pushEditArray(item);
+    this.saveEdit();
   }
 
   editApprovalAmount(item, value) {
     item.approvalAmount = value.id;
     this.pushEditArray(item);
+    this.saveEdit();
   }
 
   pushEditArray(info) {
@@ -118,7 +121,6 @@ export class TeamlistComponent extends Base {
         message = result.message;
       }
       this.edit = [];
-      this.editFlag = false;
       this.toastrService.info(message, '');
       this.getCompanyMembers();
     });
@@ -129,10 +131,13 @@ export class TeamlistComponent extends Base {
     this.members = this.COMPANY_MEMBERS;
     this.showCount = this.allCount;
     if (filter == 'Active') {
-      this.members = this.members.filter((member) => member.active);
+      
+      this.members = this.members.filter(
+        (member) => member.active && member.idUser > 0
+      );
       this.showCount = this.activeCount;
     } else if (filter == 'Pending') {
-      this.members = this.members.filter((member) => !member.active);
+      this.members = this.members.filter((member) => member.idUser == 0);
       this.showCount = this.pendingCount;
     }
   }
@@ -156,7 +161,6 @@ export class TeamlistComponent extends Base {
   }
 
   ngOnInit(): void {
-
     this.canEdit = super.setRole('Manage company users');
     this.idUser = localStorage.getItem('id');
     this.idUserOwner = localStorage.getItem('idUserOwner');
@@ -198,10 +202,10 @@ export class TeamlistComponent extends Base {
 
             this.allCount = result.data.length;
             this.activeCount = result.data.filter(
-              (member) => member.active
+              (member) => member.active && member.idUser > 0
             ).length;
             this.pendingCount = result.data.filter(
-              (member) => !member.active
+              (member) => member.idUser == 0
             ).length;
             this.showCount = this.allCount;
             this.loading = false;
@@ -264,7 +268,6 @@ export class TeamlistComponent extends Base {
     });
   }
 
-
   filterTable = (member: any) => {
     let values = Object.values(member);
     return values.some(
@@ -275,9 +278,12 @@ export class TeamlistComponent extends Base {
   };
 
   openVerticallyCentered(content: TemplateRef<NgbModal>): void {
-    this.modalService.open(content, { backdrop: 'static', size: '530', centered: true });
+    this.modalService.open(content, {
+      backdrop: 'static',
+      size: '530',
+      centered: true,
+    });
   }
-
 
   inviteMembers() {
     if (this.idUser == this.idUserOwner && this.canEdit)
@@ -378,6 +384,7 @@ export class TeamlistComponent extends Base {
       const result = res.company_member_invite;
       if (!result.error) {
         message = this.userList.length + ' invitation has been sent';
+        this.getCompanyMembers();
       } else {
         message = result.message;
       }

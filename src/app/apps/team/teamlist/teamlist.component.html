@@ -3,11 +3,8 @@
         Members
     </div>
     <div class="col-md-6 text-end">
-        <button class="btn btn-outline-primary" *ngIf="!editFlag && canEdit" (click)="startEdit()"><i
-                class="fe-edit me-1-1"></i>Edit</button>
-        <button class="btn btn-primary" *ngIf="editFlag" (click)="saveEdit()">Save</button>
-        <button class="btn btn-primary ms-2-1">New Bill<i class="fe-chevron-down ms-1-1"></i></button>
-        <i class="fe-more-vertical- font-24 ms-2-1 cursor-pointer" (click)="inviteMembers()"></i>
+        <button class="btn btn-primary" *ngIf="canEdit" (click)="inviteMembers()"><i
+                class="fe-plus-square me-1-1"></i>Invite Member</button>
     </div>
 </div>
 
@@ -17,28 +14,28 @@
             <a href="javascript:void(0)" class="bold-600 font-20 text-black line-60"
                 ngbDropdownToggle>{{statusFilter}}({{showCount}}) <i class=" fe-chevron-down"></i></a>
             <div class="dropdown-menu" ngbDropdownMenu>
-                <div ngbDropdownItem>
-                    <div class="form-check">
+                <div ngbDropdownItem (click)="changeStatusFilter('All')">
+                    <div class="form-check cursor-pointer" id="statusAll">
                         <input type="checkbox" class="form-check-input" name="statusFilter"
-                            [checked]="statusFilter=='All'" (change)="changeStatusFilter('All');">
-                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                            [checked]="statusFilter=='All'">
+                        <label class="form-check-label ms-1-1">
                             All({{allCount}})
                         </label>
                     </div>
                 </div>
-                <div ngbDropdownItem>
-                    <div class="form-check">
+                <div ngbDropdownItem (click)="changeStatusFilter('Active')">
+                    <div class="form-check cursor-pointer" id="statusActive">
                         <input type="checkbox" class="form-check-input" [checked]="statusFilter=='Active'"
-                            (change)="changeStatusFilter('Active');" name="statusFilter">
+                            name="statusFilter">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             Active({{activeCount}})
                         </label>
                     </div>
                 </div>
-                <div ngbDropdownItem>
-                    <div class="form-check">
+                <div ngbDropdownItem (click)="changeStatusFilter('Pending')">
+                    <div class="form-check cursor-pointer">
                         <input type="checkbox" class="form-check-input" [checked]="statusFilter=='Pending'"
-                            (change)="changeStatusFilter('Pending');" name="statusFilter">
+                            name="statusFilter">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             Pending({{pendingCount}})
                         </label>
@@ -56,19 +53,19 @@
                 <i class="fe-chevron-down font-16 ms-1-1"></i>
             </a>
             <div class="dropdown-menu" ngbDropdownMenu>
-                <div ngbDropdownItem>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck" [checked]="roleFilter=='All'"
-                            (change)="changeRoleFilter('All');">
-                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                <div ngbDropdownItem (click)="changeRoleFilter('All')">
+                    <div class="form-check" id="roleAll">
+                        <input type="checkbox" class="form-check-input"
+                            id="dropdownCheckRoleAll" [checked]="roleFilter=='All'" />
+                        <label class="form-check-label ms-1-1">
                             ALL
                         </label>
                     </div>
                 </div>
-                <div ngbDropdownItem *ngFor="let item of roleItems">
+                <div ngbDropdownItem *ngFor="let item of roleItems" (click)="changeRoleFilter(item.text);">
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck"
-                            [checked]="roleFilter==item.text" (change)="changeRoleFilter(item.text);">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck{{item.text}}"
+                            [checked]="roleFilter==item.text">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             {{item.text}}
                         </label>
@@ -134,55 +131,55 @@
                 <i class="fe-chevron-down font-16 ms-1-1"></i>
             </a>
             <div class="dropdown-menu" ngbDropdownMenu>
-                <div ngbDropdownItem>
+                <div ngbDropdownItem (click)="changeapprovalAmountFilter('All');">
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck"
-                            [checked]="approvalAmountFilter=='All'" (change)="changeapprovalAmountFilter('All');">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheckAmountAll"
+                            [checked]="approvalAmountFilter=='All'">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             ALL
                         </label>
                     </div>
                 </div>
-                <div ngbDropdownItem>
+                <div ngbDropdownItem (click)="changeapprovalAmountFilter('1000');">
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck"
-                            [checked]="approvalAmountFilter=='1000'" (change)="changeapprovalAmountFilter('1000');">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck1000"
+                            [checked]="approvalAmountFilter=='1000'">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             $1,000
                         </label>
                     </div>
                 </div>
-                <div ngbDropdownItem>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck"
+                <div ngbDropdownItem (click)="changeapprovalAmountFilter('2000');">
+                    <div class="form-check" >
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck2000"
                             [checked]="approvalAmountFilter=='2000'" (change)="changeapprovalAmountFilter('2000');">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             $2,000
                         </label>
                     </div>
                 </div>
-                <div ngbDropdownItem>
+                <div ngbDropdownItem (click)="changeapprovalAmountFilter('5000');">
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck"
-                            [checked]="approvalAmountFilter=='5000'" (change)="changeapprovalAmountFilter('5000');">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck5000"
+                            [checked]="approvalAmountFilter=='5000'">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             $5,000
                         </label>
                     </div>
                 </div>
-                <div ngbDropdownItem>
+                <div ngbDropdownItem (click)="changeapprovalAmountFilter('7500');">
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck"
-                            [checked]="approvalAmountFilter=='7500'" (change)="changeapprovalAmountFilter('7500');">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck7500"
+                            [checked]="approvalAmountFilter=='7500'">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             $7,500
                         </label>
                     </div>
                 </div>
-                <div ngbDropdownItem>
+                <div ngbDropdownItem (click)="changeapprovalAmountFilter('10000');">
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck"
-                            [checked]="approvalAmountFilter=='10000'" (change)="changeapprovalAmountFilter('10000');">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck10000"
+                            [checked]="approvalAmountFilter=='10000'">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             $10,000
                         </label>
@@ -192,7 +189,7 @@
         </div>
         <!--end filter 3-->
         <div class="d-inline-block ms-1-1">
-            <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords"/>
+            <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords" />
         </div>
         <!-- end search-->
     </div>
@@ -222,30 +219,48 @@
                 <tr *ngFor="let item of members | callback: filterTable; let i = index">
                     <td><input class="form-check" type="checkbox" /></td>
                     <td>
-                        <div class="d-flex flex-row">
+                        <div class="d-flex flex-row" *ngIf="item.idUser>0">
                             <div class="me-1-1">
                                 <app-avatar [bgColor]="bgColors[i % 6]" [url]="item.avatar" [firstName]="item.firstName"
-                                    [lastName]="item.lastName" color="text-white" [size]="32" alt="user-img"></app-avatar>
+                                    [lastName]="item.lastName" color="text-white" [size]="32"
+                                    alt="user-img"></app-avatar>
                             </div>
                             <div>
                                 <div class="bold-600">{{item.firstName}}&nbsp;{{item.lastName}}</div>
                                 <div class="text-typeblackdeactivated">ManagerSales</div>
                             </div>
                         </div>
+                        <div class="d-flex flex-row" *ngIf="item.idUser == 0">
+                            <div class="me-1-1">
+                                <div [ngClass]="bgColors[i % 6]" class=" rounded-circle"
+                                style="width:32px; height: 32px; padding: 8px;">
+                                <i class="fe-user text-white  font-16"></i>
+                            </div>
+                            </div>
+                            <div>
+                                <div class="bold-600 line-32">{{item.email}}</div>
+                            </div>
+                        </div>
                     </td>
                     <td>
-                        <app-dropdowndata *ngIf="editFlag && item.role != 'Owner'" [displayText]="item.role"
+                        <app-dropdowndata *ngIf="editFlag && item.role != 'Owner' && item.idUser > 0" [displayText]="item.role"
                             [data]="roleItems" (selectValue)="editRoleValue(item,$event)"></app-dropdowndata>
-                        <span *ngIf="!editFlag || item.role == 'Owner'">{{item.role}}</span>
+                        <span *ngIf="!editFlag || item.role == 'Owner' || item.idUser == 0">{{item.role}}</span>
                     </td>
                     <td>
-                        <app-dropdowndata *ngIf="editFlag && item.role != 'Owner'"
+                        <app-dropdowndata *ngIf="editFlag && item.role != 'Owner'  && item.idUser > 0"
                             [displayText]="'$'+ item.approvalAmount" [data]="approvalAmount"
                             (selectValue)="editApprovalAmount(item,$event)"></app-dropdowndata>
-                        <span *ngIf="!editFlag || item.role == 'Owner'">${{item.approvalAmount}}</span>
+                        <span *ngIf="!editFlag || item.role == 'Owner' || item.idUser == 0"><span
+                                *ngIf="item.approvalAmount>0">{{item.approvalAmount | currency: 'USD' : 'symbol' :
+                                '1.0-0' }}</span></span>
                     </td>
-                    <td>{{item.active?'Active':'InActive'}}</td>
-                    <td><i class=" fe-trash-2 cursor-pointer" *ngIf="idUser==idUserOwner && item.role != 'Owner' && item.active"
+                    <td>
+                        <span *ngIf="item.idUser>0">{{item.active?'Active':'InActive'}}</span>
+                        <img *ngIf="item.idUser == 0" src="/assets/images/icon/pending2.png" />
+                    </td>
+                    <td><i class=" fe-trash-2 cursor-pointer"
+                            *ngIf="idUser==idUserOwner && item.role != 'Owner' && item.active"
                             (click)="deactive(i)"></i></td>
                 </tr>
             </tbody>
@@ -274,15 +289,16 @@
 
         <div *ngIf="step =='step1'" class="formContainer">
             <div>
-                <tag-input [validators]="validators" [addOnBlur]="true" [theme]="'foundation-theme'" [separatorKeys]="[',',' ']" [(ngModel)]='emailList' placeholder = "add email" secondaryPlaceholder="Email, separate with comma" ></tag-input>
+                <tag-input [validators]="validators" [addOnBlur]="true" [theme]="'foundation-theme'"
+                    [separatorKeys]="[',',' ']" [(ngModel)]='emailList' placeholder="add email"
+                    secondaryPlaceholder="Email, separate with comma"></tag-input>
             </div>
             <div class="bottomButton">
                 <div>
                     <button class="btn btn-primary" [disabled]="emailList.length == 0" (click)="step1()">Next</button>
                 </div>
                 <div>
-                    <button class="btn btn-outline-primary mt-1-1"
-                        (click)="cancelModal()">Cancel</button>
+                    <button class="btn btn-outline-primary mt-1-1" (click)="cancelModal()">Cancel</button>
                 </div>
             </div>
         </div>
@@ -316,16 +332,17 @@
                     </div>
                 </div>
                 <div class="col-md-4 line-32 overflow-hidden">
-                     <span *ngIf="!item.memberyn">{{item.email}}</span>
-                     <del *ngIf="item.memberyn">{{item.email}}</del>
+                    <span *ngIf="!item.memberyn">{{item.email}}</span>
+                    <del *ngIf="item.memberyn">{{item.email}}</del>
                 </div>
-                <div class="col-md-4 text-end subtitle-2-600 line-32 ">
-                    <div *ngIf="!item.memberyn" style="background-color: #F8F9FC;border-radius: 8px;display: inline-block;padding: 0px 8px;">
+                <div class="col-md-3 text-end subtitle-2-600 line-32 ">
+                    <div *ngIf="!item.memberyn"
+                        style="background-color: #F8F9FC;border-radius: 8px;display: inline-block;padding: 0px 8px;">
                         <app-dropdowndata [displayText]="item.approvalAmountText" [data]="approvalAmount"
                             [color]="'text-primary'" (selectValue)="step3Approval(item,$event)"></app-dropdowndata>
                     </div>
                 </div>
-                <div *ngIf="!item.memberyn" class="col-md-3 text-end subtitle-2-600 line-32">
+                <div *ngIf="!item.memberyn" class="col-md-4 text-end subtitle-2-600 line-32">
                     <app-dropdowndata [displayText]="item.role" [data]="roleItems"
                         (selectValue)="step3Role(item,$event)"></app-dropdowndata>
                 </div>
@@ -336,8 +353,7 @@
                     <button class="btn btn-primary" (click)="send()">Send Invite</button>
                 </div>
                 <div>
-                    <button class="btn btn-outline-primary mt-1-1"
-                        (click)="cancelModal()">Cancel</button>
+                    <button class="btn btn-outline-primary mt-1-1" (click)="cancelModal()">Cancel</button>
                 </div>
             </div>
         </div>
