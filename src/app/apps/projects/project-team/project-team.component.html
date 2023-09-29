@@ -1,31 +1,31 @@
 <div class="row mt-2-1">
     <div class="col-md-4">
-        <div class="dropdown" ngbDropdown #statusDrop="ngbDropdown">
+        <div class="dropdown d-inline-block" ngbDropdown #statusDrop="ngbDropdown">
             <a href="javascript:void(0)" class="bold-600 font-20 text-black line-60"
                 ngbDropdownToggle>{{statusFilter}}({{showCount}}) <i class=" fe-chevron-down"></i></a>
             <div class="dropdown-menu" ngbDropdownMenu>
-                <div ngbDropdownItem>
-                    <div class="form-check">
+                <div ngbDropdownItem (click)="changeStatusFilter('All')">
+                    <div class="form-check cursor-pointer" id="statusAll">
                         <input type="checkbox" class="form-check-input" name="statusFilter"
-                            [checked]="statusFilter=='All'" (change)="changeStatusFilter('All');">
-                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                            [checked]="statusFilter=='All'">
+                        <label class="form-check-label ms-1-1">
                             All({{allCount}})
                         </label>
                     </div>
                 </div>
-                <div ngbDropdownItem>
-                    <div class="form-check">
+                <div ngbDropdownItem (click)="changeStatusFilter('Active')">
+                    <div class="form-check cursor-pointer" id="statusActive">
                         <input type="checkbox" class="form-check-input" [checked]="statusFilter=='Active'"
-                            (change)="changeStatusFilter('Active');" name="statusFilter">
+                            name="statusFilter">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             Active({{activeCount}})
                         </label>
                     </div>
                 </div>
-                <div ngbDropdownItem>
-                    <div class="form-check">
+                <div ngbDropdownItem (click)="changeStatusFilter('Pending')">
+                    <div class="form-check cursor-pointer">
                         <input type="checkbox" class="form-check-input" [checked]="statusFilter=='Pending'"
-                            (change)="changeStatusFilter('Pending');" name="statusFilter">
+                            name="statusFilter">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             Pending({{pendingCount}})
                         </label>
@@ -43,19 +43,19 @@
                 <i class="fe-chevron-down font-16 ms-1-1"></i>
             </a>
             <div class="dropdown-menu" ngbDropdownMenu>
-                <div ngbDropdownItem>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck" [checked]="roleFilter=='All'"
-                            (change)="changeRoleFilter('All');">
-                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                <div ngbDropdownItem (click)="changeRoleFilter('All')">
+                    <div class="form-check" id="roleAll" >
+                        <input type="checkbox" class="form-check-input"
+                            id="dropdownCheckRoleAll" [checked]="roleFilter=='All'" />
+                        <label class="form-check-label ms-1-1">
                             ALL
                         </label>
                     </div>
                 </div>
-                <div ngbDropdownItem *ngFor="let item of roleItems">
+                <div ngbDropdownItem *ngFor="let item of roleItems" (click)="changeRoleFilter(item.text);">
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck"
-                            [checked]="roleFilter==item.text" (change)="changeRoleFilter(item.text);">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck{{item.text}}"
+                            [checked]="roleFilter==item.text">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             {{item.text}}
                         </label>
@@ -64,7 +64,7 @@
             </div>
         </div>
         <!--end filter 1-->
-        <div class="dropdown ms-1-1 d-inline-block" ngbDropdown>
+        <div class="dropdown d-inline-block ms-1-1" ngbDropdown>
             <a class="dropdow-outline" href="javascript:void(0)" ngbDropdownToggle>
                 <i class="fe-folder font-16 me-1-1"></i>
                 Project
@@ -114,62 +114,62 @@
             </div>
         </div>
         <!--end filter 2-->
-        <div class="dropdown ms-1-1 d-inline-block" ngbDropdown #approvalDrop="ngbDropdown">
+        <div class="dropdown d-inline-block ms-1-1" ngbDropdown #approvalDrop="ngbDropdown">
             <a class="dropdow-outline" href="javascript:void(0)" ngbDropdownToggle>
                 <i class="fe-dollar-sign font-16 me-1-1"></i>
                 {{approvalAmountFilter}}
                 <i class="fe-chevron-down font-16 ms-1-1"></i>
             </a>
             <div class="dropdown-menu" ngbDropdownMenu>
-                <div ngbDropdownItem>
+                <div ngbDropdownItem (click)="changeapprovalAmountFilter('All');">
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck"
-                            [checked]="approvalAmountFilter=='All'" (change)="changeapprovalAmountFilter('All');">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheckAmountAll"
+                            [checked]="approvalAmountFilter=='All'">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             ALL
                         </label>
                     </div>
                 </div>
-                <div ngbDropdownItem>
+                <div ngbDropdownItem (click)="changeapprovalAmountFilter('1000');">
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck"
-                            [checked]="approvalAmountFilter=='1000'" (change)="changeapprovalAmountFilter('1000');">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck1000"
+                            [checked]="approvalAmountFilter=='1000'">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             $1,000
                         </label>
                     </div>
                 </div>
-                <div ngbDropdownItem>
+                <div ngbDropdownItem (click)="changeapprovalAmountFilter('2000');">
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck"
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck2000"
                             [checked]="approvalAmountFilter=='2000'" (change)="changeapprovalAmountFilter('2000');">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             $2,000
                         </label>
                     </div>
                 </div>
-                <div ngbDropdownItem>
+                <div ngbDropdownItem (click)="changeapprovalAmountFilter('5000');">
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck"
-                            [checked]="approvalAmountFilter=='5000'" (change)="changeapprovalAmountFilter('5000');">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck5000"
+                            [checked]="approvalAmountFilter=='5000'">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             $5,000
                         </label>
                     </div>
                 </div>
-                <div ngbDropdownItem>
+                <div ngbDropdownItem (click)="changeapprovalAmountFilter('7500');">
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck"
-                            [checked]="approvalAmountFilter=='7500'" (change)="changeapprovalAmountFilter('7500');">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck7500"
+                            [checked]="approvalAmountFilter=='7500'">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             $7,500
                         </label>
                     </div>
                 </div>
-                <div ngbDropdownItem>
+                <div ngbDropdownItem (click)="changeapprovalAmountFilter('10000');">
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck"
-                            [checked]="approvalAmountFilter=='10000'" (change)="changeapprovalAmountFilter('10000');">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck10000"
+                            [checked]="approvalAmountFilter=='10000'">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             $10,000
                         </label>
@@ -178,7 +178,7 @@
             </div>
         </div>
         <!--end filter 3-->
-        <div class="d-inline-block ms-1-1 d-inline-block">
+        <div class="d-inline-block ms-1-1">
             <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords" />
         </div>
         <!-- end search-->
@@ -319,13 +319,13 @@
                 <div class="col-md-4 line-32 overflow-hidden">
                     <span >{{item.firstName}} {{item.lastName}}</span>
                 </div>
-                <div class="col-md-4 text-end subtitle-2-600 line-32 ">
+                <div class="col-md-3 text-end subtitle-2-600 line-32 ">
                     <div *ngIf="!item.memberyn"
                         style="background-color: #F8F9FC;border-radius: 8px;display: inline-block;padding: 0px 8px;">
                         {{item.approvalAmountText}}
                     </div>
                 </div>
-                <div *ngIf="!item.memberyn" class="col-md-3 text-end subtitle-2-600 line-32">
+                <div *ngIf="!item.memberyn" class="col-md-4 text-end subtitle-2-600 line-32">
                     {{item.role}}
                 </div>
             </div>

@@ -145,10 +145,10 @@ export class ProjectTeamComponent {
     this.members = this.COMPANY_MEMBERS;
     this.showCount = this.allCount;
     if (filter == 'Active') {
-      this.members = this.members.filter((member) => member.active);
+      this.members = this.members.filter((member) => member.active && member.idUser > 0);
       this.showCount = this.activeCount;
     } else if (filter == 'Pending') {
-      this.members = this.members.filter((member) => !member.active);
+      this.members = this.members.filter((member) => member.idUser == 0);
       this.showCount = this.pendingCount;
     }
   }
@@ -220,10 +220,10 @@ export class ProjectTeamComponent {
 
             this.allCount = result.data.length;
             this.activeCount = result.data.filter(
-              (member) => member.active
+              (member) => member.active && member.idUser > 0
             ).length;
             this.pendingCount = result.data.filter(
-              (member) => !member.active
+              (member) => member.idUser == 0
             ).length;
             this.showCount = this.allCount;
             this.loading = false;
