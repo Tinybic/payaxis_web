@@ -2,7 +2,7 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import {
   UntypedFormBuilder,
   UntypedFormGroup,
-  Validators
+  Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { profile_info } from 'src/app/core/gql/user';
@@ -16,16 +16,13 @@ import { ApolloService } from 'src/app/core/service/apollo.service';
 @Component({
   selector: 'app-auth-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
   @ViewChild('centeredModal') centeredModal: any;
   loginForm: UntypedFormGroup = this.fb.group({
-    email: ['',
-      [Validators.required,
-        Validators.email]],
-    password: ['',
-      Validators.required]
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', Validators.required],
   });
   formSubmitted: boolean = false;
   showPassword: boolean = false;
@@ -35,7 +32,7 @@ export class LoginComponent implements OnInit {
   user: SocialUser;
   loggedIn: boolean;
   title: string = 'Log in';
-  
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -43,50 +40,118 @@ export class LoginComponent implements OnInit {
     private fb: UntypedFormBuilder,
     private modalService: NgbModal,
     private apolloService: ApolloService
-  ){}
-  
-  ngOnInit(): void{
+  ) {}
+
+  ngOnInit(): void {
     localStorage.clear();
     // get return url from route parameters or default to '/'
     const company = decodeURIComponent(
       this.activatedRoute.snapshot.queryParams['company']
     );
-    if(company != 'undefined') this.title = 'Join the "' + company + '" team';
+    if (company != 'undefined') this.title = 'Join the "' + company + '" team';
   }
-  
+
   /**
    * convenience getter for easy access to form fields
    */
-  get formValues(){
+  get formValues() {
     return this.loginForm.controls;
   }
-  
-  inputShowPassword(){
+
+  inputShowPassword() {
     this.showPassword = !this.showPassword;
   }
-  
+
   /**
    * On submit form
    */
   paracont = 'Resend';
   takeFourNumbers: any;
-  
-  onSubmit(): void{
+
+  onSubmit(): void {
     this.error = '';
     this.modalService.dismissAll();
     this.formSubmitted = true;
-    if(this.loginForm.valid && this.paracont == 'Resend'){
+    if (this.loginForm.valid && this.paracont == 'Resend') {
       this.loading = true;
-      this.httpService.post('login', {
+      this.httpService
+        .post('login', {
+          email: this.formValues['email'].value,
+          password: this.formValues['password'].value,
+        })
+        .then((res) => {
+          if (!res.error) {
+            localStorage.setItem('refreshToken', res.data.refreshToken);
+            localStorage.setItem('token', res.data.token);
+            this.apolloService.query(profile_info, {}).then((res) => {
+              if (!res.profile_info.error) {
+                const result = res.profile_info.data;
+                localStorage.setItem('email', this.formValues['email'].value);
+                localStorage.setItem('firstName', result.firstName);
+                localStorage.setItem('lastName', result.lastName);
+                localStorage.setItem('memberyn', result.memberyn.toString());
+                localStorage.setItem('id', result.id.toString());
+                localStorage.setItem('avatar', result.avatar);
+                localStorage.setItem('welcomeyn', result.welcomeyn.toString());
+                this.router.navigate(['apps/projects']);
+              }
+              this.loading = false;
+            });
+          } else if (res.code == 113) {
+            localStorage.setItem('refreshToken', res.data.refreshToken);
+            localStorage.setItem('token', res.data.token);
+            this.router.navigate(['auth/info']);
+          } else if (res.code == 112) {
+            this.loading = false;
+            this.openmodal();
+          } else {
+            this.loading = false;
+            this.error = res.message;
+          }
+        })
+        .catch((error) => {
+          this.loading = false;
+          this.error = error;
+        });
+    }
+  }
+
+  openmodal() {
+    if (this.paracont == 'Resend') {
+      this.paracont = 'Resend code in 00:59';
+
+      this.openVerticallyCentered(this.centeredModal);
+      let that = this;
+      const numbers = interval(1000);
+      this.takeFourNumbers = numbers.pipe(take(58));
+      this.takeFourNumbers.subscribe({
+        next(x): any {
+          if (58 - x >= 10) that.paracont = 'Resend code in 00:' + (58 - x);
+          else that.paracont = 'Resend code in 00:0' + (58 - x);
+        },
+        error(err): any {},
+        complete(): any {
+          that.paracont = 'Resend';
+        },
+      });
+    }
+  }
+
+  onCodeChanged(code: string) {}
+
+  onCodeCompleted(code: string) {
+    this.modalService.dismissAll();
+    this.httpService
+      .post('loginsms', {
         email: this.formValues['email'].value,
-        password: this.formValues['password'].value
-      }).then((res) => {
-        
-        if(!res.error){
+        code: code,
+      })
+      .then((res) => {
+        if (!res.error) {
           localStorage.setItem('refreshToken', res.data.refreshToken);
           localStorage.setItem('token', res.data.token);
           this.apolloService.query(profile_info, {}).then((res) => {
-            if(!res.profile_info.error){
+            if (!res.profile_info.error) {
               const result = res.profile_info.data;
               localStorage.setItem('email', this.formValues['email'].value);
               localStorage.setItem('firstName', result.firstName);
@@ -99,68 +164,25 @@ export class LoginComponent implements OnInit {
             }
             this.loading = false;
           });
-        } else if(res.code == 113){
+        } else if (res.code == 113) {
           localStorage.setItem('refreshToken', res.data.refreshToken);
           localStorage.setItem('token', res.data.token);
           this.router.navigate(['auth/info']);
-        } else if(res.code == 112){
+        } else if (res.code == 112) {
           this.loading = false;
           this.openmodal();
-        } else{
+        } else {
           this.loading = false;
           this.error = res.message;
         }
-      }).catch((error) => {
+      })
+      .catch((error) => {
         this.loading = false;
         this.error = error;
       });
-    }
   }
-  
-  openmodal(){
-    if(this.paracont == 'Resend'){
-      this.paracont = 'Resend code in 00:59';
-      
-      this.openVerticallyCentered(this.centeredModal);
-      let that = this;
-      const numbers = interval(1000);
-      this.takeFourNumbers = numbers.pipe(take(58));
-      this.takeFourNumbers.subscribe({
-        next(x): any{
-          if(58 - x >= 10) that.paracont = 'Resend code in 00:' + (58 - x);
-          else that.paracont = 'Resend code in 00:0' + (58 - x);
-        },
-        error(err): any{},
-        complete(): any{
-          that.paracont = 'Resend';
-        }
-      });
-    }
-  }
-  
-  onCodeChanged(code: string){}
-  
-  onCodeCompleted(code: string){
-    this.modalService.dismissAll();
-    this.httpService.post('loginsms', {
-      email: this.formValues['email'].value,
-      code: code
-    }).then((res) => {
-      this.loading = false;
-      if(!res.error){
-        localStorage.setItem('refreshtoken', res.data.refreshtoken);
-        localStorage.setItem('token', res.data.token);
-        this.router.navigate(['icons/feather']);
-      } else{
-        this.error = res.message;
-      }
-    }).catch((error) => {
-      this.loading = false;
-      this.error = error;
-    });
-  }
-  
-  openVerticallyCentered(content: TemplateRef<NgbModal>): void{
-    this.modalService.open(content, {centered: true});
+
+  openVerticallyCentered(content: TemplateRef<NgbModal>): void {
+    this.modalService.open(content, { backdrop: 'static', centered: true });
   }
 }
