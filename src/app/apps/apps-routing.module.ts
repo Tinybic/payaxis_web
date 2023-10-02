@@ -8,6 +8,7 @@ const routes: Routes = [
   { path: 'team', loadChildren: () => import('./team/team.module').then(m => m.TeamModule) },
   { path: 'vendor', loadChildren: () => import('./vendor/vendor.module').then(m => m.VendorModule) },
   { path: 'setting', loadChildren: () => import('./setting/setting.module').then(m => m.SettingModule) },
+  { path: 'order', loadChildren: () => import('./order/order.module').then(m => m.OrderModule) },
   {
     path: 'welcome',
     component: WelcomeComponent
