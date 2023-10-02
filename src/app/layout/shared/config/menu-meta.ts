@@ -12,12 +12,12 @@ const MENU_ITEMS: MenuItem[] = [
     item: ['/apps/projects/details/'],
   },
   {
-    key: 'bill',
-    label: 'Bills',
+    key: 'orders',
+    label: 'Orders',
     isTitle: false,
     icon: 'fe-file-text',
     collapsed: true,
-    url: '/icons/feather',
+    url: '/apps/order',
   },
   {
     key: 'invoice',
