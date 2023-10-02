@@ -169,5 +169,30 @@ const company_roles = gql`
     }
   }
 `;
+const company_invitedmember_deactivate = gql`
+  mutation company_invitedmember_deactivate(
+    $idCompany: Int!
+    $id: Int!
+    $revision: Int!
+  ) {
+    company_invitedmember_deactivate(
+      idCompany: $idCompany
+      id: $id
+      revision: $revision
+    ) {
+      error
+      code
+      message
+      data
+    }
+  }
+`;
 
-export { companyNew, companyUpate, company_list, company_info, company_roles };
+export {
+  companyNew,
+  companyUpate,
+  company_list,
+  company_info,
+  company_roles,
+  company_invitedmember_deactivate,
+};
