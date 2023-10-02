@@ -61,6 +61,8 @@ export enum Folder {
 /** structure to handle table sms */
 export type Mutation = {
   __typename?: 'Mutation';
+  /** deactivate company_invitedmember */
+  company_invitedmember_deactivate: Invitememberresult;
   /** deactivate company_member */
   company_member_deactivate: Invitememberresult;
   /** manage company_member access */
@@ -163,6 +165,14 @@ export type Mutation = {
   vendorcontact_new: Vendorcontactresult;
   /** update vendor_contact */
   vendorcontact_update: Vendorcontactresult;
+};
+
+
+/** structure to handle table sms */
+export type MutationCompany_Invitedmember_DeactivateArgs = {
+  id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
 };
 
 

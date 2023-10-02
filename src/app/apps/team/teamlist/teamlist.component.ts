@@ -12,7 +12,7 @@ import { ROLEITEMS, APPROVALAMOUNT } from 'src/app/core/constants/members';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { SweetAlertOptions } from 'sweetalert2';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
-import { company_roles } from 'src/app/core/gql/company';
+import { company_invitedmember_deactivate, company_roles } from 'src/app/core/gql/company';
 import { FormControl } from '@angular/forms';
 import { Base } from 'src/app/core/base';
 @Component({
@@ -229,21 +229,38 @@ export class TeamlistComponent extends Base {
   }
 
   deactiveMembers() {
+
+    let gql = company_member_deactivate;
+    if(this.members[this.deleteIndex].idUser == 0){
+      gql = company_invitedmember_deactivate;
+    }
+
+
+    console.log(this.members[this.deleteIndex])
+
     this.apolloService
-      .mutate(company_member_deactivate, {
+      .mutate(gql, {
         idCompany: parseInt(localStorage.getItem('idcompany')),
         id: this.members[this.deleteIndex].id,
         revision: this.members[this.deleteIndex].revision,
       })
       .then((res) => {
         let message = '';
-        const result = res.company_member_deactivate;
+        let result;
+        if(this.members[this.deleteIndex].idUser == 0){
+          result = company_invitedmember_deactivate;
+        }
+        else{
+          result = res.company_member_deactivate;
+        }
+    
         message = result.message;
         this.getCompanyMembers();
         this.toastrService.info(message, '');
         this.modalService.dismissAll();
       });
   }
+
 
   // compares two cell values
   compare(v1: string | number, v2: string | number): any {
