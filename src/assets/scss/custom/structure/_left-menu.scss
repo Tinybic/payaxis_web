@@ -26,6 +26,16 @@
     }
 }
 
+.orderDetailBottom {
+    background-color: #2B2D30;
+    margin-left: -24px;
+    margin-right: -24px;
+    color: white;
+    position: fixed;
+    bottom: 0;
+    width: calc(100% - 164px)
+}
+
 .user-profile {
     color: #FFFFFF;
     animation: fadeout 0.1s ease-in-out;
@@ -37,9 +47,12 @@
     background-color: #3C3C42;
     height: 1px;
 }
-.left-side-menu .simplebar-mask,.left-side-menu .simplebar-content-wrapper{
+
+.left-side-menu .simplebar-mask,
+.left-side-menu .simplebar-content-wrapper {
     overflow: visible !important;
 }
+
 //Content Page
 .content-page {
     margin-left: $leftbar-width;
@@ -304,6 +317,10 @@ body[data-leftbar-size="condensed"] {
         span.logo-sm {
             display: block;
         }
+    }
+
+    .orderDetailBottom{
+        width: calc(100% - 72px) !important;
     }
 
     .toggleMenuIcon {

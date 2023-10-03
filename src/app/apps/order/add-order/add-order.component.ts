@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { paymentTerms } from 'src/app/core/constants/payment';
@@ -12,6 +12,7 @@ import { HttpService } from 'src/app/core/service/http.service';
   styleUrls: ['./add-order.component.scss'],
 })
 export class AddOrderComponent {
+  @ViewChild('listitem', { static: true }) listitem: ElementRef;
   tabs1 = 1;
   reasonList = [];
   paymentTermsList = paymentTerms;

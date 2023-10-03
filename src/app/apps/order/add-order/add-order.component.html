@@ -8,9 +8,12 @@
 <div class="row mt-1-1">
     <div class="col-md-6 d-flex align-items-center" style="padding-top: 2px;padding-bottom: 2px;">
         <span class="headline" style="line-height: 44px;">Order #123&nbsp;</span>
-        <div class="d-inline-block ms-1-1 activeTag">
-            Active
+        <div class="d-inline-block ms-1-1 DraftTag subtitle-2-600 text-typeblackdeactivated">
+            Draft
         </div>
+        <!-- <div class="d-inline-block ms-1-1 activeTag">
+            Active
+        </div> -->
     </div>
     <div class="col-md-6 text-end">
 
@@ -360,8 +363,7 @@
                         </div>
 
                     </div>
-                    <div
-                        style="background-color: #2B2D30;margin-left: -24px; margin-right: -24px; color: white; position: fixed; bottom: 0; width: 100%;">
+                    <div class="orderDetailBottom">
                         <div class="row padding-16-32">
                             <div class="col-md-2">
                                 <label class="form-label" i18n>Non Taxable</label>
@@ -381,7 +383,14 @@
                                     style="background-color: #3F444D; border:1px solid #3C3C42; color: white"
                                     type="text" id="orderNumber" required i18n-placeholder value="0.00" />
                             </div>
-                            <div class="col-md-6"></div>
+                            <div class="col-md-6 text-end pt-2-1">
+                                <div class="d-inline-block" style="height: 40px;">
+                                    <label i18n>Total Amount Due</label><br />
+                                    <label style=" color: white; " id="orderNumber">0.00</label>
+                                </div>
+                                <button type="button" class="btn btn-primary ms-1-1">Send Order</button>
+                                <button type="button" class="btn btn-primary ms-1-1">Pay Invoice</button>
+                            </div>
                         </div>
                     </div>
                 </ng-template>
