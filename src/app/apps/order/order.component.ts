@@ -1,23 +1,33 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { APPROVALAMOUNT } from "../../core/constants/members";
-import { ApolloService } from "../../core/service/apollo.service";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { ToastrService } from "ngx-toastr";
-import { company_member_deactivate, company_member_edit, company_member_invite, company_members, companymember_emails } from "../../core/gql/team";
-import { company_invitedmember_deactivate, company_roles } from "../../core/gql/company";
-import { SweetAlertOptions } from "sweetalert2";
-import { FormControl } from "@angular/forms";
+import { APPROVALAMOUNT } from '../../core/constants/members';
+import { ApolloService } from '../../core/service/apollo.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
+import {
+  company_member_deactivate,
+  company_member_edit,
+  company_member_invite,
+  company_members,
+  companymember_emails,
+} from '../../core/gql/team';
+import {
+  company_invitedmember_deactivate,
+  company_roles,
+} from '../../core/gql/company';
+import { SweetAlertOptions } from 'sweetalert2';
+import { FormControl } from '@angular/forms';
 import { Base } from 'src/app/core/base';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-order',
   templateUrl: './order.component.html',
-  styleUrls: ['./order.component.scss']
+  styleUrls: ['./order.component.scss'],
 })
 export class OrderComponent extends Base {
   @ViewChild('inviteMember') inviteMember: any;
   @ViewChild('deleteModal') deleteModal: any;
-  
+
   statusFilter: string = 'All';
   members = [];
   COMPANY_MEMBERS = [];
@@ -50,33 +60,34 @@ export class OrderComponent extends Base {
   approvalAmountFilter = 'Approval Amount';
   roleFilter = 'Approval';
   loading = true;
-  
+
   canEdit = false;
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private router: Router
   ) {
     super();
   }
-  
+
   startEdit() {
     if (this.idUser == this.idUserOwner) this.editFlag = true;
   }
-  
+
   editRoleValue(item, value) {
     item.idRole = value.id;
     item.role = value.text;
     this.pushEditArray(item);
     this.saveEdit();
   }
-  
+
   editApprovalAmount(item, value) {
     item.approvalAmount = value.id;
     this.pushEditArray(item);
     this.saveEdit();
   }
-  
+
   pushEditArray(info) {
     let item = this.edit.find((item) => item.id == info.id);
     if (item) {
@@ -85,7 +96,7 @@ export class OrderComponent extends Base {
       this.edit.push(info);
     }
   }
-  
+
   saveEdit() {
     const members = this.edit.map((item) => {
       return Object.assign(
@@ -98,7 +109,7 @@ export class OrderComponent extends Base {
         }
       );
     });
-    
+
     const data = {
       idCompany: parseInt(localStorage.getItem('idcompany')),
       companymembers: members,
@@ -116,13 +127,12 @@ export class OrderComponent extends Base {
       this.getCompanyMembers();
     });
   }
-  
+
   changeStatusFilter(filter: string) {
     this.statusFilter = filter;
     this.members = this.COMPANY_MEMBERS;
     this.showCount = this.allCount;
     if (filter == 'Active') {
-      
       this.members = this.members.filter(
         (member) => member.active && member.idUser > 0
       );
@@ -132,7 +142,7 @@ export class OrderComponent extends Base {
       this.showCount = this.pendingCount;
     }
   }
-  
+
   changeRoleFilter(filter: string) {
     this.roleFilter = filter;
     this.members = this.COMPANY_MEMBERS;
@@ -140,7 +150,7 @@ export class OrderComponent extends Base {
       this.members = this.members.filter((member) => member.role == filter);
     }
   }
-  
+
   changeapprovalAmountFilter(filter: string) {
     this.approvalAmountFilter = filter;
     this.members = this.COMPANY_MEMBERS;
@@ -150,114 +160,110 @@ export class OrderComponent extends Base {
       );
     }
   }
-  
+
   ngOnInit(): void {
     this.canEdit = super.setRole('Manage company users');
     this.idUser = localStorage.getItem('id');
     this.idUserOwner = localStorage.getItem('idUserOwner');
     this.companyName = localStorage.getItem('companyName');
-    
+
     this.apolloService
-    .query(company_roles, {
-      idCompany: parseInt(localStorage.getItem('idcompany')),
-    })
-    .then((res) => {
-      const result = res.company_roles;
-      if (!result.error) {
-        this.roleItems = result.data.map((item) => {
-          return Object.assign(
-            {},
-            {
-              id: item.idRole,
-              text: item.txtName,
-            }
-          );
-        });
-      }
-    });
-    
-    this.getCompanyMembers();
-  }
-  
-  getCompanyMembers() {
-    if (localStorage.getItem('idcompany')) {
-      this.apolloService
-      .query(company_members, {
+      .query(company_roles, {
         idCompany: parseInt(localStorage.getItem('idcompany')),
       })
       .then((res) => {
-        const result = res.company_members;
+        const result = res.company_roles;
         if (!result.error) {
-          this.members = result.data;
-          this.COMPANY_MEMBERS = JSON.parse(JSON.stringify(result.data));
-          
-          this.allCount = result.data.length;
-          this.activeCount = result.data.filter(
-            (member) => member.active && member.idUser > 0
-          ).length;
-          this.pendingCount = result.data.filter(
-            (member) => member.idUser == 0
-          ).length;
-          this.showCount = this.allCount;
-          this.loading = false;
+          this.roleItems = result.data.map((item) => {
+            return Object.assign(
+              {},
+              {
+                id: item.idRole,
+                text: item.txtName,
+              }
+            );
+          });
         }
       });
+
+    this.getCompanyMembers();
+  }
+
+  getCompanyMembers() {
+    if (localStorage.getItem('idcompany')) {
+      this.apolloService
+        .query(company_members, {
+          idCompany: parseInt(localStorage.getItem('idcompany')),
+        })
+        .then((res) => {
+          const result = res.company_members;
+          if (!result.error) {
+            this.members = result.data;
+            this.COMPANY_MEMBERS = JSON.parse(JSON.stringify(result.data));
+
+            this.allCount = result.data.length;
+            this.activeCount = result.data.filter(
+              (member) => member.active && member.idUser > 0
+            ).length;
+            this.pendingCount = result.data.filter(
+              (member) => member.idUser == 0
+            ).length;
+            this.showCount = this.allCount;
+            this.loading = false;
+          }
+        });
     }
   }
-  
+
   public alertOption: SweetAlertOptions = {};
-  
+
   deleteFirstname = '';
   deleteLastname = '';
   deleteIndex = '';
-  
+
   deactive(index) {
     this.deleteFirstname = this.members[index].firstName;
     this.deleteLastname = this.members[index].lastName;
     this.deleteIndex = index;
-    
+
     this.openVerticallyCentered(this.deleteModal);
   }
-  
+
   deactiveMembers() {
-    
     let gql = company_member_deactivate;
-    if(this.members[this.deleteIndex].idUser == 0){
+    if (this.members[this.deleteIndex].idUser == 0) {
       gql = company_invitedmember_deactivate;
     }
-    
-    
-    console.log(this.members[this.deleteIndex])
-    
+
+    console.log(this.members[this.deleteIndex]);
+
     this.apolloService
-    .mutate(gql, {
-      idCompany: parseInt(localStorage.getItem('idcompany')),
-      id: this.members[this.deleteIndex].id,
-      revision: this.members[this.deleteIndex].revision,
-    })
-    .then((res) => {
-      let message = '';
-      let result;
-      if(this.members[this.deleteIndex].idUser == 0){
-        result = company_invitedmember_deactivate;
-      }
-      else{
-        result = res.company_member_deactivate;
-      }
-      
-      message = result.message;
-      this.getCompanyMembers();
-      this.toastrService.info(message, '');
-      this.modalService.dismissAll();
-    });
+      .mutate(gql, {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
+        id: this.members[this.deleteIndex].id,
+        revision: this.members[this.deleteIndex].revision,
+      })
+      .then((res) => {
+        let message = '';
+        let result;
+        if (this.members[this.deleteIndex].idUser == 0) {
+          result = company_invitedmember_deactivate;
+        } else {
+          result = res.company_member_deactivate;
+        }
+
+        message = result.message;
+        this.getCompanyMembers();
+        this.toastrService.info(message, '');
+        this.modalService.dismissAll();
+      });
   }
-  
-  
+
   // compares two cell values
   compare(v1: string | number, v2: string | number): any {
     return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
   }
-  
+
   /**
    * Sort the table data
    * @param event column name, sort direction
@@ -269,13 +275,13 @@ export class OrderComponent extends Base {
     } else {
       this.direction = 'desc';
     }
-    
+
     this.members = [...this.members].sort((a, b) => {
       const res = this.compare(a[this.sortCloumn], b[this.sortCloumn]);
       return this.direction === 'asc' ? res : -res;
     });
   }
-  
+
   filterTable = (member: any) => {
     let values = Object.values(member);
     return values.some(
@@ -284,7 +290,7 @@ export class OrderComponent extends Base {
         member.lastName.toLowerCase().includes(this.keywords.toLowerCase())
     );
   };
-  
+
   openVerticallyCentered(content: TemplateRef<NgbModal>): void {
     this.modalService.open(content, {
       backdrop: 'static',
@@ -292,27 +298,27 @@ export class OrderComponent extends Base {
       centered: true,
     });
   }
-  
-  newOrder() {
-    if (this.idUser == this.idUserOwner && this.canEdit)
-      this.openVerticallyCentered(this.inviteMember);
-  }
-  
+
+  // newOrder() {
+  //   if (this.idUser == this.idUserOwner && this.canEdit)
+  //     this.openVerticallyCentered(this.inviteMember);
+  // }
+
   cancelModal() {
     this.modalService.dismissAll();
     this.emailList = [];
     this.step = 'step1';
   }
-  
+
   isEmail(email: string) {
     const expression: RegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
     return expression.test(email);
   }
-  
+
   deleteEmail(index) {
     this.emailList.splice(index, 1);
   }
-  
+
   public validators = [this.must_be_email];
   public errorMessages = {
     must_be_email: 'Enter valid email adress!',
@@ -328,7 +334,7 @@ export class OrderComponent extends Base {
     }
     return null;
   }
-  
+
   step1() {
     let data = [];
     this.userList = [];
@@ -336,28 +342,28 @@ export class OrderComponent extends Base {
       data.push(item.value);
     });
     this.apolloService
-    .query(companymember_emails, {
-      idCompany: parseInt(localStorage.getItem('idcompany')),
-      emaillist: data,
-    })
-    .then((res) => {
-      if (!res.companymember_emails.error) {
-        res.companymember_emails.data.forEach((item) => {
-          this.userList.push({
-            email: item.email,
-            memberyn: item.memberyn,
-            idRole: this.roleItems[0].id,
-            role: this.roleItems[0].text,
-            approvalAmount: 0,
-            approvalAmountText: 'Approval Limit',
+      .query(companymember_emails, {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
+        emaillist: data,
+      })
+      .then((res) => {
+        if (!res.companymember_emails.error) {
+          res.companymember_emails.data.forEach((item) => {
+            this.userList.push({
+              email: item.email,
+              memberyn: item.memberyn,
+              idRole: this.roleItems[0].id,
+              role: this.roleItems[0].text,
+              approvalAmount: 0,
+              approvalAmountText: 'Approval Limit',
+            });
           });
-        });
-        
-        this.step = 'step3';
-      }
-    });
+
+          this.step = 'step3';
+        }
+      });
   }
-  
+
   step3Approval(item, event) {
     item.approvalAmount = event.id;
     item.approvalAmountText = event.text;
@@ -366,7 +372,7 @@ export class OrderComponent extends Base {
     item.idRole = event.id;
     item.role = event.text;
   }
-  
+
   send() {
     this.modalService.dismissAll();
     this.userList = this.userList.filter((item) => !item.memberyn);
@@ -381,12 +387,12 @@ export class OrderComponent extends Base {
         }
       );
     });
-    
+
     const data = {
       idCompany: parseInt(localStorage.getItem('idcompany')),
       inviteMembers: inviteMembers,
     };
-    
+
     this.apolloService.mutate(company_member_invite, data).then((res) => {
       let message = '';
       const result = res.company_member_invite;
@@ -401,5 +407,9 @@ export class OrderComponent extends Base {
       this.emailList = [];
       this.toastrService.info(message, '');
     });
+  }
+
+  openDetail(id) {
+    this.router.navigate(['apps/order/detail/' + id]);
   }
 }
