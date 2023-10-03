@@ -10,9 +10,13 @@
 
 <div class="row">
     <div class="col-md-4">
-        <div class="dropdown" ngbDropdown #statusDrop="ngbDropdown">
-            <a href="javascript:void(0)" class="bold-600 font-20 text-black line-60"
-                ngbDropdownToggle>{{statusFilter}}({{showCount}}) <i class=" fe-chevron-down"></i></a>
+        <div class="d-inline-block subtitle-2-600-24 line-40">{{showCount}} Users </div>
+        <div class="dropdow-outline ms-2-1" ngbDropdown #statusDrop="ngbDropdown">
+            <a href="javascript:void(0)" 
+                ngbDropdownToggle>
+               <span class="text-typeblack80">Status</span>
+               <span class="ms-1-1 text-black btn-text-12">{{statusFilter}} </span>
+                <i class=" fe-chevron-down"></i></a>
             <div class="dropdown-menu" ngbDropdownMenu>
                 <div ngbDropdownItem (click)="changeStatusFilter('All')">
                     <div class="form-check cursor-pointer" id="statusAll">
