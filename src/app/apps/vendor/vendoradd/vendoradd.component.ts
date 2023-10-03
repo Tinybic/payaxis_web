@@ -144,7 +144,7 @@ export class VendoraddComponent {
   }
 
   costCodeFilter() {
-    this.costCodeList = this.COSTCODE_LIST;
+    this.costCodeList = JSON.parse(JSON.stringify(this.COSTCODE_LIST));
     this.costCodeList = this.costCodeList.filter((costcode) => {
       costcode.costcodelist = costcode.costcodelist.filter((item) =>
         item.txtName.toLowerCase().includes(this.keywords.toLowerCase())
