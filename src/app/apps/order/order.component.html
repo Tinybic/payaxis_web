@@ -613,7 +613,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let item of members | callback: filterTable; let i = index">
+            <tr *ngFor="let item of members | callback: filterTable; let i = index"  (click)="openDetail(1)">
                 <td><input class="form-check" type="checkbox"/></td>
                 <td>
                     <img src="assets/images/status-icons/overdue.png">
