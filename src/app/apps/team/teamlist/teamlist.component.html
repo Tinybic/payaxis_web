@@ -257,7 +257,7 @@
                     </td>
                     <td>
                         <span *ngIf="item.idUser>0">{{item.active?'Active':'InActive'}}</span>
-                        <img *ngIf="item.idUser == 0" src="/assets/images/icon/pending2.png" />
+                        <img *ngIf="item.idUser == 0" src="/assets/images/status-icons/pending.png" />
                     </td>
                     <td><i class=" fe-trash-2 cursor-pointer"
                             *ngIf="idUser==idUserOwner && item.role != 'Owner' && item.active"

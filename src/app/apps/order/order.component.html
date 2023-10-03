@@ -1,1 +1,363 @@
-<p>order works!</p>
+<div class="row">
+    <div class="col-md-6 headline">
+        Orders
+    </div>
+    <div class="col-md-6 text-end">
+        <button class="btn btn-primary" *ngIf="canEdit" (click)="newOrder()"><i
+                class="fe-plus-square me-1-1"></i>Invite Member
+        </button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="dropdown" ngbDropdown #statusDrop="ngbDropdown">
+            <a href="javascript:void(0)" class="bold-600 font-20 text-black line-60"
+               ngbDropdownToggle>{{statusFilter}}({{showCount}}) <i class=" fe-chevron-down"></i></a>
+            <div class="dropdown-menu" ngbDropdownMenu>
+                <div ngbDropdownItem (click)="changeStatusFilter('All')">
+                    <div class="form-check cursor-pointer" id="statusAll">
+                        <input type="checkbox" class="form-check-input" name="statusFilter"
+                               [checked]="statusFilter=='All'">
+                        <label class="form-check-label ms-1-1">
+                            All({{allCount}})
+                        </label>
+                    </div>
+                </div>
+                <div ngbDropdownItem (click)="changeStatusFilter('Active')">
+                    <div class="form-check cursor-pointer" id="statusActive">
+                        <input id="dropdownCheckActive" type="checkbox" class="form-check-input"
+                               [checked]="statusFilter=='Active'"
+                               name="statusFilter">
+                        <label class="form-check-label ms-1-1" for="dropdownCheckActive">
+                            Active({{activeCount}})
+                        </label>
+                    </div>
+                </div>
+                <div ngbDropdownItem (click)="changeStatusFilter('Pending')">
+                    <div class="form-check cursor-pointer">
+                        <input id="dropdownCheckPending" type="checkbox" class="form-check-input"
+                               [checked]="statusFilter=='Pending'"
+                               name="statusFilter">
+                        <label class="form-check-label ms-1-1" for="dropdownCheckPending">
+                            Pending({{pendingCount}})
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8 mt-2-1 d-flex flex-row justify-content-end">
+        
+        <div class="dropdown" ngbDropdown #roleDrop="ngbDropdown">
+            <a class="dropdow-outline" href="javascript:void(0)" ngbDropdownToggle>
+                <i class="fe-user font-16 me-1-1"></i>
+                {{roleFilter}}
+                <i class="fe-chevron-down font-16 ms-1-1"></i>
+            </a>
+            <div class="dropdown-menu" ngbDropdownMenu>
+                <div ngbDropdownItem (click)="changeRoleFilter('All')">
+                    <div class="form-check" id="roleAll">
+                        <input type="checkbox" class="form-check-input"
+                               id="dropdownCheckRoleAll" [checked]="roleFilter=='All'"/>
+                        <label class="form-check-label ms-1-1">
+                            ALL
+                        </label>
+                    </div>
+                </div>
+                <div ngbDropdownItem *ngFor="let item of roleItems" (click)="changeRoleFilter(item.text);">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck{{item.text}}"
+                               [checked]="roleFilter==item.text">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck{{item.text}}">
+                            {{item.text}}
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end filter 1-->
+        <div class="dropdown ms-1-1" ngbDropdown>
+            <a class="dropdow-outline" href="javascript:void(0)" ngbDropdownToggle>
+                <i class="fe-folder font-16 me-1-1"></i>
+                Project
+                <i class="fe-chevron-down font-16 ms-1-1"></i>
+            </a>
+            <div class="dropdown-menu" ngbDropdownMenu>
+                <div ngbDropdownItem>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheckAll">
+                        <label class="form-check-label ms-1-1" for="dropdownCheckAll">
+                            ALL
+                        </label>
+                    </div>
+                </div>
+                <div ngbDropdownItem>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheckApproval">
+                        <label class="form-check-label ms-1-1" for="dropdownCheckApproval">
+                            Approval
+                        </label>
+                    </div>
+                </div>
+                <div ngbDropdownItem>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheckAdmin">
+                        <label class="form-check-label ms-1-1" for="dropdownCheckAdmin">
+                            Admin
+                        </label>
+                    </div>
+                </div>
+                <div ngbDropdownItem>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheckEditor">
+                        <label class="form-check-label ms-1-1" for="dropdownCheckEditor">
+                            Editor
+                        </label>
+                    </div>
+                </div>
+                <div ngbDropdownItem>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheckViewer">
+                        <label class="form-check-label ms-1-1" for="dropdownCheckViewer">
+                            Viewer
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end filter 2-->
+        <div class="dropdown ms-1-1" ngbDropdown #approvalDrop="ngbDropdown">
+            <a class="dropdow-outline" href="javascript:void(0)" ngbDropdownToggle>
+                <i class="fe-dollar-sign font-16 me-1-1"></i>
+                {{approvalAmountFilter}}
+                <i class="fe-chevron-down font-16 ms-1-1"></i>
+            </a>
+            <div class="dropdown-menu" ngbDropdownMenu>
+                <div ngbDropdownItem (click)="changeapprovalAmountFilter('All');">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheckAmountAll"
+                               [checked]="approvalAmountFilter=='All'">
+                        <label class="form-check-label ms-1-1" for="dropdownCheckAmountAll">
+                            ALL
+                        </label>
+                    </div>
+                </div>
+                <div ngbDropdownItem (click)="changeapprovalAmountFilter('1000');">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck1000"
+                               [checked]="approvalAmountFilter=='1000'">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck1000">
+                            $1,000
+                        </label>
+                    </div>
+                </div>
+                <div ngbDropdownItem (click)="changeapprovalAmountFilter('2000');">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck2000"
+                               [checked]="approvalAmountFilter=='2000'" (change)="changeapprovalAmountFilter('2000');">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck2000">
+                            $2,000
+                        </label>
+                    </div>
+                </div>
+                <div ngbDropdownItem (click)="changeapprovalAmountFilter('5000');">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck5000"
+                               [checked]="approvalAmountFilter=='5000'">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck5000">
+                            $5,000
+                        </label>
+                    </div>
+                </div>
+                <div ngbDropdownItem (click)="changeapprovalAmountFilter('7500');">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck7500"
+                               [checked]="approvalAmountFilter=='7500'">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck7500">
+                            $7,500
+                        </label>
+                    </div>
+                </div>
+                <div ngbDropdownItem (click)="changeapprovalAmountFilter('10000');">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck10000"
+                               [checked]="approvalAmountFilter=='10000'">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck10000">
+                            $10,000
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end filter 3-->
+        <div class="d-inline-block ms-1-1">
+            <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords"/>
+        </div>
+        <!-- end search-->
+        <div class="d-flex align-items-center ms-2-1">
+            <button class="btn btn-primary btn-text-12" [disabled]="true"
+                    style="padding: 6px 16px;">
+                Pay Selected
+            </button>
+        </div>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-md-12">
+        <table class="orders-table advanced-table">
+            <thead>
+            <tr>
+                <th class="row_select"><input class="form-check" type="checkbox"/></th>
+                <th class="sortable"
+                    [ngClass]="{'sorting_asc':sortCloumn == 'status' && direction == 'asc','sorting_desc':sortCloumn == 'status' && direction == 'desc'}"
+                    (click)="onSort('status')">Status
+                </th>
+                <th class="sortable"
+                    [ngClass]="{'sorting_asc':sortCloumn == 'dueDate' && direction == 'asc','sorting_desc':sortCloumn == 'dueDate' && direction == 'desc'}"
+                    (click)="onSort('dueDate')">Due Date
+                </th>
+                <th class="sortable"
+                    [ngClass]="{'sorting_asc':sortCloumn == 'order' && direction == 'asc','sorting_desc':sortCloumn == 'order' && direction == 'desc'}"
+                    (click)="onSort('order')">Order #
+                </th>
+                <th class="sortable"
+                    [ngClass]="{'sorting_asc':sortCloumn == 'vendor' && direction == 'asc','sorting_desc':sortCloumn == 'vendor' && direction == 'desc'}"
+                    (click)="onSort('vendor')">Vendor
+                </th>
+                <th class="sortable"
+                    [ngClass]="{'sorting_asc':sortCloumn == 'invoice' && direction == 'asc','sorting_desc':sortCloumn == 'invoice' && direction == 'desc'}"
+                    (click)="onSort('invoice')">Invoice
+                </th>
+                <th class="sortable"
+                    [ngClass]="{'sorting_asc':sortCloumn == 'costCode' && direction == 'asc','sorting_desc':sortCloumn == 'costCode' && direction == 'desc'}"
+                    (click)="onSort('costCode')">Cost Code
+                </th>
+                <th class="sortable"
+                    [ngClass]="{'sorting_asc':sortCloumn == 'amount' && direction == 'asc','sorting_desc':sortCloumn == 'amount' && direction == 'desc'}"
+                    (click)="onSort('amount')">Amount
+                </th>
+                <th class="sortable"
+                    [ngClass]="{'sorting_asc':sortCloumn == 'project' && direction == 'asc','sorting_desc':sortCloumn == 'project' && direction == 'desc'}"
+                    (click)="onSort('project')">Project
+                </th>
+                <th class="sortable"
+                    [ngClass]="{'sorting_asc':sortCloumn == 'approval' && direction == 'asc','sorting_desc':sortCloumn == 'approval' && direction == 'desc'}"
+                    (click)="onSort('approval')">Approval
+                </th>
+                <th class="sortable"
+                    [ngClass]="{'sorting_asc':sortCloumn == 'action' && direction == 'asc','sorting_desc':sortCloumn == 'action' && direction == 'desc'}"
+                    (click)="onSort('action')">Action
+                </th>
+                <th>&nbsp;</th>
+                <th>&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of members | callback: filterTable; let i = index">
+                <td><input class="form-check" type="checkbox"/></td>
+                <td>
+                    <img src="assets/images/status-icons/overdue.png">
+                </td>
+                <td>
+                    {{'2022-2-18' | date: 'M/dd/yy'}}
+                </td>
+                <td>
+                    5028
+                </td>
+                <td>
+                    NCR Corporation
+                </td>
+                <td>
+                    5028
+                </td>
+                <td>
+                    Electrical
+                </td>
+                <td class="text-end">
+                    {{262.378 | currency}}
+                </td>
+                <td>
+                    4517 Washington Ave. Manchester, Kentucky 39495
+                </td>
+                <td>
+                    <div class="d-flex flex-row" *ngIf="item.idUser>0">
+                        <div class="me-1-1">
+                            <app-avatar [bgColor]="bgColors[i % 6]" [url]="item.avatar" [firstName]="item.firstName"
+                                        [lastName]="item.lastName" color="text-white" [size]="32"
+                                        alt="user-img"></app-avatar>
+                        </div>
+                        <div class="search-text">
+                            <div class="text-blackprimary">{{item.firstName}}&nbsp;{{item.lastName}}</div>
+                            <div class="text-blackprimary-op-50">ManagerSales</div>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row" *ngIf="item.idUser == 0">
+                        <div class="me-1-1">
+                            <div [ngClass]="bgColors[i % 6]" class=" rounded-circle"
+                                 style="width:32px; height: 32px; padding: 8px;">
+                                <i class="fe-user text-white  font-16"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="bold-600 line-32">{{item.email}}</div>
+                        </div>
+                    </div>
+                </td>
+                <td class="text-center">
+                    <img class="c-p" src="assets/images/status-icons/payBill.png">
+                </td>
+                <td class="text-center">
+                    <i class="fe-paperclip c-p"></i>
+                </td>
+                <td class="text-center">
+                    <i class="fe-more-vertical- c-p"></i>
+                </td>
+            </tr>
+            </tbody>
+            <tbody *ngIf="members.length == 0" class="bg-white">
+            <tr *ngIf="loading">
+                <td colspan="13">
+                    <div style="position: relative; height: 400px;">
+                        <app-ui-preloader [display]="loading"></app-ui-preloader>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+            <tfoot style="height: 16px;">
+            <tr>
+                <td colspan="6">&nbsp;</td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+
+<ng-template #inviteMember let-modal>
+</ng-template>
+
+<ng-template #deleteModal let-modal>
+    <div class="delete-modal-container">
+        <input type="text" style="display: none;"/>
+        <div class="row">
+            <div class="col-md-10">
+                <div class="headline-24 text-start">Deactivating the account</div>
+            </div>
+            <div class="col-md-2 text-end text-black">
+                <i class="fe-x cursor-pointer bold-600" (click)="modal.dismiss()"></i>
+            </div>
+        </div>
+        <div class="delete-alert-content text-start">
+            Do you want to deactivate <b>{{deleteFirstname}} {{deleteLastname}}</b>?
+        </div>
+        <div class="d-flex justify-content-end mt-3">
+            <div class="delete-cancel-button mt-0 line-40 cursor-pointer" (click)="modal.dismiss()">
+                Cancel
+            </div>
+            <div>
+                <button class="btn btn-primary ms-2-1" (click)="deactiveMembers()">Deactivate</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
