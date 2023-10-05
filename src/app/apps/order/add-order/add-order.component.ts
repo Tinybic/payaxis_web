@@ -52,14 +52,14 @@ export class AddOrderComponent {
   };
 
   orderError = {
-    idCompany: 0,
-    orderNumber: 0,
-    paymentTerms: '',
-    invoiceNumber: '',
-    vendorcostcodes: [],
-    reason: '',
+    costcode: -1,
+    idProject: -1,
+    idVendor: -1,
   };
-  keywords = '';
+  submitForm = false;
+  keywordsVendor = '';
+  keywordsProject = '';
+  keywordsListItem = '';
   costCodeList = [];
   COSTCODE_LIST = [];
   vendorcostcodesText = '';
@@ -303,12 +303,12 @@ export class AddOrderComponent {
       this.order.costCode = '';
     }
   }
-
+  keywordsCostCode = '';
   costCodeFilter() {
     this.costCodeList = JSON.parse(JSON.stringify(this.COSTCODE_LIST));
     this.costCodeList = this.costCodeList.filter((costcode) => {
       costcode.costcodelist = costcode.costcodelist.filter((item) =>
-        item.txtName.toLowerCase().includes(this.keywords.toLowerCase())
+        item.txtName.toLowerCase().includes(this.keywordsCostCode.toLowerCase())
       );
       return costcode;
     });
@@ -352,7 +352,26 @@ export class AddOrderComponent {
   }
 
   saveOrder() {
-    console.log(this.order);
+    if (this.order.costCode == '') {
+      this.orderError.costcode = 0;
+      return;
+    } else {
+      this.orderError.costcode = -1;
+    }
+
+    if (this.order.idProject == 0) {
+      this.orderError.idProject = 0;
+      return;
+    } else {
+      this.orderError.idProject = -1;
+    }
+
+    if (this.order.idVendor == 0) {
+      this.orderError.idVendor = 0;
+      return;
+    } else {
+      this.orderError.idVendor = -1;
+    }
 
     let listitemPara = [];
     this.order.listItems.forEach((item) => {
@@ -387,9 +406,7 @@ export class AddOrderComponent {
       let message = '';
       if (!result.error) {
         message = 'Save successful';
-        this.router.navigate([
-          'apps/order/detail/' + res.projectorder_new.data.id,
-        ]);
+        this.router.navigate(['apps/order/detail/' + result.data.id]);
       } else {
         message = result.message;
       }

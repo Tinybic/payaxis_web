@@ -88,16 +88,22 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label" i18n>Cost Code</label>
-                                            <span class="float-end btn-text-12 text-primary cursor-pointer line-24"><i class="fe-plus-square me-1-1"></i>Create New Cost Code</span>
+                                            <span class="float-end btn-text-12 text-primary cursor-pointer line-24"><i
+                                                    class="fe-plus-square me-1-1"></i>Create New Cost Code</span>
                                             <div class="dropdown" ngbDropdown>
                                                 <input class="form-select" type="text" id="vendorcostcodes"
                                                     [(ngModel)]="vendorcostcodesText" required i18n-placeholder
-                                                    placeholder="Assign Cost Code" ngbDropdownToggle />
+                                                    placeholder="Assign Cost Code" [ngClass]="{'is-invalid':orderError.costcode == 0}" ngbDropdownToggle />
+                                                <div *ngIf="orderError.costcode == 0"
+                                                    class="invalid-feedback" i18n>
+                                                    <i class="fe-alert-triangle invalid-feedback-icon"></i>
+                                                    Cost Code required
+                                                </div>
                                                 <div style="max-height: 300px; overflow-y: auto;" class="dropdown-menu"
                                                     aria-labelledby="vendorcostcodes" ngbDropdownMenu>
                                                     <div>
                                                         <input auto-complete="off" type="search"
-                                                            class="form-control form-search" [(ngModel)]="keywords"
+                                                            class="form-control form-search" [(ngModel)]="keywordsCostCode"
                                                             (keyup)="costCodeFilter()" />
                                                     </div>
                                                     <div *ngFor="let item of costCodeList">
@@ -156,9 +162,12 @@
                                                 <div class="col-md-6 headline">
                                                     Project
                                                 </div>
-                                                <div class="col-md-6 btn-text-12 text-primary text-end cursor-pointer line-40">
-                                                    <span *ngIf="!project"><i class="fe-plus-square me-1-1"></i>Create New Project</span>
-                                                    <span *ngIf="project" (click) = "removeProject()"><i class="fe-edit me-1-1"></i>Edit Project</span>
+                                                <div
+                                                    class="col-md-6 btn-text-12 text-primary text-end cursor-pointer line-40">
+                                                    <span *ngIf="!project"><i class="fe-plus-square me-1-1"></i>Create
+                                                        New Project</span>
+                                                    <span *ngIf="project" (click)="removeProject()"><i
+                                                            class="fe-edit me-1-1"></i>Edit Project</span>
                                                 </div>
                                             </div>
                                             <div class="row  mt-2-1">
@@ -197,8 +206,13 @@
                                                         </div>
                                                         <input *ngIf="!project" class="form-control form-search"
                                                             type="search" placeholder="Find Project"
-                                                            [(ngModel)]="keywords" ngbDropdownToggle />
-                                                        <div class="padding-16"
+                                                            [(ngModel)]="keywordsProject" [ngClass]="{'is-invalid':orderError.idProject == 0}" ngbDropdownToggle />
+                                                            <div *ngIf="orderError.idProject == 0"
+                                                            class="invalid-feedback" i18n>
+                                                            <i class="fe-alert-triangle invalid-feedback-icon"></i>
+                                                            Project required
+                                                        </div>
+                                                            <div class="padding-16"
                                                             style="background-color: #F8F9FC; border:1px solid #E1E6EF;  margin-top: -44px; width: 100%; max-height: 404px; overflow-x: hidden; overflow-y: scroll;"
                                                             ngbDropdownMenu>
                                                             <div *ngFor="let item of projectGroupList">
@@ -242,7 +256,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card mt-2-1"  style="height: 163px;">
+                            <div class="card mt-2-1" style="height: 163px;">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-12">
@@ -250,9 +264,12 @@
                                                 <div class="col-md-6 headline">
                                                     Vendor
                                                 </div>
-                                                <div class="col-md-6 btn-text-12 text-primary text-end cursor-pointer line-40">
-                                                    <span *ngIf="!vendor"><i class="fe-plus-square me-1-1"></i>Create New Vendor</span>
-                                                    <span *ngIf="vendor" (click) = "removeVendor()"><i class="fe-edit me-1-1"></i>Edit Vendor</span>
+                                                <div
+                                                    class="col-md-6 btn-text-12 text-primary text-end cursor-pointer line-40">
+                                                    <span *ngIf="!vendor"><i class="fe-plus-square me-1-1"></i>Create
+                                                        New Vendor</span>
+                                                    <span *ngIf="vendor" (click)="removeVendor()"><i
+                                                            class="fe-edit me-1-1"></i>Edit Vendor</span>
                                                 </div>
                                             </div>
                                             <div class="row mt-2-1">
@@ -261,7 +278,7 @@
 
                                                         <div *ngIf="vendor"
                                                             style="border:1px solid #E1E6EF; border-radius: 8px; padding: 8px 16px;">
-                                                            <div class="row" >
+                                                            <div class="row">
                                                                 <div class="col-md-8 Subtitle-1 text-start">
                                                                     <div>{{vendor.vendorName}}</div>
                                                                     <div class="subtitle-2-400-12 text-typeblack80"
@@ -278,20 +295,26 @@
                                                                             *ngFor="let costcode of vendor.costcodes">{{costcode.txtName}}</span>
                                                                     </div>
                                                                     <div class="d-inline-block ms-1-1"><i
-                                                                        class="fe-external-link text-primary"></i>
-                                                                </div>
+                                                                            class="fe-external-link text-primary"></i>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
 
-                                                        <input *ngIf="!vendor" class="form-control form-search" type="search"
-                                                            placeholder="Find Vendor" [(ngModel)]="keywords"
-                                                            ngbDropdownToggle />
+                                                        <input *ngIf="!vendor" class="form-control form-search"
+                                                            type="search" placeholder="Find Vendor"
+                                                            [(ngModel)]="keywordsVendor" [ngClass]="{'is-invalid':orderError.idVendor == 0}" ngbDropdownToggle />
+                                                            <div *ngIf="orderError.idVendor == 0"
+                                                            class="invalid-feedback" i18n>
+                                                            <i class="fe-alert-triangle invalid-feedback-icon"></i>
+                                                            Vendor required
+                                                        </div>
                                                         <div class="padding-16"
                                                             style="border:1px solid #E1E6EF;background-color: #F8F9FC;  margin-top: -44px; width: 100%; max-height: 362px; overflow-x: hidden; overflow-y: scroll;"
                                                             ngbDropdownMenu>
                                                             <div ngbDropdownItem *ngFor="let item of vendorList">
-                                                                <div class="row cursor-pointer" (click)="selectVendor(item)">
+                                                                <div class="row cursor-pointer"
+                                                                    (click)="selectVendor(item)">
                                                                     <div class="col-md-8 Subtitle-1 text-start">
                                                                         <div>{{item.vendorName}}</div>
                                                                         <div class="subtitle-2-400-12 text-typeblack80"
@@ -332,7 +355,7 @@
                                         <div class="col-md-6 text-end">
                                             <div class="d-inline-block">
                                                 <input class="form-control form-search" type="search"
-                                                    placeholder="Search here..." [(ngModel)]="keywords" />
+                                                    placeholder="Search here..." [(ngModel)]="keywordsListItem" />
                                             </div>
                                             <button class="btn btn-outline-primary padding-8-16 ms-2-1"
                                                 (click)="AddListItem()" style="margin-top: -4px;"><i
@@ -367,28 +390,37 @@
                                                 </thead>
                                                 <tbody *ngIf="!loading">
                                                     <tr class="cursor-pointer"
-                                                        *ngFor="let item of order.listItems ; let i = index">
-                                                        <td><input class="form-check" type="checkbox" [(ngModel)]="item.paidyn" /></td>
+                                                        *ngFor="let item of order.listItems; let i = index">
+                                                        <td><input class="form-check" type="checkbox"
+                                                                [(ngModel)]="item.paidyn" /></td>
                                                         <td>
-                                                            <input type="text" class="form-control" placeholder="Description" [(ngModel)]="item.description" />
+                                                            <input type="text" class="form-control"
+                                                                placeholder="Description"
+                                                                [(ngModel)]="item.description" />
                                                         </td>
                                                         <td>
-                                                            <input type="text" class="form-control" [(ngModel)]="item.qty" (keyup) = "getAmout(item)" />
+                                                            <input type="text" class="form-control"
+                                                                [(ngModel)]="item.qty" (keyup)="getAmout(item)" />
                                                         </td>
                                                         <td>
-                                                            <input type="text" class="form-control" [(ngModel)]="item.unit" />
+                                                            <input type="text" class="form-control"
+                                                                [(ngModel)]="item.unit" />
                                                         </td>
                                                         <td>
-                                                            <input type="text" class="form-control" [(ngModel)]="item.price" (keyup) = "getAmout(item)"/>
+                                                            <input type="text" class="form-control"
+                                                                [(ngModel)]="item.price" (keyup)="getAmout(item)" />
                                                         </td>
                                                         <td>
-                                                            <input type="text" class="form-control" [(ngModel)]="item.amount" disabled="disabled"/>
+                                                            <input type="text" class="form-control"
+                                                                [(ngModel)]="item.amount" disabled="disabled" />
                                                         </td>
                                                         <td>
-                                                            <input class="form-check" type="checkbox" (change) = "setTotal()" [(ngModel)]="item.taxyn" />
+                                                            <input class="form-check" type="checkbox"
+                                                                (change)="setTotal()" [(ngModel)]="item.taxyn" />
                                                         </td>
                                                         <td>
-                                                            <input type="text" class="form-control" [(ngModel)]="item.notes"/>
+                                                            <input type="text" class="form-control"
+                                                                [(ngModel)]="item.notes" />
                                                         </td>
                                                         <td>
                                                             <i class="fe-copy"></i><i class="fe-trash-2 ms-1-1"></i>
@@ -449,19 +481,19 @@
                                 <label class="form-label" i18n>Non Taxable</label>
                                 <input autofocus class="form-control" disabled="disabled" [(ngModel)]="order.nontaxable"
                                     style="background-color: #3F444D; border:1px solid #3C3C42; color: white;"
-                                    type="text" id="nontaxable" required i18n-placeholder  />
+                                    type="text" id="nontaxable" required i18n-placeholder />
                             </div>
                             <div class="col-md-2">
                                 <label class="form-label" i18n>Taxable</label>
                                 <input autofocus class="form-control" disabled="disabled" [(ngModel)]="order.taxable"
                                     style="background-color: #3F444D; border:1px solid #3C3C42; color: white"
-                                    type="text" id="taxable" required i18n-placeholder  />
+                                    type="text" id="taxable" required i18n-placeholder />
                             </div>
                             <div class="col-md-2">
                                 <label class="form-label" i18n>Tax {{order.taxrate}}%</label>
                                 <input autofocus class="form-control" disabled="disabled" [(ngModel)]="order.tax"
                                     style="background-color: #3F444D; border:1px solid #3C3C42; color: white"
-                                    type="text" id="tax" required i18n-placeholder  />
+                                    type="text" id="tax" required i18n-placeholder />
                             </div>
                             <div class="col-md-6 pt-2-1 d-flex flex-row-reverse text-end">
                                 <div class="d-inline-block"><button type="button" class="btn btn-primary ms-1-1"
