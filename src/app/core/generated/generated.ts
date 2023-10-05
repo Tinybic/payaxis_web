@@ -1698,6 +1698,12 @@ export type Projectorderidrevision = {
 export type Projectorderinfo = {
   __typename?: 'projectorderinfo';
   listItems?: Maybe<Array<Project_Order2>>;
+  orderActivity?: Maybe<Array<Projectorder_Activity>>;
+  orderFiles?: Maybe<Array<Projectorder_File>>;
+  projectMembers?: Maybe<Array<_Projectmember>>;
+  projectOrder?: Maybe<Project_Order1>;
+  reasonList?: Maybe<Array<Companyreason>>;
+  vendorCostcodes?: Maybe<Array<_Vendorcostcode>>;
   projectOrder?: Maybe<Project_Order1>;
 };
 

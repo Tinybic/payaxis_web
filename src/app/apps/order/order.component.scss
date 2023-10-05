@@ -1,3 +1,15 @@
+.orders-dropdown{
+  .dropdown{
+    height: 40px;
+    .dropdown-toggle{
+      padding: 10px 16px;
+    }
+    &.dropdown-outline{
+      padding: 10px 0px;
+    }
+  }
+}
+
 .orders-table {
   tbody{
     tr{
@@ -7,3 +19,4 @@
     }
   }
 }
+
