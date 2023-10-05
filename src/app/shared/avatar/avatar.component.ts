@@ -10,6 +10,7 @@ export class AvatarComponent {
   @Input() lastName: string = '';
   @Input() url: string = '';
   @Input() size: number = 32;
+  @Input() zindex: number = 1;
   @Input() bgColor: string = 'bg-white';
   @Input() companyName: string = '';
   @Input() color: string = 'text-primary';

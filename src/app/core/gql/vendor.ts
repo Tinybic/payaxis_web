@@ -100,8 +100,30 @@ const vendor_list = gql`
       message
       data {
         id
+        revision
+        createdBy
+        createdDate
+        modifiedBy
+        modifiedDate
+        idCompany
         vendorName
+        vendorType
+        primaryContact
+        email
+        phone
+        website
+        txtAddress
+        suiteNumber
+        txtCity
+        txtState
+        txtZipcode
+        taxrate
         status
+        active
+        costcodes {
+          costCode
+          txtName
+        }
       }
     }
   }

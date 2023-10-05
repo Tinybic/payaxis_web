@@ -1,8 +1,17 @@
-.avatar-group .avatar-group-item{
+.avatar-group .avatar-group-item {
     margin: 0px 0px 0px -8px;
 }
-.DraftTag{
+
+.DraftTag {
     background-color: #F1F3F9;
     border-radius: 8px;
     padding: 4px 8px;
+}
+
+.vendorCostcode {
+    background-color: #BFDBFE;
+    border: 1px solid #60A5FA;
+    display: inline-block;
+    border-radius: 8px;
+    padding: 0px 8px;
 }

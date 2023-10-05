@@ -349,21 +349,21 @@
         <input type="text" style="display: none;" />
         <div class="row">
             <div class="col-md-10">
-                <div class="headline-24 text-start">Deactivating the account</div>
+                <div class="headline-24 text-start">Removing a member</div>
             </div>
             <div class="col-md-2 text-end text-black">
                 <i class="fe-x cursor-pointer bold-600" (click)="modal.dismiss()"></i>
             </div>
         </div>
         <div class="delete-alert-content text-start">
-            Do you want to deactivate <b>{{deleteFirstname}} {{deleteLastname}}</b>?
+            Do you want to remove <b>{{deleteFirstname}} {{deleteLastname}}</b> from the project?
         </div>
         <div class="d-flex justify-content-end mt-3">
             <div class="delete-cancel-button mt-0 line-40 cursor-pointer" (click)="modal.dismiss()">
                 Cancel
             </div>
             <div>
-                <button class="btn btn-primary ms-2-1" (click)="deactiveMembers()">Deactivate</button>
+                <button class="btn btn-primary ms-2-1" (click)="deactiveMembers()">Remove</button>
             </div>
         </div>
     </div>

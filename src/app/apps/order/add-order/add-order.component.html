@@ -4,19 +4,25 @@
         <i class="fe-chevron-left"></i>
         <span class="bold-500">All Vendors</span>&nbsp;/&nbsp;<span class="bold-800 text-primary">New Order</span>
     </div>
+
 </div>
 <div class="row mt-1-1">
     <div class="col-md-6 d-flex align-items-center" style="padding-top: 2px;padding-bottom: 2px;">
-        <span class="headline" style="line-height: 44px;">Order #123&nbsp;</span>
-        <div class="d-inline-block ms-1-1 DraftTag subtitle-2-600 text-typeblackdeactivated">
+        <span class="headline" style="line-height: 44px;">Order #{{order.orderNumber}}&nbsp;</span>
+        <div *ngIf="!order.status" class="d-inline-block ms-1-1 DraftTag subtitle-2-600 text-typeblackdeactivated">
             Draft
+        </div>
+        <div *ngIf="order.status" class="d-inline-block ms-1-1 DraftTag subtitle-2-600 text-typeblackdeactivated">
+            {{order.status}}
         </div>
         <!-- <div class="d-inline-block ms-1-1 activeTag">
             Active
         </div> -->
     </div>
     <div class="col-md-6 text-end">
-
+        <button class="btn btn-outline-primary"><i class="fe-upload me-1-1"></i>Upload Attachment</button>
+        <button class="btn btn-primary ms-2-1" (click)="saveOrder()">Save</button>
+        <i class="fe-more-vertical- ms-2-1"></i>
     </div>
 </div>
 <div class="row mt-1-1 flex-1">
@@ -40,33 +46,29 @@
                                         <div class="col-md-4">
                                             <label class="form-label" i18n>Order Number</label>
                                             <input autofocus class="form-control" type="text" id="orderNumber"
-                                                [(ngModel)]="order.number" required i18n-placeholder
-                                                placeholder="Order Number"
-                                                [ngClass]="{'is-invalid':orderError.number}" />
-                                            <div *ngIf="orderError.number" class="invalid-feedback">
-                                                <div i18n>
-                                                    <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter
-                                                    order
-                                                    number
-                                                </div>
-                                            </div>
+                                                [(ngModel)]="order.orderNumber" required i18n-placeholder
+                                                disabled="disabled" placeholder="Order Number" />
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label" i18n>Reason</label>
+                                            <span class="float-end text-typeblack80">Optional</span>
                                             <div ngbDropdown class="mt-sm-0 mt-2">
                                                 <input class="form-select position-relative" type="text" id="reason"
-                                                    i18n-placeholder placeholder="Reason" [(ngModel)]="order.reason"
+                                                    i18n-placeholder placeholder="Reason" [(ngModel)]="txtReason"
                                                     ngbDropdownToggle />
 
                                                 <div ngbDropdownMenu aria-labelledby="paymentTerms">
                                                     <a href="javascript:void(0)" *ngFor="let item of reasonList"
-                                                        ngbDropdownItem>{{item}}</a>
+                                                        (click)="selectReason(item)"
+                                                        ngbDropdownItem>{{item.txtName}}</a>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label">Invoiced Date</label>
-                                            <input type="date" class="form-control" />
+                                            <input type="date" class="form-control"
+                                                placeholder="Date invoice is attached"
+                                                [(ngModel)]="order.invoicedDate" />
                                         </div>
                                     </div>
                                     <div class="row mt-2-1">
@@ -79,12 +81,14 @@
 
                                                 <div ngbDropdownMenu aria-labelledby="paymentTerms">
                                                     <a href="javascript:void(0)" *ngFor="let item of paymentTermsList"
-                                                        ngbDropdownItem>{{item.txtName}}</a>
+                                                        ngbDropdownItem
+                                                        (click)="dropdownSelect(item.txtName)">{{item.txtName}}</a>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label" i18n>Cost Code</label>
+                                            <span class="float-end btn-text-12 text-primary cursor-pointer line-24"><i class="fe-plus-square me-1-1"></i>Create New Cost Code</span>
                                             <div class="dropdown" ngbDropdown>
                                                 <input class="form-select" type="text" id="vendorcostcodes"
                                                     [(ngModel)]="vendorcostcodesText" required i18n-placeholder
@@ -129,75 +133,101 @@
                                     <div class="row mt-2-1">
                                         <div class="col-md-8">
                                             <label class="form-label" i18n>Notes & Description</label>
-                                            <input class="form-control" type="text" id="notes"
-                                                [(ngModel)]="order.invoiceNumber" required i18n-placeholder
-                                                placeholder="Notes" />
+                                            <span class="float-end text-typeblack80">Optional</span>
+                                            <input class="form-control" type="text" id="notes" [(ngModel)]="order.notes"
+                                                required i18n-placeholder placeholder="Notes" />
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label" i18n>Invoice Due Date</label>
-                                            <input class="form-control" type="text" id="dueDate"
-                                                [(ngModel)]="order.invoiceNumber" required i18n-placeholder
-                                                placeholder="Invoice Number" />
+                                            <input class="form-control" type="date" id="dueDate"
+                                                [(ngModel)]="order.indvoicedueDate" required i18n-placeholder
+                                                placeholder="Due date on invoice" />
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-5">
-                            <div class="card">
+                            <div class="card" style="height: 163px;">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="row">
-                                                <div class="col-md-12 headline">
+                                                <div class="col-md-6 headline">
                                                     Project
                                                 </div>
+                                                <div class="col-md-6 btn-text-12 text-primary text-end cursor-pointer line-40">
+                                                    <span *ngIf="!project"><i class="fe-plus-square me-1-1"></i>Create New Project</span>
+                                                    <span *ngIf="project" (click) = "removeProject()"><i class="fe-edit me-1-1"></i>Edit Project</span>
+                                                </div>
                                             </div>
-                                            <div class="row  mt-2-1 mb-2-1">
+                                            <div class="row  mt-2-1">
                                                 <div class="col-md-12">
-                                                    <div>
-                                                        <input class="form-control form-search" type="search"
-                                                            placeholder="Find Project" [(ngModel)]="keywords" />
-
-                                                        <div style="border:1px solid #E1E6EF; border-radius: 8px;">
-                                                            <div><input auto-complete="off" type="search"
-                                                                    style="border:none" class="form-control form-search"
-                                                                    [(ngModel)]="keywords" (keyup)="costCodeFilter()"
-                                                                    placeholder="Find Project" /></div>
-                                                            <div class="padding-16" style="background-color: #F8F9FC;">
-                                                                <div class="subtitle-2-400-14 bold-600 mb-1-1"
-                                                                    style="color: #215EA9;">Residential</div>
-                                                                <div class="row" style="padding: 12px;">
-                                                                    <div class="col-md-6 Subtitle-1 text-start">
-                                                                        870 New Project Lane
+                                                    <div ngbDropdown>
+                                                        <div *ngIf="project"
+                                                            style="border:1px solid #E1E6EF; border-radius: 8px; padding: 8px 16px;">
+                                                            <div class="row cursor-pointer">
+                                                                <div class="col-md-6 Subtitle-1 text-start line-32">
+                                                                    {{project.projectName}}
+                                                                </div>
+                                                                <div class="col-md-6 text-end">
+                                                                    <div class="avatar-group d-inline-block">
+                                                                        <app-avatar [url]="avatar.avatar"
+                                                                            [zindex]="10 - i"
+                                                                            *ngFor="let avatar of project.members; let i = index"
+                                                                            [firstName]="avatar.firstName"
+                                                                            [lastName]="avatar.lastName" [size]="32"
+                                                                            alt="user-img" [bgColor]="bgColors[i % 6]"
+                                                                            color="text-white"
+                                                                            class="avatar-group-item position-relative text-white"></app-avatar>
+                                                                        <div class="avatar-group-item position-relative"
+                                                                            *ngIf="project.members.length > 4"
+                                                                            style="z-index: 2;">
+                                                                            <div class="rounded-circle avatar-sm label-tips"
+                                                                                style="display: inline-flex;vertical-align: middle;justify-content: center;align-items: center;color: white;background-color: #2B2D30">
+                                                                                +{{project.members.length - 4}}
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
-                                                                    <div class="col-md-6 text-end">
-                                                                        <div class="avatar-group">
-                                                                            <div class="avatar-group-item position-relative"
-                                                                                style="z-index: 6;">
-                                                                                <img src="assets/images/users/user-6.jpg"
-                                                                                    class="rounded-circle avatar-sm">
-                                                                            </div>
-                                                                            <div class="avatar-group-item position-relative"
-                                                                                style="z-index: 5;">
-                                                                                <img src="assets/images/users/user-5.jpg"
-                                                                                    class="rounded-circle avatar-sm">
-                                                                            </div>
-                                                                            <div class="avatar-group-item position-relative"
-                                                                                style="z-index: 4;">
-                                                                                <img src="assets/images/users/user-4.jpg"
-                                                                                    class="rounded-circle avatar-sm">
-                                                                            </div>
-                                                                            <div class="avatar-group-item position-relative"
-                                                                                style="z-index: 3;">
-                                                                                <img src="assets/images/users/user-2.jpg"
-                                                                                    class="rounded-circle avatar-sm">
-                                                                            </div>
-                                                                            <div class="avatar-group-item position-relative"
-                                                                                style="z-index: 2;">
-                                                                                <div class="rounded-circle avatar-sm label-tips"
-                                                                                    style="display: inline-flex;vertical-align: middle;justify-content: center;align-items: center;color: white;background-color: #2B2D30">
-                                                                                    +4
+                                                                    <div class="d-inline-block ms-1-1"><i
+                                                                            class="fe-external-link text-primary"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <input *ngIf="!project" class="form-control form-search"
+                                                            type="search" placeholder="Find Project"
+                                                            [(ngModel)]="keywords" ngbDropdownToggle />
+                                                        <div class="padding-16"
+                                                            style="background-color: #F8F9FC; border:1px solid #E1E6EF;  margin-top: -44px; width: 100%; max-height: 404px; overflow-x: hidden; overflow-y: scroll;"
+                                                            ngbDropdownMenu>
+                                                            <div *ngFor="let item of projectGroupList">
+                                                                <div class="subtitle-2-400-14 bold-600 mb-1-1"
+                                                                    style="color: #215EA9;">{{item[0].groupName}}</div>
+                                                                <div ngbDropdownItem *ngFor="let project of item">
+                                                                    <div class="row cursor-pointer"
+                                                                        (click)="selectProject(project)">
+                                                                        <div class="col-md-6 Subtitle-1 text-start">
+                                                                            {{project.projectName}}
+                                                                        </div>
+                                                                        <div class="col-md-6 text-end">
+                                                                            <div class="avatar-group">
+                                                                                <app-avatar [url]="avatar.avatar"
+                                                                                    [zindex]="10 - i"
+                                                                                    *ngFor="let avatar of project.members; let i = index"
+                                                                                    [firstName]="avatar.firstName"
+                                                                                    [lastName]="avatar.lastName"
+                                                                                    [size]="32" alt="user-img"
+                                                                                    [bgColor]="bgColors[i % 6]"
+                                                                                    color="text-white"
+                                                                                    class="avatar-group-item position-relative text-white"></app-avatar>
+                                                                                <div class="avatar-group-item position-relative"
+                                                                                    *ngIf="project.members.length > 4"
+                                                                                    style="z-index: 2;">
+                                                                                    <div class="rounded-circle avatar-sm label-tips"
+                                                                                        style="display: inline-flex;vertical-align: middle;justify-content: center;align-items: center;color: white;background-color: #2B2D30">
+                                                                                        +{{project.members.length - 4}}
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -212,20 +242,75 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card mt-2-1">
+                            <div class="card mt-2-1"  style="height: 163px;">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="row">
-                                                <div class="col-md-12 headline">
+                                                <div class="col-md-6 headline">
                                                     Vendor
                                                 </div>
+                                                <div class="col-md-6 btn-text-12 text-primary text-end cursor-pointer line-40">
+                                                    <span *ngIf="!vendor"><i class="fe-plus-square me-1-1"></i>Create New Vendor</span>
+                                                    <span *ngIf="vendor" (click) = "removeVendor()"><i class="fe-edit me-1-1"></i>Edit Vendor</span>
+                                                </div>
                                             </div>
-                                            <div class="row mt-2-1 mb-2">
+                                            <div class="row mt-2-1">
                                                 <div class="col-md-12">
-                                                    <div>
-                                                        <input class="form-control form-search" type="search"
-                                                            placeholder="Find Vendor" [(ngModel)]="keywords" />
+                                                    <div ngbDropdown>
+
+                                                        <div *ngIf="vendor"
+                                                            style="border:1px solid #E1E6EF; border-radius: 8px; padding: 8px 16px;">
+                                                            <div class="row" >
+                                                                <div class="col-md-8 Subtitle-1 text-start">
+                                                                    <div>{{vendor.vendorName}}</div>
+                                                                    <div class="subtitle-2-400-12 text-typeblack80"
+                                                                        *ngIf="vendor.txtAddress && vendor.txtCity">
+                                                                        {{vendor.txtAddress}},
+                                                                        {{vendor.txtCity}},
+                                                                        {{vendor.txtState}},
+                                                                        {{vendor.txtZipcode}}</div>
+                                                                </div>
+                                                                <div class="col-md-4 text-end">
+                                                                    <div class="vendorCostcode subtitle-2-600 d-inline-block"
+                                                                        *ngIf="vendor.costcodes.length > 0">
+                                                                        <span
+                                                                            *ngFor="let costcode of vendor.costcodes">{{costcode.txtName}}</span>
+                                                                    </div>
+                                                                    <div class="d-inline-block ms-1-1"><i
+                                                                        class="fe-external-link text-primary"></i>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <input *ngIf="!vendor" class="form-control form-search" type="search"
+                                                            placeholder="Find Vendor" [(ngModel)]="keywords"
+                                                            ngbDropdownToggle />
+                                                        <div class="padding-16"
+                                                            style="border:1px solid #E1E6EF;background-color: #F8F9FC;  margin-top: -44px; width: 100%; max-height: 362px; overflow-x: hidden; overflow-y: scroll;"
+                                                            ngbDropdownMenu>
+                                                            <div ngbDropdownItem *ngFor="let item of vendorList">
+                                                                <div class="row cursor-pointer" (click)="selectVendor(item)">
+                                                                    <div class="col-md-8 Subtitle-1 text-start">
+                                                                        <div>{{item.vendorName}}</div>
+                                                                        <div class="subtitle-2-400-12 text-typeblack80"
+                                                                            *ngIf="item.txtAddress && item.txtCity">
+                                                                            {{item.txtAddress}},
+                                                                            {{item.txtCity}},
+                                                                            {{item.txtState}},
+                                                                            {{item.txtZipcode}}</div>
+                                                                    </div>
+                                                                    <div class="col-md-4 text-end">
+                                                                        <div class="vendorCostcode subtitle-2-600"
+                                                                            *ngIf="item.costcodes.length > 0">
+                                                                            <span
+                                                                                *ngFor="let costcode of item.costcodes">{{costcode.txtName}}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -282,33 +367,28 @@
                                                 </thead>
                                                 <tbody *ngIf="!loading">
                                                     <tr class="cursor-pointer"
-                                                        *ngFor="let item of order.listItem ; let i = index">
-                                                        <td><input class="form-check" type="checkbox" /></td>
+                                                        *ngFor="let item of order.listItems ; let i = index">
+                                                        <td><input class="form-check" type="checkbox" [(ngModel)]="item.paidyn" /></td>
                                                         <td>
-                                                            <div class="d-flex flex-row bold-600 ">
-                                                                {{item.vendorName}}
-                                                            </div>
-                                                            <input type="text" class="form-control" />
+                                                            <input type="text" class="form-control" placeholder="Description" [(ngModel)]="item.description" />
                                                         </td>
                                                         <td>
-                                                            <div class="d-inline-block {{item.status}}Tag">
-                                                                {{item.status}}</div>
-                                                            <input type="text" class="form-control" />
+                                                            <input type="text" class="form-control" [(ngModel)]="item.qty" (keyup) = "getAmout(item)" />
                                                         </td>
                                                         <td>
-                                                            <input type="text" class="form-control" />
+                                                            <input type="text" class="form-control" [(ngModel)]="item.unit" />
                                                         </td>
                                                         <td>
-                                                            <input type="text" class="form-control" />
+                                                            <input type="text" class="form-control" [(ngModel)]="item.price" (keyup) = "getAmout(item)"/>
                                                         </td>
                                                         <td>
-                                                            <input type="text" class="form-control" />
+                                                            <input type="text" class="form-control" [(ngModel)]="item.amount" disabled="disabled"/>
                                                         </td>
                                                         <td>
-                                                            <input type="text" class="form-control" />
+                                                            <input class="form-check" type="checkbox" (change) = "setTotal()" [(ngModel)]="item.taxyn" />
                                                         </td>
                                                         <td>
-                                                            <input type="text" class="form-control" />
+                                                            <input type="text" class="form-control" [(ngModel)]="item.notes"/>
                                                         </td>
                                                         <td>
                                                             <i class="fe-copy"></i><i class="fe-trash-2 ms-1-1"></i>
@@ -325,7 +405,7 @@
                                                         </td>
                                                     </tr>
                                                 </tbody>
-                                                <tbody *ngIf="order.listItem.length==0 && !loading" class="bg-white">
+                                                <tbody *ngIf="order.listItems.length==0 && !loading" class="bg-white">
                                                     <tr *ngIf="loading">
                                                         <td colspan="7">
                                                             <div style="position: relative; height: 400px;">
@@ -334,7 +414,7 @@
                                                             </div>
                                                         </td>
                                                     </tr>
-                                                    <tr *ngIf="!loading && order.listItem.length==0">
+                                                    <tr *ngIf="!loading && order.listItems.length==0">
                                                         <td colspan="9" class="text-center">
                                                             <div
                                                                 class="text-typeblackdeactivated headline-24-400 mt-40">
@@ -367,29 +447,32 @@
                         <div class="row padding-16-32">
                             <div class="col-md-2">
                                 <label class="form-label" i18n>Non Taxable</label>
-                                <input autofocus class="form-control"
+                                <input autofocus class="form-control" disabled="disabled" [(ngModel)]="order.nontaxable"
                                     style="background-color: #3F444D; border:1px solid #3C3C42; color: white;"
-                                    type="text" id="orderNumber" required i18n-placeholder value="0.00" />
+                                    type="text" id="nontaxable" required i18n-placeholder  />
                             </div>
                             <div class="col-md-2">
                                 <label class="form-label" i18n>Taxable</label>
-                                <input autofocus class="form-control"
+                                <input autofocus class="form-control" disabled="disabled" [(ngModel)]="order.taxable"
                                     style="background-color: #3F444D; border:1px solid #3C3C42; color: white"
-                                    type="text" id="orderNumber" required i18n-placeholder value="0.00" />
+                                    type="text" id="taxable" required i18n-placeholder  />
                             </div>
                             <div class="col-md-2">
-                                <label class="form-label" i18n>Tax 0.00%</label>
-                                <input autofocus class="form-control"
+                                <label class="form-label" i18n>Tax {{order.taxrate}}%</label>
+                                <input autofocus class="form-control" disabled="disabled" [(ngModel)]="order.tax"
                                     style="background-color: #3F444D; border:1px solid #3C3C42; color: white"
-                                    type="text" id="orderNumber" required i18n-placeholder value="0.00" />
+                                    type="text" id="tax" required i18n-placeholder  />
                             </div>
-                            <div class="col-md-6 text-end pt-2-1">
-                                <div class="d-inline-block" style="height: 40px;">
-                                    <label i18n>Total Amount Due</label><br />
-                                    <label style=" color: white; " id="orderNumber">0.00</label>
+                            <div class="col-md-6 pt-2-1 d-flex flex-row-reverse text-end">
+                                <div class="d-inline-block"><button type="button" class="btn btn-primary ms-1-1"
+                                        style="border:0px; box-shadow: none;">Pay Invoice</button></div>
+                                <div class="d-inline-block"><button type="button" class="btn btn-primary ms-1-1"
+                                        style="border:1px solid #ffffff; box-shadow: none;background-color: transparent;">Send
+                                        Order</button></div>
+                                <div class="d-inline-block" style="height: 40px;color:#FFFFFFB2;">
+                                    <span class="btn-text-12">Total Amount Due</span><br />
+                                    <span class="headline-24" style=" color: white; " id="total">{{order.total}}</span>
                                 </div>
-                                <button type="button" class="btn btn-primary ms-1-1">Send Order</button>
-                                <button type="button" class="btn btn-primary ms-1-1">Pay Invoice</button>
                             </div>
                         </div>
                     </div>
