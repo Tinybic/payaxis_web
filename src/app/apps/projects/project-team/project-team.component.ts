@@ -420,7 +420,7 @@ export class ProjectTeamComponent {
       let message = '';
       const result = res.projectmember_invite;
       if (!result.error) {
-        message = this.userList.length + ' invitation has been sent';
+        message = this.userList.length + ' Members have been added';
         this.getProjectMembers();
       } else {
         message = result.message;

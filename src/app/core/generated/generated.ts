@@ -585,7 +585,9 @@ export type MutationProjectorder_UpdateArgs = {
   costCode: Scalars['costCode_String_NotNull_maxLength_15']['input'];
   id: Scalars['Int']['input'];
   idCompany: Scalars['Int']['input'];
+  idProject: Scalars['Int']['input'];
   idReason: Scalars['Int']['input'];
+  idVendor: Scalars['Int']['input'];
   indvoicedueDate: Scalars['String']['input'];
   invoiceNumber: Scalars['invoiceNumber_String_NotNull_maxLength_25']['input'];
   invoicedDate: Scalars['String']['input'];
@@ -785,6 +787,12 @@ export type Query = {
   project_members: Projectmemberresult;
   /** get project budget list */
   projectbudget_list: Projectbudgetlist;
+  /** get projectorder activity */
+  projectorder_activity: Orderactivitylist;
+  /** get projectorder attachment */
+  projectorder_attachment: Orderfilelist;
+  /** get projectorder info */
+  projectorder_info: Projectorderinforesult;
   /** get projectorder list */
   projectorder_list: Projectorderlist;
   /** get projectorder Number */
@@ -892,6 +900,24 @@ export type QueryProject_MembersArgs = {
 
 export type QueryProjectbudget_ListArgs = {
   idProject: Scalars['Int']['input'];
+};
+
+
+export type QueryProjectorder_ActivityArgs = {
+  idCompany: Scalars['Int']['input'];
+  idOrder1: Scalars['Int']['input'];
+};
+
+
+export type QueryProjectorder_AttachmentArgs = {
+  idCompany: Scalars['Int']['input'];
+  idOrder1: Scalars['Int']['input'];
+};
+
+
+export type QueryProjectorder_InfoArgs = {
+  id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
 };
 
 
@@ -1333,11 +1359,27 @@ export type Invitememberresult = {
   message: Scalars['String']['output'];
 };
 
+export type Orderactivitylist = {
+  __typename?: 'orderactivitylist';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Array<Projectorder_Activity>>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
 export type Orderfile = {
   fileName: Scalars['fileName_String_NotNull_maxLength_128']['input'];
   fileSize: Scalars['Int']['input'];
   fileType: Scalars['fileType_String_NotNull_maxLength_15']['input'];
   fileUrl: Scalars['fileUrl_String_NotNull_maxLength_512']['input'];
+};
+
+export type Orderfilelist = {
+  __typename?: 'orderfilelist';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Array<Projectorder_File>>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
 };
 
 export type Paymentbooleanresult = {
@@ -1662,6 +1704,7 @@ export type Projectorderinfo = {
   projectOrder?: Maybe<Project_Order1>;
   reasonList?: Maybe<Array<Companyreason>>;
   vendorCostcodes?: Maybe<Array<_Vendorcostcode>>;
+  projectOrder?: Maybe<Project_Order1>;
 };
 
 export type Projectorderinforesult = {

@@ -27,6 +27,13 @@ const companyproject_list = gql`
         status
         active
         canDelete
+        members {
+          firstName
+          lastName
+          email
+          avatar
+          idUser
+        }
       }
     }
   }
