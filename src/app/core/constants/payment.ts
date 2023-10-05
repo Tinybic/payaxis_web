@@ -1,4 +1,4 @@
-export const paymentTerms = [
+export const PAYMENTTERM = [
   {
     id: 1,
     txtName: '30 Days',

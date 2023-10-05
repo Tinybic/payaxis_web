@@ -105,6 +105,7 @@ export class InvitingRegisterComponent implements OnInit {
             this.companyName = res.data[0].companyname;
           } else {
             this.error = res.message;
+            this.router.navigate(['auth/login']);
           }
         })
         .catch((error) => {
