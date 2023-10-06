@@ -27,7 +27,7 @@ export class AddOrderComponent {
   @ViewChild('listitem', { static: true }) listitem: ElementRef;
   @ViewChild('addcostcode') addcostcode: any;
   @ViewChild('addvendor') addvendor: any;
-
+  @ViewChild('addproject') addproject: any;
   tabs1 = 1;
   reasonList = [];
   paymentTermsList = PAYMENTTERM;
@@ -471,6 +471,29 @@ export class AddOrderComponent {
     id: '',
     txtName: '',
   };
+
+  addProjectmodalRef;
+  openAddProjectModal() {
+    this.addProjectmodalRef = this.modalService.open(this.addproject, {
+      modalDialogClass: 'modal-right',
+      size: '640',
+      centered: true,
+      backdrop: 'static',
+    });
+
+    this.addProjectmodalRef.result.then(
+      (result) => {
+        // get projects
+        this.getProjectList();
+      },
+      (reason) => {
+        this.getProjectList();
+      }
+    );
+  }
+
+
+
 
   modalVendorRef;
   openAddVenodrModal() {

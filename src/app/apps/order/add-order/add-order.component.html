@@ -166,7 +166,7 @@
                                                 </div>
                                                 <div
                                                     class="col-md-6 btn-text-12 text-primary text-end cursor-pointer line-40">
-                                                    <span *ngIf="!project"><i class="fe-plus-square me-1-1"></i>Create
+                                                    <span *ngIf="!project" (click) = "openAddProjectModal()"><i class="fe-plus-square me-1-1"></i>Create
                                                         New Project</span>
                                                     <span *ngIf="project" (click)="removeProject()"><i
                                                             class="fe-edit me-1-1"></i>Edit Project</span>
@@ -543,12 +543,10 @@
     <app-add-costcode [type]="costcodeButtonText" [data]="modalData" [modalRef]="addmodalref"></app-add-costcode>
 </ng-template>
 
-
-<!-- <ng-template #addproject let-modal>
-    <app-create-project [createProjectWithGroup]="createProjectWithGroup" [modalRef]="modalRef"
+<ng-template #addproject let-modal>
+    <app-create-project [createProjectWithGroup]="createProjectWithGroup" [modalRef]="addProjectmodalRef"
         style="height: 100%;overflow-y: auto;"></app-create-project>
-</ng-template> -->
-
+</ng-template>
 
 <ng-template #addvendor let-modal>
     <app-vendoradd class="flex-column-1"
