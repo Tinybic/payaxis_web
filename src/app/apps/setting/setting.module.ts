@@ -44,6 +44,9 @@ import { AddCostcodeComponent } from './add-costcode/add-costcode.component';
   ],
   providers:[
     provideNgxMask()
+  ],
+  exports: [
+    AddCostcodeComponent,
   ]
 })
 export class SettingModule { }

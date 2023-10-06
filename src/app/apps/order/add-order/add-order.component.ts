@@ -25,6 +25,9 @@ import { HttpService } from 'src/app/core/service/http.service';
 })
 export class AddOrderComponent {
   @ViewChild('listitem', { static: true }) listitem: ElementRef;
+  @ViewChild('addcostcode') addcostcode: any;
+  @ViewChild('addvendor') addvendor: any;
+
   tabs1 = 1;
   reasonList = [];
   paymentTermsList = PAYMENTTERM;
@@ -70,7 +73,9 @@ export class AddOrderComponent {
 
   projectList = [];
   projectGroupList = [];
+  PROJECTLIST = [];
   vendorList = [];
+  VENDORLIST = [];
   bgColors = [
     'bg-primary',
     'bg-secondary',
@@ -180,6 +185,7 @@ export class AddOrderComponent {
       .then((res) => {
         const result = res.companyproject_list;
         if (!result.error) {
+          this.PROJECTLIST = JSON.parse(JSON.stringify(result.data));
           this.projectList = this.groupBy(result.data, 'idGroup');
           for (let key in this.projectList) {
             this.projectGroupList.push(this.projectList[key]);
@@ -196,6 +202,7 @@ export class AddOrderComponent {
         const result = res.vendor_list;
         if (!result.error) {
           this.vendorList = result.data;
+          this.VENDORLIST = JSON.parse(JSON.stringify(this.vendorList));
         }
         this.setVendor();
       });
@@ -303,6 +310,7 @@ export class AddOrderComponent {
       this.order.costCode = '';
     }
   }
+
   keywordsCostCode = '';
   costCodeFilter() {
     this.costCodeList = JSON.parse(JSON.stringify(this.COSTCODE_LIST));
@@ -312,6 +320,28 @@ export class AddOrderComponent {
       );
       return costcode;
     });
+  }
+
+  projectFilter() {
+    this.projectList = JSON.parse(JSON.stringify(this.PROJECTLIST));
+
+    this.projectList = this.projectList.filter((item) =>
+      item.projectName
+        .toLowerCase()
+        .includes(this.keywordsProject.toLowerCase())
+    );
+    this.projectList = this.groupBy(this.projectList, 'idGroup');
+    this.projectGroupList = [];
+    for (let key in this.projectList) {
+      this.projectGroupList.push(this.projectList[key]);
+    }
+  }
+
+  vendorFilter() {
+    this.vendorList = JSON.parse(JSON.stringify(this.VENDORLIST));
+    this.vendorList = this.vendorList.filter((item) =>
+      item.vendorName.toLowerCase().includes(this.keywordsVendor.toLowerCase())
+    );
   }
 
   onSort(columnName) {}
@@ -412,5 +442,52 @@ export class AddOrderComponent {
       }
       this.toastrService.info(message, '');
     });
+  }
+
+  addmodalref;
+  costcodeButtonText = '';
+  modalData;
+  openAddCostCodeModal(text) {
+    if (text) this.costcodeButtonText = text;
+    else {
+      this.costcodeButtonText = 'Create';
+    }
+    this.addmodalref = this.modalService.open(this.addcostcode, {
+      backdrop: 'static',
+      modalDialogClass: 'modal-right',
+      size: '530',
+    });
+    this.addmodalref.result.then(
+      (res) => {
+        this.getCostCodeList();
+      },
+      (dismiss) => {
+        this.getCostCodeList();
+      }
+    );
+  }
+
+  createProjectWithGroup = {
+    id: '',
+    txtName: '',
+  };
+
+  modalVendorRef;
+  openAddVenodrModal() {
+    this.modalVendorRef = this.modalService.open(this.addvendor, {
+      backdrop: 'static',
+      modalDialogClass: 'modal-right',
+      size: '90vw',
+      centered: true,
+    });
+
+    this.modalVendorRef.result.then(
+      (res) => {
+        this.getVendorList();
+      },
+      (dismiss) => {
+        this.getVendorList();
+      }
+    );
   }
 }

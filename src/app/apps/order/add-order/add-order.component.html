@@ -88,14 +88,16 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label" i18n>Cost Code</label>
-                                            <span class="float-end btn-text-12 text-primary cursor-pointer line-24"><i
+                                            <span class="float-end btn-text-12 text-primary cursor-pointer line-24"
+                                                (click)="openAddCostCodeModal('Create')"><i
                                                     class="fe-plus-square me-1-1"></i>Create New Cost Code</span>
                                             <div class="dropdown" ngbDropdown>
                                                 <input class="form-select" type="text" id="vendorcostcodes"
                                                     [(ngModel)]="vendorcostcodesText" required i18n-placeholder
-                                                    placeholder="Assign Cost Code" [ngClass]="{'is-invalid':orderError.costcode == 0}" ngbDropdownToggle />
-                                                <div *ngIf="orderError.costcode == 0"
-                                                    class="invalid-feedback" i18n>
+                                                    placeholder="Assign Cost Code"
+                                                    [ngClass]="{'is-invalid':orderError.costcode == 0}"
+                                                    ngbDropdownToggle />
+                                                <div *ngIf="orderError.costcode == 0" class="invalid-feedback" i18n>
                                                     <i class="fe-alert-triangle invalid-feedback-icon"></i>
                                                     Cost Code required
                                                 </div>
@@ -103,8 +105,8 @@
                                                     aria-labelledby="vendorcostcodes" ngbDropdownMenu>
                                                     <div>
                                                         <input auto-complete="off" type="search"
-                                                            class="form-control form-search" [(ngModel)]="keywordsCostCode"
-                                                            (keyup)="costCodeFilter()" />
+                                                            class="form-control form-search"
+                                                            [(ngModel)]="keywordsCostCode" (keyup)="costCodeFilter()" />
                                                     </div>
                                                     <div *ngFor="let item of costCodeList">
                                                         <div style="color: #215EA9; font-weight: 600; margin-bottom: 8px; margin-top: 8px;"
@@ -206,13 +208,15 @@
                                                         </div>
                                                         <input *ngIf="!project" class="form-control form-search"
                                                             type="search" placeholder="Find Project"
-                                                            [(ngModel)]="keywordsProject" [ngClass]="{'is-invalid':orderError.idProject == 0}" ngbDropdownToggle />
-                                                            <div *ngIf="orderError.idProject == 0"
-                                                            class="invalid-feedback" i18n>
+                                                            [(ngModel)]="keywordsProject" (keyup) = "projectFilter()"
+                                                            [ngClass]="{'is-invalid':orderError.idProject == 0}"
+                                                            ngbDropdownToggle />
+                                                        <div *ngIf="orderError.idProject == 0" class="invalid-feedback"
+                                                            i18n>
                                                             <i class="fe-alert-triangle invalid-feedback-icon"></i>
                                                             Project required
                                                         </div>
-                                                            <div class="padding-16"
+                                                        <div class="padding-16"
                                                             style="background-color: #F8F9FC; border:1px solid #E1E6EF;  margin-top: -44px; width: 100%; max-height: 404px; overflow-x: hidden; overflow-y: scroll;"
                                                             ngbDropdownMenu>
                                                             <div *ngFor="let item of projectGroupList">
@@ -266,7 +270,7 @@
                                                 </div>
                                                 <div
                                                     class="col-md-6 btn-text-12 text-primary text-end cursor-pointer line-40">
-                                                    <span *ngIf="!vendor"><i class="fe-plus-square me-1-1"></i>Create
+                                                    <span *ngIf="!vendor" (click) = "openAddVenodrModal()"><i class="fe-plus-square me-1-1"></i>Create
                                                         New Vendor</span>
                                                     <span *ngIf="vendor" (click)="removeVendor()"><i
                                                             class="fe-edit me-1-1"></i>Edit Vendor</span>
@@ -303,9 +307,11 @@
 
                                                         <input *ngIf="!vendor" class="form-control form-search"
                                                             type="search" placeholder="Find Vendor"
-                                                            [(ngModel)]="keywordsVendor" [ngClass]="{'is-invalid':orderError.idVendor == 0}" ngbDropdownToggle />
-                                                            <div *ngIf="orderError.idVendor == 0"
-                                                            class="invalid-feedback" i18n>
+                                                            [(ngModel)]="keywordsVendor" (keyup) = "vendorFilter()"
+                                                            [ngClass]="{'is-invalid':orderError.idVendor == 0}"
+                                                            ngbDropdownToggle />
+                                                        <div *ngIf="orderError.idVendor == 0" class="invalid-feedback"
+                                                            i18n>
                                                             <i class="fe-alert-triangle invalid-feedback-icon"></i>
                                                             Vendor required
                                                         </div>
@@ -531,3 +537,21 @@
         <div [ngbNavOutlet]="nav2" class="mb-0 b-0 pt-0 flex-column-1"></div>
     </div>
 </div>
+
+
+<ng-template #addcostcode let-modal>
+    <app-add-costcode [type]="costcodeButtonText" [data]="modalData" [modalRef]="addmodalref"></app-add-costcode>
+</ng-template>
+
+
+<!-- <ng-template #addproject let-modal>
+    <app-create-project [createProjectWithGroup]="createProjectWithGroup" [modalRef]="modalRef"
+        style="height: 100%;overflow-y: auto;"></app-create-project>
+</ng-template> -->
+
+
+<ng-template #addvendor let-modal>
+    <app-vendoradd class="flex-column-1"
+        style="width: calc(100vw - 216px); padding:32px 32px 0; background-color: #F8F9FC;overflow-y: auto;"
+        [idvendor]="0"></app-vendoradd>
+</ng-template>
