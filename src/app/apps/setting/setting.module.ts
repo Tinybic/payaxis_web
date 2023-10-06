@@ -14,6 +14,7 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from "ngx-mask";
 import { AddRoleComponent } from './add-role/add-role.component';
 import { SharedModule } from "../../shared/shared.module";
 import { SimplebarAngularModule } from "simplebar-angular";
+import { AddCostcodeComponent } from './add-costcode/add-costcode.component';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { SimplebarAngularModule } from "simplebar-angular";
     PaymentComponent,
     RolesComponent,
     AddRoleComponent,
+    AddCostcodeComponent,
   ],
   imports: [
     CommonModule,
@@ -42,6 +44,9 @@ import { SimplebarAngularModule } from "simplebar-angular";
   ],
   providers:[
     provideNgxMask()
+  ],
+  exports: [
+    AddCostcodeComponent,
   ]
 })
 export class SettingModule { }

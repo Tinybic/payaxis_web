@@ -57,6 +57,9 @@ import { TagInputModule } from 'ngx-chips';
   ],
   providers:[
     provideNgxMask()
+  ],
+  exports:[
+    CreateProjectComponent
   ]
 })
 export class ProjectsModule {
