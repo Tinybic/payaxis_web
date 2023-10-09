@@ -182,10 +182,63 @@ const projectorder_update = gql`
   }
 `;
 
+const projectorder_related = gql`
+  query projectorder_related(
+    $idCompany: Int!
+    $idProject: Int!
+    $idVednor: Int!
+    $paidyn: Boolean!
+  ) {
+    projectorder_related(
+      idCompany: $idCompany
+      idProject: $idProject
+      idVednor: $idVednor
+      paidyn: $paidyn
+    ) {
+      error
+      code
+      message
+      data {
+        id
+        revision
+        createdBy
+        createdDate
+        modifiedBy
+        modifiedDate
+        idCompany
+        idProject
+        projectName
+        idVendor
+        vendorName
+        vendorType
+        orderNumber
+        idReason
+        invoiceNumber
+        invoicedDate
+        indvoicedueDate
+        paymentTerms
+        costCode
+        costCodeName
+        notes
+        nontaxable
+        taxable
+        taxrate
+        tax
+        total
+        paidAmount
+        remainingAmount
+        status
+        active
+      }
+    }
+  }
+`;
+
 export {
   projectorder_newnumber,
   projectorder_reasonlist,
   projectorder_new,
   projectorder_info,
   projectorder_update,
+  projectorder_related,
 };
