@@ -56,7 +56,7 @@ export class ProjectTeamComponent {
   keywords: string = '';
   userList = [];
   direction = 'asc';
-  sortCloumn = '';
+  sortColumn = '';
   projectName = '';
   idUserOwner = '';
   idUser = '';
@@ -301,7 +301,7 @@ export class ProjectTeamComponent {
    * @param event column name, sort direction
    */
   onSort(column: string): void {
-    this.sortCloumn = column;
+    this.sortColumn = column;
     if (this.direction == 'desc') {
       this.direction = 'asc';
     } else {
@@ -309,7 +309,7 @@ export class ProjectTeamComponent {
     }
 
     this.members = [...this.members].sort((a, b) => {
-      const res = this.compare(a[this.sortCloumn], b[this.sortCloumn]);
+      const res = this.compare(a[this.sortColumn], b[this.sortColumn]);
       return this.direction === 'asc' ? res : -res;
     });
   }

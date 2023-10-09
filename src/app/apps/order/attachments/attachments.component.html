@@ -1,360 +1,52 @@
-<div class="row mt-3 bg-white p-2-1">
+<div class="row mt-2-1 bg-white p-2-1">
     <div class="col col-6 mb-1-1">
         <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="checkAttachments">
+            <input id="checkAttachments" type="checkbox" class="form-check-input" [(ngModel)]="allAttachmentsChecked"  (change)="toggleAllAttachmentsChecked()">
             <label class="form-check-label headline-24 ms-1-1" for="checkAttachments">Attachments</label>
         </div>
     </div>
     <div class="col col-6 text-end">
-        <button class="btn btn-outline-primary btn-text-12" style="padding: 7px 16px;">
+        <button class="btn btn-outline-primary btn-text-12" (click)="getDownloadAttachments()" [disabled]="!isSomeAttachmentsChecked()" style="padding: 7px 16px;">
             <i class="fe-download me-1-1"></i>Download Selected
         </button>
     </div>
     <div class="d-flex flex-wrap">
-        <div class="mt-1-1 me-1-1" style="width: 213px;height: 335px;">
+        <div *ngFor="let attachment of attachments;let i=index" class="mt-1-1 me-1-1" style="width: 213px;height: 335px;">
             <div class="card p-1-1" style="border: 1px solid #E1E6EF;border-radius: 8px;">
                 <div class="d-flex justify-content-between" style="height: 16px;">
                     <div class="form-check" style="width: calc(100% - 60px)">
-                        <input type="checkbox" class="form-check-input" id="checkAttachmentItem">
-                        <label class="form-check-label btn-text-12 ms-1-1 text-overflow-ellipsis"
-                               for="checkAttachmentItem" style="width: 100%;margin-top: 3px;">Invoice #003Invoice
-                            #003Invoice #003.pdf</label>
+                        <input id="checkAttachmentItem_{{attachment.id}}" type="checkbox" class="form-check-input" [(ngModel)]="attachment.checked" (change)="toggleAttachmentChecked()">
+                        <label class="form-check-label btn-text-12 ms-1-1 text-overflow-ellipsis text-start"
+                               for="checkAttachmentItem_{{attachment.id}}" style="width: 100%;margin-top: 3px;">{{attachment.fileName}}</label>
                     </div>
                     <div class="ms-1-1" style="width: 40px;">
-                        <i class="fe-download text-primary"></i>
-                        <i class="fe-trash-2 ms-1-1"></i>
+                        <i class="fe-download text-primary c-p" (click)="downloadFile(attachment)"></i>
+                        <i class="fe-trash-2 ms-1-1 c-p" (click)="deleteAttachment(attachment, i)"></i>
                     </div>
                 </div>
-                <div class="mt-1-1" style="border-radius: 8px;">
-                    <img src="assets/images/attachmentsDemo.png">
+                <div class="d-flex align-items-center justify-content-center mt-1-1" style="width: 197px;height: 255px;border-radius: 8px;">
+                    <img src="{{getFileImg(attachment)}}" onerror="this.src='assets/images/icon/zz.png';this.onerror='';" alt="" style="max-width: 197px;max-height: 255px;">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-1-1">
-                    <label class="search-text text-optional">12/03/2023 10:45 am</label>
+                    <label class="search-text text-optional">{{attachment.createdDate | date: 'M/dd/yy hh:mm a'}}</label>
                     <img class="rounded-circle avatar-sm" src="assets/images/users/user-9.jpg">
                 </div>
             </div>
         </div>
-        <div class="mt-1-1 me-1-1" style="width: 213px;height: 335px;">
-            <div class="card p-1-1" style="border: 1px solid #E1E6EF;border-radius: 8px;">
-                <div class="d-flex justify-content-between" style="height: 16px;">
-                    <div class="form-check" style="width: calc(100% - 60px)">
-                        <input type="checkbox" class="form-check-input" id="checkAttachmentItem">
-                        <label class="form-check-label btn-text-12 ms-1-1 text-overflow-ellipsis"
-                               for="checkAttachmentItem" style="width: 100%;margin-top: 3px;">Invoice #003Invoice
-                            #003Invoice #003.pdf</label>
-                    </div>
-                    <div class="ms-1-1" style="width: 40px;">
-                        <i class="fe-download text-primary"></i>
-                        <i class="fe-trash-2 ms-1-1"></i>
-                    </div>
-                </div>
-                <div class="mt-1-1" style="border-radius: 8px;">
-                    <img src="assets/images/attachmentsDemo.png">
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-1-1">
-                    <label class="search-text text-optional">12/03/2023 10:45 am</label>
-                    <img class="rounded-circle avatar-sm" src="assets/images/users/user-9.jpg">
-                </div>
-            </div>
-        </div>
-        <div class="mt-1-1 me-1-1" style="width: 213px;height: 335px;">
-            <div class="card p-1-1" style="border: 1px solid #E1E6EF;border-radius: 8px;">
-                <div class="d-flex justify-content-between" style="height: 16px;">
-                    <div class="form-check" style="width: calc(100% - 60px)">
-                        <input type="checkbox" class="form-check-input" id="checkAttachmentItem">
-                        <label class="form-check-label btn-text-12 ms-1-1 text-overflow-ellipsis"
-                               for="checkAttachmentItem" style="width: 100%;margin-top: 3px;">Invoice #003Invoice
-                            #003Invoice #003.pdf</label>
-                    </div>
-                    <div class="ms-1-1" style="width: 40px;">
-                        <i class="fe-download text-primary"></i>
-                        <i class="fe-trash-2 ms-1-1"></i>
-                    </div>
-                </div>
-                <div class="mt-1-1" style="border-radius: 8px;">
-                    <img src="assets/images/attachmentsDemo.png">
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-1-1">
-                    <label class="search-text text-optional">12/03/2023 10:45 am</label>
-                    <img class="rounded-circle avatar-sm" src="assets/images/users/user-9.jpg">
-                </div>
-            </div>
-        </div>
-        <div class="mt-1-1 me-1-1" style="width: 213px;height: 335px;">
-            <div class="card p-1-1" style="border: 1px solid #E1E6EF;border-radius: 8px;">
-                <div class="d-flex justify-content-between" style="height: 16px;">
-                    <div class="form-check" style="width: calc(100% - 60px)">
-                        <input type="checkbox" class="form-check-input" id="checkAttachmentItem">
-                        <label class="form-check-label btn-text-12 ms-1-1 text-overflow-ellipsis"
-                               for="checkAttachmentItem" style="width: 100%;margin-top: 3px;">Invoice #003Invoice
-                            #003Invoice #003.pdf</label>
-                    </div>
-                    <div class="ms-1-1" style="width: 40px;">
-                        <i class="fe-download text-primary"></i>
-                        <i class="fe-trash-2 ms-1-1"></i>
-                    </div>
-                </div>
-                <div class="mt-1-1" style="border-radius: 8px;">
-                    <img src="assets/images/attachmentsDemo.png">
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-1-1">
-                    <label class="search-text text-optional">12/03/2023 10:45 am</label>
-                    <img class="rounded-circle avatar-sm" src="assets/images/users/user-9.jpg">
-                </div>
-            </div>
-        </div>
-        <div class="mt-1-1 me-1-1" style="width: 213px;height: 335px;">
-            <div class="card p-1-1" style="border: 1px solid #E1E6EF;border-radius: 8px;">
-                <div class="d-flex justify-content-between" style="height: 16px;">
-                    <div class="form-check" style="width: calc(100% - 60px)">
-                        <input type="checkbox" class="form-check-input" id="checkAttachmentItem">
-                        <label class="form-check-label btn-text-12 ms-1-1 text-overflow-ellipsis"
-                               for="checkAttachmentItem" style="width: 100%;margin-top: 3px;">Invoice #003Invoice
-                            #003Invoice #003.pdf</label>
-                    </div>
-                    <div class="ms-1-1" style="width: 40px;">
-                        <i class="fe-download text-primary"></i>
-                        <i class="fe-trash-2 ms-1-1"></i>
-                    </div>
-                </div>
-                <div class="mt-1-1" style="border-radius: 8px;">
-                    <img src="assets/images/attachmentsDemo.png">
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-1-1">
-                    <label class="search-text text-optional">12/03/2023 10:45 am</label>
-                    <img class="rounded-circle avatar-sm" src="assets/images/users/user-9.jpg">
-                </div>
-            </div>
-        </div>
-        <div class="mt-1-1 me-1-1" style="width: 213px;height: 335px;">
-            <div class="card p-1-1" style="border: 1px solid #E1E6EF;border-radius: 8px;">
-                <div class="d-flex justify-content-between" style="height: 16px;">
-                    <div class="form-check" style="width: calc(100% - 60px)">
-                        <input type="checkbox" class="form-check-input" id="checkAttachmentItem">
-                        <label class="form-check-label btn-text-12 ms-1-1 text-overflow-ellipsis"
-                               for="checkAttachmentItem" style="width: 100%;margin-top: 3px;">Invoice #003Invoice
-                            #003Invoice #003.pdf</label>
-                    </div>
-                    <div class="ms-1-1" style="width: 40px;">
-                        <i class="fe-download text-primary"></i>
-                        <i class="fe-trash-2 ms-1-1"></i>
-                    </div>
-                </div>
-                <div class="mt-1-1" style="border-radius: 8px;">
-                    <img src="assets/images/attachmentsDemo.png">
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-1-1">
-                    <label class="search-text text-optional">12/03/2023 10:45 am</label>
-                    <img class="rounded-circle avatar-sm" src="assets/images/users/user-9.jpg">
-                </div>
-            </div>
-        </div>
-        <div class="mt-1-1 me-1-1" style="width: 213px;height: 335px;">
-            <div class="card p-1-1" style="border: 1px solid #E1E6EF;border-radius: 8px;">
-                <div class="d-flex justify-content-between" style="height: 16px;">
-                    <div class="form-check" style="width: calc(100% - 60px)">
-                        <input type="checkbox" class="form-check-input" id="checkAttachmentItem">
-                        <label class="form-check-label btn-text-12 ms-1-1 text-overflow-ellipsis"
-                               for="checkAttachmentItem" style="width: 100%;margin-top: 3px;">Invoice #003Invoice
-                            #003Invoice #003.pdf</label>
-                    </div>
-                    <div class="ms-1-1" style="width: 40px;">
-                        <i class="fe-download text-primary"></i>
-                        <i class="fe-trash-2 ms-1-1"></i>
-                    </div>
-                </div>
-                <div class="mt-1-1" style="border-radius: 8px;">
-                    <img src="assets/images/attachmentsDemo.png">
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-1-1">
-                    <label class="search-text text-optional">12/03/2023 10:45 am</label>
-                    <img class="rounded-circle avatar-sm" src="assets/images/users/user-9.jpg">
-                </div>
-            </div>
-        </div>
-        <div class="mt-1-1 me-1-1" style="width: 213px;height: 335px;">
-            <div class="card p-1-1" style="border: 1px solid #E1E6EF;border-radius: 8px;">
-                <div class="d-flex justify-content-between" style="height: 16px;">
-                    <div class="form-check" style="width: calc(100% - 60px)">
-                        <input type="checkbox" class="form-check-input" id="checkAttachmentItem">
-                        <label class="form-check-label btn-text-12 ms-1-1 text-overflow-ellipsis"
-                               for="checkAttachmentItem" style="width: 100%;margin-top: 3px;">Invoice #003Invoice
-                            #003Invoice #003.pdf</label>
-                    </div>
-                    <div class="ms-1-1" style="width: 40px;">
-                        <i class="fe-download text-primary"></i>
-                        <i class="fe-trash-2 ms-1-1"></i>
-                    </div>
-                </div>
-                <div class="mt-1-1" style="border-radius: 8px;">
-                    <img src="assets/images/attachmentsDemo.png">
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-1-1">
-                    <label class="search-text text-optional">12/03/2023 10:45 am</label>
-                    <img class="rounded-circle avatar-sm" src="assets/images/users/user-9.jpg">
-                </div>
-            </div>
-        </div>
-        <div class="mt-1-1 me-1-1" style="width: 213px;height: 335px;">
-            <div class="card p-1-1" style="border: 1px solid #E1E6EF;border-radius: 8px;">
-                <div class="d-flex justify-content-between" style="height: 16px;">
-                    <div class="form-check" style="width: calc(100% - 60px)">
-                        <input type="checkbox" class="form-check-input" id="checkAttachmentItem">
-                        <label class="form-check-label btn-text-12 ms-1-1 text-overflow-ellipsis"
-                               for="checkAttachmentItem" style="width: 100%;margin-top: 3px;">Invoice #003Invoice
-                            #003Invoice #003.pdf</label>
-                    </div>
-                    <div class="ms-1-1" style="width: 40px;">
-                        <i class="fe-download text-primary"></i>
-                        <i class="fe-trash-2 ms-1-1"></i>
-                    </div>
-                </div>
-                <div class="mt-1-1" style="border-radius: 8px;">
-                    <img src="assets/images/attachmentsDemo.png">
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-1-1">
-                    <label class="search-text text-optional">12/03/2023 10:45 am</label>
-                    <img class="rounded-circle avatar-sm" src="assets/images/users/user-9.jpg">
-                </div>
-            </div>
-        </div>
-        <div class="mt-1-1 me-1-1" style="width: 213px;height: 335px;">
-            <div class="card p-1-1" style="border: 1px solid #E1E6EF;border-radius: 8px;">
-                <div class="d-flex justify-content-between" style="height: 16px;">
-                    <div class="form-check" style="width: calc(100% - 60px)">
-                        <input type="checkbox" class="form-check-input" id="checkAttachmentItem">
-                        <label class="form-check-label btn-text-12 ms-1-1 text-overflow-ellipsis"
-                               for="checkAttachmentItem" style="width: 100%;margin-top: 3px;">Invoice #003Invoice
-                            #003Invoice #003.pdf</label>
-                    </div>
-                    <div class="ms-1-1" style="width: 40px;">
-                        <i class="fe-download text-primary"></i>
-                        <i class="fe-trash-2 ms-1-1"></i>
-                    </div>
-                </div>
-                <div class="mt-1-1" style="border-radius: 8px;">
-                    <img src="assets/images/attachmentsDemo.png">
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-1-1">
-                    <label class="search-text text-optional">12/03/2023 10:45 am</label>
-                    <img class="rounded-circle avatar-sm" src="assets/images/users/user-9.jpg">
-                </div>
-            </div>
-        </div>
-        <div class="mt-1-1 me-1-1" style="width: 213px;height: 335px;">
-            <div class="card p-1-1" style="border: 1px solid #E1E6EF;border-radius: 8px;">
-                <div class="d-flex justify-content-between" style="height: 16px;">
-                    <div class="form-check" style="width: calc(100% - 60px)">
-                        <input type="checkbox" class="form-check-input" id="checkAttachmentItem">
-                        <label class="form-check-label btn-text-12 ms-1-1 text-overflow-ellipsis"
-                               for="checkAttachmentItem" style="width: 100%;margin-top: 3px;">Invoice #003Invoice
-                            #003Invoice #003.pdf</label>
-                    </div>
-                    <div class="ms-1-1" style="width: 40px;">
-                        <i class="fe-download text-primary"></i>
-                        <i class="fe-trash-2 ms-1-1"></i>
-                    </div>
-                </div>
-                <div class="mt-1-1" style="border-radius: 8px;">
-                    <img src="assets/images/attachmentsDemo.png">
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-1-1">
-                    <label class="search-text text-optional">12/03/2023 10:45 am</label>
-                    <img class="rounded-circle avatar-sm" src="assets/images/users/user-9.jpg">
-                </div>
-            </div>
-        </div>
-        <div class="mt-1-1 me-1-1" style="width: 213px;height: 335px;">
-            <div class="card p-1-1" style="border: 1px solid #E1E6EF;border-radius: 8px;">
-                <div class="d-flex justify-content-between" style="height: 16px;">
-                    <div class="form-check" style="width: calc(100% - 60px)">
-                        <input type="checkbox" class="form-check-input" id="checkAttachmentItem">
-                        <label class="form-check-label btn-text-12 ms-1-1 text-overflow-ellipsis"
-                               for="checkAttachmentItem" style="width: 100%;margin-top: 3px;">Invoice #003Invoice
-                            #003Invoice #003.pdf</label>
-                    </div>
-                    <div class="ms-1-1" style="width: 40px;">
-                        <i class="fe-download text-primary"></i>
-                        <i class="fe-trash-2 ms-1-1"></i>
-                    </div>
-                </div>
-                <div class="mt-1-1" style="border-radius: 8px;">
-                    <img src="assets/images/attachmentsDemo.png">
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-1-1">
-                    <label class="search-text text-optional">12/03/2023 10:45 am</label>
-                    <img class="rounded-circle avatar-sm" src="assets/images/users/user-9.jpg">
-                </div>
-            </div>
-        </div>
-        <div class="mt-1-1 me-1-1" style="width: 213px;height: 335px;">
-            <div class="card p-1-1" style="border: 1px solid #E1E6EF;border-radius: 8px;">
-                <div class="d-flex justify-content-between" style="height: 16px;">
-                    <div class="form-check" style="width: calc(100% - 60px)">
-                        <input type="checkbox" class="form-check-input" id="checkAttachmentItem">
-                        <label class="form-check-label btn-text-12 ms-1-1 text-overflow-ellipsis"
-                               for="checkAttachmentItem" style="width: 100%;margin-top: 3px;">Invoice #003Invoice
-                            #003Invoice #003.pdf</label>
-                    </div>
-                    <div class="ms-1-1" style="width: 40px;">
-                        <i class="fe-download text-primary"></i>
-                        <i class="fe-trash-2 ms-1-1"></i>
-                    </div>
-                </div>
-                <div class="mt-1-1" style="border-radius: 8px;">
-                    <img src="assets/images/attachmentsDemo.png">
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-1-1">
-                    <label class="search-text text-optional">12/03/2023 10:45 am</label>
-                    <img class="rounded-circle avatar-sm" src="assets/images/users/user-9.jpg">
-                </div>
-            </div>
-        </div>
-        <div class="mt-1-1 me-1-1" style="width: 213px;height: 335px;">
-            <div class="card p-1-1" style="border: 1px solid #E1E6EF;border-radius: 8px;">
-                <div class="d-flex justify-content-between" style="height: 16px;">
-                    <div class="form-check" style="width: calc(100% - 60px)">
-                        <input type="checkbox" class="form-check-input" id="checkAttachmentItem">
-                        <label class="form-check-label btn-text-12 ms-1-1 text-overflow-ellipsis"
-                               for="checkAttachmentItem" style="width: 100%;margin-top: 3px;">Invoice #003Invoice
-                            #003Invoice #003.pdf</label>
-                    </div>
-                    <div class="ms-1-1" style="width: 40px;">
-                        <i class="fe-download text-primary"></i>
-                        <i class="fe-trash-2 ms-1-1"></i>
-                    </div>
-                </div>
-                <div class="mt-1-1" style="border-radius: 8px;">
-                    <img src="assets/images/attachmentsDemo.png">
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-1-1">
-                    <label class="search-text text-optional">12/03/2023 10:45 am</label>
-                    <img class="rounded-circle avatar-sm" src="assets/images/users/user-9.jpg">
-                </div>
-            </div>
-        </div>
-        <div class="mt-1-1 me-1-1" style="width: 213px;height: 335px;">
-            <div class="card p-1-1" style="border: 1px solid #E1E6EF;border-radius: 8px;">
-                <div class="d-flex justify-content-between" style="height: 16px;">
-                    <div class="form-check" style="width: calc(100% - 60px)">
-                        <input type="checkbox" class="form-check-input" id="checkAttachmentItem">
-                        <label class="form-check-label btn-text-12 ms-1-1 text-overflow-ellipsis"
-                               for="checkAttachmentItem" style="width: 100%;margin-top: 3px;">Invoice #003Invoice
-                            #003Invoice #003.pdf</label>
-                    </div>
-                    <div class="ms-1-1" style="width: 40px;">
-                        <i class="fe-download text-primary"></i>
-                        <i class="fe-trash-2 ms-1-1"></i>
-                    </div>
-                </div>
-                <div class="mt-1-1" style="border-radius: 8px;">
-                    <img src="assets/images/attachmentsDemo.png">
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-1-1">
-                    <label class="search-text text-optional">12/03/2023 10:45 am</label>
-                    <img class="rounded-circle avatar-sm" src="assets/images/users/user-9.jpg">
-                </div>
-            </div>
+    
+        <div *ngIf="attachments.length == 0" style="width: 100%;height: 400px;">
+            <app-ui-preloader [display]="loading"></app-ui-preloader>
         </div>
     </div>
 </div>
+
+<div *ngIf="isUploadingAttachment">
+    <app-ui-preloader [display]="isUploadingAttachment"></app-ui-preloader>
+</div>
+
+<!--#deleteModal-->
+<ng-template #deleteModal let-modal>
+    <app-confirm-modal [title]="deleteObj.title" [message]="deleteObj.message" [btnConfirm]="deleteObj.btnConfirm"
+                       [params]="deleteObj.params" [serviceName]="deleteObj.serviceName"
+                       [btnSide]="deleteObj.btnSide" [modalRef]="deleteModalRef"></app-confirm-modal>
+</ng-template>

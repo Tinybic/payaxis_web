@@ -84,7 +84,7 @@
                 <tr>
                     <th class="row_select"><input class="form-check" type="checkbox" /></th>
                     <th style="width: 120px;" class="sortable"
-                        [ngClass]="{'sorting_asc':sortCloumn == 'category' && direction == 'asc','sorting_desc':sortCloumn == 'category' && direction == 'desc'}"
+                        [ngClass]="{'sorting_asc':sortColumn == 'category' && direction == 'asc','sorting_desc':sortColumn == 'category' && direction == 'desc'}"
                         (click)="onSort('category')">
                         Category
                     </th>
@@ -93,13 +93,13 @@
                             Categories</span>
                     </th>
                     <th class="sortable"
-                        [ngClass]="{'sorting_asc':sortCloumn == 'txtName' && direction == 'asc','sorting_desc':sortCloumn == 'txtName' && direction == 'desc'}"
+                        [ngClass]="{'sorting_asc':sortColumn == 'txtName' && direction == 'asc','sorting_desc':sortColumn == 'txtName' && direction == 'desc'}"
                         (click)="onSort('txtName')">Name</th>
                     <th class="sortable"
-                        [ngClass]="{'sorting_asc':sortCloumn == 'txtNotes' && direction == 'asc','sorting_desc':sortCloumn == 'txtNotes' && direction == 'desc'}"
+                        [ngClass]="{'sorting_asc':sortColumn == 'txtNotes' && direction == 'asc','sorting_desc':sortColumn == 'txtNotes' && direction == 'desc'}"
                         (click)="onSort('txtNotes')">Description</th>
                     <th class="sortable"
-                        [ngClass]="{'sorting_asc':sortCloumn == 'costCode' && direction == 'asc','sorting_desc':sortCloumn == 'costCode' && direction == 'desc'}"
+                        [ngClass]="{'sorting_asc':sortColumn == 'costCode' && direction == 'asc','sorting_desc':sortColumn == 'costCode' && direction == 'desc'}"
                         (click)="onSort('costCode')">Code</th>
                     <th>&nbsp;</th>
                 </tr>

@@ -20,7 +20,7 @@
         <thead>
         <tr>
             <th class="sortable"
-                [ngClass]="{'sorting_asc':sortCloumn == 'contactName' && direction == 'asc','sorting_desc':sortCloumn == 'contactName' && direction == 'desc'}"
+                [ngClass]="{'sorting_asc':sortColumn == 'contactName' && direction == 'asc','sorting_desc':sortColumn == 'contactName' && direction == 'desc'}"
                 (click)="onSort('contactName')" style="width: 20%;">Name
             </th>
             <th style="width: 20%;">Email

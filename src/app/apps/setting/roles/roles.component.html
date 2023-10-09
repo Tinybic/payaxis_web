@@ -22,7 +22,7 @@
         <thead>
         <tr>
             <th class="sortable"
-                [ngClass]="{'sorting_asc':sortCloumn == 'txtName' && direction == 'asc','sorting_desc':sortCloumn == 'txtName' && direction == 'desc'}"
+                [ngClass]="{'sorting_asc':sortColumn == 'txtName' && direction == 'asc','sorting_desc':sortColumn == 'txtName' && direction == 'desc'}"
                 (click)="onSort('txtName')" style="width: 130px;">Permissions
             </th>
             <th *ngFor="let role of roles; let i=index;">

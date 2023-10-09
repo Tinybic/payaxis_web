@@ -32,7 +32,7 @@ export class RolesComponent extends Base {
   idCompany = 0;
   keywords = '';
   direction = '';
-  sortCloumn = '';
+  sortColumn = '';
   initialRoles: any = [];
   initialPermissions: any = [];
   roles: any = [];
@@ -127,10 +127,10 @@ export class RolesComponent extends Base {
   }
 
   onSort(column) {
-    this.sortCloumn = column;
+    this.sortColumn = column;
     const result = this.globalFuns.onSort(
       this.roles,
-      this.sortCloumn,
+      this.sortColumn,
       this.direction
     );
     this.roles = result.newArray;

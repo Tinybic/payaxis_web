@@ -101,16 +101,16 @@
                 <tr>
                     <th class="row_select"><input class="form-check" type="checkbox" /></th>
                     <th class="sortable"
-                        [ngClass]="{'sorting_asc':sortCloumn == 'vendorName' && direction == 'asc','sorting_desc':sortCloumn == 'vendorName' && direction == 'desc'}"
+                        [ngClass]="{'sorting_asc':sortColumn == 'vendorName' && direction == 'asc','sorting_desc':sortColumn == 'vendorName' && direction == 'desc'}"
                         (click)="onSort('vendorName')">Name</th>
                     <th class="sortable"
-                        [ngClass]="{'sorting_asc':sortCloumn == 'status' && direction == 'asc','sorting_desc':sortCloumn == 'status' && direction == 'desc'}"
+                        [ngClass]="{'sorting_asc':sortColumn == 'status' && direction == 'asc','sorting_desc':sortColumn == 'status' && direction == 'desc'}"
                         (click)="onSort('status')">Status</th>
                     <th class="sortable"
-                        [ngClass]="{'sorting_asc':sortCloumn == 'approvalAmount' && direction == 'asc','sorting_desc':sortCloumn == 'approvalAmount' && direction == 'desc'}"
+                        [ngClass]="{'sorting_asc':sortColumn == 'approvalAmount' && direction == 'asc','sorting_desc':sortColumn == 'approvalAmount' && direction == 'desc'}"
                         (click)="onSort('approvalAmount')">Total Due</th>
                     <th class="sortable"
-                        [ngClass]="{'sorting_asc':sortCloumn == 'active' && direction == 'asc','sorting_desc':sortCloumn == 'active' && direction == 'desc'}"
+                        [ngClass]="{'sorting_asc':sortColumn == 'active' && direction == 'asc','sorting_desc':sortColumn == 'active' && direction == 'desc'}"
                         (click)="onSort('active')">Total Invoices Past Due</th>
                     <th>Last payment</th>
                 </tr>

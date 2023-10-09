@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AddOrderComponent } from './add-order/add-order.component';
 import { AttachmentsComponent } from './attachments/attachments.component';
 import { ActivityComponent } from './activity/activity.component';
+import { SimplebarAngularModule } from "simplebar-angular";
 
 
 
@@ -33,7 +34,8 @@ import { ActivityComponent } from './activity/activity.component';
     NgbDropdownModule,
     NgbModalModule,
     UiModule,
-    SharedModule
+    SharedModule,
+    SimplebarAngularModule
   ]
 })
 export class OrderModule { }

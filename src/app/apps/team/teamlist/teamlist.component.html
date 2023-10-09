@@ -205,16 +205,16 @@
                 <tr>
                     <th class="row_select"><input class="form-check" type="checkbox" /></th>
                     <th class="sortable"
-                        [ngClass]="{'sorting_asc':sortCloumn == 'firstName' && direction == 'asc','sorting_desc':sortCloumn == 'firstName' && direction == 'desc'}"
+                        [ngClass]="{'sorting_asc':sortColumn == 'firstName' && direction == 'asc','sorting_desc':sortColumn == 'firstName' && direction == 'desc'}"
                         (click)="onSort('firstName')">User</th>
                     <th class="sortable"
-                        [ngClass]="{'sorting_asc':sortCloumn == 'role' && direction == 'asc','sorting_desc':sortCloumn == 'role' && direction == 'desc'}"
+                        [ngClass]="{'sorting_asc':sortColumn == 'role' && direction == 'asc','sorting_desc':sortColumn == 'role' && direction == 'desc'}"
                         (click)="onSort('role')">Role</th>
                     <th class="sortable"
-                        [ngClass]="{'sorting_asc':sortCloumn == 'approvalAmount' && direction == 'asc','sorting_desc':sortCloumn == 'approvalAmount' && direction == 'desc'}"
+                        [ngClass]="{'sorting_asc':sortColumn == 'approvalAmount' && direction == 'asc','sorting_desc':sortColumn == 'approvalAmount' && direction == 'desc'}"
                         (click)="onSort('approvalAmount')">Approval amount</th>
                     <th class="sortable"
-                        [ngClass]="{'sorting_asc':sortCloumn == 'active' && direction == 'asc','sorting_desc':sortCloumn == 'active' && direction == 'desc'}"
+                        [ngClass]="{'sorting_asc':sortColumn == 'active' && direction == 'asc','sorting_desc':sortColumn == 'active' && direction == 'desc'}"
                         (click)="onSort('active')">Status</th>
                     <th>&nbsp;</th>
                 </tr>
