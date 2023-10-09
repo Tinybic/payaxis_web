@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OrderComponent } from './order.component';
 import { OrderRoutingModule } from './order-routing.module';
-import { NgbDropdownModule,  NgbModalModule,  NgbNavModule } from "@ng-bootstrap/ng-bootstrap";
+import { NgbDropdownModule,  NgbModalModule,  NgbNavModule, NgbTooltipModule } from "@ng-bootstrap/ng-bootstrap";
 import { SharedModule } from "../../shared/shared.module";
 import { AvatarModule } from "../../shared/avatar/avatar.module";
 import { DropdowndataModule } from "../../shared/dropdowndata/dropdowndata.module";
@@ -12,6 +12,9 @@ import { AddOrderComponent } from './add-order/add-order.component';
 import { AttachmentsComponent } from './attachments/attachments.component';
 import { ActivityComponent } from './activity/activity.component';
 import { SimplebarAngularModule } from "simplebar-angular";
+import { SettingModule } from '../setting/setting.module';
+import { VendoraddModule } from '../vendor/vendoradd/vendoradd.module';
+import { ProjectsModule } from '../projects/projects.module';
 
 
 
@@ -36,6 +39,10 @@ import { SimplebarAngularModule } from "simplebar-angular";
     UiModule,
     SharedModule,
     SimplebarAngularModule
+    SettingModule,
+    VendoraddModule,
+    ProjectsModule,
+    NgbTooltipModule
   ]
 })
 export class OrderModule { }

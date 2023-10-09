@@ -247,15 +247,15 @@
                         </div>
                     </td>
                     <td>
-                        <app-dropdowndata *ngIf="editFlag && item.role != 'Owner' && item.idUser > 0" [displayText]="item.role"
+                        <app-dropdowndata *ngIf="canEdit && item.role != 'Owner' && item.idUser > 0" [displayText]="item.role"
                             [data]="roleItems" (selectValue)="editRoleValue(item,$event)"></app-dropdowndata>
-                        <span *ngIf="!editFlag || item.role == 'Owner' || item.idUser == 0">{{item.role}}</span>
+                        <span *ngIf="!canEdit || item.role == 'Owner' || item.idUser == 0">{{item.role}}</span>
                     </td>
                     <td>
-                        <app-dropdowndata *ngIf="editFlag && item.role != 'Owner'  && item.idUser > 0"
+                        <app-dropdowndata *ngIf="canEdit && item.role != 'Owner'  && item.idUser > 0"
                             [displayText]="'$'+ item.approvalAmount" [data]="approvalAmount"
                             (selectValue)="editApprovalAmount(item,$event)"></app-dropdowndata>
-                        <span *ngIf="!editFlag || item.role == 'Owner' || item.idUser == 0"><span
+                        <span *ngIf="!canEdit || item.role == 'Owner' || item.idUser == 0"><span
                                 *ngIf="item.approvalAmount>0">{{item.approvalAmount | currency: 'USD' : 'symbol' :
                                 '1.0-0' }}</span></span>
                     </td>
@@ -264,7 +264,7 @@
                         <img *ngIf="item.idUser == 0" src="/assets/images/status-icons/pending.png" />
                     </td>
                     <td><i class=" fe-trash-2 cursor-pointer"
-                            *ngIf="idUser==idUserOwner && item.role != 'Owner' && item.active"
+                            *ngIf="canEdit && item.role != 'Owner' && item.active"
                             (click)="deactive(i)"></i></td>
                 </tr>
             </tbody>

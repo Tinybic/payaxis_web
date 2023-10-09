@@ -799,6 +799,8 @@ export type Query = {
   projectorder_newnumber: Projectordernumber;
   /** get projectorder reason list */
   projectorder_reasonlist: Companyreasonlist;
+  /** get related Orders */
+  projectorder_related: Projectorderlist;
   /** query to retrieve an existing row */
   test1_find: Test1;
   /** query to retrieve all existing rows */
@@ -934,6 +936,14 @@ export type QueryProjectorder_NewnumberArgs = {
 
 export type QueryProjectorder_ReasonlistArgs = {
   idCompany: Scalars['Int']['input'];
+};
+
+
+export type QueryProjectorder_RelatedArgs = {
+  idCompany: Scalars['Int']['input'];
+  idProject: Scalars['Int']['input'];
+  idVednor: Scalars['Int']['input'];
+  paidyn: Scalars['Boolean']['input'];
 };
 
 
