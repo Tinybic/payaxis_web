@@ -604,8 +604,8 @@
                                                         </tbody>
                                                         <tbody *ngIf="loading" class="bg-white">
                                                             <tr>
-                                                                <td colspan="7">
-                                                                    <div style="position: relative; height: 400px;">
+                                                                <td colspan="9">
+                                                                    <div style="position: relative; height: 150px;">
                                                                         <app-ui-preloader
                                                                             [display]="loading"></app-ui-preloader>
                                                                     </div>
@@ -614,14 +614,6 @@
                                                         </tbody>
                                                         <tbody *ngIf="order.listItems.length==0 && !loading"
                                                             class="bg-white">
-                                                            <tr *ngIf="loading">
-                                                                <td colspan="7">
-                                                                    <div style="position: relative; height: 400px;">
-                                                                        <app-ui-preloader
-                                                                            [display]="loading"></app-ui-preloader>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
                                                             <tr *ngIf="!loading && order.listItems.length==0">
                                                                 <td colspan="9" class="text-center">
                                                                     <div

@@ -38,7 +38,7 @@ import { ProjectsModule } from '../projects/projects.module';
     NgbModalModule,
     UiModule,
     SharedModule,
-    SimplebarAngularModule
+    SimplebarAngularModule,
     SettingModule,
     VendoraddModule,
     ProjectsModule,
