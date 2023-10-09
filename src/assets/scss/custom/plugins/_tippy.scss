@@ -8,6 +8,28 @@
     }
 }
 
+.tooltip-inner {
+    background-color: #2B52DD;
+    padding:16px 12px;
+    border-radius: 16px;
+    height: 194px;
+    width: 288px;
+    max-width: 288px;
+}
+.bs-tooltip-end .tooltip-arrow::before {
+    border-right-color: #2B52DD;
+}
+.bs-tooltip-start .tooltip-arrow::before {
+    border-left-color: #2B52DD;
+}
+.bs-tooltip-top .tooltip-arrow::before {
+    border-top-color: #2B52DD;
+}
+.bs-tooltip-bottom .tooltip-arrow::before {
+    border-bottom-color: #2B52DD;
+}
+
+
 .light-theme {
     color: color-yiq($white);
     box-shadow: $box-shadow-lg;

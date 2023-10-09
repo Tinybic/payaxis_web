@@ -11,6 +11,7 @@ import {
   projectorder_new,
   projectorder_newnumber,
   projectorder_reasonlist,
+  projectorder_related,
   projectorder_update,
 } from 'src/app/core/gql/order';
 import { companyproject_list } from 'src/app/core/gql/project';
@@ -28,6 +29,7 @@ export class AddOrderComponent {
   @ViewChild('addcostcode') addcostcode: any;
   @ViewChild('addvendor') addvendor: any;
   @ViewChild('addproject') addproject: any;
+  @ViewChild('t') t: any;
   tabs1 = 1;
   reasonList = [];
   paymentTermsList = PAYMENTTERM;
@@ -53,7 +55,7 @@ export class AddOrderComponent {
     status: '',
     listItems: [],
   };
-
+  showRelated = false;
   orderError = {
     costcode: -1,
     idProject: -1,
@@ -76,6 +78,9 @@ export class AddOrderComponent {
   PROJECTLIST = [];
   vendorList = [];
   VENDORLIST = [];
+
+  relatedList = [];
+  RELATEDLIST = [];
   bgColors = [
     'bg-primary',
     'bg-secondary',
@@ -148,6 +153,44 @@ export class AddOrderComponent {
         }
       });
   }
+
+  sameProject = true;
+  sameVendor = true;
+  paidyn = false;
+  relatedIndex = 0;
+  getRelatedList() {
+    this.apolloService
+      .query(projectorder_related, {
+        idCompany: this.order.idCompany,
+        idProject: this.sameProject ? this.order.idProject : 0,
+        idVednor: this.sameVendor ? this.order.idVendor : 0,
+        paidyn: this.paidyn,
+      })
+      .then((res) => {
+        const result = res.projectorder_related;
+        if (!result.error) {
+          this.relatedList = result.data;
+          this.RELATEDLIST= JSON.parse(JSON.stringify(result.data));
+          this.relatedIndex = 0;
+        }
+      });
+  }
+
+
+  FilterRelatedList(item){
+    if(item == 1){
+      this.sameProject = !this.sameProject;
+    }
+    else if(item == 2){
+      this.sameVendor = !this.sameVendor;
+    }
+    else{
+      this.paidyn = !this.paidyn;
+    }
+
+    this.getRelatedList();
+  }
+
 
   getOrderNumber() {
     this.apolloService
@@ -344,6 +387,16 @@ export class AddOrderComponent {
     );
   }
 
+  keywordsRelated = '';
+  relatedFilter(){
+    console.log(this.keywordsRelated)
+    this.relatedList = JSON.parse(JSON.stringify(this.RELATEDLIST));
+    this.relatedList = this.relatedList.filter((item) =>
+      item.orderNumber.toString().toLowerCase().includes(this.keywordsRelated.toLowerCase())||
+      item.projectName.toLowerCase().includes(this.keywordsRelated.toLowerCase())
+    );
+  }
+
   onSort(columnName) {}
 
   AddListItem() {
@@ -492,9 +545,6 @@ export class AddOrderComponent {
     );
   }
 
-
-
-
   modalVendorRef;
   openAddVenodrModal() {
     this.modalVendorRef = this.modalService.open(this.addvendor, {
@@ -512,5 +562,21 @@ export class AddOrderComponent {
         this.getVendorList();
       }
     );
+  }
+
+  listItemCopy(item) {
+    this.order.listItems.push(JSON.parse(JSON.stringify(item)));
+    this.setTotal();
+  }
+
+  listItemDelete(index, item) {
+    if (!item.paidyn) {
+      this.order.listItems.splice(index, 1);
+      this.setTotal();
+    }
+  }
+
+  openDetail(id) {
+    this.router.navigate(['apps/order/detail/' + id]);
   }
 }

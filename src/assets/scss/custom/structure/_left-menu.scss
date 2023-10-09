@@ -36,6 +36,11 @@
     width: calc(100% - 164px)
 }
 
+.addOrderContain {
+    width: calc(100% - 164px)
+}
+
+
 .user-profile {
     color: #FFFFFF;
     animation: fadeout 0.1s ease-in-out;
@@ -320,6 +325,11 @@ body[data-leftbar-size="condensed"] {
     }
 
     .orderDetailBottom{
+        width: calc(100% - 72px) !important;
+    }
+
+
+    .addOrderContain {
         width: calc(100% - 72px) !important;
     }
 
