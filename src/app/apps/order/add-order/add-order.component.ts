@@ -150,6 +150,7 @@ export class AddOrderComponent {
           this.getResonList();
           this.getProjectList();
           this.getVendorList();
+          this.getRelatedList();
         }
       });
   }

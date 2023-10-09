@@ -1,5 +1,5 @@
 <div class="d-flex position-fixed addOrderContain" style="margin-top: -32px; margin-left: -24px;">
-    <div style="width: 320px; height: 100vh; background-color: #ffffff; padding: 16px; padding-top: 32px; padding-bottom: 110px; "
+    <div style="width: 320px;  height: 100vh; background-color: #ffffff; padding: 16px; padding-top: 32px; padding-bottom: 110px; "
         *ngIf="showRelated">
 
         <div class="row">
@@ -7,25 +7,28 @@
             <div class="col-md-4 text-end text-primary line-32" ngbDropdown ngbDropdownToggle>
                 <i class="fe-filter cursor-pointer"></i>
                 <div ngbDropdownMenu aria-labelledby="paymentTerms">
-                    <div ngbDropdownItem (click) = "FilterRelatedList(1)">
+                    <div ngbDropdownItem (click)="FilterRelatedList(1)">
                         <div class="form-check">
-                            <input type="checkbox" class="form-check-input" style="margin-top: 7px;"  id="sameProject" [(ngModel)]="sameProject">
+                            <input type="checkbox" class="form-check-input" style="margin-top: 7px;" id="sameProject"
+                                [(ngModel)]="sameProject">
                             <label class="form-check-label ms-1-1" for="dropdownCheck">
                                 Same Project
                             </label>
                         </div>
                     </div>
-                    <div ngbDropdownItem (click) = "FilterRelatedList(2)">
+                    <div ngbDropdownItem (click)="FilterRelatedList(2)">
                         <div class="form-check">
-                            <input type="checkbox" class="form-check-input" style="margin-top: 7px;" id="sameVendor" [(ngModel)]="sameVendor">
+                            <input type="checkbox" class="form-check-input" style="margin-top: 7px;" id="sameVendor"
+                                [(ngModel)]="sameVendor">
                             <label class="form-check-label ms-1-1 " for="dropdownCheck">
                                 Same Vendor
                             </label>
                         </div>
                     </div>
-                    <div ngbDropdownItem (click) = "FilterRelatedList(3)">
+                    <div ngbDropdownItem (click)="FilterRelatedList(3)">
                         <div class="form-check">
-                            <input type="checkbox" class="form-check-input" style="margin-top: 7px;"  id="paidyn" [(ngModel)]="paidyn">
+                            <input type="checkbox" class="form-check-input" style="margin-top: 7px;" id="paidyn"
+                                [(ngModel)]="paidyn">
                             <label class="form-check-label ms-1-1" for="dropdownCheck">
                                 Show paid
                             </label>
@@ -47,7 +50,8 @@
                     <div class="Subtitle-1-600 text-start">#{{this.relatedList[relatedIndex].orderNumber}}</div>
                 </div>
                 <div class="col-md-6">
-                    <img src="/assets/images/status-icons/{{this.relatedList[relatedIndex].status.toLowerCase()}}.png" />
+                    <img
+                        src="/assets/images/status-icons/{{this.relatedList[relatedIndex].status.toLowerCase()}}.png" />
                 </div>
             </div>
             <div class="row mt-1-1">
@@ -93,27 +97,31 @@
             </div>
         </ng-template>
 
-        <div *ngFor = "let item of this.relatedList; let i = index" class="relateItem mt-2-1" placement="top"
-            [ngbTooltip]="tipContent" (mouseenter)="relatedIndex = i; t.open()" (mouseleave) = "t.close()" tooltipClass="my-tooltipClass"
-            [autoClose]="true" triggers="manual" #t="ngbTooltip" (click) = "openDetail(item.id)">
-            <div class="Subtitle-1-600 text-start">
-                #{{item.orderNumber}}
-            </div>
-            <div class="subtitle-2-400-12 text-typeblackdeactivated">
-                {{item.projectName}}
-            </div>
-            <div class="row mt-1-1">
-                <div class="col-md-6 Subtitle-1-600 text-start">
-                    {{item.total}}
+        <div style="height: calc(100vh - 240px); overflow-y: auto;">
+            <div *ngFor="let item of this.relatedList; let i = index" class="relateItem mt-2-1" placement="top"
+                [ngbTooltip]="tipContent" (mouseenter)="relatedIndex = i; t.open()" (mouseleave)="t.close()"
+                tooltipClass="my-tooltipClass" [autoClose]="true" triggers="manual" #t="ngbTooltip"
+                (click)="openDetail(item.id)">
+                <div class="Subtitle-1-600 text-start">
+                    #{{item.orderNumber}}
                 </div>
-                <div class="col-md-6 text-end">
-                    <img src="/assets/images/status-icons/{{this.relatedList[relatedIndex].status.toLowerCase()}}.png" />
+                <div class="subtitle-2-400-12 text-typeblackdeactivated">
+                    {{item.projectName}}
+                </div>
+                <div class="row mt-1-1">
+                    <div class="col-md-6 Subtitle-1-600 text-start">
+                        {{item.total}}
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <img
+                            src="/assets/images/status-icons/{{this.relatedList[relatedIndex].status.toLowerCase()}}.png" />
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <div
-        style="flex: 1; padding-left: 16px; padding-top: 32px; padding-right: 16px; height: calc(100vh - 75px); overflow: scroll;">
+        style="flex: 1; padding-left: 16px; padding-top: 32px; padding-right: 16px; height: calc(100vh - 75px); overflow-y: scroll;">
         <div class="row">
             <input type="text" style="display: none;" />
             <div class="col-md-12 d-flex align-items-center">
