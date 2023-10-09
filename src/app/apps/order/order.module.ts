@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AddOrderComponent } from './add-order/add-order.component';
 import { AttachmentsComponent } from './attachments/attachments.component';
 import { ActivityComponent } from './activity/activity.component';
+import { SimplebarAngularModule } from "simplebar-angular";
 import { SettingModule } from '../setting/setting.module';
 import { VendoraddModule } from '../vendor/vendoradd/vendoradd.module';
 import { ProjectsModule } from '../projects/projects.module';
@@ -37,6 +38,7 @@ import { ProjectsModule } from '../projects/projects.module';
     NgbModalModule,
     UiModule,
     SharedModule,
+    SimplebarAngularModule
     SettingModule,
     VendoraddModule,
     ProjectsModule,

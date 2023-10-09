@@ -1,19 +1,34 @@
-.orders-dropdown{
-  .dropdown{
+.orders-dropdown {
+  .dropdown {
     height: 40px;
-    .dropdown-toggle{
+
+    .dropdown-toggle {
       padding: 10px 16px;
     }
-    &.dropdown-outline{
+
+    &.dropdown-outline {
       padding: 10px 0px;
+    }
+
+    .dropdown-menu {
+      .form-check {
+        .form-check-input {
+          margin-top: 1px;
+        }
+        .form-check-label {
+          width: 100%;
+          margin-left: 0.5rem;
+          cursor: pointer;
+        }
+      }
     }
   }
 }
 
 .orders-table {
-  tbody{
-    tr{
-      td{
+  tbody {
+    tr {
+      td {
         padding: 4px 16px;
       }
     }

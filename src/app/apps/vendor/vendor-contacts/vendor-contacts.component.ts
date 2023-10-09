@@ -24,7 +24,7 @@ export class VendorContactsComponent {
   idvendor = 0;
   keywords = '';
   direction = '';
-  sortCloumn = '';
+  sortColumn = '';
   vendorContacts: Vendor_Contact[] = [];
   vendorContactParams = {
     idvendor: 0,
@@ -64,8 +64,8 @@ export class VendorContactsComponent {
   }
   
   onSort(column){
-    this.sortCloumn = column;
-    const result = this.globalFuns.onSort(this.vendorContacts, this.sortCloumn, this.direction);
+    this.sortColumn = column;
+    const result = this.globalFuns.onSort(this.vendorContacts, this.sortColumn, this.direction);
     this.vendorContacts = result.newArray;
     this.direction = result.direction;
   }

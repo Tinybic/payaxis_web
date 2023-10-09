@@ -28,7 +28,7 @@ export class CostcodeComponent {
   loading = true;
   keywords = '';
   direction = '';
-  sortCloumn = '';
+  sortColumn = '';
   costcodelist = [];
   costcode = {
     id: 0,
@@ -97,10 +97,10 @@ export class CostcodeComponent {
   }
 
   onSort(column) {
-    this.sortCloumn = column;
+    this.sortColumn = column;
     const result = this.globalFuns.onSort(
       this.costcodelist,
-      this.sortCloumn,
+      this.sortColumn,
       this.direction
     );
     this.costcodelist = result.newArray;

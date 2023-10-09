@@ -18,7 +18,7 @@ export class GlobalFunctionsService {
     return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
   }
   
-  onSort(array, sortCloumn, direction) {
+  onSort(array, sortColumn, direction) {
     if (direction == 'desc') {
       direction = 'asc';
     } else {
@@ -26,7 +26,7 @@ export class GlobalFunctionsService {
     }
   
     let newArray =  [...array].sort((a, b) => {
-      const res = this.compare(a[sortCloumn], b[sortCloumn]);
+      const res = this.compare(a[sortColumn], b[sortColumn]);
       return direction === 'asc' ? res : -res;
     });
     

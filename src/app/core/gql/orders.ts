@@ -42,6 +42,30 @@ query projectorder_list($idCompany: Int!, $idProject: Int!) {
 }
 `
 
+const projectorder_attachment = gql`
+query projectorder_attachment($idCompany: Int!, $idOrder1: Int!) {
+  projectorder_attachment(idCompany: $idCompany, idOrder1: $idOrder1) {
+    error
+    code
+    message
+    data {
+      id
+      revision
+      createdBy
+      createdDate
+      modifiedBy
+      modifiedDate
+      idOrder1
+      fileName
+      fileSize
+      fileType
+      fileUrl
+      active
+    }
+  }
+}
+`
+
 const projectorder_uploadfiles = gql`
 mutation projectorder_uploadfiles($idCompany: Int!, $idOrder1: Int!, $orderFiles: [orderfile!]) {
   projectorder_uploadfiles(
@@ -52,10 +76,7 @@ mutation projectorder_uploadfiles($idCompany: Int!, $idOrder1: Int!, $orderFiles
     error
     code
     message
-    data {
-        id
-        revision
-      }
+    data
   }
 }
 `
@@ -70,12 +91,9 @@ mutation projectorder_deletefile($idCompany: Int!, $idProjectorder_file: Int!, $
     error
     code
     message
-    data {
-        id
-        revision
-      }
+    data
   }
 }
 `
 
-export { projectorder_list, projectorder_uploadfiles, projectorder_deletefile };
+export { projectorder_list, projectorder_uploadfiles, projectorder_deletefile, projectorder_attachment };

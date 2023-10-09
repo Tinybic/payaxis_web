@@ -148,7 +148,10 @@
         </div> -->
             </div>
             <div class="col-md-6 text-end">
-                <button class="btn btn-outline-primary"><i class="fe-upload me-1-1"></i>Upload Attachment</button>
+                <input id="attachmentUpload" type="file" class="d-none" multiple (change)="getUploadUrl($event)"/>
+                <button class="btn btn-outline-primary" onclick="document.getElementById('attachmentUpload').click()" [disabled]="isUploading">
+                  <i class="fe-upload me-1-1"></i>Upload Attachment
+                </button>
                 <button class="btn btn-primary ms-2-1" (click)="saveOrder()">Save</button>
                 <i class="fe-more-vertical- ms-2-1"></i>
             </div>

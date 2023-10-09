@@ -48,7 +48,7 @@ export class TeamlistComponent extends Base {
   keywords = '';
   userList = [];
   direction = 'asc';
-  sortCloumn = '';
+  sortColumn = '';
   companyName = '';
   idUserOwner = '';
   idUser = '';
@@ -272,7 +272,7 @@ export class TeamlistComponent extends Base {
    * @param event column name, sort direction
    */
   onSort(column: string): void {
-    this.sortCloumn = column;
+    this.sortColumn = column;
     if (this.direction == 'desc') {
       this.direction = 'asc';
     } else {
@@ -280,7 +280,7 @@ export class TeamlistComponent extends Base {
     }
 
     this.members = [...this.members].sort((a, b) => {
-      const res = this.compare(a[this.sortCloumn], b[this.sortCloumn]);
+      const res = this.compare(a[this.sortColumn], b[this.sortColumn]);
       return this.direction === 'asc' ? res : -res;
     });
   }

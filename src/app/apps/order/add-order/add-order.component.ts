@@ -55,6 +55,10 @@ export class AddOrderComponent {
     status: '',
     listItems: [],
   };
+  
+  attachmentFilesTemp = [];
+  isUploading = false;
+  
   showRelated = false;
   orderError = {
     costcode: -1,
@@ -96,7 +100,8 @@ export class AddOrderComponent {
     private toastrService: ToastrService,
     private httpService: HttpService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private eventService: EventService,
   ) {}
 
   ngOnInit(): void {
@@ -116,6 +121,63 @@ export class AddOrderComponent {
         this.getVendorList();
       }
     });
+  }
+  
+  getUploadUrl(event){
+    this.attachmentFilesTemp = [];
+    for(var i = 0; i < event.target.files.length; i++){
+      this.isUploading = true;
+      this.eventService.broadcast(EventType.REFRESH_ATTACHMENTS, true);
+      const file = event.target.files[i];
+      if(file){
+        this.handleUploadTemp(file, event.target.files.length)
+      }
+    }
+  }
+  
+  handleUploadTemp(file, filesLength){
+    const fileName = getNewFileName(file.name);
+    file.filename = fileName;
+    this.apolloService.query(get_file_url, {
+      fileName: fileName,
+      folder: 'files'
+    }).then((res) => {
+      if(!res.get_file_url.error){
+        let uploadUrl = res.get_file_url.data;
+        this.httpService.put(uploadUrl, file).then((res) => {
+          this.attachmentFilesTemp.push({
+            fileName: file.name,
+            fileSize: file.size,
+            fileType: file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase(),
+            fileUrl: uploadUrl.split('?')[0]
+          })
+        
+          if(this.attachmentFilesTemp.length == filesLength){
+            this.attachmentUploadFile();
+          }
+        });
+      }
+    });
+  }
+  
+  attachmentUploadFile(){
+    this.apolloService.mutate(projectorder_uploadfiles, {
+      idCompany: parseInt(localStorage.getItem('idcompany')),
+      idOrder1: this.order.id,
+      orderFiles: this.attachmentFilesTemp
+    }).then((res) => {
+      const result = res.projectorder_uploadfiles;
+      let message = '';
+      if(!result.error){
+        message = 'Upload successful';
+      } else{
+        message = result.message;
+      }
+      this.isUploading = false;
+      this.eventService.broadcast(EventType.REFRESH_ATTACHMENTS, false);
+      this.toastrService.info(message, '');
+    });
+
   }
 
   getOrderInfo(id) {

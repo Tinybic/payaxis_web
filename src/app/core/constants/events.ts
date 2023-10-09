@@ -17,7 +17,8 @@ export enum EventType {
     CHANGE_PAGE_TITLE = "changePageTitle",
     CHANGE_COMPANY = "changeCompany",
     PROJECT_DEDAIL_INVITE = "projectDetailInviteMembers",
+    REFRESH_ATTACHMENTS = 'refreshAttachments'
 }
 
 // payload type
-export type Payload = PageTitle | LayoutType | LayoutColor | LayoutWidth | MenuPositions | SideBarTheme | SideBarSize | TopbarTheme | boolean;
+export type Payload = PageTitle | LayoutType | LayoutColor | LayoutWidth | MenuPositions | SideBarTheme | SideBarSize | TopbarTheme | boolean | boolean;

@@ -19,7 +19,7 @@ export class VendorlistComponent extends Base {
 
   keywords = '';
   direction = '';
-  sortCloumn = '';
+  sortColumn = '';
   vendorlist = [];
   VENDOR_LIST = [];
   idvendor = 0;
@@ -72,7 +72,7 @@ export class VendorlistComponent extends Base {
   }
 
   onSort(column) {
-    this.sortCloumn = column;
+    this.sortColumn = column;
     if (this.direction == 'desc') {
       this.direction = 'asc';
     } else {
@@ -80,7 +80,7 @@ export class VendorlistComponent extends Base {
     }
 
     this.vendorlist = [...this.vendorlist].sort((a, b) => {
-      const res = this.compare(a[this.sortCloumn], b[this.sortCloumn]);
+      const res = this.compare(a[this.sortColumn], b[this.sortColumn]);
       return this.direction === 'asc' ? res : -res;
     });
   }
