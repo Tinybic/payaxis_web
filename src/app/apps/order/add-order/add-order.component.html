@@ -126,7 +126,7 @@
             <input type="text" style="display: none;" />
             <div class="col-md-12 d-flex align-items-center">
                 <i class="fe-chevron-left"></i>
-                <span class="bold-500">All Vendors</span>&nbsp;/&nbsp;<span class="bold-800 text-primary"
+                <span class="bold-500"><a routerLink="/apps/order" style="color: #202020;">All Vendors</a></span>&nbsp;/&nbsp;<span class="bold-800 text-primary"
                     *ngIf="order.id > 0">Order #{{order.orderNumber}}</span><span class="bold-800 text-primary"
                     *ngIf="order.id == 0">New Order</span>
             </div>
@@ -604,8 +604,8 @@
                                                         </tbody>
                                                         <tbody *ngIf="loading" class="bg-white">
                                                             <tr>
-                                                                <td colspan="7">
-                                                                    <div style="position: relative; height: 400px;">
+                                                                <td colspan="9">
+                                                                    <div style="position: relative; height: 150px;">
                                                                         <app-ui-preloader
                                                                             [display]="loading"></app-ui-preloader>
                                                                     </div>
@@ -614,14 +614,6 @@
                                                         </tbody>
                                                         <tbody *ngIf="order.listItems.length==0 && !loading"
                                                             class="bg-white">
-                                                            <tr *ngIf="loading">
-                                                                <td colspan="7">
-                                                                    <div style="position: relative; height: 400px;">
-                                                                        <app-ui-preloader
-                                                                            [display]="loading"></app-ui-preloader>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
                                                             <tr *ngIf="!loading && order.listItems.length==0">
                                                                 <td colspan="9" class="text-center">
                                                                     <div

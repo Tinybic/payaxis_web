@@ -1,8 +1,9 @@
 import { RtlScrollAxisType } from '@angular/cdk/platform';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute,  Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { EventType } from 'src/app/core/constants/events';
 import { PAYMENTTERM } from 'src/app/core/constants/payment';
 import { categorycostcode_list } from 'src/app/core/gql/costcode';
 import { getNewFileName, get_file_url } from 'src/app/core/gql/file';
@@ -14,9 +15,11 @@ import {
   projectorder_related,
   projectorder_update,
 } from 'src/app/core/gql/order';
+import { projectorder_uploadfiles } from 'src/app/core/gql/orders';
 import { companyproject_list } from 'src/app/core/gql/project';
 import { vendor_list } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
+import { EventService } from 'src/app/core/service/event.service';
 import { HttpService } from 'src/app/core/service/http.service';
 
 @Component({
@@ -74,7 +77,7 @@ export class AddOrderComponent {
   vendorcostcodesText = '';
   txtReason = '';
   sortCloumn = '';
-  loading = false;
+  loading = true;
   direction = 'asc';
 
   projectList = [];
@@ -119,6 +122,7 @@ export class AddOrderComponent {
         this.getResonList();
         this.getProjectList();
         this.getVendorList();
+        this.loading = false;
       }
     });
   }
@@ -213,6 +217,7 @@ export class AddOrderComponent {
           this.getProjectList();
           this.getVendorList();
           this.getRelatedList();
+          this.loading = false;
         }
       });
   }
