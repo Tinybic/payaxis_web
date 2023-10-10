@@ -81,47 +81,15 @@
         <div class="dropdown ms-1-1" ngbDropdown>
             <a class="dropdown-outline" href="javascript:void(0)" ngbDropdownToggle>
                 <i class="fe-folder font-16 me-1-1"></i>
-                Project
+                {{projectFilter}}
                 <i class="fe-chevron-down font-16 ms-1-1"></i>
             </a>
             <div class="dropdown-menu" ngbDropdownMenu>
-                <div ngbDropdownItem>
+                <div *ngFor="let project of projects" (click)="projectFilter=project.projectName" ngbDropdownItem>
                     <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                        <label class="form-check-label ms-1-1" for="dropdownCheck">
-                            ALL
-                        </label>
-                    </div>
-                </div>
-                <div ngbDropdownItem>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                        <label class="form-check-label ms-1-1" for="dropdownCheck">
-                            Approval
-                        </label>
-                    </div>
-                </div>
-                <div ngbDropdownItem>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                        <label class="form-check-label ms-1-1" for="dropdownCheck">
-                            Admin
-                        </label>
-                    </div>
-                </div>
-                <div ngbDropdownItem>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                        <label class="form-check-label ms-1-1" for="dropdownCheck">
-                            Editor
-                        </label>
-                    </div>
-                </div>
-                <div ngbDropdownItem>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                        <label class="form-check-label ms-1-1" for="dropdownCheck">
-                            Viewer
+                        <input id="project_{{project.id}}" type="checkbox" class="form-check-input" [(ngModel)]="project.checked">
+                        <label class="form-check-label ms-1-1" for="project_{{project.id}}">
+                            {{project.projectName}}
                         </label>
                     </div>
                 </div>

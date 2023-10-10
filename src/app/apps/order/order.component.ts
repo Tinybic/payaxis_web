@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { APPROVALAMOUNT } from '../../core/constants/members';
 import { ApolloService } from '../../core/service/apollo.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
@@ -10,7 +9,7 @@ import { Router } from '@angular/router';
 import { HttpService } from "../../core/service/http.service";
 import { company_roles } from "../../core/gql/company";
 import { GlobalFunctionsService } from "../../core/service/global-functions.service";
-
+import { companyproject_list } from 'src/app/core/gql/project';
 
 @Component({
   selector: 'app-order',
@@ -20,7 +19,6 @@ import { GlobalFunctionsService } from "../../core/service/global-functions.serv
 export class OrderComponent extends Base {
   statusFilter: string = 'All';
   roleFilter = 'Approval';
-  projectLevelFilter = 'All';
   
   orders = [];
   currentOrderId: number = 0;
@@ -29,6 +27,8 @@ export class OrderComponent extends Base {
     forceVisible: true
   };
   
+  roles = [];
+  projects = [];
   
   InitialOrders = [];
   bgColors = [
@@ -48,17 +48,10 @@ export class OrderComponent extends Base {
     Draft: 0
   }
   showCount: number = 0;
-  projectLevels = ['All','Approval', 'Admin', 'Editor', 'Viewer']
   keywords = '';
-  roles = [];
   direction = 'asc';
   sortColumn = '';
-  companyName = '';
-  idUser = '';
-  approvalAmount = APPROVALAMOUNT;
-  editFlag: boolean = true;
   edit = [];
-  approvalAmountFilter = 'Approval Amount';
   loading = true;
   
   canEdit = false;
@@ -77,24 +70,9 @@ export class OrderComponent extends Base {
   
   ngOnInit(): void{
     this.canEdit = super.setRole('Manage company users');
-    this.apolloService.query(company_roles, {
-      idCompany: parseInt(localStorage.getItem('idcompany'))
-    }).then((res) => {
-      const result = res.company_roles;
-      if(!result.error){
-        this.roles = result.data.map((item) => {
-          return Object.assign(
-            {},
-            {
-              id: item.idRole,
-              text: item.txtName
-            }
-          );
-        });
-      }
-    });
     this.getOrders();
-    
+    this.getRoles();
+    this.getProjects();
   }
   
   getOrders(){
@@ -112,6 +90,42 @@ export class OrderComponent extends Base {
         }
       });
     }
+  }
+  
+  getRoles(){
+    this.apolloService.query(company_roles, {
+      idCompany: parseInt(localStorage.getItem('idcompany'))
+    }).then((res) => {
+      const result = res.company_roles;
+      if(!result.error){
+        this.roles = JSON.parse(JSON.stringify(result.data));
+        this.roles.map(role => {
+          role['id']=role.idRole;
+          role['checked'] = false
+        });
+        this.roles.unshift({
+          id: 'all',
+          txtName: 'All',
+          checked: false
+        })
+      }
+    });
+  }
+  
+  getProjects(){
+    this.apolloService.query(companyproject_list,
+      {idCompany: parseInt(localStorage.getItem('idcompany'))}).then((res) => {
+      const result = res.companyproject_list;
+      if(!result.error){
+        this.projects = JSON.parse(JSON.stringify(result.data));
+        this.projects.map(project => project['checked'] = false);
+        this.projects.unshift({
+          id: 'all',
+          projectName: 'All',
+          checked: false
+        })
+      }
+    });
   }
   
   getStatusCount(){
@@ -132,11 +146,27 @@ export class OrderComponent extends Base {
   
   statusFilterChange(e, status, type){
     if(this[type] === status){
-      setTimeout(()=>{
+      setTimeout(() => {
         e.target.checked = true;
       }, 50)
     }
     this[type] = status;
+  }
+  
+  filterChange(item, type){
+    if(item.id == 'all'){
+      this[type].map(item => {
+        item.checked = this[type][0].checked;
+      })
+    } else{
+      let itemsCheckedCount = 0;
+      this[type].map(item => {
+        if(item.id != 'all' && item.checked){
+          itemsCheckedCount++;
+        }
+      })
+      this[type][0].checked = itemsCheckedCount == this[type].length - 1
+    }
   }
   
   changeRoleFilter(filter: string){
@@ -147,18 +177,7 @@ export class OrderComponent extends Base {
     }
   }
   
-  changeapprovalAmountFilter(filter: string){
-    this.approvalAmountFilter = filter;
-    this.orders = this.InitialOrders;
-    if(filter != 'All'){
-      this.orders = this.orders.filter(
-        (member) => member.approvalAmount == filter
-      );
-    }
-  }
-  
   public alertOption: SweetAlertOptions = {};
-  
   
   
   /**
@@ -180,6 +199,12 @@ export class OrderComponent extends Base {
     if(this.statusFilter !== 'All' && order.status != this.statusFilter){
       return false;
     }
+    if(!(this.projects.some(project => {
+      return (project.id == order.idProject && project.checked);
+    }) || this.projects.every(project => {return !project.checked}))){
+      return false;
+    }
+    
     let values = Object.values(order);
     return values.some(
       (v: any) =>
