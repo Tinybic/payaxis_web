@@ -59,6 +59,7 @@ export class VendoraddComponent {
     txtCity: '',
     txtState: '',
     txtZipcode: '',
+    status:'',
     vendorcostcodes: [],
     vendorfiles: [],
   };
@@ -131,6 +132,7 @@ export class VendoraddComponent {
               txtCity: result.data.vendor.txtCity,
               txtState: result.data.vendor.txtState,
               txtZipcode: result.data.vendor.txtZipcode,
+              status:result.data.vendor.status,
               vendorcostcodes: [],
               vendorfiles: result.data.vendorfiles,
             };
