@@ -70,7 +70,7 @@
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck{{item.text}}"
                             [checked]="roleFilter==item.text">
-                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                        <label class="form-check-label ms-1-1" for="dropdownCheck{{item.text}}">
                             {{item.text}}
                         </label>
                     </div>
@@ -87,7 +87,7 @@
             <div class="dropdown-menu" ngbDropdownMenu>
                 <div *ngFor="let project of projects" (click)="projectFilter=project.projectName" ngbDropdownItem>
                     <div class="form-check">
-                        <input id="project_{{project.id}}" type="checkbox" class="form-check-input" [(ngModel)]="project.checked">
+                        <input id="project_{{project.id}}" type="checkbox" class="form-check-input" [checked]="projectFilter==project.projectName">
                         <label class="form-check-label ms-1-1" for="project_{{project.id}}">
                             {{project.projectName}}
                         </label>

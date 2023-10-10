@@ -101,7 +101,7 @@ export class OrderComponent extends Base {
         this.roles = JSON.parse(JSON.stringify(result.data));
         this.roles.map(role => {
           role['id']=role.idRole;
-          role['checked'] = false
+          role['checked'] = true;
         });
         this.roles.unshift({
           id: 'all',
@@ -118,7 +118,7 @@ export class OrderComponent extends Base {
       const result = res.companyproject_list;
       if(!result.error){
         this.projects = JSON.parse(JSON.stringify(result.data));
-        this.projects.map(project => project['checked'] = false);
+        this.projects.map(project => project['checked'] = true);
         this.projects.unshift({
           id: 'all',
           projectName: 'All',
