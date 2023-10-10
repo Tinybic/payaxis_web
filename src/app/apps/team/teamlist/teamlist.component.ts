@@ -15,6 +15,7 @@ import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
 import { company_invitedmember_deactivate, company_roles } from 'src/app/core/gql/company';
 import { FormControl } from '@angular/forms';
 import { Base } from 'src/app/core/base';
+import { companyproject_list } from "../../../core/gql/project";
 @Component({
   selector: 'app-teamlist',
   templateUrl: './teamlist.component.html',
@@ -29,6 +30,7 @@ export class TeamlistComponent extends Base {
 
   statusFilter: string = 'All';
   members = [];
+  projects = [];
   COMPANY_MEMBERS = [];
   bgColors = [
     'bg-primary',
@@ -58,6 +60,7 @@ export class TeamlistComponent extends Base {
   edit = [];
   approvalAmountFilter = 'Approval Amount';
   roleFilter = 'Approval';
+  projectFilter = 'Project'
   loading = true;
 
   canEdit = false;
@@ -184,8 +187,25 @@ export class TeamlistComponent extends Base {
           });
         }
       });
-
+    
+    this.getProjects();
     this.getCompanyMembers();
+  }
+  
+  getProjects(){
+    this.apolloService.query(companyproject_list,
+      {idCompany: parseInt(localStorage.getItem('idcompany'))}).then((res) => {
+      const result = res.companyproject_list;
+      if(!result.error){
+        this.projects = JSON.parse(JSON.stringify(result.data));
+        this.projects.map(project => project['checked'] = false);
+        this.projects.unshift({
+          id: 'all',
+          projectName: 'All',
+          checked: false
+        })
+      }
+    });
   }
 
   getCompanyMembers() {

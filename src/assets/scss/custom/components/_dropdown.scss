@@ -202,3 +202,11 @@ html[dir="ltr"] .megamenu-list {
       background-image: if($enable-gradients, none, null);
     }
   }
+
+.dropdown-menu {
+  .form-check {
+    .form-check-input {
+      margin-left: -1.4em;
+    }
+  }
+}
