@@ -152,6 +152,13 @@ const vendor_info = gql`
           txtState
           txtZipcode
           active
+          payto
+          federalId
+          taxrate
+          discount
+          paymentTerms
+          form1099
+          status
         }
         vendorcostcodes {
           id

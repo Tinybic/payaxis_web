@@ -45,6 +45,8 @@ export class VendoraddComponent {
 
   tabs1 = 1;
   vendor = {
+    id: 0,
+    revision: 0,
     idCompany: 0,
     vendorName: '',
     vendorType: '',
@@ -60,6 +62,18 @@ export class VendoraddComponent {
     vendorcostcodes: [],
     vendorfiles: [],
   };
+
+  vendorAdditional = {
+    id: 0,
+    revision: 0,
+    payto: '',
+    federalId: '',
+    taxrate: 0.0,
+    discount: 0.0,
+    paymentTerms: '',
+    form1099: false,
+  };
+
   vendorTemp;
 
   vendorfilestemp = [];
@@ -103,6 +117,8 @@ export class VendoraddComponent {
           if (!result.error) {
             this.revision = result.data.vendor.revision;
             this.vendor = {
+              id: result.data.vendor.id,
+              revision: result.data.vendor.revision,
               idCompany: result.data.vendor.idCompany,
               vendorName: result.data.vendor.vendorName,
               vendorType: result.data.vendor.vendorType,
@@ -117,6 +133,17 @@ export class VendoraddComponent {
               txtZipcode: result.data.vendor.txtZipcode,
               vendorcostcodes: [],
               vendorfiles: result.data.vendorfiles,
+            };
+
+            this.vendorAdditional = {
+              id: result.data.vendor.id,
+              revision: result.data.vendor.revision,
+              payto: result.data.vendor.payto,
+              federalId: result.data.vendor.federalId,
+              taxrate: result.data.vendor.taxrate,
+              discount: result.data.vendor.discount,
+              paymentTerms: result.data.vendor.paymentTerms,
+              form1099: result.data.vendor.form1099,
             };
             result.data.vendorcostcodes.forEach((item) => {
               this.costCodeSelect({ currentTarget: { checked: true } }, item);
@@ -302,6 +329,8 @@ export class VendoraddComponent {
         if (!result.error) {
           this.idvendor = result.data.id;
           this.revision = result.data.revision;
+          this.vendor.id = result.data.id;
+          this.vendor.revision = result.data.revision;
           this.vendorTemp = JSON.parse(JSON.stringify(data));
           //this.modalService.dismissAll();
         } else {

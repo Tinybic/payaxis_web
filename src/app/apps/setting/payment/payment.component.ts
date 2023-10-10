@@ -57,7 +57,7 @@ export class PaymentComponent {
   ) {}
 
   ngOnInit(): void {
-    this.formValues['email'].setValue('wfszwk@qq.com');
+    this.formValues['email'].setValue(localStorage.getItem('email'));
     this.idcompany = parseInt(localStorage.getItem('idcompany'));
     this.getPaymentList();
   }

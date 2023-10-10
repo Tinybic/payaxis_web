@@ -111,18 +111,17 @@
 
                             </div>
                         </div>
-                        <form name="additionaldetails-form" [formGroup]="paymentForm" (ngSubmit)="savePayment()">
+                        <form name="additionaldetails-form" [formGroup]="additionalForm">
                             <div class="row mt-2-1">
                                 <div class="col-md-12">
                                     <label class="form-label" i18n>Pay to</label>
-                                    <input class="form-control" type="text" id="routing" required i18n-placeholder
-                                        placeholder="Joe & Son Plumbing Services" formControlName="routing"
-                                        [ngClass]="{'is-invalid':formSubmitted && formValues['routing'].invalid}" />
-                                    <div *ngIf="formSubmitted && formValues['routing'].invalid"
-                                        class="invalid-feedback">
-                                        <div *ngIf="formValues['routing'].errors?.['required']" i18n>
-                                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter routing
-                                            name
+                                    <input class="form-control" type="text" id="payto" required i18n-placeholder
+                                        placeholder="Name, title" formControlName="payto"
+                                        (change)="updateVendorAdditional()"
+                                        [ngClass]="{'is-invalid':formSubmitted && formValues['payto'].invalid}" />
+                                    <div *ngIf="formSubmitted && formValues['payto'].invalid" class="invalid-feedback">
+                                        <div *ngIf="formValues['payto'].errors?.['required']" i18n>
+                                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter Pay to
                                         </div>
                                     </div>
                                 </div>
@@ -130,9 +129,9 @@
 
                             <div class="row mt-2-1">
                                 <div class="col-md-4">
-                                    <label class="form-label" i18n>Pay to</label>
-                                    <input class="form-control" type="text" id="routing" required i18n-placeholder
-                                        placeholder="Joe & Son Plumbing Services" formControlName="routing"
+                                    <label class="form-label" i18n>Federal ID</label>
+                                    <input class="form-control" type="text" id="federalId" required i18n-placeholder
+                                        placeholder="ID" formControlName="federalId" (change)="updateVendorAdditional()"
                                         [ngClass]="{'is-invalid':formSubmitted && formValues['routing'].invalid}" />
                                     <div *ngIf="formSubmitted && formValues['routing'].invalid"
                                         class="invalid-feedback">
@@ -143,9 +142,9 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label" i18n>Pay to</label>
-                                    <input class="form-control" type="text" id="routing" required i18n-placeholder
-                                        placeholder="Joe & Son Plumbing Services" formControlName="routing"
+                                    <label class="form-label" i18n>Tax rate</label>
+                                    <input class="form-control" type="text" id="taxrate" required i18n-placeholder
+                                        placeholder="%" formControlName="taxrate" (change)="updateVendorAdditional()"
                                         [ngClass]="{'is-invalid':formSubmitted && formValues['routing'].invalid}" />
                                     <div *ngIf="formSubmitted && formValues['routing'].invalid"
                                         class="invalid-feedback">
@@ -156,9 +155,9 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label" i18n>Pay to</label>
-                                    <input class="form-control" type="text" id="routing" required i18n-placeholder
-                                        placeholder="Joe & Son Plumbing Services" formControlName="routing"
+                                    <label class="form-label" i18n>Discount</label>
+                                    <input class="form-control" type="text" id="discount" required i18n-placeholder
+                                        placeholder="%" formControlName="discount" (change)="updateVendorAdditional()"
                                         [ngClass]="{'is-invalid':formSubmitted && formValues['routing'].invalid}" />
                                     <div *ngIf="formSubmitted && formValues['routing'].invalid"
                                         class="invalid-feedback">
@@ -171,22 +170,26 @@
                             </div>
                             <div class="row mt-2-1">
                                 <div class="col-md-10">
-                                    <label class="form-label" i18n>Pay to</label>
-                                    <input class="form-control" type="text" id="routing" required i18n-placeholder
-                                        placeholder="Joe & Son Plumbing Services" formControlName="routing"
-                                        [ngClass]="{'is-invalid':formSubmitted && formValues['routing'].invalid}" />
-                                    <div *ngIf="formSubmitted && formValues['routing'].invalid"
-                                        class="invalid-feedback">
-                                        <div *ngIf="formValues['routing'].errors?.['required']" i18n>
-                                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter routing
-                                            name
+                                    <label class="form-label" i18n>Payment terms</label>
+                                    <div ngbDropdown class="mt-sm-0 mt-2">
+                                        <input class="form-select position-relative" type="text" id="paymentTerms"
+                                            i18n-placeholder formControlName="paymentTerms" placeholder="Payment Terms"
+                                            ngbDropdownToggle />
+
+                                        <div ngbDropdownMenu aria-labelledby="paymentTerms">
+                                            <a href="javascript:void(0)" *ngFor="let item of paymentTermsList"
+                                                ngbDropdownItem
+                                                (click)="dropdownSelect(item.txtName)">{{item.txtName}}</a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                    <input type="checkbox" class="form-check-input me-1-1" id="defaultPay"
-                                        formControlName="defaultPay">
-                                    <label class="form-check-label" for="defaultPay" i18n>1099 Vendor</label>
+                                    <div class="form-check" style="margin-top: 40px;">
+                                        <input type="checkbox" class="form-check-input me-1-1" id="form1099"
+                                            (change)="updateVendorAdditional()" formControlName="form1099">
+                                        <label class="form-check-label subtitle-2-500" for="form1099" i18n>1099
+                                            Vendor</label>
+                                    </div>
                                 </div>
                             </div>
                         </form>

@@ -139,11 +139,41 @@ const vendorpayment_setdefault = gql`
     }
   }
 `;
-
+const vendoradditional_update = gql`
+  mutation vendoradditional_update(
+    $idCompany: Int!
+    $id: Int!
+    $revision: Int!
+    $payto: payto_String_NotNull_maxLength_255!
+    $federalId: federalId_String_NotNull_maxLength_25!
+    $taxrate: Float!
+    $discount: Float!
+    $paymentTerms: paymentTerms_String_NotNull_maxLength_50!
+    $form1099: Boolean!
+  ) {
+    vendoradditional_update(
+      idCompany: $idCompany
+      id: $id
+      revision: $revision
+      payto: $payto
+      federalId: $federalId
+      taxrate: $taxrate
+      discount: $discount
+      paymentTerms: $paymentTerms
+      form1099: $form1099
+    ) {
+      error
+      code
+      message
+      data
+    }
+  }
+`;
 export {
   vendorpayment_list,
   vendorpayment_new,
   vendorpayment_update,
   vendorpayment_deactivate,
   vendorpayment_setdefault,
+  vendoradditional_update,
 };
