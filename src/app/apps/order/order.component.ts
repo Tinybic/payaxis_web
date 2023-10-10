@@ -106,7 +106,7 @@ export class OrderComponent extends Base {
         this.roles.unshift({
           id: 'all',
           txtName: 'All',
-          checked: false
+          checked: true
         })
       }
     });
@@ -122,7 +122,7 @@ export class OrderComponent extends Base {
         this.projects.unshift({
           id: 'all',
           projectName: 'All',
-          checked: false
+          checked: true
         })
       }
     });
