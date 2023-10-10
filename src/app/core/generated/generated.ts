@@ -22,6 +22,7 @@ export type Scalars = {
   costCode_String_NotNull_maxLength_15: { input: any; output: any; }
   description_String_NotNull_maxLength_512: { input: any; output: any; }
   email_String_NotNull_maxLength_180_format_email: { input: any; output: any; }
+  federalId_String_NotNull_maxLength_25: { input: any; output: any; }
   fileName_String_NotNull_maxLength_128: { input: any; output: any; }
   fileType_String_NotNull_maxLength_15: { input: any; output: any; }
   fileUrl_String_NotNull_maxLength_512: { input: any; output: any; }
@@ -33,6 +34,7 @@ export type Scalars = {
   notes_String_NotNull_maxLength_255: { input: any; output: any; }
   payType_String_NotNull_maxLength_25: { input: any; output: any; }
   paymentTerms_String_NotNull_maxLength_50: { input: any; output: any; }
+  payto_String_NotNull_maxLength_255: { input: any; output: any; }
   phone_String_NotNull_maxLength_20: { input: any; output: any; }
   primaryContact_String_NotNull_maxLength_50: { input: any; output: any; }
   projectAddress_String_NotNull_maxLength_255: { input: any; output: any; }
@@ -173,10 +175,24 @@ export type Mutation = {
   vendor_new: Vendorupdateresult;
   /** update vendor_account */
   vendor_update: Vendorupdateresult;
+  /** update vendor additional */
+  vendoradditional_update: Vendordeleteresult;
   /** new vendor_contact */
   vendorcontact_new: Vendorcontactresult;
   /** update vendor_contact */
   vendorcontact_update: Vendorcontactresult;
+  /** delete insurance file */
+  vendorinsurance_delete: Vendordeleteresult;
+  /** upload insurance file */
+  vendorinsurance_upload: Vendordeleteresult;
+  /** deactivate vendorpayment */
+  vendorpayment_deactivate: Vendorpaymentbooleanresult;
+  /** new vendorpayment */
+  vendorpayment_new: Vendorpaymentresult;
+  /** favorite vendorpayment */
+  vendorpayment_setdefault: Vendorpaymentresult;
+  /** update vendorpayment */
+  vendorpayment_update: Vendorpaymentresult;
 };
 
 
@@ -726,6 +742,20 @@ export type MutationVendor_UpdateArgs = {
 
 
 /** structure to handle table sms */
+export type MutationVendoradditional_UpdateArgs = {
+  discount: Scalars['Float']['input'];
+  federalId: Scalars['federalId_String_NotNull_maxLength_25']['input'];
+  form1099: Scalars['Boolean']['input'];
+  id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
+  paymentTerms: Scalars['paymentTerms_String_NotNull_maxLength_50']['input'];
+  payto: Scalars['payto_String_NotNull_maxLength_255']['input'];
+  revision: Scalars['Int']['input'];
+  taxrate: Scalars['Float']['input'];
+};
+
+
+/** structure to handle table sms */
 export type MutationVendorcontact_NewArgs = {
   contactName: Scalars['contactName_String_NotNull_maxLength_128']['input'];
   email: Scalars['email_String_NotNull_maxLength_180_format_email']['input'];
@@ -745,6 +775,67 @@ export type MutationVendorcontact_UpdateArgs = {
   notes: Scalars['notes_String_NotNull_maxLength_250']['input'];
   phone: Scalars['phone_String_NotNull_maxLength_20']['input'];
   revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationVendorinsurance_DeleteArgs = {
+  idCompany: Scalars['Int']['input'];
+  idVendor_insurance: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationVendorinsurance_UploadArgs = {
+  idCompany: Scalars['Int']['input'];
+  idVendor: Scalars['Int']['input'];
+  insuranceFiles?: InputMaybe<Array<Vendorfile>>;
+};
+
+
+/** structure to handle table sms */
+export type MutationVendorpayment_DeactivateArgs = {
+  id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationVendorpayment_NewArgs = {
+  account: Scalars['account_String_NotNull_maxLength_25']['input'];
+  bankName: Scalars['bankName_String_NotNull_maxLength_128']['input'];
+  defaultPay: Scalars['Boolean']['input'];
+  email: Scalars['email_String_NotNull_maxLength_180_format_email']['input'];
+  holderName: Scalars['holderName_String_NotNull_maxLength_128']['input'];
+  idCompany: Scalars['Int']['input'];
+  idVendor: Scalars['Int']['input'];
+  payType: Scalars['payType_String_NotNull_maxLength_25']['input'];
+  routing: Scalars['routing_String_NotNull_maxLength_15']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationVendorpayment_SetdefaultArgs = {
+  defaultPay: Scalars['Boolean']['input'];
+  id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationVendorpayment_UpdateArgs = {
+  account: Scalars['account_String_NotNull_maxLength_25']['input'];
+  bankName: Scalars['bankName_String_NotNull_maxLength_128']['input'];
+  defaultPay: Scalars['Boolean']['input'];
+  email: Scalars['email_String_NotNull_maxLength_180_format_email']['input'];
+  holderName: Scalars['holderName_String_NotNull_maxLength_128']['input'];
+  id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+  routing: Scalars['routing_String_NotNull_maxLength_15']['input'];
 };
 
 export type Query = {
@@ -813,6 +904,12 @@ export type Query = {
   vendorcontact_info: Vendorcontactinforesult;
   /** get vendor_contact list */
   vendorcontact_list: Vendorcontactlist;
+  /** get insurance attachment */
+  vendorinsurance_attachment: Vendorinsurancelist;
+  /** get vendorpayment info */
+  vendorpayment_info: Vendorpaymentinforesult;
+  /** get vendorpayment list */
+  vendorpayment_list: Vendorpaymentlist;
 };
 
 
@@ -968,6 +1065,24 @@ export type QueryVendorcontact_InfoArgs = {
 
 
 export type QueryVendorcontact_ListArgs = {
+  idVendor: Scalars['Int']['input'];
+};
+
+
+export type QueryVendorinsurance_AttachmentArgs = {
+  idCompany: Scalars['Int']['input'];
+  idVendor: Scalars['Int']['input'];
+};
+
+
+export type QueryVendorpayment_InfoArgs = {
+  id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
+};
+
+
+export type QueryVendorpayment_ListArgs = {
+  idCompany: Scalars['Int']['input'];
   idVendor: Scalars['Int']['input'];
 };
 
@@ -1678,14 +1793,17 @@ export type Projectorder_Activity = {
 export type Projectorder_File = {
   __typename?: 'projectorder_file';
   active: Scalars['Boolean']['output'];
+  avatar: Scalars['String']['output'];
   createdBy: Scalars['Int']['output'];
   createdDate: Scalars['String']['output'];
   fileName: Scalars['String']['output'];
   fileSize: Scalars['Int']['output'];
   fileType: Scalars['String']['output'];
   fileUrl: Scalars['String']['output'];
+  firstName: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   idOrder1: Scalars['Int']['output'];
+  lastName: Scalars['String']['output'];
   modifiedBy: Scalars['Int']['output'];
   modifiedDate: Scalars['String']['output'];
   revision: Scalars['Int']['output'];
@@ -1840,11 +1958,16 @@ export type Vendor_Account = {
   costcodes?: Maybe<Array<_Vendor_Costcode>>;
   createdBy: Scalars['Int']['output'];
   createdDate: Scalars['String']['output'];
+  discount: Scalars['Float']['output'];
   email: Scalars['String']['output'];
+  federalId: Scalars['String']['output'];
+  form1099: Scalars['Boolean']['output'];
   id: Scalars['Int']['output'];
   idCompany: Scalars['Int']['output'];
   modifiedBy: Scalars['Int']['output'];
   modifiedDate: Scalars['String']['output'];
+  paymentTerms: Scalars['String']['output'];
+  payto: Scalars['String']['output'];
   phone: Scalars['String']['output'];
   primaryContact: Scalars['String']['output'];
   revision: Scalars['Int']['output'];
@@ -1987,10 +2110,79 @@ export type Vendorinforesult = {
   message: Scalars['String']['output'];
 };
 
+export type Vendorinsurancelist = {
+  __typename?: 'vendorinsurancelist';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Array<Vendor_File>>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
 export type Vendorlist = {
   __typename?: 'vendorlist';
   code: Scalars['Int']['output'];
   data?: Maybe<Array<Vendor_Account>>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+/** structure to handle table company_payment */
+export type Vendorpayment = {
+  __typename?: 'vendorpayment';
+  account: Scalars['String']['output'];
+  active: Scalars['Boolean']['output'];
+  bankName: Scalars['String']['output'];
+  createdBy: Scalars['Int']['output'];
+  createdDate: Scalars['String']['output'];
+  defaultPay: Scalars['Boolean']['output'];
+  email: Scalars['String']['output'];
+  holderName: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  idVendor: Scalars['Int']['output'];
+  linkedProjects?: Maybe<Scalars['Int']['output']>;
+  modifiedBy: Scalars['Int']['output'];
+  modifiedDate: Scalars['String']['output'];
+  nextAch: Scalars['Int']['output'];
+  nextCheck: Scalars['Int']['output'];
+  payType: Scalars['String']['output'];
+  revision: Scalars['Int']['output'];
+  routing: Scalars['String']['output'];
+};
+
+export type Vendorpaymentbooleanresult = {
+  __typename?: 'vendorpaymentbooleanresult';
+  code: Scalars['Int']['output'];
+  data: Scalars['Boolean']['output'];
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Vendorpaymentidrevision = {
+  __typename?: 'vendorpaymentidrevision';
+  id: Scalars['Int']['output'];
+  revision: Scalars['Int']['output'];
+};
+
+export type Vendorpaymentinforesult = {
+  __typename?: 'vendorpaymentinforesult';
+  code: Scalars['Int']['output'];
+  data: Vendorpayment;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Vendorpaymentlist = {
+  __typename?: 'vendorpaymentlist';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Array<Vendorpayment>>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Vendorpaymentresult = {
+  __typename?: 'vendorpaymentresult';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Vendorpaymentidrevision>;
   error: Scalars['Boolean']['output'];
   message: Scalars['String']['output'];
 };

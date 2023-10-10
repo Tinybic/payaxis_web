@@ -11,7 +11,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [
-    VendorlistComponent
+    VendorlistComponent,
   ],
   imports: [
     CommonModule,

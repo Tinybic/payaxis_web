@@ -240,13 +240,17 @@
                 <a ngbNavLink>
                     Orders
                 </a>
-            
+                <ng-template ngbNavContent class="d-flex flex-column">
+                    <app-vendor-order  class="flex-column-1"></app-vendor-order>
+                </ng-template>
             </li>
             <li [ngbNavItem]="4">
                 <a ngbNavLink>
                     Payment
                 </a>
-            
+                <ng-template ngbNavContent class="d-flex flex-column">
+                    <app-vendor-payment [params]={idvendor} class="flex-column-1"></app-vendor-payment>
+                </ng-template>
             </li>
         </ul>
         
