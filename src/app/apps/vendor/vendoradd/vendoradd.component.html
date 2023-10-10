@@ -8,8 +8,11 @@
 <div class="row mt-1-1">
     <div class="col-md-6 d-flex align-items-center" style="padding-top: 2px;padding-bottom: 2px;">
         <span class="headline" style="line-height: 44px;">{{vendor.vendorName}}&nbsp;</span>
-        <div class="d-inline-block ms-1-1 activeTag">
-            Active
+        <div *ngIf="!vendor.status" class="d-inline-block ms-1-1 DraftTag subtitle-2-600 text-typeblackdeactivated">
+            Draft
+        </div>
+        <div *ngIf="vendor.status" class="d-inline-block ms-1-1 DraftTag subtitle-2-600 text-typeblackdeactivated">
+            <img src="/assets/images/status-icons/{{vendor.status.toLowerCase()}}.png" />
         </div>
     </div>
     <div *ngIf="tabs1 == 1" class="col-md-6 text-end">
@@ -27,7 +30,7 @@
 </div>
 <div class="row mt-1-1 flex-1">
     <div class="col flex-column-1">
-        <ul ngbNav #nav2="ngbNav" [(activeId)]="tabs1"  class="nav-pills navtab-bg ">
+        <ul ngbNav #nav2="ngbNav" [(activeId)]="tabs1" class="nav-pills navtab-bg ">
             <li [ngbNavItem]="1">
                 <a ngbNavLink>
                     Details
@@ -44,9 +47,8 @@
                                 <div class="col-md-6">
                                     <label class="form-label" i18n>Vendor Name</label>
                                     <input autofocus class="form-control" type="text" id="vendorName"
-                                           [(ngModel)]="vendor.vendorName"
-                                           required i18n-placeholder placeholder="Vendor Name"
-                                           [ngClass]="{'is-invalid':vendorError.vendorName}"/>
+                                        [(ngModel)]="vendor.vendorName" required i18n-placeholder
+                                        placeholder="Vendor Name" [ngClass]="{'is-invalid':vendorError.vendorName}" />
                                     <div *ngIf="vendorError.vendorName" class="invalid-feedback">
                                         <div i18n>
                                             <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter vendor
@@ -57,52 +59,51 @@
                                 <div class="col-md-3">
                                     <label class="form-label" i18n>Type</label>
                                     <input class="form-control" type="text" id="vendorType"
-                                           [(ngModel)]="vendor.vendorType" required
-                                           i18n-placeholder placeholder="Type"/>
+                                        [(ngModel)]="vendor.vendorType" required i18n-placeholder placeholder="Type" />
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label" i18n>Cost Code</label>
                                     <div class="dropdown" ngbDropdown>
                                         <input class="form-select" type="text" id="vendorcostcodes"
-                                               [(ngModel)]="vendorcostcodesText"
-                                               required i18n-placeholder placeholder="Cost Code" ngbDropdownToggle/>
+                                            [(ngModel)]="vendorcostcodesText" required i18n-placeholder
+                                            placeholder="Cost Code" ngbDropdownToggle />
                                         <div style="max-height: 300px; overflow-y: auto;" class="dropdown-menu"
-                                             aria-labelledby="vendorcostcodes" ngbDropdownMenu>
+                                            aria-labelledby="vendorcostcodes" ngbDropdownMenu>
                                             <div>
-                                                <input auto-complete="off" type="search" class="form-control form-search"
-                                                       [(ngModel)]="keywords"
-                                                       (keyup)="costCodeFilter()"/>
+                                                <input auto-complete="off" type="search"
+                                                    class="form-control form-search" [(ngModel)]="keywords"
+                                                    (keyup)="costCodeFilter()" />
                                             </div>
                                             <div *ngFor="let item of costCodeList">
                                                 <div style="color: #215EA9; font-weight: 600; margin-bottom: 8px; margin-top: 8px;"
-                                                     *ngIf="item.costcodelist.length>0">
+                                                    *ngIf="item.costcodelist.length>0">
                                                     {{item.txtName}}
                                                 </div>
                                                 <div class="mb-1" *ngFor="let costcode of item.costcodelist">
                                                     <div>
                                                         <input type="checkbox" class="form-check-input"
-                                                               [checked]="setCostCodeSelect(costcode.costCode)"
-                                                               (change)="costCodeSelect($event,costcode)"
-                                                               id="dropdownCheck">
+                                                            [checked]="setCostCodeSelect(costcode.costCode)"
+                                                            (change)="costCodeSelect($event,costcode)"
+                                                            id="dropdownCheck">
                                                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                                                             {{costcode.txtName}}
                                                         </label>
                                                     </div>
                                                 </div>
                                             </div>
-                                        
+
                                         </div>
                                     </div>
-                                
+
                                 </div>
                             </div>
                             <div class="row mt-2-1">
                                 <div class="col-md-3">
                                     <label class="form-label" i18n>Primary Contact</label>
                                     <input class="form-control" type="text" id="primaryContact"
-                                           [(ngModel)]="vendor.primaryContact" required
-                                           i18n-placeholder placeholder="Contact Name"
-                                           [ngClass]="{'is-invalid':vendorError.primaryContact}"/>
+                                        [(ngModel)]="vendor.primaryContact" required i18n-placeholder
+                                        placeholder="Contact Name"
+                                        [ngClass]="{'is-invalid':vendorError.primaryContact}" />
                                     <div *ngIf="vendorError.primaryContact" class="invalid-feedback">
                                         <div i18n>
                                             <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter contact
@@ -113,8 +114,8 @@
                                 <div class="col-md-3">
                                     <label class="form-label" i18n>Email</label>
                                     <input class="form-control" type="text" id="email" [(ngModel)]="vendor.email"
-                                           required i18n-placeholder
-                                           placeholder="Email" [ngClass]="{'is-invalid':vendorError.email}"/>
+                                        required i18n-placeholder placeholder="Email"
+                                        [ngClass]="{'is-invalid':vendorError.email}" />
                                     <div *ngIf="vendorError.email" class="invalid-feedback">
                                         <div i18n>
                                             <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter email
@@ -124,21 +125,19 @@
                                 <div class="col-md-3">
                                     <label class="form-label" i18n>Phone</label>
                                     <input class="form-control" type="text" id="phone" [(ngModel)]="vendor.phone"
-                                           required i18n-placeholder mask="(000) 000-0000"
-                                           placeholder="Phone number"/>
+                                        required i18n-placeholder mask="(000) 000-0000" placeholder="Phone number" />
                                 </div>
-                                
+
                                 <div class="col-md-3">
                                     <label class="form-label" i18n>Website</label>
                                     <input class="form-control" type="text" id="website" [(ngModel)]="vendor.website"
-                                           required
-                                           i18n-placeholder placeholder="Website"/>
+                                        required i18n-placeholder placeholder="Website" />
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
-                    
+
+
                     <div class="row">
                         <div class="col-md-6">
                             <div class="card">
@@ -152,36 +151,35 @@
                                         <div class="col-md-8">
                                             <label class="form-label" i18n>Street Address</label>
                                             <input class="form-control" type="text" id="txtAddress"
-                                                   [(ngModel)]="vendor.txtAddress" required
-                                                   i18n-placeholder placeholder="Street Address"/>
+                                                [(ngModel)]="vendor.txtAddress" required i18n-placeholder
+                                                placeholder="Street Address" />
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label" i18n>Apt,suite,etc</label>
                                             <input class="form-control" type="text" id="suiteNumber"
-                                                   [(ngModel)]="vendor.suiteNumber"
-                                                   required i18n-placeholder placeholder="Apt,suite,etc"/>
+                                                [(ngModel)]="vendor.suiteNumber" required i18n-placeholder
+                                                placeholder="Apt,suite,etc" />
                                         </div>
                                     </div>
                                     <div class="row mt-2-1">
                                         <div class="col-md-4">
                                             <label class="form-label" i18n>City</label>
                                             <input class="form-control" type="text" id="txtCity"
-                                                   [(ngModel)]="vendor.txtCity" required
-                                                   i18n-placeholder placeholder="City"/>
+                                                [(ngModel)]="vendor.txtCity" required i18n-placeholder
+                                                placeholder="City" />
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label" i18n>State</label>
                                             <input id="txtState" type="text" class="form-select position-relative"
-                                                   [ngbTypeahead]="searchState"
-                                                   (focus)="focus$.next($any($event).target.value)"
-                                                   placeholder="State" 
-                                                   #instance="ngbTypeahead" [(ngModel)]="vendor.txtState"/>
+                                                [ngbTypeahead]="searchState"
+                                                (focus)="focus$.next($any($event).target.value)" placeholder="State"
+                                                #instance="ngbTypeahead" [(ngModel)]="vendor.txtState" />
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label" i18n>Zip Code</label>
                                             <input class="form-control" type="text" id="txtZipcode"
-                                                   [(ngModel)]="vendor.txtZipcode" required
-                                                   i18n-placeholder placeholder="Zip Code"/>
+                                                [(ngModel)]="vendor.txtZipcode" required i18n-placeholder
+                                                placeholder="Zip Code" />
                                         </div>
                                     </div>
                                 </div>
@@ -196,25 +194,27 @@
                                         </div>
                                         <div class="col-md-6 text-end">
                                             <button class="btn btn-outline-primary ms-2-1" style="padding: 8px 16px;"
-                                                    onclick="document.getElementById('filesUpload').click()"><i
+                                                onclick="document.getElementById('filesUpload').click()"><i
                                                     class="fe-plus-square me-1-1"></i>Upload File
                                             </button>
                                             <input type="file" (change)="uploadFile($event)" class="d-none"
-                                                   id="filesUpload"/>
+                                                id="filesUpload" />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6 mt-1-1"
-                                             *ngFor="let item of vendor.vendorfiles; let i = index">
-                                            <div style="padding: 8px 16px; border-radius: 8px; border:1px solid #E1E6EF; display: flex;">
+                                            *ngFor="let item of vendor.vendorfiles; let i = index">
+                                            <div
+                                                style="padding: 8px 16px; border-radius: 8px; border:1px solid #E1E6EF; display: flex;">
                                                 <img src="/assets/images/icon/{{item.fileType}}.png"
-                                                     style="height: 24px; width: 24px;"
-                                                     onerror="javascript:this.src='/assets/images/icon/dat.png';"/>
+                                                    style="height: 24px; width: 24px;"
+                                                    onerror="javascript:this.src='/assets/images/icon/dat.png';" />
                                                 &nbsp;&nbsp;
                                                 <div class="bold-600"
-                                                     style="flex: 1;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;line-height: 24px;">{{item.fileName}}</div>
+                                                    style="flex: 1;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;line-height: 24px;">
+                                                    {{item.fileName}}</div>
                                                 <i class="fe-x float-end text-danger cursor-pointer line-24"
-                                                   (click)="openDeleteModal(i,item)"></i>
+                                                    (click)="openDeleteModal(i,item)"></i>
                                             </div>
                                         </div>
                                         <div *ngIf="vendor.vendorfiles.length==0" class="col-md-12">
@@ -225,7 +225,7 @@
                             </div>
                         </div>
                     </div>
-                
+
                 </ng-template>
             </li>
             <li [ngbNavItem]="2">
@@ -240,16 +240,20 @@
                 <a ngbNavLink>
                     Orders
                 </a>
-            
+                <ng-template ngbNavContent class="d-flex flex-column">
+                    <app-vendor-order class="flex-column-1"></app-vendor-order>
+                </ng-template>
             </li>
             <li [ngbNavItem]="4">
                 <a ngbNavLink>
                     Payment
                 </a>
-            
+                <ng-template ngbNavContent class="d-flex flex-column">
+                    <app-vendor-payment [params]={idvendor,vendorAdditional} class="flex-column-1"></app-vendor-payment>
+                </ng-template>
             </li>
         </ul>
-        
+
         <div [ngbNavOutlet]="nav2" class="mb-0 b-0 pt-0 flex-column-1"></div>
     </div>
 </div>
@@ -267,7 +271,7 @@
             </div>
         </div>
         <div class="delete-alert-content text-start">Do you want to close the page? All changes will not be saved.</div>
-        
+
         <div class="d-flex justify-content-between mt-3">
             <div class="delete-cancel-button mt-0 line-40 cursor-pointer" (click)="cancelBack()">
                 Cancel
@@ -277,7 +281,7 @@
                 <button class="btn btn-primary ms-2-1" (click)="save()">Save an Close</button>
             </div>
         </div>
-    
+
     </div>
 </ng-template>
 
@@ -335,5 +339,3 @@
 <div class="modal-x" (click)="cancel()">
     <i class="fe-x"></i>
 </div>
-
-

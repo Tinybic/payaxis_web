@@ -14,12 +14,16 @@ import { AddVendorContactComponent } from "../add-vendor-contact/add-vendor-cont
 import { provideNgxMask, NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { UiModule } from 'src/app/shared/ui/ui.module';
 import { SharedModule } from "../../../shared/shared.module";
+import { VendorOrderComponent } from '../vendor-order/vendor-order.component';
+import { VendorPaymentComponent } from '../vendor-payment/vendor-payment.component';
 
 @NgModule({
   declarations: [
     VendoraddComponent,
     VendorContactsComponent,
     AddVendorContactComponent,
+    VendorOrderComponent,
+    VendorPaymentComponent
   ],
   imports: [
     CommonModule,

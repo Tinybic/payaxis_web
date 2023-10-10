@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import {
   UntypedFormBuilder,
   UntypedFormGroup,
@@ -6,27 +6,30 @@ import {
 } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { PAYMENTTERM } from 'src/app/core/constants/payment';
+import { bankname_routing } from 'src/app/core/gql/payment';
 import {
-  bankname_routing,
-  companypayment_deactivate,
-  companypayment_list,
-  companypayment_new,
-  companypayment_setdefault,
-  companypayment_update,
-} from 'src/app/core/gql/payment';
+  vendoradditional_update,
+  vendorpayment_deactivate,
+  vendorpayment_list,
+  vendorpayment_new,
+  vendorpayment_setdefault,
+  vendorpayment_update,
+} from 'src/app/core/gql/vendor-payment';
 import { matchValidator } from 'src/app/core/helpers/match.validator';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 
 @Component({
-  selector: 'app-payment',
-  templateUrl: './payment.component.html',
-  styleUrls: ['./payment.component.scss'],
+  selector: 'app-vendor-payment',
+  templateUrl: './vendor-payment.component.html',
+  styleUrls: ['./vendor-payment.component.scss'],
 })
-export class PaymentComponent {
+export class VendorPaymentComponent {
   @ViewChild('addpayment') addpayment: any;
   @ViewChild('deletepayment') deletepayment: any;
   @ViewChild('cancelpayment') cancelpayment: any;
   @ViewChild('defaultpayment') defaultpayment: any;
+  @Input() params;
 
   paymentForm: UntypedFormGroup = this.fb.group({
     account: ['', [Validators.required]],
@@ -38,6 +41,18 @@ export class PaymentComponent {
     defaultPay: [null],
     payType: ['ACH'],
   });
+
+
+  additionalForm: UntypedFormGroup = this.fb.group({
+    payto: ['', Validators.required],
+    federalId: ['', Validators.required],
+    taxrate: ['', Validators.required],
+    discount: ['', Validators.required,],
+    paymentTerms: [''],
+    form1099: [false],
+  });
+
+  paymentTermsList = PAYMENTTERM;
   formSubmitted: boolean = false;
   loading = true;
   paymentList = [];
@@ -59,14 +74,25 @@ export class PaymentComponent {
   ngOnInit(): void {
     this.formValues['email'].setValue(localStorage.getItem('email'));
     this.idcompany = parseInt(localStorage.getItem('idcompany'));
+    
+    console.log(this.params.vendorAdditional)
+    this.formValues1['payto'].setValue(this.params.vendorAdditional.payto);
+    this.formValues1['federalId'].setValue(this.params.vendorAdditional.federalId);
+    this.formValues1['discount'].setValue(this.params.vendorAdditional.discount);
+    this.formValues1['taxrate'].setValue(this.params.vendorAdditional.taxrate);
+    this.formValues1['paymentTerms'].setValue(this.params.vendorAdditional.paymentTerms);
+    this.formValues1['form1099'].setValue(this.params.vendorAdditional.form1099);
     this.getPaymentList();
   }
 
   getPaymentList() {
     this.apolloService
-      .query(companypayment_list, { idCompany: this.idcompany })
+      .query(vendorpayment_list, {
+        idCompany: this.idcompany,
+        idVendor: this.params.idvendor,
+      })
       .then((res) => {
-        const result = res.companypayment_list;
+        const result = res.vendorpayment_list;
         if (!result.error) {
           this.paymentList = result.data;
         }
@@ -74,12 +100,12 @@ export class PaymentComponent {
       });
   }
 
-  selectIndexFn(index) {
-    this.selectIndex = index;
-  }
-
   get formValues() {
     return this.paymentForm.controls;
+  }
+
+  get formValues1() {
+    return this.additionalForm.controls;
   }
 
   addref;
@@ -160,14 +186,14 @@ export class PaymentComponent {
 
   SetDefault() {
     this.apolloService
-      .mutate(companypayment_setdefault, {
+      .mutate(vendorpayment_setdefault, {
         idCompany: parseInt(localStorage.getItem('idcompany')),
         id: this.id,
         revision: this.revision,
         defaultPay: this.defaultPay,
       })
       .then((res) => {
-        const result = res.companypayment_setdefault;
+        const result = res.vendorpayment_setdefault;
         let message = '';
         if (!result.error) {
           if (this.defaultPay) message = 'Make Default Payment Method';
@@ -186,8 +212,9 @@ export class PaymentComponent {
     if (this.paymentForm.valid) {
       if (this.buttonText == 'Create') {
         this.apolloService
-          .mutate(companypayment_new, {
+          .mutate(vendorpayment_new, {
             idCompany: this.idcompany,
+            idVendor: this.params.idvendor,
             account: this.formValues['account'].value,
             routing: this.formValues['routing'].value,
             payType: this.formValues['payType'].value,
@@ -197,7 +224,7 @@ export class PaymentComponent {
             defaultPay: this.formValues['defaultPay'].value,
           })
           .then((res) => {
-            const result = res.companypayment_new;
+            const result = res.vendorpayment_new;
             let message = '';
             if (!result.error) {
               message =
@@ -213,7 +240,7 @@ export class PaymentComponent {
           });
       } else {
         this.apolloService
-          .mutate(companypayment_update, {
+          .mutate(vendorpayment_update, {
             id: this.id,
             revision: this.revision,
             idCompany: this.idcompany,
@@ -226,7 +253,7 @@ export class PaymentComponent {
             defaultPay: this.formValues['defaultPay'].value,
           })
           .then((res) => {
-            const result = res.companypayment_update;
+            const result = res.vendorpayment_update;
             let message = '';
             if (!result.error) {
               message =
@@ -256,13 +283,13 @@ export class PaymentComponent {
 
   deletePaymentItem() {
     this.apolloService
-      .mutate(companypayment_deactivate, {
+      .mutate(vendorpayment_deactivate, {
         idCompany: parseInt(localStorage.getItem('idcompany')),
         id: this.id,
         revision: this.revision,
       })
       .then((res) => {
-        const result = res.companypayment_deactivate;
+        const result = res.vendorpayment_deactivate;
         let message = '';
         if (!result.error) {
           message =
@@ -324,6 +351,36 @@ export class PaymentComponent {
         if (!result.error) {
           this.formValues['bankName'].setValue(result.data);
         }
+      });
+  }
+
+  dropdownSelect(item) {
+    this.formValues1['paymentTerms'].setValue(item);
+    this.updateVendorAdditional();
+  }
+
+  updateVendorAdditional() {
+    this.apolloService
+      .mutate(vendoradditional_update, {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
+        id: this.params.vendorAdditional.id,
+        revision: this.params.vendorAdditional.revision,
+        payto: this.formValues1['payto'].value,
+        federalId: this.formValues1['federalId'].value,
+        taxrate: parseFloat(this.formValues1['taxrate'].value),
+        discount: parseFloat(this.formValues1['discount'].value),
+        paymentTerms: this.formValues1['paymentTerms'].value,
+        form1099: this.formValues1['form1099'].value,
+      })
+      .then((res) => {
+        const result = res.vendoradditional_update;
+        let message = '';
+        if (!result.error) {
+          message = 'Update successfully';
+        } else {
+          message = result.message;
+        }
+        this.toastrService.info(message, '');
       });
   }
 }
