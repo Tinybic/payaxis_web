@@ -1,6 +1,6 @@
 import { RtlScrollAxisType } from '@angular/cdk/platform';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ActivatedRoute,  Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { EventType } from 'src/app/core/constants/events';
@@ -58,10 +58,10 @@ export class AddOrderComponent {
     status: '',
     listItems: [],
   };
-  
+
   attachmentFilesTemp = [];
   isUploading = false;
-  
+
   showRelated = false;
   orderError = {
     costcode: -1,
@@ -104,7 +104,7 @@ export class AddOrderComponent {
     private httpService: HttpService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private eventService: EventService,
+    private eventService: EventService
   ) {}
 
   ngOnInit(): void {
@@ -117,6 +117,7 @@ export class AddOrderComponent {
       if (this.order.id > 0) {
         this.getOrderInfo(this.order.id);
       } else {
+        this.order.invoicedDate = new Date().toISOString().slice(0, 10);
         this.getOrderNumber();
         this.getCostCodeList();
         this.getResonList();
@@ -126,62 +127,67 @@ export class AddOrderComponent {
       }
     });
   }
-  
-  getUploadUrl(event){
+
+  getUploadUrl(event) {
     this.attachmentFilesTemp = [];
-    for(var i = 0; i < event.target.files.length; i++){
+    for (var i = 0; i < event.target.files.length; i++) {
       this.isUploading = true;
       this.eventService.broadcast(EventType.REFRESH_ATTACHMENTS, true);
       const file = event.target.files[i];
-      if(file){
-        this.handleUploadTemp(file, event.target.files.length)
+      if (file) {
+        this.handleUploadTemp(file, event.target.files.length);
       }
     }
   }
-  
-  handleUploadTemp(file, filesLength){
+
+  handleUploadTemp(file, filesLength) {
     const fileName = getNewFileName(file.name);
     file.filename = fileName;
-    this.apolloService.query(get_file_url, {
-      fileName: fileName,
-      folder: 'files'
-    }).then((res) => {
-      if(!res.get_file_url.error){
-        let uploadUrl = res.get_file_url.data;
-        this.httpService.put(uploadUrl, file).then((res) => {
-          this.attachmentFilesTemp.push({
-            fileName: file.name,
-            fileSize: file.size,
-            fileType: file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase(),
-            fileUrl: uploadUrl.split('?')[0]
-          })
-        
-          if(this.attachmentFilesTemp.length == filesLength){
-            this.attachmentUploadFile();
-          }
-        });
-      }
-    });
-  }
-  
-  attachmentUploadFile(){
-    this.apolloService.mutate(projectorder_uploadfiles, {
-      idCompany: parseInt(localStorage.getItem('idcompany')),
-      idOrder1: this.order.id,
-      orderFiles: this.attachmentFilesTemp
-    }).then((res) => {
-      const result = res.projectorder_uploadfiles;
-      let message = '';
-      if(!result.error){
-        message = 'Upload successful';
-      } else{
-        message = result.message;
-      }
-      this.isUploading = false;
-      this.eventService.broadcast(EventType.REFRESH_ATTACHMENTS, false);
-      this.toastrService.info(message, '');
-    });
+    this.apolloService
+      .query(get_file_url, {
+        fileName: fileName,
+        folder: 'files',
+      })
+      .then((res) => {
+        if (!res.get_file_url.error) {
+          let uploadUrl = res.get_file_url.data;
+          this.httpService.put(uploadUrl, file).then((res) => {
+            this.attachmentFilesTemp.push({
+              fileName: file.name,
+              fileSize: file.size,
+              fileType: file.name
+                .substring(file.name.lastIndexOf('.') + 1)
+                .toLowerCase(),
+              fileUrl: uploadUrl.split('?')[0],
+            });
 
+            if (this.attachmentFilesTemp.length == filesLength) {
+              this.attachmentUploadFile();
+            }
+          });
+        }
+      });
+  }
+
+  attachmentUploadFile() {
+    this.apolloService
+      .mutate(projectorder_uploadfiles, {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idOrder1: this.order.id,
+        orderFiles: this.attachmentFilesTemp,
+      })
+      .then((res) => {
+        const result = res.projectorder_uploadfiles;
+        let message = '';
+        if (!result.error) {
+          message = 'Upload successful';
+        } else {
+          message = result.message;
+        }
+        this.isUploading = false;
+        this.eventService.broadcast(EventType.REFRESH_ATTACHMENTS, false);
+        this.toastrService.info(message, '');
+      });
   }
 
   getOrderInfo(id) {
@@ -238,27 +244,23 @@ export class AddOrderComponent {
         const result = res.projectorder_related;
         if (!result.error) {
           this.relatedList = result.data;
-          this.RELATEDLIST= JSON.parse(JSON.stringify(result.data));
+          this.RELATEDLIST = JSON.parse(JSON.stringify(result.data));
           this.relatedIndex = 0;
         }
       });
   }
 
-
-  FilterRelatedList(item){
-    if(item == 1){
+  FilterRelatedList(item) {
+    if (item == 1) {
       this.sameProject = !this.sameProject;
-    }
-    else if(item == 2){
+    } else if (item == 2) {
       this.sameVendor = !this.sameVendor;
-    }
-    else{
+    } else {
       this.paidyn = !this.paidyn;
     }
 
     this.getRelatedList();
   }
-
 
   getOrderNumber() {
     this.apolloService
@@ -456,12 +458,18 @@ export class AddOrderComponent {
   }
 
   keywordsRelated = '';
-  relatedFilter(){
-    console.log(this.keywordsRelated)
+  relatedFilter() {
+    console.log(this.keywordsRelated);
     this.relatedList = JSON.parse(JSON.stringify(this.RELATEDLIST));
-    this.relatedList = this.relatedList.filter((item) =>
-      item.orderNumber.toString().toLowerCase().includes(this.keywordsRelated.toLowerCase())||
-      item.projectName.toLowerCase().includes(this.keywordsRelated.toLowerCase())
+    this.relatedList = this.relatedList.filter(
+      (item) =>
+        item.orderNumber
+          .toString()
+          .toLowerCase()
+          .includes(this.keywordsRelated.toLowerCase()) ||
+        item.projectName
+          .toLowerCase()
+          .includes(this.keywordsRelated.toLowerCase())
     );
   }
 
@@ -540,6 +548,11 @@ export class AddOrderComponent {
         price: item.price,
       });
     });
+
+    if (listitemPara.length == 0) {
+      this.toastrService.info('At least one item to save', '');
+      return;
+    }
 
     this.order.listItems = listitemPara;
     let gql = projectorder_new;

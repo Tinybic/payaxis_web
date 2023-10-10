@@ -30,3 +30,13 @@
 .relateItem:hover {
     background-color: #F1F3F9;
 }
+
+input[type='date']{
+    position: relative;
+}
+input[type='date']::-webkit-calendar-picker-indicator {
+    position: absolute;
+    right: 16;
+    padding-left: calc(100% - 40px);
+    content: "\e83a";
+}
