@@ -126,7 +126,7 @@
             <input type="text" style="display: none;" />
             <div class="col-md-12 d-flex align-items-center">
                 <i class="fe-chevron-left"></i>
-                <span class="bold-500"><a routerLink="/apps/order" style="color: #202020;">All Vendors</a></span>&nbsp;/&nbsp;<span class="bold-800 text-primary"
+                <span class="bold-500"><a routerLink="/apps/order" style="color: #202020;">All Orders & Bills</a></span>&nbsp;/&nbsp;<span class="bold-800 text-primary"
                     *ngIf="order.id > 0">Order #{{order.orderNumber}}</span><span class="bold-800 text-primary"
                     *ngIf="order.id == 0">New Order</span>
             </div>
@@ -152,7 +152,7 @@
                 <button class="btn btn-outline-primary" onclick="document.getElementById('attachmentUpload').click()" [disabled]="isUploading">
                   <i class="fe-upload me-1-1"></i>Upload Attachment
                 </button>
-                <button class="btn btn-primary ms-2-1" (click)="saveOrder()">Save</button>
+                <button class="btn btn-primary ms-2-1" *ngIf="tabs1 == 1" (click)="saveOrder()">Save</button>
                 <i class="fe-more-vertical- ms-2-1"></i>
             </div>
         </div>
@@ -670,7 +670,7 @@
         </div>
     </div>
 </div>
-<div class="orderDetailBottom">
+<div class="orderDetailBottom" *ngIf = "tabs1 == 1">
     <div class="row padding-16-32">
         <div class="col-md-2">
             <label class="form-label" i18n>Non Taxable</label>
