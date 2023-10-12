@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   apiUrl: 'https://payaxis.azurewebsites.net/api/',
-  apolloUrl: 'http://192.168.99.18:4000/graphql',
+  apolloUrl: 'https://payaxis.azurewebsites.net/graphql',
   baseUrl: 'http://localhost:4200',
   intuitKey: 'ABmr511iE0FKIhJRmsN09MTXuSgekgQQcEdVwYiSmaSqnNywRZ',
 };
