@@ -169,6 +169,61 @@ const vendoradditional_update = gql`
     }
   }
 `;
+
+const vendorinsurance_attachment = gql`
+query vendorinsurance_attachment($idCompany: Int!, $idVendor: Int!) {
+  vendorinsurance_attachment(idCompany: $idCompany, idVendor: $idVendor) {
+    error
+    code
+    message
+    data {
+      id
+      revision
+      createdBy
+      createdDate
+      modifiedBy
+      modifiedDate
+      idVendor
+      fileName
+      fileSize
+      fileType
+      fileUrl
+      active
+    }
+  }
+}
+`
+const vendorinsurance_upload = gql`
+mutation vendorinsurance_upload($idCompany: Int!, $idVendor: Int!, $insuranceFiles: [vendorfile!]) {
+  vendorinsurance_upload(
+    idCompany: $idCompany
+    idVendor: $idVendor
+    insuranceFiles: $insuranceFiles
+  ) {
+    error
+    code
+    message
+    data
+  }
+}`
+
+const vendorinsurance_delete = gql`
+mutation vendorinsurance_delete($idCompany: Int!, $idVendor_insurance: Int!, $revision: Int!) {
+  vendorinsurance_delete(
+    idCompany: $idCompany
+    idVendor_insurance: $idVendor_insurance
+    revision: $revision
+  ) {
+    error
+    code
+    message
+    data
+  }
+}
+
+`
+
+
 export {
   vendorpayment_list,
   vendorpayment_new,
@@ -176,4 +231,7 @@ export {
   vendorpayment_deactivate,
   vendorpayment_setdefault,
   vendoradditional_update,
+  vendorinsurance_attachment,
+  vendorinsurance_upload,
+  vendorinsurance_delete,
 };

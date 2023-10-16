@@ -7,6 +7,8 @@ import { ActivatedRoute } from "@angular/router";
 import { FileSaverService } from 'ngx-filesaver';
 import { EventService } from "../../../core/service/event.service";
 import { EventType } from "../../../core/constants/events";
+import { IMG_TYPE } from "../../../core/constants/common";
+import { GlobalFunctionsService } from "../../../core/service/global-functions.service";
 
 @Component({
   selector: 'app-attachments',
@@ -31,14 +33,6 @@ export class AttachmentsComponent {
     params: {},
     btnSide: 'end'
   };
-  imgTypes = [
-    'jpeg',
-    'jpg',
-    'bmp',
-    'png',
-    'gif'
-  ]
-  
   
   constructor(
     private apolloService: ApolloService,
@@ -47,6 +41,7 @@ export class AttachmentsComponent {
     private activatedRoute: ActivatedRoute,
     private fileSaverService: FileSaverService,
     private eventService: EventService,
+    public globalService: GlobalFunctionsService,
   ){
     this.eventService.on(EventType.REFRESH_ATTACHMENTS).subscribe((appEvent) => {
       this.isUploadingAttachment = appEvent.payload == true;
@@ -95,14 +90,6 @@ export class AttachmentsComponent {
     this.allAttachmentsChecked = this.attachments.every((attachment) => {
       return attachment.checked;
     })
-  }
-  
-  getFileImg(attachment){
-    if(this.imgTypes.includes(attachment.fileType.toLowerCase())){
-      return attachment.fileUrl;
-    } else{
-      return 'assets/images/icon/' + attachment.fileType + '.png';
-    }
   }
   
   deleteAttachment(attachment, i){

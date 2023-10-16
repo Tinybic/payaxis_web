@@ -26,15 +26,19 @@ export class ConfirmModalComponent {
   ){}
   
   delete(){
-    this.apolloService.mutate(this.serviceName, this.params).then((res) => {
-      let result: any = Object.values(res)[0];
-      if(!result.error){
-        this.toastrService.info(result.message, '');
-        this.modalRef.close(result);
-      } else{
-        this.toastrService.info(result.message, '');
-      }
-    });
+    if(this.serviceName){
+      this.apolloService.mutate(this.serviceName, this.params).then((res) => {
+        let result: any = Object.values(res)[0];
+        if(!result.error){
+          this.toastrService.info(result.message, '');
+          this.modalRef.close(result);
+        } else{
+          this.toastrService.info(result.message, '');
+        }
+      });
+    }else {
+      this.modalRef.close('ok');
+    }
   }
   
 }

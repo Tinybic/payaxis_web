@@ -4,20 +4,23 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { PAYMENTTERM } from 'src/app/core/constants/payment';
 import { bankname_routing } from 'src/app/core/gql/payment';
 import {
-  vendoradditional_update,
+  vendoradditional_update, vendorinsurance_attachment,
   vendorpayment_deactivate,
   vendorpayment_list,
   vendorpayment_new,
   vendorpayment_setdefault,
-  vendorpayment_update,
+  vendorpayment_update
 } from 'src/app/core/gql/vendor-payment';
 import { matchValidator } from 'src/app/core/helpers/match.validator';
 import { ApolloService } from 'src/app/core/service/apollo.service';
+import { IMG_TYPE } from "../../../core/constants/common";
+import { vendorinsurance_delete } from "../../../core/gql/vendor-payment";
+import { GlobalFunctionsService } from "../../../core/service/global-functions.service";
 
 @Component({
   selector: 'app-vendor-payment',
@@ -29,6 +32,8 @@ export class VendorPaymentComponent {
   @ViewChild('deletepayment') deletepayment: any;
   @ViewChild('cancelpayment') cancelpayment: any;
   @ViewChild('defaultpayment') defaultpayment: any;
+  @ViewChild('uploadAttachment') uploadAttachment: NgbModalRef;
+  @ViewChild('deleteModal') deleteModal: NgbModalRef;
   @Input() params;
 
   paymentForm: UntypedFormGroup = this.fb.group({
@@ -62,14 +67,27 @@ export class VendorPaymentComponent {
   buttonText = 'Create';
   titleText = 'New Payment Method';
   id = 0;
-  revision = 0;
+  revision = 0;  
+  insuranceAttachmentList = [];
+  uploadAttachmentRef: NgbModalRef;
+  deleteModalRef: NgbModalRef;
+  deleteObj = {
+    title: '',
+    message: '',
+    btnConfirm: '',
+    serviceName: {},
+    params: {},
+    btnSide: 'end'
+  };
   sortColumn = '';
   direction = 'asc';
+  
   constructor(
     private fb: UntypedFormBuilder,
     private modalService: NgbModal,
     private toastrService: ToastrService,
-    private apolloService: ApolloService
+    private apolloService: ApolloService,
+    public globalService: GlobalFunctionsService
   ) {}
 
   ngOnInit(): void {
@@ -82,6 +100,7 @@ export class VendorPaymentComponent {
     this.formValues1['paymentTerms'].setValue(this.params.vendorAdditional.paymentTerms);
     this.formValues1['form1099'].setValue(this.params.vendorAdditional.form1099);
     this.getPaymentList();
+    this.getInsuranceAttachmentList();
   }
 
   getPaymentList() {
@@ -98,7 +117,21 @@ export class VendorPaymentComponent {
         this.loading = false;
       });
   }
-
+  
+  getInsuranceAttachmentList() {
+    this.apolloService
+    .query(vendorinsurance_attachment, {
+      idCompany: this.idcompany,
+      idVendor: this.params.idvendor,
+    })
+    .then((res) => {
+      const result = res.vendorinsurance_attachment;
+      if (!result.error) {
+        this.insuranceAttachmentList = result.data;
+      }
+      this.loading = false;
+    });
+  }
   get formValues() {
     return this.paymentForm.controls;
   }
@@ -384,5 +417,47 @@ export class VendorPaymentComponent {
         }
         this.toastrService.info(message, '');
       });
+  }
+  
+  uploadAttachments() {
+    this.uploadAttachmentRef = this.modalService.open(this.uploadAttachment, {
+      backdrop: 'static',
+      modalDialogClass: 'modal-right',
+      size: '530',
+    })
+    this.uploadAttachmentRef.result.then((res)=>{
+      this.getInsuranceAttachmentList();
+    }, (dismiss) => {
+    
+    })
+  }
+  
+  deleteAttachment(attachment, i){
+    this.deleteObj = {
+      message: attachment.fileName + ' will be deleted.',
+      title: 'Deleting Attachment',
+      btnConfirm: 'Confirm',
+      btnSide: 'end',
+      params: {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idVendor_insurance: attachment.id,
+        revision: attachment.revision
+      },
+      serviceName: vendorinsurance_delete
+    }
+    
+    this.deleteModalRef = this.modalService.open(this.deleteModal, {
+      size: '443',
+      centered: true
+    })
+    
+    this.deleteModalRef.result.then(
+      (result) => {
+        this.insuranceAttachmentList.splice(i, 1);
+      },
+      (reason) => {
+        console.log(reason);
+      })
+    
   }
 }
