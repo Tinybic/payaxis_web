@@ -67,8 +67,7 @@ export class VendorPaymentComponent {
   buttonText = 'Create';
   titleText = 'New Payment Method';
   id = 0;
-  revision = 0;
-  
+  revision = 0;  
   insuranceAttachmentList = [];
   uploadAttachmentRef: NgbModalRef;
   deleteModalRef: NgbModalRef;
@@ -80,7 +79,9 @@ export class VendorPaymentComponent {
     params: {},
     btnSide: 'end'
   };
-
+  sortColumn = '';
+  direction = 'asc';
+  
   constructor(
     private fb: UntypedFormBuilder,
     private modalService: NgbModal,
@@ -92,8 +93,6 @@ export class VendorPaymentComponent {
   ngOnInit(): void {
     this.formValues['email'].setValue(localStorage.getItem('email'));
     this.idcompany = parseInt(localStorage.getItem('idcompany'));
-    
-    console.log(this.params.vendorAdditional)
     this.formValues1['payto'].setValue(this.params.vendorAdditional.payto);
     this.formValues1['federalId'].setValue(this.params.vendorAdditional.federalId);
     this.formValues1['discount'].setValue(this.params.vendorAdditional.discount);
@@ -373,6 +372,9 @@ export class VendorPaymentComponent {
     this.savePayment();
   }
 
+  onSort(column){
+
+  }
   getBankName() {
     this.apolloService
       .query(bankname_routing, {
