@@ -83,14 +83,25 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body-p-16">
-                        <div class="row">
+                        <div class="row mb-2-1">
                             <div class="col-md-6 headline-24 pt-1">
                                 Insurance
                             </div>
                             <div class="col-md-6 headline-24 text-end">
-                                <button type="button" class="btn btn-outline-primary" style="padding: 8px 16px;"><i
+                                <button type="button" class="btn btn-outline-primary" (click)="uploadAttachments()" style="padding: 8px 16px;"><i
                                         class="fe-upload me-1-1"></i>Upload Attachment</button>
                                 <i class="fe-more-vertical- ms-2-1"></i>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div *ngFor="let attachment of insuranceAttachmentList;let i=index;" class="col-md-12 mt-1-1">
+                                <div class="d-flex flex-row align-items-center justify-content-between" style="padding: 8px 16px;border-radius: 8px;border: 1px solid #E1E6EF;">
+                                    <div class="subtitle-2-600">
+                                        <img class="me-1-1" [src]="globalService.getFileImg(attachment)" style="width: 24px;height: 24px;"/>
+                                        {{attachment.fileName}}
+                                    </div>
+                                    <i class="fe-x text-end cursor-pointer text-danger" (click)="deleteAttachment(attachment, i)"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -425,4 +436,17 @@
             </div>
         </div>
     </div>
+</ng-template>
+
+<!--uploadAttachment-->
+<ng-template #uploadAttachment let-modal>
+    <app-upload-attachment [idVendor]="params.idvendor" [modalRef]="uploadAttachmentRef"></app-upload-attachment>
+</ng-template>
+
+
+<!--#deleteModal-->
+<ng-template #deleteModal let-modal>
+    <app-confirm-modal [title]="deleteObj.title" [message]="deleteObj.message" [btnConfirm]="deleteObj.btnConfirm"
+                       [params]="deleteObj.params" [serviceName]="deleteObj.serviceName"
+                       [btnSide]="deleteObj.btnSide" [modalRef]="deleteModalRef"></app-confirm-modal>
 </ng-template>

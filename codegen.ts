@@ -3,7 +3,7 @@ import type { CodegenConfig } from '@graphql-codegen/cli';
     schema: [{
       'https://payaxis.azurewebsites.net/graphql': {
       headers: {
-        Authorization: `Bearer Y0NRs1DW5vOhzEjGx0UyFs9xKoK9y31p4WaMIFnUIaxCzmSJSClsQ+t4PuC5Refuo8+e6x1hi+mUGPaRE1UExRpWeMF93PtquudVWXeVoXomV/FSqPVLTHmRYNLNKd9V9LgdYdyVXQSRcQK3Rl++KB/kMEqHeiuzYxzmP8ZhmVAHQNk/GQ90awIlDT6AMvPCY62lDhuyhjqmt75rZVsWXpjljrxoDCxzV3ENMNKy4Yy8+oC6MLHb27d42qXtjsfAq50cPdTyDn0e9NjvJDGf9V0t+/7gWP/Fls0hPl41apFKRScoXuR0V9ZAQj+fGf6ZpniKP0Z5CUY+UFJyUW7txA==`,
+        Authorization: `Bearer Y0NRs1DW5vOhzEjGx0UyFt6WDvujCzqacI0y3HPlijhIyJPjMmRfLECePTF2e9qoqjTEwjCBbUI3qrRMB1Ucop7F+5C1Aix8jbWzADqFifvdY/uESC5CBeiva8uJar0oqKkRGrj/nb3blRT1KqiJmo+dL85GBIIgfvLWUlFXP7O8/8oEJmhNRakhOuk6elKhUOxfWI0t1S8rgRe0TLVIlvyXYjyzY3pvbDLXO7WdN7cksrwCcolb+gqY8UN63eLWEskBm5wsPDtrJIFCjUJew37pAz3VrybT1A8lEV5G9XPSpplTaYK7yhK3XFwUVN+0IO8LX1eQiPExZxW/o0Wieg==`,
       },
     }
   }],

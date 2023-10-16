@@ -16,6 +16,8 @@ import { UiModule } from 'src/app/shared/ui/ui.module';
 import { SharedModule } from "../../../shared/shared.module";
 import { VendorOrderComponent } from '../vendor-order/vendor-order.component';
 import { VendorPaymentComponent } from '../vendor-payment/vendor-payment.component';
+import { UploadAttachmentComponent } from "../upload-attachment/upload-attachment.component";
+import { NgxDropzoneModule } from "ngx-dropzone";
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import { VendorPaymentComponent } from '../vendor-payment/vendor-payment.compone
     VendorContactsComponent,
     AddVendorContactComponent,
     VendorOrderComponent,
-    VendorPaymentComponent
+    VendorPaymentComponent,
+    UploadAttachmentComponent,
   ],
   imports: [
     CommonModule,
@@ -37,7 +40,8 @@ import { VendorPaymentComponent } from '../vendor-payment/vendor-payment.compone
     NgxMaskDirective,
     NgxMaskPipe,
     SharedModule,
-    UiModule
+    UiModule,
+    NgxDropzoneModule,
   ],
   exports: [VendoraddComponent],
   providers:[

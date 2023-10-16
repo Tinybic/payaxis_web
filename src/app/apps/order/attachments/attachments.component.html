@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center justify-content-center mt-1-1" style="width: 197px;height: 255px;border-radius: 8px;">
-                    <img src="{{getFileImg(attachment)}}" onerror="this.src='assets/images/icon/zz.png';this.onerror='';" alt="" style="max-width: 197px;max-height: 255px;">
+                    <img [src]="globalService.getFileImg(attachment)" onerror="this.src='assets/images/icon/zz.png';this.onerror='';" alt="" style="max-width: 197px;max-height: 255px;">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-1-1">
                     <label class="search-text text-optional">{{attachment.createdDate | date: 'M/dd/yy hh:mm a'}}</label>

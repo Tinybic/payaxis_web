@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { IMG_TYPE } from "../constants/common";
 
 @Injectable({
   providedIn: 'root'
@@ -31,5 +32,30 @@ export class GlobalFunctionsService {
     });
     
     return {newArray, direction};
+  }
+  
+  
+  /**
+   * Formats file size
+   */
+  getSize(f: File) {
+    const bytes = f.size;
+    if (bytes === 0) {
+      return '0 Bytes';
+    }
+    const k = 1024;
+    const dm = 2;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  }
+  
+  getFileImg(file){
+    if(IMG_TYPE.includes(file.fileType.toLowerCase())){
+      return file.fileUrl;
+    } else{
+      return 'assets/images/icon/' + file.fileType + '.png';
+    }
   }
 }
