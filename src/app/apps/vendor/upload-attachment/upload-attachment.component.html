@@ -1,0 +1,53 @@
+<div class="modal-body" ngbAutoFocus style="width: 447px;padding: 32px 24px 24px;">
+    <div class="headline-24">Upload Attachments</div>
+    <div class="card mt-2-1 p-2-1" style="margin-bottom: 120px;">
+        <ngx-dropzone (change)="onSelect($event)" class="dropzone justify-content-center"
+                      style="width: 100%;height: 120px;min-height: unset !important;border: 1px solid #2B52DD !important;background-color: #F7FAFC !important;border-radius: 16px !important;overflow: hidden;padding: 0 !important;">
+            <ngx-dropzone-label class="d-flex flex-column align-items-center">
+                <div class="p-2-1" style="width: 56px;height: 56px;border-radius: 28px;background-color: #E5E7EB;">
+                    <i class="fe-upload-cloud font-24"></i>
+                </div>
+                <div class="btn-text-12 mt-2-1" style="letter-spacing: 1.5px;color: #2B52DD;">DRAG DOCUMENTS</div>
+            </ngx-dropzone-label>
+        </ngx-dropzone>
+        <div class="Subtitle-1 mt-2-1 text-start">Uploaded <span>({{files.length}})</span></div>
+        <div *ngFor="let file of files" class="d-flex flex-row align-items-center mt-2-1" style="height: 32px;">
+            <div style="width: calc(100% - 72px);float: left;">
+                <img class="me-1-1" [src]="getFileImg(file)"
+                     onerror="this.src='assets/images/icon/zz.png';this.onerror='';" [alt]="file.name"
+                     style="width: 24px;height: 24px;float: left;">
+                <div class="subtitle-2-600 text-overflow-ellipsis" style="width: calc(100% - 40px);">{{file.name}}</div>
+            </div>
+            <div class="d-flex flex-row" style="width: 72px;float: right;">
+                <div class="text-center" (click)="openFile(file)" style="width: 32px;">
+                    <i class="fe-eye c-p" style="color: #2B52DD;"></i>
+                </div>
+                <div class="ms-1-1 text-center" (click)="onRemove(file)" style="width: 32px;">
+                    <i class="fe-trash-2 c-p" style="color: #BA0517;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="d-grid" style="width: calc(100% - 48px);position: fixed;bottom: 24px;right: 24px;">
+        <button class="btn btn-primary mb-1-1" [disabled]="files.length == 0" (click)="uploadFile()">Save
+        </button>
+        <button class="btn btn-outline-primary" (click)="modalRef.dismiss()">Cancel</button>
+    </div>
+</div>
+
+
+<div *ngIf="isUploading">
+    <app-ui-preloader [display]="isUploading"></app-ui-preloader>
+</div>
+
+<div class="modal-x" (click)="modalRef.dismiss()">
+    <i class="fe-x"></i>
+</div>
+
+<ng-template #deleteModal let-modal>
+    <app-confirm-modal [title]="deleteObj.title" [message]="deleteObj.message" [btnConfirm]="deleteObj.btnConfirm"
+                       [params]="deleteObj.params" [serviceName]="deleteObj.serviceName"
+                       [btnSide]="deleteObj.btnSide" [modalRef]="deleteModalRef"></app-confirm-modal>
+</ng-template>
