@@ -153,7 +153,23 @@
                   <i class="fe-upload me-1-1"></i>Upload Attachment
                 </button>
                 <button class="btn btn-primary ms-2-1" *ngIf="tabs1 == 1" (click)="saveOrder()">Save</button>
-                <i class="fe-more-vertical- ms-2-1"></i>
+                <div class="d-inline-block dropdown ms-1-1" ngbDropdown>
+                    <span ngbDropdownToggle><i class="fe-more-vertical- font-24 cursor-pointer"></i></span>
+                    <div class="dropdown-menu" ngbDropdownMenu>
+                        <div class="cursor-pointer" ngbDropdownItem >
+                            Duplicate Order
+                        </div>
+                        <div class="cursor-pointer" ngbDropdownItem >
+                            Print
+                        </div>
+                        <div class="cursor-pointer" ngbDropdownItem >
+                            Email
+                        </div>
+                        <div class="cursor-pointer" ngbDropdownItem >
+                            Back Charge
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row mt-1-1 flex-1">

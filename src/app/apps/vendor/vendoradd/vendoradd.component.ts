@@ -73,6 +73,7 @@ export class VendoraddComponent {
     discount: 0.0,
     paymentTerms: '',
     form1099: false,
+    email:''
   };
 
   vendorTemp;
@@ -146,6 +147,7 @@ export class VendoraddComponent {
               discount: result.data.vendor.discount,
               paymentTerms: result.data.vendor.paymentTerms,
               form1099: result.data.vendor.form1099,
+              email: result.data.vendor.email,
             };
             result.data.vendorcostcodes.forEach((item) => {
               this.costCodeSelect({ currentTarget: { checked: true } }, item);

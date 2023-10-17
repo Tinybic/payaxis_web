@@ -6,7 +6,6 @@ import {
 } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { PAYMENTTERM } from 'src/app/core/constants/payment';
 import { bankname_routing } from 'src/app/core/gql/payment';
 import {
   vendoradditional_update, vendorinsurance_attachment,
@@ -21,6 +20,7 @@ import { ApolloService } from 'src/app/core/service/apollo.service';
 import { IMG_TYPE } from "../../../core/constants/common";
 import { vendorinsurance_delete } from "../../../core/gql/vendor-payment";
 import { GlobalFunctionsService } from "../../../core/service/global-functions.service";
+import { VENDOR_PAYMENTTERM } from 'src/app/core/constants/vendor_payment';
 
 @Component({
   selector: 'app-vendor-payment',
@@ -57,7 +57,7 @@ export class VendorPaymentComponent {
     form1099: [false],
   });
 
-  paymentTermsList = PAYMENTTERM;
+  paymentTermsList = VENDOR_PAYMENTTERM;
   formSubmitted: boolean = false;
   loading = true;
   paymentList = [];
@@ -91,7 +91,7 @@ export class VendorPaymentComponent {
   ) {}
 
   ngOnInit(): void {
-    this.formValues['email'].setValue(localStorage.getItem('email'));
+    this.formValues['email'].setValue(this.params.vendorAdditional.email);
     this.idcompany = parseInt(localStorage.getItem('idcompany'));
     this.formValues1['payto'].setValue(this.params.vendorAdditional.payto);
     this.formValues1['federalId'].setValue(this.params.vendorAdditional.federalId);
@@ -147,7 +147,7 @@ export class VendorPaymentComponent {
       this.clearFormValue();
       this.buttonText = 'Create';
       this.titleText = 'New Payment Method';
-      this.formValues['email'].setValue(localStorage.getItem('email'));
+      this.formValues['email'].setValue(this.params.vendorAdditional.email);
     } else {
       this.setFormValue(index);
       this.titleText = 'Edit ACH Payment Method';
