@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
@@ -11,6 +11,8 @@ import { ApolloService } from 'src/app/core/service/apollo.service';
   styleUrls: ['./vendor-order.component.scss'],
 })
 export class VendorOrderComponent {
+  @ViewChild('addOrderModal') addOrderModal: any;
+  
   orders = [];
   ORDERS = [];
   sortColumn = '';
@@ -20,7 +22,6 @@ export class VendorOrderComponent {
   bgColors = [];
   @Input() params;
 
-  
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
@@ -29,7 +30,11 @@ export class VendorOrderComponent {
   ) {}
 
   ngOnInit(): void {
-    this.getVendorOrderList();
+    if (this.params.idvendor > 0) {
+      this.getVendorOrderList();
+    } else {
+      this.loading = false;
+    }
   }
 
   getVendorOrderList() {
@@ -52,7 +57,9 @@ export class VendorOrderComponent {
 
   onSort(sortColumn) {}
 
-  openDetail(id) {}
+  openDetail(id) {
+
+  }
 
   filterTable = (vendor: any) => {
     let values = Object.values(vendor);
@@ -62,4 +69,29 @@ export class VendorOrderComponent {
         vendor.invoiceNumber.includes(this.keywords.toLowerCase())
     );
   };
+
+  addOrderRef;
+  idorder = 0;
+  AddOrder(id){
+    this.idorder = id;
+    this.addOrderRef = this.modalService.open(this.addOrderModal,{
+      backdrop: 'static',
+      modalDialogClass: 'modal-right',
+      size: '90vw',
+      centered: true,
+    })
+
+    this.addOrderRef.result.then(
+      (res) => {
+        this.getVendorOrderList();
+      },
+      (dismiss) => {
+        this.getVendorOrderList();
+      }
+    );
+  }
+
+  cancel(){
+    this.addOrderRef.close();
+  }
 }

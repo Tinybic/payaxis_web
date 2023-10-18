@@ -1,5 +1,4 @@
-import { RtlScrollAxisType } from '@angular/cdk/platform';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
@@ -23,16 +22,21 @@ import { EventService } from 'src/app/core/service/event.service';
 import { HttpService } from 'src/app/core/service/http.service';
 
 @Component({
-  selector: 'app-add-order',
-  templateUrl: './add-order.component.html',
-  styleUrls: ['./add-order.component.scss'],
+  selector: 'app-vendor-order-add',
+  templateUrl: './vendor-order-add.component.html',
+  styleUrls: ['./vendor-order-add.component.scss'],
 })
-export class AddOrderComponent {
+export class VendorOrderAddComponent {
   @ViewChild('listitem', { static: true }) listitem: ElementRef;
   @ViewChild('addcostcode') addcostcode: any;
   @ViewChild('addvendor') addvendor: any;
   @ViewChild('addproject') addproject: any;
   @ViewChild('t') t: any;
+
+  @Input() idvendor;
+  @Input() idorder;
+  @Input() modalRef;
+
   tabs1 = 1;
   reasonList = [];
   paymentTermsList = PAYMENTTERM;
@@ -102,43 +106,39 @@ export class AddOrderComponent {
     private modalService: NgbModal,
     private toastrService: ToastrService,
     private httpService: HttpService,
-    private activatedRoute: ActivatedRoute,
     private router: Router,
     private eventService: EventService
   ) {}
 
   ngOnInit(): void {
     this.order.idCompany = parseInt(localStorage.getItem('idcompany'));
-
     this.paymentTermsList = PAYMENTTERM;
+    this.order.id = parseInt(this.idorder);
+    this.order.idVendor = this.idvendor;
+    if (this.order.id > 0) {
+      this.getOrderInfo(this.order.id);
+    } else {
+      this.order.invoicedDate = new Date().toISOString().slice(0, 10);
+      this.getOrderNumber();
+      this.getCostCodeList();
+      this.getResonList();
+      this.getProjectList();
+      this.getVendorList();
+      this.loading = false;
 
-    this.activatedRoute.params.subscribe((params) => {
-      this.order.id = parseInt(params['id']);
-      if (this.order.id > 0) {
-        this.getOrderInfo(this.order.id);
-      } else {
-        this.order.invoicedDate = new Date().toISOString().slice(0, 10);
-        this.getOrderNumber();
-        this.getCostCodeList();
-        this.getResonList();
-        this.getProjectList();
-        this.getVendorList();
-        this.loading = false;
-
-        for (let i = 0; i < 10; i++) {
-          this.order.listItems.push({
-            paidyn: false,
-            description: '',
-            unit: '',
-            qty: 0.0,
-            price: 0.0,
-            amount: 0.0,
-            taxyn: false,
-            notes: '',
-          });
-        }
+      for (let i = 0; i < 10; i++) {
+        this.order.listItems.push({
+          paidyn: false,
+          description: '',
+          unit: '',
+          qty: 0.0,
+          price: 0.0,
+          amount: 0.0,
+          taxyn: false,
+          notes: '',
+        });
       }
-    });
+    }
   }
 
   getUploadUrl(event) {
@@ -615,7 +615,8 @@ export class AddOrderComponent {
       let message = '';
       if (!result.error) {
         message = 'Save successful';
-        this.router.navigate(['apps/order/detail/' + result.data.id]);
+        this.modalRef.close();
+        // this.router.navigate(['apps/order/detail/' + result.data.id]);
       } else {
         message = result.message;
       }
