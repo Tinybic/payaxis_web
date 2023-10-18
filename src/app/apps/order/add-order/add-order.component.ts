@@ -131,6 +131,19 @@ export class AddOrderComponent {
         this.getProjectList();
         this.getVendorList();
         this.loading = false;
+
+        for (let i = 0; i < 10; i++) {
+          this.order.listItems.push({
+            paidyn: false,
+            description: '',
+            unit: '',
+            qty: 0.0,
+            price: 0.0,
+            amount: 0.0,
+            taxyn: false,
+            notes: '',
+          });
+        }
       }
     });
   }
@@ -191,43 +204,55 @@ export class AddOrderComponent {
     });
   }
   
-  getOrderInfo(id){
-    this.apolloService.query(projectorder_info, {
-      idCompany: this.order.idCompany,
-      id: id
-    }).then((res) => {
-      const result = res.projectorder_info;
-      if(!result.error){
-        this.order = {
-          id: result.data.projectOrder.id,
-          revision: result.data.projectOrder.revision,
-          idCompany: result.data.projectOrder.idCompany,
-          idProject: result.data.projectOrder.idProject,
-          idVendor: result.data.projectOrder.idVendor,
-          orderNumber: result.data.projectOrder.orderNumber,
-          idReason: result.data.projectOrder.idReason,
-          invoiceNumber: result.data.projectOrder.invoiceNumber,
-          invoicedDate: result.data.projectOrder.invoicedDate,
-          indvoicedueDate: result.data.projectOrder.indvoicedueDate,
-          paymentTerms: result.data.projectOrder.paymentTerms,
-          costCode: result.data.projectOrder.costCode,
-          notes: result.data.projectOrder.notes,
-          nontaxable: result.data.projectOrder.nontaxable,
-          taxable: result.data.projectOrder.taxable,
-          taxrate: result.data.projectOrder.taxrate,
-          tax: result.data.projectOrder.tax,
-          total: result.data.projectOrder.total,
-          status: result.data.projectOrder.status,
-          listItems: result.data.listItems
-        };
-        this.getCostCodeList();
-        this.getResonList();
-        this.getProjectList();
-        this.getVendorList();
-        this.getRelatedList();
-        this.loading = false;
-      }
-    });
+  getOrderInfo(id) {
+    this.apolloService
+      .query(projectorder_info, { idCompany: this.order.idCompany, id: id })
+      .then((res) => {
+        const result = res.projectorder_info;
+        if (!result.error) {
+          this.order = {
+            id: result.data.projectOrder.id,
+            revision: result.data.projectOrder.revision,
+            idCompany: result.data.projectOrder.idCompany,
+            idProject: result.data.projectOrder.idProject,
+            idVendor: result.data.projectOrder.idVendor,
+            orderNumber: result.data.projectOrder.orderNumber,
+            idReason: result.data.projectOrder.idReason,
+            invoiceNumber: result.data.projectOrder.invoiceNumber,
+            invoicedDate: result.data.projectOrder.invoicedDate,
+            indvoicedueDate: result.data.projectOrder.indvoicedueDate,
+            paymentTerms: result.data.projectOrder.paymentTerms,
+            costCode: result.data.projectOrder.costCode,
+            notes: result.data.projectOrder.notes,
+            nontaxable: result.data.projectOrder.nontaxable,
+            taxable: result.data.projectOrder.taxable,
+            taxrate: result.data.projectOrder.taxrate,
+            tax: result.data.projectOrder.tax,
+            total: result.data.projectOrder.total,
+            status: result.data.projectOrder.status,
+            listItems: result.data.listItems,
+          };
+          this.getCostCodeList();
+          this.getResonList();
+          this.getProjectList();
+          this.getVendorList();
+          this.getRelatedList();
+          this.loading = false;
+
+          if (this.order.listItems.length > 9) {
+            this.order.listItems.push({
+              paidyn: false,
+              description: '',
+              unit: '',
+              qty: 0.0,
+              price: 0.0,
+              amount: 0.0,
+              taxyn: false,
+              notes: '',
+            });
+          }
+        }
+      });
   }
   
   sameProject = true;
@@ -463,20 +488,23 @@ export class AddOrderComponent {
         item.projectName.toLowerCase().includes(this.keywordsRelated.toLowerCase())
     );
   }
-  
-  onSort(columnName){}
-  
-  AddListItem(){
-    this.order.listItems.push({
-      paidyn: false,
-      description: '',
-      unit: '',
-      qty: 0.0,
-      price: 0.0,
-      amount: 0.0,
-      taxyn: false,
-      notes: ''
-    });
+
+  onSort(columnName) {}
+
+  AddListItem(index, item) {
+    console.log(index);
+    if (index > 8 && item.description.length > 0) {
+      this.order.listItems.push({
+        paidyn: false,
+        description: '',
+        unit: '',
+        qty: 0.0,
+        price: 0.0,
+        amount: 0.0,
+        taxyn: false,
+        notes: '',
+      });
+    }
   }
   
   getAmout(item){
@@ -488,7 +516,6 @@ export class AddOrderComponent {
     this.order.taxable = 0.0;
     this.order.nontaxable = 0.0;
     this.order.listItems.forEach((item) => {
-      console.log(item);
       if(item.taxyn){
         this.order.taxable += item.amount;
       } else{
