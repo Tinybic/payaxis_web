@@ -532,7 +532,7 @@
                                 <div class="col-md-12">
                                     <div class="card">
                                         <div class="card-body">
-                                            <div class="row">
+                                            <!-- <div class="row">
                                                 <div class="col-md-6 headline">
                                                     List Items
                                                 </div>
@@ -547,8 +547,8 @@
                                                             class="fe-plus-square me-1-1"></i>Add
                                                         Item</button>
                                                 </div>
-                                            </div>
-                                            <div class="row mt-2-1">
+                                            </div> -->
+                                            <div class="row">
                                                 <div class="col-md-12">
                                                     <table class="advanced-table">
                                                         <thead>
@@ -557,7 +557,7 @@
                                                                         type="checkbox" /></th>
                                                                 <th class="sortable"
                                                                     [ngClass]="{'sorting_asc':sortCloumn == 'vendorName' && direction == 'asc','sorting_desc':sortCloumn == 'vendorName' && direction == 'desc'}"
-                                                                    (click)="onSort('vendorName')">Billable</th>
+                                                                    (click)="onSort('vendorName')" style="width: 50%;">Billable</th>
                                                                 <th class="sortable"
                                                                     [ngClass]="{'sorting_asc':sortCloumn == 'status' && direction == 'asc','sorting_desc':sortCloumn == 'status' && direction == 'desc'}"
                                                                     (click)="onSort('status')">Qty</th>
@@ -569,7 +569,7 @@
                                                                     (click)="onSort('active')">Price</th>
                                                                 <th>Amount</th>
                                                                 <th>Tax</th>
-                                                                <th>Notes</th>
+                                                                <!-- <th>Notes</th> -->
                                                                 <th>Last updated</th>
                                                             </tr>
                                                         </thead>
@@ -580,7 +580,7 @@
                                                                         [(ngModel)]="item.paidyn" /></td>
                                                                 <td>
                                                                     <input type="text" class="form-control"
-                                                                        placeholder="Description"
+                                                                        placeholder="Description" (change) = "AddListItem(i,item)"
                                                                         [(ngModel)]="item.description" />
                                                                 </td>
                                                                 <td>
@@ -606,10 +606,10 @@
                                                                         (change)="setTotal()"
                                                                         [(ngModel)]="item.taxyn" />
                                                                 </td>
-                                                                <td>
+                                                                <!-- <td>
                                                                     <input type="text" class="form-control"
                                                                         [(ngModel)]="item.notes" />
-                                                                </td>
+                                                                </td> -->
                                                                 <td>
                                                                     <i class="fe-copy cursor-pointer"
                                                                         (click)="listItemCopy(item)"></i>
@@ -636,11 +636,11 @@
                                                                         class="text-typeblackdeactivated headline-24-400 mt-40">
                                                                         No List Items Added Yet</div>
 
-                                                                    <div class="mt-2-1"> <button (click)="AddListItem()"
+                                                                    <!-- <div class="mt-2-1"> <button (click)="AddListItem()"
                                                                             class="btn btn-primary ms-2-1 mb-3"><i
                                                                                 class="fe-plus-square me-1-1"></i>Add
                                                                             List
-                                                                            Item</button></div>
+                                                                            Item</button></div> -->
 
                                                                 </td>
                                                             </tr>
@@ -714,7 +714,7 @@
                     Order</button></div>
             <div class="d-inline-block" style="height: 40px;color:#FFFFFFB2;">
                 <span class="btn-text-12">Total Amount Due</span><br />
-                <span class="headline-24" style=" color: white; " id="total">{{order.total}}</span>
+                <span class="headline-24" style=" color: white; " id="total">{{order.total | currency}}</span>
             </div>
         </div>
     </div>

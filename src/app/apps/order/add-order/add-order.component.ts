@@ -124,6 +124,19 @@ export class AddOrderComponent {
         this.getProjectList();
         this.getVendorList();
         this.loading = false;
+
+        for (let i = 0; i < 10; i++) {
+          this.order.listItems.push({
+            paidyn: false,
+            description: '',
+            unit: '',
+            qty: 0.0,
+            price: 0.0,
+            amount: 0.0,
+            taxyn: false,
+            notes: '',
+          });
+        }
       }
     });
   }
@@ -224,6 +237,19 @@ export class AddOrderComponent {
           this.getVendorList();
           this.getRelatedList();
           this.loading = false;
+
+          if (this.order.listItems.length > 9) {
+            this.order.listItems.push({
+              paidyn: false,
+              description: '',
+              unit: '',
+              qty: 0.0,
+              price: 0.0,
+              amount: 0.0,
+              taxyn: false,
+              notes: '',
+            });
+          }
         }
       });
   }
@@ -475,17 +501,20 @@ export class AddOrderComponent {
 
   onSort(columnName) {}
 
-  AddListItem() {
-    this.order.listItems.push({
-      paidyn: false,
-      description: '',
-      unit: '',
-      qty: 0.0,
-      price: 0.0,
-      amount: 0.0,
-      taxyn: false,
-      notes: '',
-    });
+  AddListItem(index, item) {
+    console.log(index);
+    if (index > 8 && item.description.length > 0) {
+      this.order.listItems.push({
+        paidyn: false,
+        description: '',
+        unit: '',
+        qty: 0.0,
+        price: 0.0,
+        amount: 0.0,
+        taxyn: false,
+        notes: '',
+      });
+    }
   }
 
   getAmout(item) {
@@ -497,7 +526,6 @@ export class AddOrderComponent {
     this.order.taxable = 0.0;
     this.order.nontaxable = 0.0;
     this.order.listItems.forEach((item) => {
-      console.log(item);
       if (item.taxyn) {
         this.order.taxable += item.amount;
       } else {
