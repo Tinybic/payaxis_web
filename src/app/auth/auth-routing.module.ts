@@ -10,6 +10,7 @@ import { InfoComponent } from './info/info.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { RecoverPasswordPhoneComponent } from './recover-password-phone/recover-password-phone.component';
 import { InvitingRegisterComponent } from './inviting-register/inviting-register.component';
+import { InvitingVendorComponent } from './inviting-vendor/inviting-vendor.component';
 
 const routes: Routes = [
   {
@@ -51,6 +52,10 @@ const routes: Routes = [
   {
     path: 'inviting-register',
     component: InvitingRegisterComponent
+  },
+  {
+    path: 'inviting-vendor',
+    component: InvitingVendorComponent
   }
 ];
 
