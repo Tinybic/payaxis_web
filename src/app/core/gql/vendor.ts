@@ -233,6 +233,16 @@ const quickbooks_downloadvendors = gql`
   }
 `;
 
+const vendor_invite = gql`
+  mutation vendor_invite($idCompany: Int!, $inviteVendors: [invitedvendors!]) {
+    vendor_invite(idCompany: $idCompany, inviteVendors: $inviteVendors) {
+      error
+      code
+      message
+      data
+    }
+  }
+`;
 export {
   vendor_new,
   vendor_list,
@@ -241,4 +251,5 @@ export {
   vendor_file_delete,
   vendor_archive,
   quickbooks_downloadvendors,
+  vendor_invite,
 };

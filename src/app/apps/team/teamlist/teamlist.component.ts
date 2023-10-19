@@ -399,7 +399,6 @@ export class TeamlistComponent extends Base {
   send() {
     this.modalService.dismissAll();
     this.userList = this.userList.filter((item) => !item.memberyn);
-    console.log(this.userList);
     const inviteMembers = this.userList.map((item) => {
       return Object.assign(
         {},

@@ -1,9 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Base } from 'src/app/core/base';
 import {
   quickbooks_downloadvendors,
+  vendor_invite,
   vendor_list,
 } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
@@ -12,11 +14,12 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-vendorlist',
   templateUrl: './vendorlist.component.html',
-  styleUrls: ['./vendorlist.component.scss'],
+  styleUrls: ['./vendorlist.component.scss',
+  '../../../../assets/scss/custom/structure/_foundation-themes.scss',],
 })
 export class VendorlistComponent extends Base {
   @ViewChild('inviteVendor') inviteVendor: any;
-
+  @ViewChild('addVendor') addVendor: any;
   keywords = '';
   direction = '';
   sortColumn = '';
@@ -87,7 +90,7 @@ export class VendorlistComponent extends Base {
   modalRef;
   openAddModal() {
     this.idvendor = 0;
-    this.modalRef = this.modalService.open(this.inviteVendor, {
+    this.modalRef = this.modalService.open(this.addVendor, {
       backdrop: 'static',
       modalDialogClass: 'modal-right',
       size: '90vw',
@@ -107,7 +110,7 @@ export class VendorlistComponent extends Base {
   openEditModal(id) {
     if (this.canEdit) {
       this.idvendor = id;
-      this.modalRef = this.modalService.open(this.inviteVendor, {
+      this.modalRef = this.modalService.open(this.addVendor, {
         backdrop: 'static',
         modalDialogClass: 'modal-right',
         size: '90vw',
@@ -194,5 +197,75 @@ export class VendorlistComponent extends Base {
         console.log(e);
       }
     }, 100);
+  }
+
+  inviteVendorRef;
+  inviteVendorModal(){
+    this.inviteVendorRef = this.modalService.open(this.inviteVendor, {
+      backdrop: 'static',
+      modalDialogClass: 'modal-right',
+      size: '530',
+    });
+
+    this.inviteVendorRef.result.then(
+      (res) => {
+        this.getVendorList();
+      },
+      (dismiss) => {
+        this.getVendorList();
+      }
+    );
+  }
+  emailList = [];
+  cancelModal(){
+    this.inviteVendorRef.close();
+  }
+
+
+  public validators = [this.must_be_email];
+  public errorMessages = {
+    must_be_email: 'Enter valid email adress!',
+  };
+  private must_be_email(control: FormControl) {
+    var EMAIL_REGEXP =
+      /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
+    if (
+      control.value != '' &&
+      (control.value.length <= 5 || !EMAIL_REGEXP.test(control.value))
+    ) {
+      return { must_be_email: true };
+    }
+    return null;
+  }
+
+
+  sendInvite(){
+    const inviteVendors = this.emailList.map((item) => {
+      return Object.assign(
+        {},
+        {
+          email: item.value
+        }
+      );
+    });
+
+    const data = {
+      idCompany: parseInt(localStorage.getItem('idcompany')),
+      inviteVendors: inviteVendors,
+    };
+
+    this.apolloService.mutate(vendor_invite, data).then((res) => {
+      let message = '';
+      const result = res.vendor_invite;
+      if (!result.error) {
+        message = this.emailList.length + ' invitation has been sent';
+        this.getVendorList();
+      } else {
+        message = result.message;
+      }
+      this.emailList = [];
+      this.toastrService.info(message, '');
+      this.inviteVendorRef.close();
+    });
   }
 }

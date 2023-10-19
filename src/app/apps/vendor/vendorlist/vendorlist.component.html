@@ -3,7 +3,21 @@
         Vendors
     </h5>
     <div class="col-md-9 text-end">
-        <button class="btn btn-link"><i class="fe-mail me-1-1"></i>Invite<i class="fe-chevron-down ms-1-1"></i></button>
+
+        <div ngbDropdown class="d-inline-block  ms-2-1">
+            <button class="btn btn-link" ngbDropdownToggle><i class="fe-mail me-1-1"></i>Invite<i
+                    class="fe-chevron-down ms-1-1"></i></button>
+
+            <div ngbDropdownMenu style="width: 255px; ">
+                <div class="line-32 bold-600 cursor-pointer" (click)="inviteVendorModal()" ngbDropdownItem>
+                    <i class="fe-mail me-1-1"></i> Send Invite
+                </div>
+                <div class="line-32 bold-600 cursor-pointer" ngbDropdownItem>
+                    <i class="fe-copy me-1-1"></i> Copy link to clipboard
+                </div>
+            </div>
+        </div>
+
         <div ngbDropdown class="d-inline-block  ms-2-1">
             <button class="btn btn-outline-primary" ngbDropdownToggle><i class="fe-upload me-1-1"></i>Import<i
                     class="fe-chevron-down ms-1-1"></i></button>
@@ -177,6 +191,27 @@
     </div>
 </div>
 <ng-template #inviteVendor let-modal>
+    <div class="modal-body">
+        <div class="headline mt-1-1 mb-1-1">Invite Vendors</div>
+        <div class="formContainer">
+            <div>
+                <tag-input [validators]="validators" [addOnBlur]="true" [theme]="'foundation-theme'"
+                    [separatorKeys]="[',',' ']" [(ngModel)]='emailList' placeholder="add email"
+                    secondaryPlaceholder="Email, separate with comma"></tag-input>
+            </div>
+            <div class="bottomButton">
+                <div>
+                    <button class="btn btn-primary" [disabled]="emailList.length == 0" (click)="sendInvite()">Next</button>
+                </div>
+                <div>
+                    <button class="btn btn-outline-primary mt-1-1" (click)="cancelModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+        </div>
+</ng-template>
+
+<ng-template #addVendor let-modal>
     <app-vendoradd class="flex-column-1"
         style="width: calc(100vw - 216px); padding:32px 32px 0; background-color: #F8F9FC;overflow-y: auto;"
         [idvendor]="idvendor"></app-vendoradd>
