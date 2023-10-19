@@ -1,7 +1,6 @@
-<div class="d-flex position-fixed addOrderContain" style="margin-top: -32px; margin-left: -24px;">
+<div class="d-flex" >
     <div style="width: 320px;  height: 100vh; background-color: #ffffff; padding: 16px; padding-top: 32px; padding-bottom: 110px; "
         *ngIf="showRelated">
-
         <div class="row">
             <div class="col-md-8 headline line-32">Related Orders</div>
             <div class="col-md-4 text-end text-primary line-32" ngbDropdown ngbDropdownToggle>
@@ -126,7 +125,7 @@
             <input type="text" style="display: none;" />
             <div class="col-md-12 d-flex align-items-center">
                 <i class="fe-chevron-left"></i>
-                <span class="bold-500"><a routerLink="/apps/order" style="color: #202020;">All Orders & Bills</a></span>&nbsp;/&nbsp;<span class="bold-800 text-primary"
+                <span class="bold-500">All Orders & Bills</span>&nbsp;/&nbsp;<span class="bold-800 text-primary"
                     *ngIf="order.id > 0">Order #{{order.orderNumber}}</span><span class="bold-800 text-primary"
                     *ngIf="order.id == 0">New Order</span>
             </div>
@@ -189,13 +188,13 @@
                                                     Details
                                                 </div>
                                                 <div class="col-md-6 text-end">
-                                                    <div class="d-inline-block form-check form-switch subtitle-2-500"
+                                                    <!-- <div class="d-inline-block form-check form-switch subtitle-2-500"
                                                         *ngIf="order.id > 0">
                                                         <input type="checkbox" id="customSwitch1"
                                                             class="form-check-input me-1-1" [(ngModel)]="showRelated" />
                                                         <label for="customSwitch1"
                                                             class="form-check-label align-middle">Show Related</label>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                             </div>
                                             <div class="row mt-1-1">
@@ -245,11 +244,11 @@
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="form-label" i18n>Cost Code</label>
-                                                    <span
+                                                    <!-- <span
                                                         class="float-end btn-text-12 text-primary cursor-pointer line-24"
                                                         (click)="openAddCostCodeModal('Create')"><i
                                                             class="fe-plus-square me-1-1"></i>Create New Cost
-                                                        Code</span>
+                                                        Code</span> -->
                                                     <div class="dropdown" ngbDropdown>
                                                         <input class="form-select" type="text" id="vendorcostcodes"
                                                             [(ngModel)]="vendorcostcodesText" required i18n-placeholder
@@ -330,9 +329,9 @@
                                                         </div>
                                                         <div
                                                             class="col-md-6 btn-text-12 text-primary text-end cursor-pointer line-40">
-                                                            <span *ngIf="!project" (click)="openAddProjectModal()"><i
+                                                            <!-- <span *ngIf="!project" (click)="openAddProjectModal()"><i
                                                                     class="fe-plus-square me-1-1"></i>Create
-                                                                New Project</span>
+                                                                New Project</span> -->
                                                             <span *ngIf="project" (click)="removeProject()"><i
                                                                     class="fe-edit me-1-1"></i>Edit Project</span>
                                                         </div>
@@ -444,9 +443,9 @@
                                                         </div>
                                                         <div
                                                             class="col-md-6 btn-text-12 text-primary text-end cursor-pointer line-40">
-                                                            <span *ngIf="!vendor" (click)="openAddVenodrModal()"><i
+                                                            <!-- <span *ngIf="!vendor" (click)="openAddVenodrModal()"><i
                                                                     class="fe-plus-square me-1-1"></i>Create
-                                                                New Vendor</span>
+                                                                New Vendor</span> -->
                                                             <span *ngIf="vendor" (click)="removeVendor()"><i
                                                                     class="fe-edit me-1-1"></i>Edit Vendor</span>
                                                         </div>
@@ -668,7 +667,7 @@
                             Attachments
                         </a>
                         <ng-template ngbNavContent class="d-flex flex-column">
-                            <app-attachments></app-attachments>
+                           
                         </ng-template>
                     </li>
                     <li [ngbNavItem]="3">
@@ -676,7 +675,7 @@
                             Activity
                         </a>
                         <ng-template ngbNavContent class="d-flex flex-column">
-                            <app-activity></app-activity>
+                           
                         </ng-template>
                     </li>
                 </ul>
@@ -686,7 +685,7 @@
         </div>
     </div>
 </div>
-<div class="orderDetailBottom" *ngIf = "tabs1 == 1">
+<div class="orderDetailBottom1" *ngIf = "tabs1 == 1">
     <div class="row padding-16-32">
         <div class="col-md-2">
             <label class="form-label" i18n>Non Taxable</label>
@@ -719,17 +718,3 @@
         </div>
     </div>
 </div>
-<ng-template #addcostcode let-modal>
-    <app-add-costcode [type]="costcodeButtonText" [data]="modalData" [modalRef]="addmodalref"></app-add-costcode>
-</ng-template>
-
-<ng-template #addproject let-modal>
-    <app-create-project [createProjectWithGroup]="createProjectWithGroup" [modalRef]="addProjectmodalRef"
-        style="height: 100%;overflow-y: auto;"></app-create-project>
-</ng-template>
-
-<ng-template #addvendor let-modal>
-    <app-vendoradd class="flex-column-1"
-        style="width: calc(100vw - 216px); padding:32px 32px 0; background-color: #F8F9FC;overflow-y: auto;"
-        [idvendor]="0"></app-vendoradd>
-</ng-template>

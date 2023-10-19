@@ -5,7 +5,7 @@ import {
   NgbAlertModule,
   NgbDropdownModule,
   NgbModalModule,
-  NgbNavModule, NgbProgressbarModule,
+  NgbNavModule,
   NgbTypeaheadModule
 } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -16,6 +16,10 @@ import { UiModule } from 'src/app/shared/ui/ui.module';
 import { SharedModule } from "../../../shared/shared.module";
 import { VendorOrderComponent } from '../vendor-order/vendor-order.component';
 import { VendorPaymentComponent } from '../vendor-payment/vendor-payment.component';
+import { UploadAttachmentComponent } from "../upload-attachment/upload-attachment.component";
+import { NgxDropzoneModule } from "ngx-dropzone";
+import { VendorOrderAddComponent } from '../vendor-order-add/vendor-order-add.component';
+import { AvatarModule } from 'src/app/shared/avatar/avatar.module';
 
 @NgModule({
   declarations: [
@@ -23,6 +27,7 @@ import { VendorPaymentComponent } from '../vendor-payment/vendor-payment.compone
     VendorContactsComponent,
     AddVendorContactComponent,
     VendorOrderComponent,
+    VendorOrderAddComponent,
     VendorPaymentComponent,
   ],
   imports: [
@@ -38,6 +43,7 @@ import { VendorPaymentComponent } from '../vendor-payment/vendor-payment.compone
     NgxMaskPipe,
     SharedModule,
     UiModule,
+    NgxDropzoneModule,
   ],
   exports: [VendoraddComponent],
   providers:[

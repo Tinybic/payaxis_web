@@ -18,6 +18,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { RecoverPasswordPhoneComponent } from './recover-password-phone/recover-password-phone.component';
 import { InvitingRegisterComponent } from './inviting-register/inviting-register.component';
 import { RecaptchaModule } from "ng-recaptcha";
+import { InvitingVendorComponent } from './inviting-vendor/inviting-vendor.component';
 const maskConfig: Partial<IConfig> = {
   validation: false,
 };
@@ -32,7 +33,8 @@ const maskConfig: Partial<IConfig> = {
     InfoComponent,
     ResetPasswordComponent,
     RecoverPasswordPhoneComponent,
-    InvitingRegisterComponent
+    InvitingRegisterComponent,
+    InvitingVendorComponent
   ],
   imports: [
     CommonModule,

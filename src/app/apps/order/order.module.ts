@@ -43,6 +43,9 @@ import { ProjectsModule } from '../projects/projects.module';
     VendoraddModule,
     ProjectsModule,
     NgbTooltipModule
+  ],
+  exports:[
+    AddOrderComponent
   ]
 })
 export class OrderModule { }
