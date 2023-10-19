@@ -1,4 +1,4 @@
-// 
+//
 // nav.scss
 //
 
@@ -14,8 +14,8 @@
 .nav-pills {
     > a {
         color: #{map-get($grays, "700")};
-        font-weight: $label-font-weight;   
-        
+        font-weight: $label-font-weight;
+
     }
 }
 
@@ -40,8 +40,8 @@
         .nav-link {
             width: auto;
         }
-    }  
-} 
+    }
+}
 
 
 //Navtab custom
@@ -50,6 +50,7 @@
         background-color: $card-cap-bg;
         margin: 0 8px 0px 0px;
         letter-spacing: 0.3px;
+        line-height: 22px;
     }
 }
 
@@ -76,7 +77,7 @@ a.active {
 
 .tab-content {
     // padding: 20px 0 0 0;
-}  
+}
 
 
 // dark mode
@@ -88,7 +89,7 @@ body[data-layout-color="dark"] {
             }
         }
     }
-    
+
     .nav-pills {
         > a {
             color: #{map-get($dark-grays, "700")};

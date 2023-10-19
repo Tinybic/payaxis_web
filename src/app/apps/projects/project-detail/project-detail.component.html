@@ -1,18 +1,64 @@
-<div class="row">
-    <div class="col-md-6">
-        <div class="headline font-28 line-32">
+<div class="row" style="height: 56px;">
+    <div class="col-md-4">
+        <div class="headline font-28 line-32 text-overflow-ellipsis">
             {{project.projectName}}
         </div>
-        <div class="subtitle-2-500 text-typeblack80">
+        <div class="subtitle-2-500 text-typeblack80 text-overflow-ellipsis">
             {{project.projectAddress}}
         </div>
     </div>
-    <div class="col-md-6 text-end line-56">
-        <div *ngIf="tabs == 1" class="d-inline-block" ngbDropdown>
-            <button class="btn btn-primary ms-2-1" ngbDropdownToggle>New Order<i
+    <div class="col-md-6">
+        <div *ngIf="tabs == 2" class="row">
+            <div class="col-md-3">
+                <div class="card" style="height: 104px;">
+                    <div class="card-body padding-24">
+                        <div class="subtitle-2-500-16 text-typeblack80">Owed</div>
+                        <div class="subtitle-2-500-24 mt-2-1">$38,189</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card" style="height: 104px;">
+                    <div class="card-body padding-24">
+                        <div class="subtitle-2-500-16 text-typeblack80">Overdue</div>
+                        <div class="d-flex subtitle-2-500-24 mt-2-1">$1,537
+                            <span class="badge rounded-pill subtitle-2-500-12"
+                                  style="min-width:24px;height:24px;background-color: #F87171;padding: 6px;margin-left: 4px;">4</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card" style="height: 104px;">
+                    <div class="card-body padding-24">
+                        <div class="subtitle-2-500-16 text-typeblack80">Due in 7</div>
+                        <div class="d-flex subtitle-2-500-24 mt-2-1">$2,818
+                            <span class="badge rounded-pill subtitle-2-500-12"
+                                  style="min-width:24px;height:24px;background-color: #EAC608;padding: 6px;margin-left: 4px;">8</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card" style="height: 104px;">
+                    <div class="card-body padding-24">
+                        <div class="subtitle-2-500-16" style="color: #215EA9;">Apr 7 - May 7
+                            <i class="fa-caret-down fas ms-1-1"></i></div>
+                        <div class="d-flex subtitle-2-500-24 mt-2-1">$38,189
+                            <span class="badge rounded-pill subtitle-2-500-12"
+                                  style="min-width:24px;height:24px;background-color: #215EA9;padding: 6px;margin-left: 4px;">1</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 text-end line-56">
+        <div *ngIf="tabs < 3" class="d-inline-block" ngbDropdown>
+            <button class="btn btn-primary ms-2-1" ngbDropdownToggle style="padding: 10px 16px;">New Order<i
                     class="fe-chevron-down ms-1-1"></i></button>
             <div ngbDropdownMenu style="padding: 4px 8px;">
-                <a class="subtitle-2-500" href="javascript:void(0);" style="padding: 12px 4px;" ngbDropdownItem>
+                <a class="subtitle-2-500" href="javascript:void(0);" (click)="createNew()" style="padding: 12px 4px;" ngbDropdownItem>
                     <i class="fe-plus me-1-1"></i>
                     Create New
                 </a>
@@ -134,7 +180,7 @@
                                     </div>
                                     <div class="card" style="height: 120px;margin-bottom: 16px">
                                         <div class="card-body padding-24">
-                                            <div class="subtitle-2-500-16" style="color: #215EA9;">Pick Dates<div class="d-inline-block triangle ms-1-1"></div></div>
+                                            <div class="subtitle-2-500-16" style="color: #215EA9;">Pick Dates<i class="fa-caret-down fas ms-1-1"></i></div>
                                             <div class="subtitle-2-500-24 mt-2-1">-</div>
                                         </div>
                                     </div>
@@ -230,6 +276,9 @@
                 <a ngbNavLink>
                     Orders
                 </a>
+                <ng-template ngbNavContent>
+                    <app-project-orders [idProject]="project.id" ></app-project-orders>
+                </ng-template>
             </li>
             <li [ngbNavItem]="3">
                 <a ngbNavLink>

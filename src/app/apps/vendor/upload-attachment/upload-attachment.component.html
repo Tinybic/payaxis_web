@@ -10,13 +10,40 @@
                 <div class="btn-text-12 mt-2-1" style="letter-spacing: 1.5px;color: #2B52DD;">DRAG DOCUMENTS</div>
             </ngx-dropzone-label>
         </ngx-dropzone>
-        <div class="Subtitle-1 mt-2-1 text-start">Uploaded <span>({{files.length}})</span></div>
-        <div *ngFor="let file of files" class="d-flex flex-row align-items-center mt-2-1" style="height: 32px;">
+        <div class="Subtitle-1 mt-2-1 text-start">Uploading <span>({{files.length}})</span></div>
+        <div *ngFor="let file of files" class="mt-2-1" style="height: 32px;">
+            <div class="d-flex flex-row align-items-center">
+                <div style="width: calc(100% - 110px);float: left;">
+                    <img class="me-1-1" [src]="getFileImg(file)"
+                         onerror="this.src='assets/images/icon/zz.png';this.onerror='';" [alt]="file.name"
+                         style="width: 16px;height: 16px;float: left;margin-top: 4px;">
+                    <div class="subtitle-2-600 text-overflow-ellipsis"
+                         style="width: calc(100% - 40px);">{{file.name}}</div>
+                </div>
+                <div class="d-flex flex-row subtitle-2-500 cursor-pointer" (click)="cancelUploading(file)"
+                     style="width: 110px;float: right;">
+                    <img class="me-1-1" src="assets/images/stop-circle.png"
+                         style="width: 16px;height: 16px;margin-top: 4px;">
+                    Cancel Upload
+                </div>
+            </div>
+            <div class="progress progress-sm" style="margin-top: 8px;height: 8px !important;">
+                <div class="progress-bar wow bg-primary-progress" role="progressbar" aria-valuemin="0"
+                     aria-valuemax="100" style="width: {{file.uploadProgress}}%;h">
+                </div><!-- /.progress-bar .progress-bar-success -->
+            </div><!-- /.progress .no-rounded -->
+        
+        
+        </div>
+        
+        <div class="Subtitle-1 mt-3-1 text-start">Uploaded <span>({{attachmentFilesTemp.length}})</span></div>
+        <div *ngFor="let file of attachmentFilesTemp" class="d-flex flex-row align-items-center mt-2-1">
             <div style="width: calc(100% - 72px);float: left;">
-                <img class="me-1-1" [src]="getFileImg(file)"
-                     onerror="this.src='assets/images/icon/zz.png';this.onerror='';" [alt]="file.name"
+                <img class="me-1-1" [src]="globalService.getFileImg(file)"
+                     onerror="this.src='assets/images/icon/zz.png';this.onerror='';" [alt]="file.fileName"
                      style="width: 24px;height: 24px;float: left;">
-                <div class="subtitle-2-600 text-overflow-ellipsis" style="width: calc(100% - 40px);">{{file.name}}</div>
+                <div class="subtitle-2-600 text-overflow-ellipsis"
+                     style="width: calc(100% - 40px);">{{file.fileName}}</div>
             </div>
             <div class="d-flex flex-row" style="width: 72px;float: right;">
                 <div class="text-center" (click)="openFile(file)" style="width: 32px;">
@@ -31,7 +58,7 @@
     
     
     <div class="d-grid" style="width: calc(100% - 48px);position: fixed;bottom: 24px;right: 24px;">
-        <button class="btn btn-primary mb-1-1" [disabled]="files.length == 0" (click)="uploadFile()">Save
+        <button class="btn btn-primary mb-1-1" [disabled]="files.length > 0 || attachmentFilesTemp.length == 0" (click)="attachmentUploadFile()">Save
         </button>
         <button class="btn btn-outline-primary" (click)="modalRef.dismiss()">Cancel</button>
     </div>

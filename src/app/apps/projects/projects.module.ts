@@ -23,6 +23,8 @@ import { ProjectTeamComponent } from './project-team/project-team.component';
 import { AvatarModule } from 'src/app/shared/avatar/avatar.module';
 import { DropdowndataModule } from 'src/app/shared/dropdowndata/dropdowndata.module';
 import { TagInputModule } from 'ngx-chips';
+import { ProjectOrdersComponent } from './project-orders/project-orders.component';
+import { SimplebarAngularModule } from "simplebar-angular";
 
 
 @NgModule({
@@ -35,7 +37,8 @@ import { TagInputModule } from 'ngx-chips';
     SetColorComponent,
     ProjectDetailComponent,
     InfoModalComponent,
-    ProjectTeamComponent
+    ProjectTeamComponent,
+    ProjectOrdersComponent,
   ],
   imports: [
     CommonModule,
@@ -54,6 +57,7 @@ import { TagInputModule } from 'ngx-chips';
     AvatarModule,
     DropdowndataModule,
     TagInputModule,
+    SimplebarAngularModule,
   ],
   providers:[
     provideNgxMask()

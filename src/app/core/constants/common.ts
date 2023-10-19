@@ -1,7 +1,55 @@
-export const IMG_TYPE: string[] = [
+const IMG_TYPE: string[] = [
   'jpeg',
   'jpg',
   'bmp',
-  'png',
-  'gif'
+  'png'
 ]
+
+const FILE_TYPE: string[] = [
+  '3ds',
+  'aac',
+  'ai',
+  'avi',
+  'bmp',
+  'cad',
+  'cdr',
+  'css',
+  'dat',
+  'dll',
+  'dmg',
+  'doc',
+  'docx',
+  'eps',
+  'fla',
+  'flv',
+  'gif',
+  'html',
+  'indd',
+  'iso',
+  'jpg',
+  'js',
+  'midi',
+  'mov',
+  'mp3',
+  'mpg',
+  'pdf',
+  'php',
+  'png',
+  'ppt',
+  'pptx',
+  'ps',
+  'psd',
+  'raw',
+  'sql',
+  'svg',
+  'tif',
+  'txt',
+  'wmv',
+  'xls',
+  'xlsx',
+  'xml',
+  'zip'
+]
+
+export { IMG_TYPE, FILE_TYPE }
+

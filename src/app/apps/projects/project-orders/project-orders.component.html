@@ -1,0 +1,136 @@
+<div class="orders-dropdown row mt-2-1">
+    <div class="col-md-4 subtitle-2-600-24 pt-1-1">
+        {{InitialOrders.length}} {{InitialOrders.length > 1 ? 'Orders' : 'Order'}}
+    </div>
+    <div class="col-md-8 d-flex flex-row justify-content-end">
+        <div class="d-flex align-items-center ms-2-1">
+            <button class="btn btn-primary btn-text-12" [disabled]="true"
+                    style="padding: 6px 16px;">
+                Pay Selected
+            </button>
+        </div>
+        <div class="d-inline-block ms-1-1">
+            <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords"
+                   style="padding: 10px 16px 10px 36px;"/>
+        </div>
+    </div>
+</div>
+<ngx-simplebar [options]="scrollOptions" class="mt-2-1" style="height: calc(100vh - 265px);">
+    <table class="orders-table advanced-table" style="width: max-content;min-width: 100%;">
+        <thead>
+        <tr>
+            <th class="row_select"><input class="form-check" type="checkbox"/></th>
+            <th class="sortable"
+                [ngClass]="{'sorting_asc':sortColumn == 'status' && direction == 'asc','sorting_desc':sortColumn == 'status' && direction == 'desc'}"
+                (click)="onSort('status')">Status
+            </th>
+            <th class="sortable"
+                [ngClass]="{'sorting_asc':sortColumn == 'dueDate' && direction == 'asc','sorting_desc':sortColumn == 'dueDate' && direction == 'desc'}"
+                (click)="onSort('dueDate')">Due Date
+            </th>
+            <th class="sortable"
+                [ngClass]="{'sorting_asc':sortColumn == 'order' && direction == 'asc','sorting_desc':sortColumn == 'order' && direction == 'desc'}"
+                (click)="onSort('order')">Order #
+            </th>
+            <th class="sortable"
+                [ngClass]="{'sorting_asc':sortColumn == 'vendor' && direction == 'asc','sorting_desc':sortColumn == 'vendor' && direction == 'desc'}"
+                (click)="onSort('vendor')">Vendor
+            </th>
+            <th class="sortable"
+                [ngClass]="{'sorting_asc':sortColumn == 'invoice' && direction == 'asc','sorting_desc':sortColumn == 'invoice' && direction == 'desc'}"
+                (click)="onSort('invoice')">Invoice
+            </th>
+            <th class="sortable"
+                [ngClass]="{'sorting_asc':sortColumn == 'costCode' && direction == 'asc','sorting_desc':sortColumn == 'costCode' && direction == 'desc'}"
+                (click)="onSort('costCode')">Cost Code
+            </th>
+            <th class="sortable"
+                [ngClass]="{'sorting_asc':sortColumn == 'amount' && direction == 'asc','sorting_desc':sortColumn == 'amount' && direction == 'desc'}"
+                (click)="onSort('amount')">Amount
+            </th>
+            <th class="sortable"
+                [ngClass]="{'sorting_asc':sortColumn == 'project' && direction == 'asc','sorting_desc':sortColumn == 'project' && direction == 'desc'}"
+                (click)="onSort('project')">Project
+            </th>
+            <th class="sortable"
+                [ngClass]="{'sorting_asc':sortColumn == 'approval' && direction == 'asc','sorting_desc':sortColumn == 'approval' && direction == 'desc'}"
+                (click)="onSort('approval')">Approval
+            </th>
+            <th class="sortable"
+                [ngClass]="{'sorting_asc':sortColumn == 'action' && direction == 'asc','sorting_desc':sortColumn == 'action' && direction == 'desc'}"
+                (click)="onSort('action')">Action
+            </th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="c-p" *ngFor="let item of orders | callback: filterTable; let i = index"
+            (click)="openDetail(item.id)">
+            <td><input class="form-check" type="checkbox"/></td>
+            <td>
+                <img src="assets/images/status-icons/{{item.status.toLowerCase()}}.png">
+            </td>
+            <td>
+                {{'2022-2-18' | date: 'M/dd/yy'}}
+            </td>
+            <td>
+                {{item.orderNumber}}
+            </td>
+            <td>
+                {{item.vendorName}}
+            </td>
+            <td>
+                {{item.invoiceNumber}}
+            </td>
+            <td>
+                {{item.costCodeName}}
+            </td>
+            <td class="text-end">
+                {{item.remainingAmount | currency}}
+            </td>
+            <td>
+                {{item.projectName}}
+            </td>
+            <td>
+                <div class="d-flex flex-row">
+                    <div class="me-1-1">
+                        <div [ngClass]="bgColors[i % 6]" class=" rounded-circle"
+                             style="width:32px; height: 32px; padding: 8px;">
+                            <i class="fe-user text-white  font-16"></i>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column search-text">
+                        <div class="text-blackprimary text-overflow-ellipsis"
+                             style="max-width: 120px;">{{item.vendorName}}</div>
+                        <div class="text-blackprimary-op-50">{{item.vendorType}} 1111</div>
+                    </div>
+                </div>
+            </td>
+            <td class="text-center">
+                <img class="c-p" src="assets/images/status-icons/payBill.png">
+            </td>
+            <td class="text-center">
+                <i class="fe-paperclip" (click)="$event.stopPropagation();uploadAttachments(item);"></i>
+            </td>
+            <td class="text-center">
+                <i class="fe-more-vertical- c-p"></i>
+            </td>
+        </tr>
+        </tbody>
+        <tbody *ngIf="orders.length == 0 && loading" class="bg-white">
+        <tr>
+            <td colspan="13">
+                <div style="position: relative; height: 400px;">
+                    <app-ui-preloader [display]="loading"></app-ui-preloader>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</ngx-simplebar>
+
+<!--uploadAttachment-->
+<ng-template #uploadAttachment let-modal>
+    <app-upload-attachment [idOrder1]="uploadIdOrder1" [modalRef]="uploadAttachmentRef"></app-upload-attachment>
+</ng-template>

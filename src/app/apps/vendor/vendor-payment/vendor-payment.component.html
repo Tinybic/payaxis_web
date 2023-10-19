@@ -97,7 +97,7 @@
                             <div *ngFor="let attachment of insuranceAttachmentList;let i=index;" class="col-md-12 mt-1-1">
                                 <div class="d-flex flex-row align-items-center justify-content-between" style="padding: 8px 16px;border-radius: 8px;border: 1px solid #E1E6EF;">
                                     <div class="subtitle-2-600">
-                                        <img class="me-1-1" [src]="globalService.getFileImg(attachment)" style="width: 24px;height: 24px;"/>
+                                        <img class="me-1-1" [src]="globalService.getFileImg(attachment)" onerror="this.src='assets/images/icon/zz.png';this.onerror='';" style="width: 24px;height: 24px;"/>
                                         {{attachment.fileName}}
                                     </div>
                                     <i class="fe-x text-end cursor-pointer text-danger" (click)="deleteAttachment(attachment, i)"></i>
@@ -186,7 +186,7 @@
                         Payment History
                     </div>
                     <div class="col-md-6 headline-24 text-end">
-                       
+                    
                     </div>
                 </div>
 

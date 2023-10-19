@@ -129,4 +129,10 @@ export class ProjectDetailComponent extends Base {
   inviteMembers() {
     this.eventService.broadcast(EventType.PROJECT_DEDAIL_INVITE, true);
   }
+  
+  createNew(){
+    if(this.tabs === 2){
+      this.router.navigate(['apps/order/detail/-'+ this.project.id])
+    }
+  }
 }
