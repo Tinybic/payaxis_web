@@ -47,7 +47,7 @@ export class UploadAttachmentComponent {
   ){}
   
   ngOnInit(): void{
-  
+    
     if(this.idVendor){
       console.log('idvendor: ', this.idVendor);
     }
@@ -190,12 +190,21 @@ export class UploadAttachmentComponent {
     let service;
     let params = {};
     
+    let attachmentFilesTemp = this.attachmentFilesTemp.map(file => {
+      return {
+        fileName: file.fileName,
+        fileSize: file.fileSize,
+        fileType: file.fileType,
+        fileUrl: file.fileUrl
+      }
+    })
+    
     if(this.idVendor){
       service = vendorinsurance_upload;
       params = {
         idCompany: parseInt(localStorage.getItem('idcompany')),
         idVendor: parseInt(this.idVendor),
-        insuranceFiles: this.attachmentFilesTemp
+        insuranceFiles: attachmentFilesTemp
       }
     }
     
@@ -204,7 +213,7 @@ export class UploadAttachmentComponent {
       params = {
         idCompany: parseInt(localStorage.getItem('idcompany')),
         idOrder1: parseInt(this.idOrder1),
-        orderFiles: this.attachmentFilesTemp
+        orderFiles: attachmentFilesTemp
       }
     }
     
