@@ -11,7 +11,7 @@ import { HttpService } from 'src/app/core/service/http.service';
 export class InvitingVendorComponent {
   token: string = '';
   code: string = '';
-  loading = false;
+  loading = true;
   error = '';
 
   constructor(
@@ -44,7 +44,11 @@ export class InvitingVendorComponent {
         })
         .catch((error) => {
           this.loading = false;
-          this.error = error;
+          this.toastr.info(error, '', {
+            timeOut: 20000,
+            enableHtml: true,
+          });
+          this.router.navigate(['auth/login']);
         });
     }
   }
