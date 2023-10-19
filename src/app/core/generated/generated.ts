@@ -171,6 +171,8 @@ export type Mutation = {
   vendor_contact_deactivate: Vendordeactivateeresult;
   /** delete vendor file */
   vendor_file_delete: Vendordeleteresult;
+  /** vendor invitation */
+  vendor_invite: Vendordeleteresult;
   /** new vendor_account */
   vendor_new: Vendorupdateresult;
   /** update vendor_account */
@@ -698,6 +700,13 @@ export type MutationVendor_File_DeleteArgs = {
   idCompany: Scalars['Int']['input'];
   idVendor_file: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationVendor_InviteArgs = {
+  idCompany: Scalars['Int']['input'];
+  inviteVendors?: InputMaybe<Array<Invitedvendors>>;
 };
 
 
@@ -1468,6 +1477,10 @@ export type Industrylist = {
   __typename?: 'industrylist';
   id: Scalars['Int']['output'];
   txtName: Scalars['String']['output'];
+};
+
+export type Invitedvendors = {
+  email: Scalars['email_String_NotNull_maxLength_180_format_email']['input'];
 };
 
 export type Invitemember = {

@@ -8,6 +8,7 @@ import { VendoraddModule } from './vendoradd/vendoradd.module';
 import { UiModule } from 'src/app/shared/ui/ui.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AvatarModule } from 'src/app/shared/avatar/avatar.module';
+import { TagInputModule } from 'ngx-chips';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { AvatarModule } from 'src/app/shared/avatar/avatar.module';
     CommonModule,
     FormsModule,
     NgbNavModule,
+    TagInputModule,
     VendorRoutingModule,
     NgbDropdownModule,
     NgbModalModule,
