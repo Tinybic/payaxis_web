@@ -12,11 +12,11 @@ export class ConfirmModalComponent {
   @Input() modalRef;
   @Input() title;
   @Input() message;
-  @Input() btnConfirm;
-  @Input() btnCancel;
-  @Input() btnSide;
-  @Input() params;
-  @Input() serviceName;
+  @Input() btnConfirm?;
+  @Input() btnCancel?;
+  @Input() btnSide?;
+  @Input() params?;
+  @Input() serviceName?;
   
   
   constructor(
