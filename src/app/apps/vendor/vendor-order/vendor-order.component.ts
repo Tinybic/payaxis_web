@@ -94,4 +94,25 @@ export class VendorOrderComponent {
   cancel(){
     this.addOrderRef.close();
   }
+
+  filterList = [];
+  filterVendorList(item) {
+    console.log(item)
+    if (!this.filterList.includes(item)) {
+      this.filterList.push(item);
+    } else {
+      for (let i = 0; i < this.filterList.length; i++) {
+        if (item == this.filterList[i]) {
+          this.filterList.splice(i, 1);
+          break;
+        }
+      }
+    }
+    this.orders = JSON.parse(JSON.stringify(this.ORDERS));
+
+    if (this.filterList.length > 0)
+      this.orders = this.orders.filter((item) =>
+        this.filterList.includes(item.status.toLowerCase())
+      );
+  }
 }
