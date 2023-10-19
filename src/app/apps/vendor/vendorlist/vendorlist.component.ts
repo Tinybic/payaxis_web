@@ -14,8 +14,10 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-vendorlist',
   templateUrl: './vendorlist.component.html',
-  styleUrls: ['./vendorlist.component.scss',
-  '../../../../assets/scss/custom/structure/_foundation-themes.scss',],
+  styleUrls: [
+    './vendorlist.component.scss',
+    '../../../../assets/scss/custom/structure/_foundation-themes.scss',
+  ],
 })
 export class VendorlistComponent extends Base {
   @ViewChild('inviteVendor') inviteVendor: any;
@@ -200,7 +202,7 @@ export class VendorlistComponent extends Base {
   }
 
   inviteVendorRef;
-  inviteVendorModal(){
+  inviteVendorModal() {
     this.inviteVendorRef = this.modalService.open(this.inviteVendor, {
       backdrop: 'static',
       modalDialogClass: 'modal-right',
@@ -217,10 +219,9 @@ export class VendorlistComponent extends Base {
     );
   }
   emailList = [];
-  cancelModal(){
+  cancelModal() {
     this.inviteVendorRef.close();
   }
-
 
   public validators = [this.must_be_email];
   public errorMessages = {
@@ -238,13 +239,12 @@ export class VendorlistComponent extends Base {
     return null;
   }
 
-
-  sendInvite(){
+  sendInvite() {
     const inviteVendors = this.emailList.map((item) => {
       return Object.assign(
         {},
         {
-          email: item.value
+          email: item.value,
         }
       );
     });
@@ -267,5 +267,26 @@ export class VendorlistComponent extends Base {
       this.toastrService.info(message, '');
       this.inviteVendorRef.close();
     });
+  }
+
+  filterList = [];
+  filterVendorList(item) {
+    console.log(item)
+    if (!this.filterList.includes(item)) {
+      this.filterList.push(item);
+    } else {
+      for (let i = 0; i < this.filterList.length; i++) {
+        if (item == this.filterList[i]) {
+          this.filterList.splice(i, 1);
+          break;
+        }
+      }
+    }
+    this.vendorlist = JSON.parse(JSON.stringify(this.VENDOR_LIST));
+
+    if (this.filterList.length > 0)
+      this.vendorlist = this.vendorlist.filter((item) =>
+        this.filterList.includes(item.status.toLowerCase())
+      );
   }
 }
