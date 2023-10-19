@@ -530,7 +530,8 @@ export class AddOrderComponent {
     this.order.taxable = 0.0;
     this.order.nontaxable = 0.0;
     this.order.listItems.forEach((item) => {
-      if(item.taxyn){
+      console.log(item);
+      if (item.taxyn) {
         this.order.taxable += item.amount;
       } else{
         this.order.nontaxable += item.amount;

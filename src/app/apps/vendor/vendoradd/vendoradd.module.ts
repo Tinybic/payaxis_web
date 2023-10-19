@@ -5,8 +5,7 @@ import {
   NgbAlertModule,
   NgbDropdownModule,
   NgbModalModule,
-  NgbNavModule, NgbProgressbarModule,
-  NgbTooltipModule,
+  NgbNavModule,
   NgbTypeaheadModule
 } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -45,9 +44,6 @@ import { AvatarModule } from 'src/app/shared/avatar/avatar.module';
     SharedModule,
     UiModule,
     NgxDropzoneModule,
-    AvatarModule,
-    NgbTooltipModule,
-    NgbProgressbarModule
   ],
   exports: [VendoraddComponent],
   providers:[
