@@ -32,6 +32,8 @@ export class LoginComponent implements OnInit {
   user: SocialUser;
   loggedIn: boolean;
   title: string = 'Log in';
+  email: '';
+  emailDisabled = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -49,6 +51,12 @@ export class LoginComponent implements OnInit {
       this.activatedRoute.snapshot.queryParams['company']
     );
     if (company != 'undefined') this.title = 'Join the "' + company + '" team';
+    this.email = this.activatedRoute.snapshot.queryParams['email'];
+
+    if (this.email.length > 0) {
+      this.formValues['email'].setValue(this.email);
+      this.emailDisabled = true;
+    }
   }
 
   /**

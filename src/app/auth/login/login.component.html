@@ -23,7 +23,7 @@
     </ngb-alert>
     <div class="mb-2-1">
       <label for="emailaddress" class="form-label" i18n>Email</label>
-      <input class="form-control" type="email" id="emailaddress" required i18n-placeholder placeholder="Enter Email"
+      <input class="form-control" type="email" id="emailaddress" required i18n-placeholder placeholder="Enter Email"  [readonly]="emailDisabled"
         formControlName="email" [ngClass]="{'is-invalid':formSubmitted && formValues['email'].invalid}" />
 
       <div *ngIf="formSubmitted && formValues['email'].invalid" class="invalid-feedback">
