@@ -46,17 +46,7 @@ export class UploadAttachmentComponent {
     public globalService: GlobalFunctionsService
   ){}
   
-  ngOnInit(): void{
-    
-    if(this.idVendor){
-      console.log('idvendor: ', this.idVendor);
-    }
-    
-    if(this.idOrder1){
-      console.log('idOrder1: ', this.idOrder1)
-    }
-    
-  }
+  ngOnInit(): void{}
   
   
   /**
@@ -149,6 +139,16 @@ export class UploadAttachmentComponent {
     window.open(file.fileUrl, '_blank');
   }
   
+  deleteFile(file){
+    this.http.delete(file.initialUrl).subscribe({
+      next: (res) => {
+        this.attachmentFilesTemp.splice(this.attachmentFilesTemp.indexOf(file), 1);
+      },
+      error: (err) => {
+        this.toastrService.info(err, '');
+      }
+    })
+  }
   
   /**
    * removes file from uploaded files
@@ -171,14 +171,7 @@ export class UploadAttachmentComponent {
     
     this.deleteModalRef.result.then(
       (result) => {
-        this.http.delete(file.initialUrl).subscribe({
-          next: (res) => {
-            this.attachmentFilesTemp.splice(this.attachmentFilesTemp.indexOf(file), 1);
-          },
-          error: (err) => {
-            this.toastrService.info(err, '');
-          }
-        })
+        this.deleteFile(file);
       },
       (reason) => {
         console.log(reason);
@@ -232,5 +225,44 @@ export class UploadAttachmentComponent {
       this.isUploading = false;
       this.toastrService.info(error, '');
     });
+  }
+  
+  cancel(){
+    if(this.files.length > 0 || this.attachmentFilesTemp.length > 0){
+      this.deleteObj = {
+        message: 'All uploaded documents will be deleted.',
+        title: 'Stop Uploading',
+        btnConfirm: 'Confirm',
+        btnSide: 'end',
+        params: '',
+        serviceName: ''
+      }
+  
+      this.deleteModalRef = this.modalService.open(this.deleteModal, {
+        size: '443',
+        centered: true
+      })
+  
+      this.deleteModalRef.result.then(
+        (result) => {
+          this.files.map(file => {
+            this.cancelUploading(file);
+          })
+          
+          const attachmentFilesTemp = JSON.parse(JSON.stringify(this.attachmentFilesTemp));
+          attachmentFilesTemp.map(file => {
+            this.deleteFile(file);
+          })
+          
+          setTimeout(()=>{
+            this.modalRef.dismiss();
+          }, 500)
+        },
+        (reason) => {
+          console.log(reason);
+        })
+    }else {
+      this.modalRef.dismiss();
+    }
   }
 }
