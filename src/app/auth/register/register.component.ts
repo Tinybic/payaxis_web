@@ -181,7 +181,18 @@ export class RegisterComponent implements OnInit {
           this.loading = false;
           if (!res.error) {
             if (this.email.length > 0) {
-              this.router.navigate(['auth/info']);
+              this.httpService
+                .post('login', {
+                  email: this.formValues['email'].value,
+                  password: this.formValues['password'].value,
+                })
+                .then((res) => {
+                  if (!res.error) {
+                    localStorage.setItem('refreshToken', res.data.refreshToken);
+                    localStorage.setItem('token', res.data.token);
+                    this.router.navigate(['auth/info']);
+                  }
+                });
             } else {
               this.openResendModal();
             }
