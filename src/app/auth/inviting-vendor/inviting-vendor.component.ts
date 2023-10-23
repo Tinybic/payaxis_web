@@ -40,8 +40,11 @@ export class InvitingVendorComponent {
             timeOut: 20000,
             enableHtml: true,
           });
-          if (res.data) this.router.navigate(['auth/login']);
-          else this.router.navigate(['auth/register']);
+          if (res.data.login)
+            this.router.navigate(['auth/login'], { queryParams: { email: res.data.email}});
+          else {
+            this.router.navigate(['auth/register'], { queryParams: { email: res.data.email}});
+          }
         })
         .catch((error) => {
           this.loading = false;
