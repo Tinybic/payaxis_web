@@ -187,10 +187,12 @@ export class RegisterComponent implements OnInit {
                   password: this.formValues['password'].value,
                 })
                 .then((res) => {
-                  if (!res.error) {
+                  if (res.error && res.code == 113) {
                     localStorage.setItem('refreshToken', res.data.refreshToken);
                     localStorage.setItem('token', res.data.token);
                     this.router.navigate(['auth/info']);
+                  } else {
+                    this.router.navigate(['auth/login']);
                   }
                 });
             } else {
