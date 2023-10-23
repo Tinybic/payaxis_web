@@ -1,0 +1,18 @@
+<div class="modal-body">
+    <div class="headline mt-1-1 mb-1-1">Invite Vendors</div>
+    <div class="formContainer">
+        <div>
+            <tag-input [validators]="validators" [addOnBlur]="true" [theme]="'foundation-theme'"
+                [separatorKeys]="[',',' ']" [(ngModel)]='emailList' placeholder="add email"
+                secondaryPlaceholder="Email, separate with comma" (onAdd)="notMembers($event)"></tag-input>
+        </div>
+        <div class="bottomButton">
+            <div>
+                <button class="btn btn-primary" [disabled]="emailList.length == 0" (click)="sendInvite()">Next</button>
+            </div>
+            <div>
+                <button class="btn btn-outline-primary mt-1-1" (click)="cancelModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+    </div>

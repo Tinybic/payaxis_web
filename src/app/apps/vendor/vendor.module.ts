@@ -9,11 +9,13 @@ import { UiModule } from 'src/app/shared/ui/ui.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AvatarModule } from 'src/app/shared/avatar/avatar.module';
 import { TagInputModule } from 'ngx-chips';
+import { VendorInviteComponent } from './vendor-invite/vendor-invite.component';
 
 
 @NgModule({
   declarations: [
     VendorlistComponent,
+    VendorInviteComponent,
   ],
   imports: [
     CommonModule,

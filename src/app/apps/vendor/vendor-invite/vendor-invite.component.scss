@@ -1,0 +1,32 @@
+.modal-body {
+    height: 98vh;
+    background-color: #F7FAFC;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    width: 528px;
+ }
+ 
+ 
+ .formContainer {
+    background-color: #fff;
+    padding: 16px;
+    flex: 1;
+    border-radius: 8px;
+ }
+ 
+ .bottomButton {
+    position: absolute;
+    bottom: 40px;
+ }
+ 
+ .bottomButton button {
+    width: 445px;
+ }
+ 
+ .emaillistInfo {
+    border: 1px solid #2B52DD;
+    border-radius: 8px;
+    padding: 4px 16px 12px 8px
+ }
