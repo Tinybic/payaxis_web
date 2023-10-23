@@ -40,7 +40,8 @@ export class InvitingVendorComponent {
             timeOut: 20000,
             enableHtml: true,
           });
-          this.router.navigate(['auth/login']);
+          if (res.data) this.router.navigate(['auth/login']);
+          else this.router.navigate(['auth/register']);
         })
         .catch((error) => {
           this.loading = false;
