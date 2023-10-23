@@ -41,9 +41,9 @@ export class InvitingVendorComponent {
             enableHtml: true,
           });
           if (res.data.login)
-            this.router.navigate(['auth/login?email=' + res.data.email]);
+            this.router.navigate(['auth/login'], { queryParams: { email: res.data.email}});
           else {
-            this.router.navigate(['auth/register?email=' + res.data.email]);
+            this.router.navigate(['auth/register'], { queryParams: { email: res.data.email}});
           }
         })
         .catch((error) => {
