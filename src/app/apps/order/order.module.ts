@@ -15,6 +15,7 @@ import { SimplebarAngularModule } from "simplebar-angular";
 import { SettingModule } from '../setting/setting.module';
 import { VendoraddModule } from '../vendor/vendoradd/vendoradd.module';
 import { ProjectsModule } from '../projects/projects.module';
+import { MomentModule } from 'ngx-moment';
 
 
 
@@ -42,7 +43,8 @@ import { ProjectsModule } from '../projects/projects.module';
     SettingModule,
     VendoraddModule,
     ProjectsModule,
-    NgbTooltipModule
+    NgbTooltipModule,
+    MomentModule
   ],
   exports:[
     AddOrderComponent

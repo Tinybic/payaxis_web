@@ -1,1 +1,39 @@
-<p>activity works!</p>
+<table class="advanced-table mt-2-1">
+    <thead>
+    <tr>
+        <th style="width: 20%;">Changes</th>
+        <th>User</th>
+        <th>Additions</th>
+        <th>Last updated</th>
+    </tr>
+    </thead>
+    <tbody *ngIf="!loading">
+    <tr *ngFor="let activity of activityList; let i=index;">
+        <td>{{activity.changes}}</td>
+        <td>
+            <div class="d-flex flex-row align-items-center">
+                <div class="me-1-1">
+                    <div [ngClass]="bgColors[i % 6]" class=" rounded-circle"
+                         style="width:32px; height: 32px; padding: 8px;">
+                        <i class="fe-user text-white  font-16"></i>
+                    </div>
+                </div>
+                <div class="d-flex flex-column search-text">
+                    {{activity.firstName}} {{activity.lastName}}
+                </div>
+            </div>
+        </td>
+        <td>{{activity.additions}}</td>
+        <td>{{activity.modifiedDate | date: 'MM/dd/yy HH:mm:ss' | amTimeAgo}}</td>
+    </tr>
+    </tbody>
+    <tbody *ngIf="loading" class="bg-white">
+    <tr>
+        <td colspan="4">
+            <div style="position: relative; height: 400px;">
+                <app-ui-preloader [display]="loading"></app-ui-preloader>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>

@@ -1792,12 +1792,15 @@ export type Projectorder_Activity = {
   __typename?: 'projectorder_activity';
   active: Scalars['Boolean']['output'];
   additions: Scalars['String']['output'];
+  avatar: Scalars['String']['output'];
   changes: Scalars['String']['output'];
   createdBy: Scalars['Int']['output'];
   createdDate: Scalars['String']['output'];
+  firstName: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   idOrder1: Scalars['Int']['output'];
   idUser: Scalars['Int']['output'];
+  lastName: Scalars['String']['output'];
   modifiedBy: Scalars['Int']['output'];
   modifiedDate: Scalars['String']['output'];
   revision: Scalars['Int']['output'];
@@ -1977,6 +1980,7 @@ export type Vendor_Account = {
   form1099: Scalars['Boolean']['output'];
   id: Scalars['Int']['output'];
   idCompany: Scalars['Int']['output'];
+  idInvitedCompany: Scalars['Int']['output'];
   modifiedBy: Scalars['Int']['output'];
   modifiedDate: Scalars['String']['output'];
   paymentTerms: Scalars['String']['output'];
