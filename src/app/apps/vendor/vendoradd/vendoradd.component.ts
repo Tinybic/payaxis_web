@@ -64,6 +64,8 @@ export class VendoraddComponent {
     vendorfiles: [],
   };
 
+  idInvitedCompany = 0;
+
   vendorAdditional = {
     id: 0,
     revision: 0,
@@ -138,6 +140,7 @@ export class VendoraddComponent {
               vendorfiles: result.data.vendorfiles,
             };
 
+            this.idInvitedCompany = result.data.vendor.idInvitedCompany;
             this.vendorAdditional = {
               id: result.data.vendor.id,
               revision: result.data.vendor.revision,
@@ -465,5 +468,9 @@ export class VendoraddComponent {
         });
     }
     this.archiveRef.close();
+  }
+
+  selectType(item){
+    this.vendor.vendorType = item;
   }
 }

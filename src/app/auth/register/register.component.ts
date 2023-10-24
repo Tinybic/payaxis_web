@@ -95,7 +95,7 @@ export class RegisterComponent implements OnInit {
           this.loading = false;
           this.error = error;
         });
-    } else if (this.email.length > 0) {
+    } else if (this.email) {
       this.formValues['email'].setValue(this.email);
       this.emailDisabled = true;
     }

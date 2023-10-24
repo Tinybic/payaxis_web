@@ -158,6 +158,7 @@ const vendor_info = gql`
           discount
           paymentTerms
           form1099
+          idInvitedCompany
           status
         }
         vendorcostcodes {
