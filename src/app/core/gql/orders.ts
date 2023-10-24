@@ -1,3 +1,4 @@
+
 import { gql } from 'apollo-angular';
 
 const projectorder_list = gql`
@@ -96,4 +97,31 @@ mutation projectorder_deletefile($idCompany: Int!, $idProjectorder_file: Int!, $
 }
 `
 
-export { projectorder_list, projectorder_uploadfiles, projectorder_deletefile, projectorder_attachment };
+const projectorder_activity =gql`
+query projectorder_activity($idCompany: Int!, $idOrder1: Int!) {
+  projectorder_activity(idCompany: $idCompany, idOrder1: $idOrder1) {
+    error
+    code
+    message
+    data {
+      id
+      revision
+      createdBy
+      createdDate
+      modifiedBy
+      modifiedDate
+      idOrder1
+      idUser
+      firstName
+      lastName
+      avatar
+      changes
+      additions
+      active
+    }
+  }
+}
+`
+
+export { projectorder_list, projectorder_uploadfiles, projectorder_deletefile, projectorder_attachment, projectorder_activity };
+
