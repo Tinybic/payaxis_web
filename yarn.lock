@@ -6417,6 +6417,11 @@ mobx@~4.14.1:
   resolved "https://registry.yarnpkg.com/mobx/-/mobx-4.14.1.tgz#0dc5622523363f6f5b467a5a0c4c99846b789748"
   integrity sha512-Oyg7Sr7r78b+QPYLufJyUmxTWcqeQ96S1nmtyur3QL8SeI6e0TqcKKcxbG+sVJLWANhHQkBW/mDmgG5DDC4fdw==
 
+moment@^2.29.4:
+  version "2.29.4"
+  resolved "https://registry.npmmirror.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
+  integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
+
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
@@ -6581,6 +6586,13 @@ ngx-mask@16.2.4:
   version "16.2.4"
   resolved "https://registry.yarnpkg.com/ngx-mask/-/ngx-mask-16.2.4.tgz#08e304c7260a6e8cdf7d265385b03b177cc9aaa2"
   integrity sha512-JfBLyT1tIJDcbpC2rcM4p87utLW4jEDEH36PDioyUB5NFtZPIK9VLxcJLvdtTBp7jrWMTwmXqWd+dKvwo9iQHQ==
+  dependencies:
+    tslib "^2.3.0"
+
+ngx-moment@^6.0.2:
+  version "6.0.2"
+  resolved "https://registry.npmmirror.com/ngx-moment/-/ngx-moment-6.0.2.tgz#7acba9830746e9c2862d261150f2c8adb20eb4f6"
+  integrity sha512-HUvDyoJPZKLA3tc+GMQqDpVyCVT2SPfEiV7/CGj2Dwwsn//JhhQ8eTr+RzKqBzLysrXkCwlzulVVJaJ5A0FJEA==
   dependencies:
     tslib "^2.3.0"
 
