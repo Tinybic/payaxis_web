@@ -7,8 +7,8 @@ import { ActivatedRoute } from "@angular/router";
 import { FileSaverService } from 'ngx-filesaver';
 import { EventService } from "../../../core/service/event.service";
 import { EventType } from "../../../core/constants/events";
-import { IMG_TYPE } from "../../../core/constants/common";
 import { GlobalFunctionsService } from "../../../core/service/global-functions.service";
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-attachments',
@@ -42,6 +42,7 @@ export class AttachmentsComponent {
     private fileSaverService: FileSaverService,
     private eventService: EventService,
     public globalService: GlobalFunctionsService,
+    private http: HttpClient,
   ){
     this.eventService.on(EventType.REFRESH_ATTACHMENTS).subscribe((appEvent) => {
       this.isUploadingAttachment = appEvent.payload == true;
@@ -122,7 +123,12 @@ export class AttachmentsComponent {
   }
   
   downloadFile(attachment){
-    this.fileSaverService.save(attachment.fileUrl, attachment.fileName);
+    this.http.get(attachment.fileUrl, {
+      observe: 'response',
+      responseType: 'blob',
+    }).subscribe(res => {
+      this.fileSaverService.save((<any>res).body, attachment.fileName);
+    });
   }
   
   getDownloadAttachments(){
