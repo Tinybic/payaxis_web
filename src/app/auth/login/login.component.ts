@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
     if (company != 'undefined') this.title = 'Join the "' + company + '" team';
     this.email = this.activatedRoute.snapshot.queryParams['email'];
 
-    if (this.email.length > 0) {
+    if (this.email) {
       this.formValues['email'].setValue(this.email);
       this.emailDisabled = true;
     }

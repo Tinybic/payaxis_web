@@ -2,7 +2,8 @@
     <input type="text" style="display: none;" />
     <div class="col-md-12 d-flex align-items-center">
         <i class="fe-chevron-left"></i>
-        <span class="bold-500">All Vendors</span>&nbsp;/&nbsp;<span class="bold-800 text-primary">{{vendor.vendorName}}</span>
+        <span class="bold-500">All Vendors</span>&nbsp;/&nbsp;<span
+            class="bold-800 text-primary">{{vendor.vendorName}}</span>
     </div>
 </div>
 <div class="row mt-1-1">
@@ -47,8 +48,9 @@
                                 <div class="col-md-6">
                                     <label class="form-label" i18n>Vendor Name</label>
                                     <input autofocus class="form-control" type="text" id="vendorName"
-                                        [(ngModel)]="vendor.vendorName" required i18n-placeholder
-                                        placeholder="Vendor Name" [ngClass]="{'is-invalid':vendorError.vendorName}" />
+                                        [readonly]="idInvitedCompany>0" [(ngModel)]="vendor.vendorName" required
+                                        i18n-placeholder placeholder="Vendor Name"
+                                        [ngClass]="{'is-invalid':vendorError.vendorName}" />
                                     <div *ngIf="vendorError.vendorName" class="invalid-feedback">
                                         <div i18n>
                                             <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter vendor
@@ -58,8 +60,22 @@
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label" i18n>Type</label>
-                                    <input class="form-control" type="text" id="vendorType"
-                                        [(ngModel)]="vendor.vendorType" required i18n-placeholder placeholder="Type" />
+
+                                    <div ngbDropdown class="mt-sm-0 mt-2">
+                                        <input class="form-control" type="text" id="vendorType"
+                                            [(ngModel)]="vendor.vendorType" required i18n-placeholder placeholder="Type"
+                                            ngbDropdownToggle />
+
+                                        <div ngbDropdownMenu aria-labelledby="vendorType">
+                                            <a href="javascript:void(0)" ngbDropdownItem
+                                                (click)="selectType('Labor')">Labor</a>
+                                            <a href="javascript:void(0)" ngbDropdownItem
+                                                (click)="selectType('Marerial')">Marerial</a>
+                                            <a href="javascript:void(0)" ngbDropdownItem
+                                                (click)="selectType('Others')">Others</a>
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label" i18n>Cost Code</label>
@@ -101,8 +117,8 @@
                                 <div class="col-md-3">
                                     <label class="form-label" i18n>Primary Contact</label>
                                     <input class="form-control" type="text" id="primaryContact"
-                                        [(ngModel)]="vendor.primaryContact" required i18n-placeholder
-                                        placeholder="Contact Name"
+                                        [readonly]="idInvitedCompany>0" [(ngModel)]="vendor.primaryContact" required
+                                        i18n-placeholder placeholder="Contact Name"
                                         [ngClass]="{'is-invalid':vendorError.primaryContact}" />
                                     <div *ngIf="vendorError.primaryContact" class="invalid-feedback">
                                         <div i18n>
@@ -113,8 +129,8 @@
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label" i18n>Email</label>
-                                    <input class="form-control" type="text" id="email" [(ngModel)]="vendor.email"
-                                        required i18n-placeholder placeholder="Email"
+                                    <input class="form-control" type="text" id="email" [readonly]="idInvitedCompany>0"
+                                        [(ngModel)]="vendor.email" required i18n-placeholder placeholder="Email"
                                         [ngClass]="{'is-invalid':vendorError.email}" />
                                     <div *ngIf="vendorError.email" class="invalid-feedback">
                                         <div i18n>
@@ -124,14 +140,15 @@
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label" i18n>Phone</label>
-                                    <input class="form-control" type="text" id="phone" [(ngModel)]="vendor.phone"
-                                        required i18n-placeholder mask="(000) 000-0000" placeholder="Phone number" />
+                                    <input class="form-control" type="text" id="phone" [readonly]="idInvitedCompany>0"
+                                        [(ngModel)]="vendor.phone" required i18n-placeholder mask="(000) 000-0000"
+                                        placeholder="Phone number" />
                                 </div>
 
                                 <div class="col-md-3">
                                     <label class="form-label" i18n>Website</label>
-                                    <input class="form-control" type="text" id="website" [(ngModel)]="vendor.website"
-                                        required i18n-placeholder placeholder="Website" />
+                                    <input class="form-control" type="text" id="website" [readonly]="idInvitedCompany>0"
+                                        [(ngModel)]="vendor.website" required i18n-placeholder placeholder="Website" />
                                 </div>
                             </div>
                         </div>
@@ -151,35 +168,35 @@
                                         <div class="col-md-8">
                                             <label class="form-label" i18n>Street Address</label>
                                             <input class="form-control" type="text" id="txtAddress"
-                                                [(ngModel)]="vendor.txtAddress" required i18n-placeholder
-                                                placeholder="Street Address" />
+                                                [readonly]="idInvitedCompany>0" [(ngModel)]="vendor.txtAddress" required
+                                                i18n-placeholder placeholder="Street Address" />
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label" i18n>Apt,suite,etc</label>
                                             <input class="form-control" type="text" id="suiteNumber"
-                                                [(ngModel)]="vendor.suiteNumber" required i18n-placeholder
-                                                placeholder="Apt,suite,etc" />
+                                                [readonly]="idInvitedCompany>0" [(ngModel)]="vendor.suiteNumber"
+                                                required i18n-placeholder placeholder="Apt,suite,etc" />
                                         </div>
                                     </div>
                                     <div class="row mt-2-1">
                                         <div class="col-md-4">
                                             <label class="form-label" i18n>City</label>
                                             <input class="form-control" type="text" id="txtCity"
-                                                [(ngModel)]="vendor.txtCity" required i18n-placeholder
-                                                placeholder="City" />
+                                                [readonly]="idInvitedCompany>0" [(ngModel)]="vendor.txtCity" required
+                                                i18n-placeholder placeholder="City" />
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label" i18n>State</label>
                                             <input id="txtState" type="text" class="form-select position-relative"
-                                                [ngbTypeahead]="searchState"
+                                                [ngbTypeahead]="searchState" [disabled]="idInvitedCompany>0"
                                                 (focus)="focus$.next($any($event).target.value)" placeholder="State"
                                                 #instance="ngbTypeahead" [(ngModel)]="vendor.txtState" />
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label" i18n>Zip Code</label>
                                             <input class="form-control" type="text" id="txtZipcode"
-                                                [(ngModel)]="vendor.txtZipcode" required i18n-placeholder
-                                                placeholder="Zip Code" />
+                                                [readonly]="idInvitedCompany>0" [(ngModel)]="vendor.txtZipcode" required
+                                                i18n-placeholder placeholder="Zip Code" />
                                         </div>
                                     </div>
                                 </div>
