@@ -344,32 +344,8 @@
                                                                     style="border:1px solid #E1E6EF; border-radius: 8px; padding: 8px 16px;">
                                                                     <div class="row cursor-pointer">
                                                                         <div
-                                                                            class="col-md-6 Subtitle-1 text-start line-32">
+                                                                            class="col-md-12 Subtitle-1 text-start line-32">
                                                                             {{project.projectName}}
-                                                                        </div>
-                                                                        <div class="col-md-6 text-end">
-                                                                            <div class="avatar-group d-inline-block">
-                                                                                <app-avatar [url]="avatar.avatar"
-                                                                                    [zindex]="10 - i"
-                                                                                    *ngFor="let avatar of project.members; let i = index"
-                                                                                    [firstName]="avatar.firstName"
-                                                                                    [lastName]="avatar.lastName"
-                                                                                    [size]="32" alt="user-img"
-                                                                                    [bgColor]="bgColors[i % 6]"
-                                                                                    color="text-white"
-                                                                                    class="avatar-group-item position-relative text-white"></app-avatar>
-                                                                                <div class="avatar-group-item position-relative"
-                                                                                    *ngIf="project.members.length > 4"
-                                                                                    style="z-index: 2;">
-                                                                                    <div class="rounded-circle avatar-sm label-tips"
-                                                                                        style="display: inline-flex;vertical-align: middle;justify-content: center;align-items: center;color: white;background-color: #2B2D30">
-                                                                                        +{{project.members.length - 4}}
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="d-inline-block ms-1-1"><i
-                                                                                    class="fe-external-link text-primary"></i>
-                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -397,31 +373,8 @@
                                                                             <div class="row cursor-pointer"
                                                                                 (click)="selectProject(project)">
                                                                                 <div
-                                                                                    class="col-md-6 Subtitle-1 text-start line-32">
+                                                                                    class="col-md-12 Subtitle-1 text-start line-32">
                                                                                     {{project.projectName}}
-                                                                                </div>
-                                                                                <div class="col-md-6 text-end">
-                                                                                    <div class="avatar-group">
-                                                                                        <app-avatar
-                                                                                            [url]="avatar.avatar"
-                                                                                            [zindex]="10 - i"
-                                                                                            *ngFor="let avatar of project.members; let i = index"
-                                                                                            [firstName]="avatar.firstName"
-                                                                                            [lastName]="avatar.lastName"
-                                                                                            [size]="32" alt="user-img"
-                                                                                            [bgColor]="bgColors[i % 6]"
-                                                                                            color="text-white"
-                                                                                            class="avatar-group-item position-relative text-white"></app-avatar>
-                                                                                        <div class="avatar-group-item position-relative"
-                                                                                            *ngIf="project.members.length > 4"
-                                                                                            style="z-index: 2;">
-                                                                                            <div class="rounded-circle avatar-sm label-tips"
-                                                                                                style="display: inline-flex;vertical-align: middle;justify-content: center;align-items: center;color: white;background-color: #2B2D30">
-                                                                                                +{{project.members.length
-                                                                                                - 4}}
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
