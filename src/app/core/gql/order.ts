@@ -126,6 +126,7 @@ const projectorder_info = gql`
           notes
           paidyn
           active
+          modifiedDate
         }
       }
     }

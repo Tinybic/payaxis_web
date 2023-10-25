@@ -21,6 +21,7 @@ import { UploadAttachmentComponent } from "../upload-attachment/upload-attachmen
 import { NgxDropzoneModule } from "ngx-dropzone";
 import { VendorOrderAddComponent } from '../vendor-order-add/vendor-order-add.component';
 import { AvatarModule } from 'src/app/shared/avatar/avatar.module';
+import { MomentModule } from 'ngx-moment';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { AvatarModule } from 'src/app/shared/avatar/avatar.module';
     UiModule,
     NgxDropzoneModule,
     NgbTooltipModule,
-    AvatarModule
+    AvatarModule,
+    MomentModule
   ],
   exports: [VendoraddComponent],
   providers:[
