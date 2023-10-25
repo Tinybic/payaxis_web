@@ -13,10 +13,9 @@
         <td>
             <div class="d-flex flex-row align-items-center">
                 <div class="me-1-1">
-                    <div [ngClass]="bgColors[i % 6]" class=" rounded-circle"
-                         style="width:32px; height: 32px; padding: 8px;">
-                        <i class="fe-user text-white  font-16"></i>
-                    </div>
+                    <app-avatar [bgColor]="bgColors[i % 6]" [url]="activity.avatar" [firstName]="activity.firstName"
+                                [lastName]="activity.lastName" color="text-white" [size]="32"
+                                alt="user-img"></app-avatar>
                 </div>
                 <div class="d-flex flex-column search-text">
                     {{activity.firstName}} {{activity.lastName}}
