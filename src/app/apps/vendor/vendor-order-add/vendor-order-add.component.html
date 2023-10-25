@@ -521,8 +521,9 @@
                                                                     (click)="onSort('active')">Price</th>
                                                                 <th>Amount</th>
                                                                 <th>Tax</th>
-                                                                <!-- <th>Notes</th> -->
-                                                                <th>Last updated</th>
+                                                                <th *ngIf="order.id > 0" style="width: 110px;">Last
+                                                                    updated</th>
+                                                                <th></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody *ngIf="!loading">
@@ -558,10 +559,10 @@
                                                                         (change)="setTotal()"
                                                                         [(ngModel)]="item.taxyn" />
                                                                 </td>
-                                                                <!-- <td>
-                                                                    <input type="text" class="form-control"
-                                                                        [(ngModel)]="item.notes" />
-                                                                </td> -->
+                                                                <td *ngIf="order.id > 0">
+                                                                    <span *ngIf="item.modifiedDate">{{item.modifiedDate
+                                                                        | date: 'MM/dd/yy HH:mm:ss' | amTimeAgo}}</span>
+                                                                </td>
                                                                 <td>
                                                                     <i class="fe-copy cursor-pointer"
                                                                         (click)="listItemCopy(item)"></i>

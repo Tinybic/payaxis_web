@@ -126,9 +126,10 @@
             <input type="text" style="display: none;" />
             <div class="col-md-12 d-flex align-items-center">
                 <i class="fe-chevron-left"></i>
-                <span class="bold-500"><a routerLink="/apps/order" style="color: #202020;">All Orders & Bills</a></span>&nbsp;/&nbsp;<span class="bold-800 text-primary"
-                    *ngIf="order.id > 0">Order #{{order.orderNumber}}</span><span class="bold-800 text-primary"
-                    *ngIf="order.id == 0">New Order</span>
+                <span class="bold-500"><a routerLink="/apps/order" style="color: #202020;">All Orders &
+                        Bills</a></span>&nbsp;/&nbsp;<span class="bold-800 text-primary" *ngIf="order.id > 0">Order
+                    #{{order.orderNumber}}</span><span class="bold-800 text-primary" *ngIf="order.id == 0">New
+                    Order</span>
             </div>
 
         </div>
@@ -148,24 +149,25 @@
         </div> -->
             </div>
             <div class="col-md-6 text-end">
-                <input id="attachmentUpload" type="file" class="d-none" multiple (change)="getUploadUrl($event)"/>
-                <button class="btn btn-outline-primary" onclick="document.getElementById('attachmentUpload').click()" [disabled]="isUploading">
-                  <i class="fe-upload me-1-1"></i>Upload Attachment
+                <input id="attachmentUpload" type="file" class="d-none" multiple (change)="getUploadUrl($event)" />
+                <button class="btn btn-outline-primary" onclick="document.getElementById('attachmentUpload').click()"
+                    [disabled]="isUploading">
+                    <i class="fe-upload me-1-1"></i>Upload Attachment
                 </button>
                 <button class="btn btn-primary ms-2-1" *ngIf="tabs1 == 1" (click)="saveOrder()">Save</button>
                 <div class="d-inline-block dropdown ms-1-1" ngbDropdown>
                     <span ngbDropdownToggle><i class="fe-more-vertical- font-24 cursor-pointer"></i></span>
                     <div class="dropdown-menu" ngbDropdownMenu>
-                        <div class="cursor-pointer" ngbDropdownItem >
+                        <div class="cursor-pointer" ngbDropdownItem>
                             Duplicate Order
                         </div>
-                        <div class="cursor-pointer" ngbDropdownItem >
+                        <div class="cursor-pointer" ngbDropdownItem>
                             Print
                         </div>
-                        <div class="cursor-pointer" ngbDropdownItem >
+                        <div class="cursor-pointer" ngbDropdownItem>
                             Email
                         </div>
-                        <div class="cursor-pointer" ngbDropdownItem >
+                        <div class="cursor-pointer" ngbDropdownItem>
                             Back Charge
                         </div>
                     </div>
@@ -510,7 +512,8 @@
                                                                         type="checkbox" /></th>
                                                                 <th class="sortable"
                                                                     [ngClass]="{'sorting_asc':sortCloumn == 'vendorName' && direction == 'asc','sorting_desc':sortCloumn == 'vendorName' && direction == 'desc'}"
-                                                                    (click)="onSort('vendorName')" style="width: 50%;">Billable</th>
+                                                                    (click)="onSort('vendorName')" style="width: 50%;">
+                                                                    Billable</th>
                                                                 <th class="sortable"
                                                                     [ngClass]="{'sorting_asc':sortCloumn == 'status' && direction == 'asc','sorting_desc':sortCloumn == 'status' && direction == 'desc'}"
                                                                     (click)="onSort('status')">Qty</th>
@@ -523,7 +526,9 @@
                                                                 <th>Amount</th>
                                                                 <th>Tax</th>
                                                                 <!-- <th>Notes</th> -->
-                                                                <th>Last updated</th>
+                                                                <th *ngIf="order.id > 0" style="width: 110px;">Last
+                                                                    updated</th>
+                                                                <th></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody *ngIf="!loading">
@@ -533,7 +538,8 @@
                                                                         [(ngModel)]="item.paidyn" /></td>
                                                                 <td>
                                                                     <input type="text" class="form-control"
-                                                                        placeholder="Description" (change) = "AddListItem(i,item)"
+                                                                        placeholder="Description"
+                                                                        (change)="AddListItem(i,item)"
                                                                         [(ngModel)]="item.description" />
                                                                 </td>
                                                                 <td>
@@ -559,10 +565,10 @@
                                                                         (change)="setTotal()"
                                                                         [(ngModel)]="item.taxyn" />
                                                                 </td>
-                                                                <!-- <td>
-                                                                    <input type="text" class="form-control"
-                                                                        [(ngModel)]="item.notes" />
-                                                                </td> -->
+                                                                <td *ngIf="order.id > 0">
+                                                                    <span *ngIf="item.modifiedDate">{{item.modifiedDate
+                                                                        | date: 'MM/dd/yy HH:mm:ss' | amTimeAgo}}</span>
+                                                                </td>
                                                                 <td>
                                                                     <i class="fe-copy cursor-pointer"
                                                                         (click)="listItemCopy(item)"></i>
@@ -639,7 +645,7 @@
         </div>
     </div>
 </div>
-<div class="orderDetailBottom" *ngIf = "tabs1 == 1">
+<div class="orderDetailBottom" *ngIf="tabs1 == 1">
     <div class="row padding-16-32">
         <div class="col-md-2">
             <label class="form-label" i18n>Non Taxable</label>
