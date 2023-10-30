@@ -25,6 +25,7 @@ const MENU_ITEMS: MenuItem[] = [
     isTitle: false,
     icon: 'payaxis-invoice',
     collapsed: true,
+    url: '/apps/invoice',
   },
   {
     key: 'vendor',
