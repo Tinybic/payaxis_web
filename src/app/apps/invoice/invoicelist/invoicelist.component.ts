@@ -1,24 +1,132 @@
 import { Component } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
+import { Base } from 'src/app/core/base';
+import {
+  projectinvoice_deactivate,
+  projectinvoice_list,
+} from 'src/app/core/gql/invoice';
+import { ApolloService } from 'src/app/core/service/apollo.service';
 
 @Component({
   selector: 'app-invoicelist',
   templateUrl: './invoicelist.component.html',
   styleUrls: ['./invoicelist.component.scss'],
 })
-export class InvoicelistComponent {
+export class InvoicelistComponent extends Base {
   keywords = '';
   filterList = [];
   invoiceList = [];
-  loading = false;
+  INVOICELIST = [];
+  loading = true;
   direction = 'asc';
   sortColumn = '';
-  onSort(a) {}
-  filterVendorList(item) {}
+
+  constructor(
+    private apolloService: ApolloService,
+    private modalService: NgbModal,
+    private toastrService: ToastrService
+  ) {
+    super();
+  }
+
+  ngOnInit(): void {
+    this.getInvoiceList();
+  }
+
+  getInvoiceList() {
+    if (parseInt(localStorage.getItem('idcompany')) != 0) {
+      this.apolloService
+        .query(projectinvoice_list, {
+          idCompany: 11,
+          idProject: 0,
+        })
+        .then((res) => {
+          const result = res.projectinvoice_list;
+
+          if (!result.error) {
+            this.invoiceList = result.data;
+            this.INVOICELIST = JSON.parse(JSON.stringify(result.data));
+          }
+          this.loading = false;
+        });
+    }
+  }
+
+  compare(v1: string | number, v2: string | number): any {
+    return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
+  }
+
+  onSort(column) {
+    this.sortColumn = column;
+    if (this.direction == 'desc') {
+      this.direction = 'asc';
+    } else {
+      this.direction = 'desc';
+    }
+
+    this.invoiceList = [...this.invoiceList].sort((a, b) => {
+      const res = this.compare(a[this.sortColumn], b[this.sortColumn]);
+      return this.direction === 'asc' ? res : -res;
+    });
+  }
+
+  filterVendorList(item) {
+    if (!this.filterList.includes(item)) {
+      this.filterList.push(item);
+    } else {
+      for (let i = 0; i < this.filterList.length; i++) {
+        if (item == this.filterList[i]) {
+          this.filterList.splice(i, 1);
+          break;
+        }
+      }
+    }
+    this.invoiceList = JSON.parse(JSON.stringify(this.INVOICELIST));
+
+    if (this.filterList.length > 0 && this.filterList.length < 5)
+      this.invoiceList = this.invoiceList.filter((item) =>
+        this.filterList.includes(item.status.toLowerCase())
+      );
+  }
 
   filterTable = (invoice: any) => {
     let values = Object.values(invoice);
-    return values.some((v) =>
-    invoice.invoiceName.toLowerCase().includes(this.keywords.toLowerCase())
+    return values.some(
+      (v) =>
+        invoice.vendorName
+          .toLowerCase()
+          .includes(this.keywords.toLowerCase()) ||
+        invoice.invoiceNumber
+          .toString()
+          .toLowerCase()
+          .includes(this.keywords.toLowerCase()) ||
+        invoice.orderNumber
+          .toString()
+          .toLowerCase()
+          .includes(this.keywords.toLowerCase()) ||
+        invoice.projectName
+          .toLowerCase()
+          .includes(this.keywords.toLowerCase()) ||
+        invoice.costCodeName.toLowerCase().includes(this.keywords.toLowerCase())
     );
   };
+
+  invoiceArchive(id, revision) {
+    this.apolloService
+      .mutate(projectinvoice_deactivate, {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
+        id: id,
+        revision: revision,
+      })
+      .then((res) => {
+        const result = res.projectinvoice_deactivate;
+        this.toastrService.info(result.message, '');
+        if (!result.error) this.getInvoiceList();
+      });
+  }
+
+  openInvoiceDetail(id){
+    
+  }
 }

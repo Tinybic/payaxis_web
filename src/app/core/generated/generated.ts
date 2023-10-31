@@ -135,6 +135,16 @@ export type Mutation = {
   profile_2fa?: Maybe<Scalars['Boolean']['output']>;
   /** to activate the user profile */
   profile_activate: Response;
+  /** deactivate project invoice */
+  projectinvoice_deactivate: Projectinvoicebooleanresult;
+  /** delete projectinvoice file */
+  projectinvoice_deletefile: Projectinvoicebooleanresult;
+  /** new project invoice */
+  projectinvoice_new: Projectinvoiceresult;
+  /** update project invoice */
+  projectinvoice_update: Projectinvoiceresult;
+  /** upload projectinvoice file */
+  projectinvoice_uploadfiles: Projectinvoicebooleanresult;
   /** deactivate project member */
   projectmember_deactivate: Projectinvitememberresult;
   /** edit project member access */
@@ -537,6 +547,60 @@ export type MutationProfile_ActivateArgs = {
 
 
 /** structure to handle table sms */
+export type MutationProjectinvoice_DeactivateArgs = {
+  id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationProjectinvoice_DeletefileArgs = {
+  idCompany: Scalars['Int']['input'];
+  idProjectinvoice_file: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationProjectinvoice_NewArgs = {
+  amount: Scalars['Float']['input'];
+  costCode: Scalars['costCode_String_NotNull_maxLength_15']['input'];
+  idCompany: Scalars['Int']['input'];
+  idOrder1: Scalars['Int']['input'];
+  idProject: Scalars['Int']['input'];
+  idVendor: Scalars['Int']['input'];
+  indvoicedueDate: Scalars['String']['input'];
+  invoiceNumber: Scalars['invoiceNumber_String_NotNull_maxLength_25']['input'];
+  invoicedDate: Scalars['String']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationProjectinvoice_UpdateArgs = {
+  amount: Scalars['Float']['input'];
+  costCode: Scalars['costCode_String_NotNull_maxLength_15']['input'];
+  id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
+  idOrder1: Scalars['Int']['input'];
+  idProject: Scalars['Int']['input'];
+  idVendor: Scalars['Int']['input'];
+  indvoicedueDate: Scalars['String']['input'];
+  invoiceNumber: Scalars['invoiceNumber_String_NotNull_maxLength_25']['input'];
+  invoicedDate: Scalars['String']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationProjectinvoice_UploadfilesArgs = {
+  idCompany: Scalars['Int']['input'];
+  idInvoice: Scalars['Int']['input'];
+  invoiceFiles?: InputMaybe<Array<Invoicefile>>;
+};
+
+
+/** structure to handle table sms */
 export type MutationProjectmember_DeactivateArgs = {
   id: Scalars['Int']['input'];
   idCompany: Scalars['Int']['input'];
@@ -887,6 +951,12 @@ export type Query = {
   project_members: Projectmemberresult;
   /** get project budget list */
   projectbudget_list: Projectbudgetlist;
+  /** get projectinvoice attachment */
+  projectinvoice_attachment: Invoicefilelist;
+  /** get projectinvoice info */
+  projectinvoice_info: Projectinvoiceinforesult;
+  /** get projectinvoice list */
+  projectinvoice_list: Projectinvoicelist;
   /** get projectorder activity */
   projectorder_activity: Orderactivitylist;
   /** get projectorder attachment */
@@ -1011,6 +1081,24 @@ export type QueryProjectbudget_ListArgs = {
 };
 
 
+export type QueryProjectinvoice_AttachmentArgs = {
+  idCompany: Scalars['Int']['input'];
+  idInvoice: Scalars['Int']['input'];
+};
+
+
+export type QueryProjectinvoice_InfoArgs = {
+  id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
+};
+
+
+export type QueryProjectinvoice_ListArgs = {
+  idCompany: Scalars['Int']['input'];
+  idProject: Scalars['Int']['input'];
+};
+
+
 export type QueryProjectorder_ActivityArgs = {
   idCompany: Scalars['Int']['input'];
   idOrder1: Scalars['Int']['input'];
@@ -1105,24 +1193,9 @@ export type _Project_Member = {
   lastName: Scalars['String']['output'];
 };
 
-export type _Projectmember = {
-  __typename?: '_projectmember';
-  avatar: Scalars['String']['output'];
-  email: Scalars['String']['output'];
-  firstName: Scalars['String']['output'];
-  idUser: Scalars['Int']['output'];
-  lastName: Scalars['String']['output'];
-};
-
 /** structure to handle table vendor_account */
 export type _Vendor_Costcode = {
   __typename?: '_vendor_costcode';
-  costCode: Scalars['String']['output'];
-  txtName: Scalars['String']['output'];
-};
-
-export type _Vendorcostcode = {
-  __typename?: '_vendorcostcode';
   costCode: Scalars['String']['output'];
   txtName: Scalars['String']['output'];
 };
@@ -1497,6 +1570,21 @@ export type Invitememberresult = {
   message: Scalars['String']['output'];
 };
 
+export type Invoicefile = {
+  fileName: Scalars['fileName_String_NotNull_maxLength_128']['input'];
+  fileSize: Scalars['Int']['input'];
+  fileType: Scalars['fileType_String_NotNull_maxLength_15']['input'];
+  fileUrl: Scalars['fileUrl_String_NotNull_maxLength_512']['input'];
+};
+
+export type Invoicefilelist = {
+  __typename?: 'invoicefilelist';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Array<Projectinvoice_File>>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
 export type Orderactivitylist = {
   __typename?: 'orderactivitylist';
   code: Scalars['Int']['output'];
@@ -1601,6 +1689,36 @@ export type Profile = {
   welcomeyn: Scalars['Boolean']['output'];
 };
 
+/** structure to handle table project_invoice */
+export type Project_Invoice = {
+  __typename?: 'project_invoice';
+  active: Scalars['Boolean']['output'];
+  amount: Scalars['Float']['output'];
+  costCode: Scalars['String']['output'];
+  costCodeName: Scalars['String']['output'];
+  createdBy: Scalars['Int']['output'];
+  createdDate: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  idCompany: Scalars['Int']['output'];
+  idOrder1: Scalars['Int']['output'];
+  idProject: Scalars['Int']['output'];
+  idVendor: Scalars['Int']['output'];
+  indvoicedueDate: Scalars['String']['output'];
+  invoiceNumber: Scalars['String']['output'];
+  invoicedDate: Scalars['String']['output'];
+  modifiedBy: Scalars['Int']['output'];
+  modifiedDate: Scalars['String']['output'];
+  orderNumber: Scalars['Int']['output'];
+  projectName: Scalars['String']['output'];
+  revision: Scalars['Int']['output'];
+  status: Scalars['String']['output'];
+  txtAddress: Scalars['String']['output'];
+  txtCity: Scalars['String']['output'];
+  txtState: Scalars['String']['output'];
+  vendorName: Scalars['String']['output'];
+  vendorType: Scalars['String']['output'];
+};
+
 /** structure to handle table project_member */
 export type Project_Member = {
   __typename?: 'project_member';
@@ -1623,7 +1741,7 @@ export type Project_Member = {
   role: Scalars['String']['output'];
 };
 
-/** structure to handle table project_member */
+/** structure to handle table project_order1 */
 export type Project_Order1 = {
   __typename?: 'project_order1';
   active: Scalars['Boolean']['output'];
@@ -1654,6 +1772,9 @@ export type Project_Order1 = {
   taxable: Scalars['Float']['output'];
   taxrate: Scalars['Float']['output'];
   total: Scalars['Float']['output'];
+  txtAddress: Scalars['String']['output'];
+  txtCity: Scalars['String']['output'];
+  txtState: Scalars['String']['output'];
   vendorName: Scalars['String']['output'];
   vendorType: Scalars['String']['output'];
 };
@@ -1750,6 +1871,63 @@ export type Projectinvitememberresult = {
   __typename?: 'projectinvitememberresult';
   code: Scalars['Int']['output'];
   data: Scalars['Boolean']['output'];
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Projectinvoice_File = {
+  __typename?: 'projectinvoice_file';
+  active: Scalars['Boolean']['output'];
+  avatar: Scalars['String']['output'];
+  createdBy: Scalars['Int']['output'];
+  createdDate: Scalars['String']['output'];
+  fileName: Scalars['String']['output'];
+  fileSize: Scalars['Int']['output'];
+  fileType: Scalars['String']['output'];
+  fileUrl: Scalars['String']['output'];
+  firstName: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  idInvoice: Scalars['Int']['output'];
+  lastName: Scalars['String']['output'];
+  modifiedBy: Scalars['Int']['output'];
+  modifiedDate: Scalars['String']['output'];
+  revision: Scalars['Int']['output'];
+};
+
+export type Projectinvoicebooleanresult = {
+  __typename?: 'projectinvoicebooleanresult';
+  code: Scalars['Int']['output'];
+  data: Scalars['Boolean']['output'];
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Projectinvoiceidrevision = {
+  __typename?: 'projectinvoiceidrevision';
+  id: Scalars['Int']['output'];
+  revision: Scalars['Int']['output'];
+};
+
+export type Projectinvoiceinforesult = {
+  __typename?: 'projectinvoiceinforesult';
+  code: Scalars['Int']['output'];
+  data: Project_Invoice;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Projectinvoicelist = {
+  __typename?: 'projectinvoicelist';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Array<Project_Invoice>>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Projectinvoiceresult = {
+  __typename?: 'projectinvoiceresult';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Projectinvoiceidrevision>;
   error: Scalars['Boolean']['output'];
   message: Scalars['String']['output'];
 };

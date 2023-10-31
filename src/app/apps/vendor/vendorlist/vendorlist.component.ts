@@ -222,7 +222,6 @@ export class VendorlistComponent extends Base {
 
   filterList = [];
   filterVendorList(item) {
-    console.log(item)
     if (!this.filterList.includes(item)) {
       this.filterList.push(item);
     } else {
