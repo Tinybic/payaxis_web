@@ -10,6 +10,7 @@ const routes: Routes = [
   { path: 'setting', loadChildren: () => import('./setting/setting.module').then(m => m.SettingModule) },
   { path: 'order', loadChildren: () => import('./order/order.module').then(m => m.OrderModule) },
   { path: 'invoice', loadChildren: () => import('./invoice/invoice.module').then(m => m.InvoiceModule) },
+  { path: 'receivables', loadChildren: () => import('./receivables/receivables.module').then(m => m.ReceivablesModule) },
   {
     path: 'welcome',
     component: WelcomeComponent
