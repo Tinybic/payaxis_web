@@ -714,65 +714,6 @@ export type MutationProjectorder_UploadfilesArgs = {
 
 
 /** structure to handle table sms */
-export type MutationProjectpayment_DeactivateArgs = {
-  id: Scalars['Int']['input'];
-  idCompany: Scalars['Int']['input'];
-  revision: Scalars['Int']['input'];
-};
-
-
-/** structure to handle table sms */
-export type MutationProjectpayment_DeletefileArgs = {
-  idCompany: Scalars['Int']['input'];
-  idProjectpayment_file: Scalars['Int']['input'];
-  revision: Scalars['Int']['input'];
-};
-
-
-/** structure to handle table sms */
-export type MutationProjectpayment_NewArgs = {
-  amount: Scalars['Float']['input'];
-  billNumber: Scalars['billNumber_String_NotNull_maxLength_25']['input'];
-  dueDate: Scalars['String']['input'];
-  idCompany: Scalars['Int']['input'];
-  idCompany_payment: Scalars['Int']['input'];
-  idOrder1: Scalars['Int']['input'];
-  idProject: Scalars['Int']['input'];
-  idVendor: Scalars['Int']['input'];
-  paymentFiles?: InputMaybe<Array<Paymentfile>>;
-  paymentTerms: Scalars['paymentTerms_String_NotNull_maxLength_50']['input'];
-  sentDate: Scalars['String']['input'];
-  txtNotes: Scalars['txtNotes_String_NotNull_maxLength_512']['input'];
-};
-
-
-/** structure to handle table sms */
-export type MutationProjectpayment_UpdateArgs = {
-  amount: Scalars['Float']['input'];
-  billNumber: Scalars['billNumber_String_NotNull_maxLength_25']['input'];
-  dueDate: Scalars['String']['input'];
-  id: Scalars['Int']['input'];
-  idCompany: Scalars['Int']['input'];
-  idCompany_payment: Scalars['Int']['input'];
-  idOrder1: Scalars['Int']['input'];
-  idProject: Scalars['Int']['input'];
-  idVendor: Scalars['Int']['input'];
-  paymentTerms: Scalars['paymentTerms_String_NotNull_maxLength_50']['input'];
-  revision: Scalars['Int']['input'];
-  sentDate: Scalars['String']['input'];
-  txtNotes: Scalars['txtNotes_String_NotNull_maxLength_512']['input'];
-};
-
-
-/** structure to handle table sms */
-export type MutationProjectpayment_UploadfilesArgs = {
-  idCompany: Scalars['Int']['input'];
-  idPayment: Scalars['Int']['input'];
-  paymentFiles?: InputMaybe<Array<Paymentfile>>;
-};
-
-
-/** structure to handle table sms */
 export type MutationQuickbooks_DownloadvendorsArgs = {
   idCompany: Scalars['Int']['input'];
   realmid: Scalars['String']['input'];
@@ -1182,7 +1123,6 @@ export type QueryProjectinvoice_InfoArgs = {
 export type QueryProjectinvoice_ListArgs = {
   idCompany: Scalars['Int']['input'];
   idProject: Scalars['Int']['input'];
-  idVendor: Scalars['Int']['input'];
 };
 
 
@@ -1225,25 +1165,6 @@ export type QueryProjectorder_RelatedArgs = {
   idProject: Scalars['Int']['input'];
   idVendor: Scalars['Int']['input'];
   paidyn: Scalars['Boolean']['input'];
-};
-
-
-export type QueryProjectpayment_AttachmentArgs = {
-  idCompany: Scalars['Int']['input'];
-  idPayment: Scalars['Int']['input'];
-};
-
-
-export type QueryProjectpayment_InfoArgs = {
-  id: Scalars['Int']['input'];
-  idCompany: Scalars['Int']['input'];
-};
-
-
-export type QueryProjectpayment_ListArgs = {
-  idCompany: Scalars['Int']['input'];
-  idProject: Scalars['Int']['input'];
-  idVendor: Scalars['Int']['input'];
 };
 
 

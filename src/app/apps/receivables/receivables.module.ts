@@ -5,6 +5,8 @@ import { ReceivablesRoutingModule } from './receivables-routing.module';
 import { ReceivableListComponent } from './receivable-list/receivable-list.component';
 import { ReceivableAddComponent } from './receivable-add/receivable-add.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
+import { FormsModule } from '@angular/forms';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -14,8 +16,10 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
   ],
   imports: [
     CommonModule,
+    FormsModule,
     ReceivablesRoutingModule,
     NgxDropzoneModule,
+    NgbDropdownModule,
   ]
 })
 export class ReceivablesModule { }

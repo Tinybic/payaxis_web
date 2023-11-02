@@ -3,17 +3,98 @@
         New Payment Request
     </div>
 </div>
-<div class="card mt-2-1">
+<div class="card mt-1-1">
     <div class="card-body padding-16">
         <div class="row">
             <div class="col-md-6 subtitle-400-12-32-up">
                 Customer
             </div>
+
+            <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" *ngIf="vendor"
+                (click)="removeVendor()">
+                Edit Customer
+            </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-12 ">
-                <input type="search" placeholder="Find Customer" class="form-control form-search" />
+        <div class="row mt-2-1">
+            <div class="col-md-12">
+                <div ngbDropdown>
+
+                    <div *ngIf="vendor" style="border:1px solid #E1E6EF; border-radius: 8px; padding: 8px 16px;">
+                        <div class="row">
+                            <div class="col-md-8 Subtitle-1 text-start">
+                                <div>{{vendor.vendorName}}</div>
+                                <div class="subtitle-2-400-12 text-typeblack80"
+                                    *ngIf="vendor.txtAddress && vendor.txtCity">
+                                    {{vendor.txtAddress}},
+                                    {{vendor.txtCity}},
+                                    {{vendor.txtState}},
+                                    {{vendor.txtZipcode}}</div>
+                            </div>
+                            <div class="col-md-4 text-end">
+                                <div class="vendorCostcode subtitle-2-600 d-inline-block"
+                                    *ngIf="vendor.costcodes.length > 0">
+                                    <span *ngFor="let costcode of vendor.costcodes">{{costcode.txtName}}</span>
+                                </div>
+                                <div class="d-inline-block ms-1-1"><i class="fe-external-link text-primary"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-1-1 pt-1-1" style="border-top: 1px solid #E1E6EF;">
+                            <div class="col-md-9">
+                                <div class="btn-text-12 text-start">{{vendor.primaryContact}}</div>
+                                <div class="text-typeblackdeactivated">Manager</div>
+                                <div class="subtitle-2-400-12 ">{{vendor.email}}</div>
+                                <div class="subtitle-2-400-12 ">{{vendor.phone}}</div>
+                            </div>
+                            <div class="col-md-3 text-end">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <input *ngIf="!vendor" class="form-control form-search" type="search" placeholder="Find Customer"
+                        [(ngModel)]="keywordsVendor" (keyup)="vendorFilter()"
+                        [ngClass]="{'is-invalid':orderError.idVendor == 0}" ngbDropdownToggle />
+                    <div *ngIf="orderError.idVendor == 0" class="invalid-feedback" i18n>
+                        <i class="fe-alert-triangle invalid-feedback-icon"></i>
+                        Vendor required
+                    </div>
+                    <div class="padding-16"
+                        style="border:1px solid #E1E6EF;background-color: #F8F9FC;  margin-top: -44px; width: 100%; max-height: 362px; overflow-x: hidden; overflow-y: scroll;"
+                        ngbDropdownMenu>
+                        <div ngbDropdownItem class="cursor-pointer" *ngFor="let item of vendorList"
+                            (click)="selectVendor(item)">
+                            <div class="row">
+                                <div class="col-md-8 Subtitle-1 text-start">
+                                    <div>{{item.vendorName}}</div>
+                                    <div class="subtitle-2-400-12 text-typeblack80"
+                                        *ngIf="item.txtAddress && item.txtCity">
+                                        {{item.txtAddress}},
+                                        {{item.txtCity}},
+                                        {{item.txtState}},
+                                        {{item.txtZipcode}}</div>
+                                </div>
+                                <div class="col-md-4 text-end">
+                                    <div class="vendorCostcode subtitle-2-600" *ngIf="item.costcodes.length > 0">
+                                        <span *ngFor="let costcode of item.costcodes">{{costcode.txtName}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-1-1 pt-1-1" style="border-top: 1px solid #E1E6EF;">
+                                <div class="col-md-9">
+                                    <div class="btn-text-12 text-start">{{item.primaryContact}}</div>
+                                    <div class="text-typeblackdeactivated">Manager</div>
+                                    <div class="subtitle-2-400-12 ">{{item.email}}</div>
+                                    <div class="subtitle-2-400-12 ">{{item.phone}}</div>
+                                </div>
+                                <div class="col-md-3 text-end">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -37,19 +118,29 @@
         </div>
 
         <div class="row p-3 mt-1-1" style="border-bottom: 1px solid #E1E6EF;">
-            <div class="col-md-12 subtitle-700-37-40 text-center">
-                0.00
+            <div class="col-md-12 text-center">
+                <input type="number" class=" subtitle-700-37-40" style="border: 0px;outline: 0;text-align: center;"
+                    [(ngModel)]="projectpayment.amount" />
             </div>
         </div>
 
         <div class="row mt-2-1">
             <div class="col-md-6">
                 <label class="form-label" i18n>Due Date</label>
-                <input type="date" class="form-control" />
+                <div ngbDropdown class="mt-sm-0 mt-2">
+                    <input class="form-select position-relative" type="text" id="paymentTerms" i18n-placeholder
+                        placeholder="Payment Terms" [(ngModel)]="projectpayment.paymentTerms" ngbDropdownToggle />
+
+                    <div ngbDropdownMenu aria-labelledby="paymentTerms">
+                        <a href="javascript:void(0)" *ngFor="let item of paymentTermsList" ngbDropdownItem
+                            (click)="dropdownSelect(item.txtName)">{{item.txtName}}</a>
+                    </div>
+                </div>
             </div>
             <div class="col-md-6">
                 <label class="form-label" i18n>Bill Number</label>
-                <input type="text" class="form-control" placeholder="Add Bill number" />
+                <input type="text" class="form-control" placeholder="Add Bill number"
+                    [(ngModel)]="projectpayment.billNumber" />
             </div>
         </div>
 
@@ -60,12 +151,33 @@
             <div class="col-md-6 text-end">
             </div>
         </div>
-        <div class="row mt-1-1" style="border:1px solid #E5E7EB; border-radius: 16px; padding: 16px;">
-            <div class="col-md-12  subtitle-2-500">
-                Deposit Account
+        <div ngbDropdown>
+            <div class="row mt-1-1 cursor-pointer" style="border:1px solid #E5E7EB; border-radius: 16px; padding: 16px;"
+                ngbDropdownToggle>
+                <div class="col-md-4 subtitle-2-500">
+                    <img class=" me-1-1" src="/assets/images/ach.png" />ACH
+                </div>
+                <div class="col-md-8 text-end">
+                    <div class="Subtitle-1 text-end">****{{payment.account}}</div>
+                    <div class="subtitle-2-400-12 text-end text-typeblack80">{{payment.bankName}}</div>
+                </div>
+            </div>
+
+            <div ngbDropdownMenu aria-labelledby="s" style="width: 100%;">
+                <div *ngFor="let item of paymentList" (click)="selectPayment(item)" class="mt-1-1 cursor-pointer"
+                    style="border:1px solid #E5E7EB; border-radius: 16px; padding: 16px;width: 100%;" ngbDropdownItem>
+                    <div class="row">
+                        <div class="col-md-4 subtitle-2-500">
+                            <img class=" me-1-1" src="/assets/images/ach.png" />ACH
+                        </div>
+                        <div class="col-md-8 text-end">
+                            <div class="Subtitle-1 text-end">****{{item.account}}</div>
+                            <div class="subtitle-2-400-12 text-end text-typeblack80">{{item.bankName}}</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -75,14 +187,46 @@
             <div class="col-md-6 subtitle-400-12-32-up">
                 Project
             </div>
-            <div class="col-md-6 subtitle-2-400-12 text-end">
+            <div class="col-md-6 subtitle-2-400-12 text-end" *ngIf="!project">
                 Optional
+            </div>
+            <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" *ngIf="project"
+                (click)="removeProject()">
+                Edit Project
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-12 ">
-                <input type="search" placeholder="Find Project" class="form-control form-search" />
+        <div class="row  mt-1-1">
+            <div class="col-md-12">
+                <div ngbDropdown>
+                    <div *ngIf="project" style="border:1px solid #E1E6EF; border-radius: 8px; padding: 8px 16px;">
+                        <div class="row cursor-pointer">
+                            <div class="col-md-10 Subtitle-1 text-start line-32">
+                                {{project.projectName}}
+                            </div>
+                            <div class="col-md-2 line-32 text-end">
+                                <i class="fe-external-link text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <input *ngIf="!project" class="form-control form-search" type="search" placeholder="Find Project"
+                        [(ngModel)]="keywordsProject" (keyup)="projectFilter()" ngbDropdownToggle />
+                    <div class="padding-16"
+                        style="background-color: #F8F9FC; border:1px solid #E1E6EF;  margin-top: -44px; width: 100%; max-height: 404px; overflow-x: hidden; overflow-y: scroll;"
+                        ngbDropdownMenu>
+                        <div *ngFor="let item of projectGroupList">
+                            <div class="subtitle-2-400-14 bold-600 mb-1-1" style="color: #215EA9;">
+                                {{item[0].groupName}}</div>
+                            <div ngbDropdownItem *ngFor="let project of item">
+                                <div class="row cursor-pointer" (click)="selectProject(project)">
+                                    <div class="col-md-12 Subtitle-1 text-start line-32">
+                                        {{project.projectName}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -96,14 +240,69 @@
             <div class="col-md-6  subtitle-400-12-32-up">
                 Order
             </div>
-            <div class="col-md-6 subtitle-2-400-12 text-end">
+            <div class="col-md-6 subtitle-2-400-12 text-end" *ngIf="!order">
                 Optional
+            </div>
+            <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" *ngIf="order" (click)="removOrder()">
+                Edit Order
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-12 ">
-                <input type="search" placeholder="Find Order" class="form-control form-search" />
+        <div class="row mt-1-1">
+            <div class="col-md-12">
+                <div ngbDropdown>
+
+                    <div *ngIf="order" style="border:1px solid #E1E6EF; border-radius: 8px; padding: 8px 16px;">
+                        <div class="row">
+                            <div class="col-md-8 Subtitle-1 text-start">
+                                <div>{{order.orderNumber}} <img
+                                        src="assets/images/status-icons/{{order.status.toLowerCase()}}.png" /></div>
+                                <div class="subtitle-2-400-12 text-typeblackdeactivated">{{order.projectName}}</div>
+
+                            </div>
+                            <div class="col-md-4 d-flex flex-row-reverse">
+                                <div class="ms-1-1 text-center" style="width: 32px;">
+                                    <i class="fe-external-link text-primary"></i>
+                                </div>
+                                <div class="text-end">
+                                    <div class="Subtitle-1">{{order.total}}</div>
+                                    <div class="text-typeblackdeactivated">Total Due</div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-1-1">
+                                <div class="vendorCostcode subtitle-2-600 d-inline-block">{{order.costCodeName}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input *ngIf="!order" class="form-control form-search" type="search" placeholder="Find Order"
+                        [(ngModel)]="keywordsOrder" (keyup)="orderFilter()" ngbDropdownToggle />
+                    <div class="padding-16"
+                        style="border:1px solid #E1E6EF;background-color: #F8F9FC;  margin-top: -44px; width: 100%; max-height: 362px; overflow-x: hidden; overflow-y: scroll;"
+                        ngbDropdownMenu>
+                        <div ngbDropdownItem *ngFor="let item of orderList">
+                            <div class="row cursor-pointer" (click)="selectOrder(item)">
+                                <div class="col-md-8 Subtitle-1 text-start">
+                                    <div>{{item.orderNumber}} <img
+                                            src="assets/images/status-icons/{{item.status.toLowerCase()}}.png" /></div>
+                                    <div class="subtitle-2-400-12 text-typeblackdeactivated">{{item.projectName}}</div>
+
+                                </div>
+                                <div class="col-md-4 d-flex flex-row-reverse">
+                                    <div class="text-end">
+                                        <div class="Subtitle-1">{{item.total}}</div>
+                                        <div class="text-typeblackdeactivated">Total Due</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mt-1-1">
+                                    <div class="vendorCostcode subtitle-2-600 d-inline-block">{{item.costCodeName}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -116,23 +315,34 @@
                 Notes & Attachments
             </div>
             <div class="col-md-6 text-end">
-                <button class="btn btn-outline-primary padding-8-16">Add Attachments</button>
+                <button class="btn btn-outline-primary padding-8-16" (click)="drop.showFileSelector()">Add Attachments</button>
             </div>
         </div>
-
         <div class="row mt-2-1">
             <div class="col-md-12 ">
-                <textarea class="form-control"
+                <textarea class="form-control" [(ngModel)]="projectpayment.txtNotes"
                     style="padding: 12px 16px; border-radius: 8px; width: 100%; height: 129px;"
                     placeholder="Notes & Description">
                 </textarea>
             </div>
         </div>
-
+        <div class="row mt-2-1">
+            <div class="col-md-6 mt-1-1" *ngFor="let item of projectpayment.paymentfile; let i = index">
+                <div style="padding: 8px 16px; border-radius: 8px; border:1px solid #E1E6EF; display: flex;">
+                    <img src="/assets/images/icon/{{item.fileType}}.png" style="height: 24px; width: 24px;"
+                        onerror="javascript:this.src='/assets/images/icon/dat.png';" />
+                    &nbsp;&nbsp;
+                    <div class="bold-600"
+                        style="flex: 1;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;line-height: 24px;">
+                        {{item.fileName}}</div>
+                    <i class="fe-x float-end text-danger cursor-pointer line-24" (click)="openDeleteModal(i,item)"></i>
+                </div>
+            </div>
+        </div>
         <div class="row mt-2-1">
             <div class="col-md-12 ">
                 <ngx-dropzone (change)="onSelectDocument($event)" class="dropzone justify-content-center"
-                    style="width: 100%;height: 120px;min-height: unset !important;border: 1px solid #2B52DD !important;background-color: #F7FAFC !important;border-radius: 16px !important;overflow: hidden;padding: 0 !important;">
+                    style="width: 100%;height: 120px;min-height: unset !important;border: 1px solid #2B52DD !important;background-color: #F7FAFC !important;border-radius: 16px !important;overflow: hidden;padding: 0 !important;" #drop>
                     <ngx-dropzone-label class="d-flex flex-column align-items-center">
                         <div class="btn-text-12" style="letter-spacing: 1.5px;color: #2B52DD;">DRAG FILE HERE
                         </div>
@@ -145,7 +355,37 @@
 
 <div class="row">
     <div class="col-md-12 d-grid">
-        <button type="button" class="btn btn-primary">Send</button>
-        <button type="button" class="btn btn-outline-primary mt-1-1">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="save()">Send</button>
+        <button type="button" class="btn btn-outline-primary mt-1-1" (clikc)="closeModal()">Cancel</button>
     </div>
 </div>
+
+<div class="modal-x" (click)="closeModal()">
+    <i class="fe-x"></i>
+</div>
+
+
+<ng-template #deleteModal let-modal>
+    <div class="delete-modal-container">
+        <input type="text" style="display: none;" />
+        <div class="row">
+            <div class="col-md-10">
+                <div class="headline-24 text-start">Delete the files</div>
+            </div>
+            <div class="col-md-2 text-end text-black">
+                <i class="fe-x cursor-pointer bold-600" (click)="cancelDelete()"></i>
+            </div>
+        </div>
+        <div class="delete-alert-content text-start">
+            Do you want to delete this files ?
+        </div>
+        <div class="d-flex justify-content-end mt-3">
+            <div class="delete-cancel-button mt-0 line-40 cursor-pointer" (click)="cancelDelete()">
+                Cancel
+            </div>
+            <div>
+                <button class="btn btn-primary ms-2-1" (click)="fileDelete()">Yes</button>
+            </div>
+        </div>
+    </div>
+</ng-template>

@@ -36,7 +36,6 @@ import { HttpClientModule } from '@angular/common/http';
     NgbDropdownModule,
     DropdowndataModule,
     AvatarModule,
-    NgbDropdownModule,
     NgbModalModule,
     UiModule,
     SharedModule,
