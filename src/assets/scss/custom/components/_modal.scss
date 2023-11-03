@@ -29,14 +29,18 @@
   width: 483px;
 }
 
-.modal-640 {
-  width: 640px !important;
-}
-
 .modal-530 {
   max-width: 530px !important;
 }
 
+.modal-640 {
+  width: 640px !important;
+}
+
+.modal-720 {
+  width: 720px !important;
+  max-width: unset !important;
+}
 
 .modal-90vw {
   max-width: 90vw !important;

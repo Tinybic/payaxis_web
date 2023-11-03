@@ -69,10 +69,7 @@ export class ProjectsComponent extends Base implements OnInit {
     btnOK: '',
   };
 
-  createProjectWithGroup = {
-    id: '',
-    txtName: '',
-  };
+  createProjectWithGroup;
 
   newGroupModalRef: NgbModalRef;
   deleteModalRef: NgbModalRef;
@@ -192,10 +189,7 @@ export class ProjectsComponent extends Base implements OnInit {
 
   createProject(group) {
     if (group == '') {
-      this.createProjectWithGroup = {
-        id: '',
-        txtName: '',
-      };
+      this.createProjectWithGroup = null;
     } else {
       this.createProjectWithGroup = {
         id: group.id,

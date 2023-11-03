@@ -38,7 +38,12 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/routes.json"
+              "src/routes.json",
+              {
+                "glob": "**/*",
+                "input": "node_modules/ngx-extended-pdf-viewer/assets/",
+                "output": "/assets/"
+              }
             ],
             "styles": [
               "src/assets/scss/theme.scss",

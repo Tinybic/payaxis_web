@@ -278,7 +278,7 @@ export class AddOrderComponent {
     this.apolloService.query(projectorder_related, {
       idCompany: this.order.idCompany,
       idProject: this.sameProject ? this.order.idProject : 0,
-      idVednor: this.sameVendor ? this.order.idVendor : 0,
+      idVendor: this.sameVendor ? this.order.idVendor : 0,
       paidyn: this.paidyn
     }).then((res) => {
       const result = res.projectorder_related;
@@ -329,6 +329,7 @@ export class AddOrderComponent {
   }
   
   getProjectList(){
+    this.projectGroupList=[];
     this.apolloService.query(companyproject_list, {idCompany: this.order.idCompany}).then((res) => {
       const result = res.companyproject_list;
       if(!result.error){
@@ -636,11 +637,6 @@ export class AddOrderComponent {
       }
     );
   }
-  
-  createProjectWithGroup = {
-    id: '',
-    txtName: ''
-  };
   
   addProjectmodalRef;
   

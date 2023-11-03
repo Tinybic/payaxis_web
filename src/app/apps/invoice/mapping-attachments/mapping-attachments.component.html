@@ -1,0 +1,281 @@
+<div class="row"  ngbAutoFocus>
+    <div class="col-md-6 headline-24 text-black text-overflow-ellipsis pt-1-1">
+        Invoice #{{invoice.invoiceNumber}}
+    </div>
+    <div class="col-md-6 text-end">
+        <button class="btn btn-outline-primary btn-height-40" (click)="cancel()">Cancel</button>
+        <button class="btn btn-primary btn-height-40 ms-2-1" (click)="save('save')">Save</button>
+        <i class="fe-more-vertical- font-24 cursor-pointer ms-1-1"></i>
+    </div>
+</div>
+
+<div class="card mt-2-1">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-label" for="invoiceNumber" i18n>Invoice Number</label>
+                <input class="form-control search-text" type="text" id="invoiceNumber"
+                       [(ngModel)]="invoice.invoiceNumber" (blur)="checkError('invoiceNumber')" i18n-placeholder placeholder="Invoice Number">
+                <div *ngIf="invoiceError.invoiceNumber" class="subtitle-2-400-12 mt-1-1" i18n>
+                    <i class="fe-alert-triangle invalid-feedback-icon"></i>
+                    No Invoice Number
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label" for="invoiceDate" i18n>Invoice Date</label>
+                <input type="date" class="form-control search-text" id="invoiceDate"
+                       placeholder="Invoice Date"
+                       [(ngModel)]="invoice.invoicedDate" (blur)="checkError('invoicedDate')"/>
+                <div *ngIf="invoiceError.invoicedDate" class="subtitle-2-400-12 mt-1-1" i18n>
+                    <i class="fe-alert-triangle invalid-feedback-icon"></i>
+                    No Invoice Date
+                </div>
+            </div>
+            <div class="col-md-6 mt-2-1">
+                <label class="form-label" for="dueDate" i18n>Due Date</label>
+                <input type="date" class="form-control search-text" id="dueDate"
+                       placeholder="Due Date"
+                       [(ngModel)]="invoice.indvoicedueDate"/>
+            </div>
+            <div class="col-md-6 mt-2-1">
+                <label class="form-label" for="amount" i18n>Amount</label>
+                <input class="form-control search-text" type="text" id="amount"
+                       prefix="$"
+                       mask="separator.2"
+                       thousandSeparator=","
+                       allowNegativeNumbers="false" [(ngModel)]="invoice.amount" i18n-placeholder placeholder="Amount">
+            </div>
+            <div class="col-md-12 mt-2-1">
+                <label class="form-label" for="project" i18n style="width: 100%;">Project
+                    <div class="d-inline-block float-end delete-cancel-button cursor-pointer"
+                         (click)="openAddProjectModal()" style="padding-top: 4px;">
+                        <i class="fe-plus-square me-1-1"></i>Create Project
+                    </div>
+                </label>
+                <div ngbDropdown>
+                    <div id="project" class="search-text cursor-pointer text-overflow-ellipsis dropdown-toggle-text"
+                         ngbDropdownToggle>
+                        <span *ngIf="invoice.projectName.length > 0">{{invoice.projectName}}</span>
+                        <span *ngIf="invoice.projectName.length == 0">Select project</span>
+                        <i class="fe-chevron-down position-absolute" style="right: 16px;"></i>
+                    </div>
+                    <div ngbDropdownMenu aria-labelledby="project">
+                        <a *ngFor="let project of projectList"
+                           (click)="invoice.projectName = project.projectName;invoice.idProject = project.id;checkError('idProject')"
+                           href="javascript:void(0)" ngbDropdownItem>
+                            {{project.projectName}}
+                        </a>
+                    </div>
+                </div>
+                <div *ngIf="invoiceError.idProject" class="subtitle-2-400-12 mt-1-1" i18n>
+                    <i class="fe-alert-triangle invalid-feedback-icon"></i>
+                    Unknown Project
+                </div>
+            </div>
+            <div class="col-md-6 mt-2-1">
+                <label class="form-label" for="vendorName" i18n style="width: 100%;">Vendor Name
+                    <div class="d-inline-block float-end delete-cancel-button cursor-pointer"
+                         (click)="openAddVendorModal()" style="padding-top: 4px;">
+                        <i class="fe-plus-square me-1-1"></i>Create New Vendor
+                    </div>
+                </label>
+                <div ngbDropdown>
+                    <div id="vendorName" class="search-text cursor-pointer text-overflow-ellipsis dropdown-toggle-text"
+                         ngbDropdownToggle>
+                        <span *ngIf="invoice.vendorName.length > 0">{{invoice.vendorName}}</span>
+                        <span *ngIf="invoice.vendorName.length == 0">Select vendor</span>
+                        <i class="fe-chevron-down position-absolute" style="right: 16px;"></i>
+                    </div>
+                    <div ngbDropdownMenu aria-labelledby="project">
+                        <a *ngFor="let vendor of vendorList"
+                           (click)="invoice.vendorName = vendor.vendorName;invoice.idVendor = vendor.id;"
+                           href="javascript:void(0)" ngbDropdownItem>
+                            {{vendor.vendorName}}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mt-2-1">
+                <label class="form-label" for="costCode" i18n style="width: 100%;">Cost Code
+                    <div class="d-inline-block float-end delete-cancel-button cursor-pointer"
+                         (click)="openAddCostCodeModal()" style="padding-top: 4px;">
+                        <i class="fe-plus-square me-1-1"></i>Create New Cost Code
+                    </div>
+                </label>
+                <div ngbDropdown>
+                    <div id="costCode" class="search-text cursor-pointer text-overflow-ellipsis dropdown-toggle-text"
+                         ngbDropdownToggle>
+                        <span *ngIf="invoice.costCodeName.length > 0">{{invoice.costCodeName}}</span>
+                        <span *ngIf="invoice.costCodeName.length == 0">Select cost code</span>
+                        <i class="fe-chevron-down position-absolute" style="right: 16px;"></i>
+                    </div>
+                    <div ngbDropdownMenu aria-labelledby="project">
+                        <div *ngFor="let item of costCodeList">
+                            <div *ngIf="item.costcodelist.length > 0">
+                                <a *ngFor="let costCode of item.costcodelist"
+                                     (click)="invoice.costCodeName = costCode.txtName;invoice.costCode = costCode.costCode;" href="javascript:void(0)"
+                                   ngbDropdownItem>
+                                    {{costCode.txtName}}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mt-2-1">
+                <label class="form-label" i18n>Order</label>
+                <div class="dropdown" ngbDropdown #orderDropdown="ngbDropdown">
+                    <div id="orderDropdown" class="d-flex flex-row justify-content-between cursor-pointer"
+                         style="height: 72px;border: 1px solid #E1E6EF;border-radius: 0.5rem;padding: 0.5rem 1rem;"
+                         ngbDropdownToggle>
+                        <div>
+                            <div class="Subtitle-1 text-start" style="padding: 4px 0;">
+                                {{invoice.orderNumber}}
+                            </div>
+                            <div class="search-text text-overflow-ellipsis" style="padding: 4px 0;">
+                                {{invoice.txtAddress.length > 0 ? invoice.txtAddress + ',' : ''}}
+                                {{invoice.txtCity.length > 0 ? invoice.txtCity + ',' : ''}}
+                                {{invoice.txtState.length > 0 ? invoice.txtState + ',' : ''}}
+                            </div>
+                        </div>
+                        <div style="padding-top: 4px;">
+                            <img *ngIf="invoice.status.length > 0" src="assets/images/status-icons/{{invoice.status.toLowerCase()}}.png">
+                            <i class="fe-chevron-down"></i>
+                        </div>
+                    </div>
+                    <div class="dropdown-menu" style="width: 100%;max-height: 300px;overflow: auto;padding: 0;"
+                         aria-labelledby="orderDropdown" ngbDropdownMenu>
+                        <div>
+                            <input class="form-control form-search" [(ngModel)]="orderFilter" placeholder="Find Order"
+                                   auto-complete="off" type="search" style="border-radius: 0;border:none;border-bottom: 1px solid #F8F9FC;">
+                        </div>
+                        <div class="Subtitle-1 text-start mt-2-1" style="padding: 10px 12px 16px 32px;">New Order</div>
+                        <div *ngFor="let order of orderList | callback: filterOrderList" (click)="selectOrder(order);orderDropdown.close();" style="padding: 0 16px 16px;">
+                            <div class="d-flex flex-row justify-content-between dropdown-menu-content cursor-pointer"
+                                 style="border-radius: 0.5rem;padding: 0.5rem 1rem;">
+                                <div>
+                                    <div class="Subtitle-1 text-start" style="padding: 4px 0;">
+                                        {{order.orderNumber}}
+                                    </div>
+                                    <div *ngIf="(order.txtAddress + order.txtCity + order.txtState).length > 0"
+                                         class="search-text text-overflow-ellipsis" style="padding: 4px 0;">
+                                        {{order.txtAddress.length > 0 ? order.txtAddress + ',' : ''}}
+                                        {{order.txtCity.length > 0 ? order.txtCity + ',' : ''}}
+                                        {{order.txtState.length > 0 ? order.txtState + ',' : ''}}
+                                    </div>
+                                </div>
+                                <div style="padding-top: 4px;">
+                                    <img src="assets/images/status-icons/{{order.status.toLowerCase()}}.png">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="invoice.fileUrl.length > 0" style="width: 213px;height: 319px;">
+    <div class="card p-1-1" style="border: 1px solid #E1E6EF;border-radius: 8px;">
+        <div class="d-flex justify-content-between" style="height: 16px;">
+            <div class="btn-text-12 text-overflow-ellipsis text-start" style="width: calc(100% - 60px)">
+                {{invoice.fileName}}
+            </div>
+            <div class="ms-1-1 text-end" style="width: 40px;">
+                <i class="fe-download text-primary c-p" (click)="globalService.downloadFile(invoice)"></i>
+                <i *ngIf="invoice.id > 0" class="fe-trash-2 ms-1-1 c-p" (click)="deleteAttachmentConfirm()"></i>
+            </div>
+        </div>
+        <div *ngIf="invoice.fileType.toLowerCase().includes('pdf')" class="mt-1-1"
+             style="box-shadow: 1px 1px 4px 1px #E1E6EF, -1px -1px 4px 1px #E1E6EF;border-radius: 0.5rem;">
+            <ngx-extended-pdf-viewer [src]="invoice.fileBlob" [useBrowserLocale]="true" backgroundColor="#fff"
+                                     [pageViewMode]="'single'"
+                                     [showToolbar]="false"
+                                     [sidebarVisible]="false"
+                                     [showBorders]="false"
+                                     [height]="'252px'"
+            ></ngx-extended-pdf-viewer>
+        </div>
+        <div *ngIf="!invoice.fileType.toLowerCase().includes('pdf')"
+             class="d-flex align-items-center justify-content-center mt-1-1"
+             style="width: 197px;height: 255px;border-radius: 8px;">
+            <img [src]="globalService.getFileImg(invoice)"
+                 onerror="this.src='assets/images/icon/zz.png';this.onerror='';" alt="attachment.fileName"
+                 style="max-width: 197px;max-height: 255px;">
+        </div>
+        <div class="d-flex justify-content-between align-items-center mt-1-1">
+            <label class="search-text text-optional">{{invoice.createdDate | date: 'M/dd/yy hh:mm a' | lowercase}}</label>
+        </div>
+    </div>
+</div>
+<div style="height: 72px;">&nbsp;</div>
+<div class="d-flex justify-content-end" style="
+    width: 100%;
+    height: 72px;
+    background-color: #2B2D30;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: 10000;padding: 16px 32px;">
+    <div>
+        <div class="btn-text-12 text-end" style="color: rgba(255,255,255,0.7);">Total Amount Due</div>
+        <div class="headline-24 text-end text-white" >{{invoice.amount | currency}}</div>
+    </div>
+    <button class="btn btn-primary btn-height-40 ms-2-1" style="box-shadow: 0 0 0 2px #2B52DD;">Add to Order</button>
+</div>
+
+<div class="modal-x" (click)="modalRef.dismiss()">
+    <i class="fe-x"></i>
+</div>
+
+<!--#addProject-->
+<ng-template #addProject let-modal>
+    <app-create-project [modalRef]="addProjectRef"
+                        style="height: 100%;overflow-y: auto;"></app-create-project>
+</ng-template>
+
+<!--#addCostCode-->
+<ng-template #addCostCode let-modal>
+    <app-add-costcode [type]="'create'" [modalRef]="addCostCodeRef"></app-add-costcode>
+</ng-template>
+
+
+<!--#addVendor-->
+<ng-template #addVendor let-modal>
+    <app-vendoradd [idvendor]="0" [modalRef]="addVendorRef" class="flex-column-1"
+                   style="width: calc(100vw - 216px); padding:32px 32px 0; background-color: #F8F9FC;overflow-y: auto;"
+    ></app-vendoradd>
+</ng-template>
+
+
+<!--#cancelModal-->
+<ng-template #cancelModal let-modal ngbAutoFocus>
+    <div class="delete-modal-container">
+        <div class="row">
+            <div class="col-md-10">
+                <div class="headline-24 text-start">Close without saving</div>
+            </div>
+            <div class="col-md-2 text-end text-black">
+                <i class="fe-x cursor-pointer bold-600" (click)="cancelBack()"></i>
+            </div>
+        </div>
+        <div class="delete-alert-content text-start">Do you want to close the page? All changes will not be saved.</div>
+        
+        <div class="d-flex justify-content-between mt-3">
+            <div class="delete-cancel-button mt-0 line-40 cursor-pointer" (click)="cancelBack()">
+                Cancel
+            </div>
+            <div>
+                <button class="btn btn-outline-primary" (click)="cancelClose()">Close without saving</button>
+                <button class="btn btn-primary ms-2-1" (click)="save('modalSave')">Save and Close</button>
+            </div>
+        </div>
+    
+    </div>
+</ng-template>
+
+<!--#deleteAttachment-->
+<ng-template #deleteAttachment let-modal>
+    <app-confirm-modal></app-confirm-modal>
+</ng-template>

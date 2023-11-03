@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, ViewChild } from '@angular/core';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Base } from 'src/app/core/base';
 import {
@@ -14,6 +14,9 @@ import { ApolloService } from 'src/app/core/service/apollo.service';
   styleUrls: ['./invoicelist.component.scss'],
 })
 export class InvoicelistComponent extends Base {
+  @ViewChild('uploadInvoice') uploadInvoice: NgbModalRef;
+  @ViewChild('mappingAttachments') mappingAttachments: NgbModalRef;
+  
   keywords = '';
   filterList = [];
   invoiceList = [];
@@ -21,7 +24,11 @@ export class InvoicelistComponent extends Base {
   loading = true;
   direction = 'asc';
   sortColumn = '';
-
+  
+  uploadInvoiceRef: NgbModalRef;
+  mappingAttachementsParams;
+  mappingAttachmentsRef: NgbModalRef;
+  
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
@@ -38,8 +45,9 @@ export class InvoicelistComponent extends Base {
     if (parseInt(localStorage.getItem('idcompany')) != 0) {
       this.apolloService
         .query(projectinvoice_list, {
-          idCompany: 11,
+          idCompany: parseInt(localStorage.getItem('idcompany')),
           idProject: 0,
+          idVendor: 0,
         })
         .then((res) => {
           const result = res.projectinvoice_list;
@@ -127,6 +135,38 @@ export class InvoicelistComponent extends Base {
   }
 
   openInvoiceDetail(id){
+  
+  }
+  uploadInvoices() {
+    this.uploadInvoiceRef = this.modalService.open(this.uploadInvoice, {
+      backdrop: 'static',
+      modalDialogClass: 'modal-right',
+      size: '530',
+    })
+    this.uploadInvoiceRef.result.then((res)=>{
+      console.log(res);
+      this.mappingAttachementsParams = res;
+      this.openMappingAttachments();
+    }, (dismiss) => {
     
+    })
+  }
+  
+  
+  openMappingAttachments() {
+    this.mappingAttachmentsRef = this.modalService.open(this.mappingAttachments, {
+      backdrop: 'static',
+      modalDialogClass: 'modal-right',
+      size: '720',
+      centered: true,
+    });
+    
+    this.mappingAttachmentsRef.result.then(
+      (res) => {
+        this.getInvoiceList();
+      },
+      (dismiss) => {
+      }
+    );
   }
 }

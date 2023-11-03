@@ -17,7 +17,7 @@ import { companygroup_list, companyproject_updatedetail } from "../../../core/gq
 })
 export class CreateProjectComponent {
   @Input() project;
-  @Input() createProjectWithGroup;
+  @Input() createProjectWithGroup?;
   @Input() modalRef;
   
   @ViewChild('createBudgetModal') createBudgetModal: NgbModalRef;
@@ -141,7 +141,7 @@ export class CreateProjectComponent {
       }
       this.formStep3Values['editSqft'].setValue(this.project.projectSqft);
     } else{
-      if(this.createProjectWithGroup.id !== ''){
+      if(this.createProjectWithGroup){
         this.selectedGroup = {
           idGroup: this.createProjectWithGroup.id,
           txtName: this.createProjectWithGroup.txtName,

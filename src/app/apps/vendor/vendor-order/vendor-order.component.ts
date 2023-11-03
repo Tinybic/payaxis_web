@@ -42,7 +42,7 @@ export class VendorOrderComponent {
       .query(projectorder_related, {
         idCompany: parseInt(localStorage.getItem('idcompany')),
         idProject: 0,
-        idVednor: this.params.idvendor,
+        idVendor: this.params.idvendor,
         paidyn: false,
       })
       .then((res) => {

@@ -38,6 +38,9 @@ query projectorder_list($idCompany: Int!, $idProject: Int!) {
       remainingAmount
       status
       active
+      txtAddress
+      txtCity
+      txtState
     }
   }
 }
