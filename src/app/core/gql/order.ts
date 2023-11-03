@@ -187,13 +187,13 @@ const projectorder_related = gql`
   query projectorder_related(
     $idCompany: Int!
     $idProject: Int!
-    $idVednor: Int!
+    $idVendor: Int!
     $paidyn: Boolean!
   ) {
     projectorder_related(
       idCompany: $idCompany
       idProject: $idProject
-      idVednor: $idVednor
+      idVendor: $idVendor
       paidyn: $paidyn
     ) {
       error

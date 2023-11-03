@@ -17,7 +17,7 @@ import { UiModule } from 'src/app/shared/ui/ui.module';
 import { SharedModule } from "../../../shared/shared.module";
 import { VendorOrderComponent } from '../vendor-order/vendor-order.component';
 import { VendorPaymentComponent } from '../vendor-payment/vendor-payment.component';
-import { UploadAttachmentComponent } from "../upload-attachment/upload-attachment.component";
+import { UploadAttachmentComponent } from "../../../shared/upload-attachment/upload-attachment.component";
 import { NgxDropzoneModule } from "ngx-dropzone";
 import { VendorOrderAddComponent } from '../vendor-order-add/vendor-order-add.component';
 import { AvatarModule } from 'src/app/shared/avatar/avatar.module';

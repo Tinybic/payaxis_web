@@ -8,11 +8,18 @@ import { UiModule } from 'src/app/shared/ui/ui.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AvatarModule } from 'src/app/shared/avatar/avatar.module';
 import { FormsModule } from '@angular/forms';
+import { MappingAttachmentsComponent } from './mapping-attachments/mapping-attachments.component';
+import { NgxExtendedPdfViewerModule } from "ngx-extended-pdf-viewer";
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from "ngx-mask";
+import { ProjectsModule } from "../projects/projects.module";
+import { SettingModule } from "../setting/setting.module";
+import { VendoraddModule } from "../vendor/vendoradd/vendoradd.module";
 
 
 @NgModule({
   declarations: [
-    InvoicelistComponent
+    InvoicelistComponent,
+    MappingAttachmentsComponent
   ],
   imports: [
     CommonModule,
@@ -24,6 +31,15 @@ import { FormsModule } from '@angular/forms';
     UiModule,
     SharedModule,
     AvatarModule,
-  ]
+    NgxExtendedPdfViewerModule,
+    NgxMaskDirective,
+    NgxMaskPipe,
+    ProjectsModule,
+    SettingModule,
+    VendoraddModule
+  ],
+  providers:[
+    provideNgxMask()
+  ],
 })
 export class InvoiceModule { }

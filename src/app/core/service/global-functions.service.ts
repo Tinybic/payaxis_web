@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { FILE_TYPE, IMG_TYPE } from "../constants/common";
+import { FileSaverService } from "ngx-filesaver";
+import { HttpClient } from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,10 @@ export class GlobalFunctionsService {
     this.companyID.next(id);
   }
   
-  constructor(){ }
+  constructor(
+    private fileSaverService: FileSaverService,
+    private http: HttpClient,
+  ){ }
   
   compare(v1: string | number, v2: string | number): any{
     return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
@@ -71,5 +76,18 @@ export class GlobalFunctionsService {
     } else{
       return 'assets/images/icon/zz.png';
     }
+  }
+  
+  
+  /*
+  * object need fileUrl and fileName properties;
+  * */
+  downloadFile(attachment){
+    this.http.get(attachment.fileUrl, {
+      observe: 'response',
+      responseType: 'blob',
+    }).subscribe(res => {
+      this.fileSaverService.save((<any>res).body, attachment.fileName);
+    });
   }
 }

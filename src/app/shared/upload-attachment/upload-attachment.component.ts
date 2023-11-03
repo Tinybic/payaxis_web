@@ -1,15 +1,15 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
-import { ApolloService } from "../../../core/service/apollo.service";
-import { HttpService } from "../../../core/service/http.service";
+import { ApolloService } from "../../core/service/apollo.service";
 import { DomSanitizer } from "@angular/platform-browser";
-import { get_file_url, getNewFileName } from "../../../core/gql/file";
-import { vendorinsurance_upload } from "../../../core/gql/vendor-payment";
+import { get_file_url, getNewFileName } from "../../core/gql/file";
+import { vendorinsurance_upload } from "../../core/gql/vendor-payment";
 import { ToastrService } from "ngx-toastr";
-import { projectorder_deletefile, projectorder_uploadfiles } from "../../../core/gql/orders";
+import { projectorder_uploadfiles } from "../../core/gql/orders";
 import { HttpClient, HttpEventType, HttpHeaders } from "@angular/common/http";
-import { GlobalFunctionsService } from "../../../core/service/global-functions.service";
-import { FILE_TYPE } from "../../../core/constants/common";
+import { GlobalFunctionsService } from "../../core/service/global-functions.service";
+import { FILE_TYPE } from "../../core/constants/common";
+import { projectinvoice_mapping } from "../../core/gql/invoice";
 
 @Component({
   selector: 'app-upload-attachment',
@@ -21,6 +21,7 @@ export class UploadAttachmentComponent {
   @Input() modalRef: NgbModalRef;
   @Input() idVendor?;
   @Input() idOrder1?;
+  @Input() isInvoice?;
   
   files: any[] = [];
   attachmentFilesTemp = [];
@@ -35,18 +36,20 @@ export class UploadAttachmentComponent {
     params: {},
     btnSide: 'end'
   };
+  filesAccept;
   
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
-    private httpService: HttpService,
     private toastrService: ToastrService,
     private sanitizer: DomSanitizer,
     private http: HttpClient,
     public globalService: GlobalFunctionsService
   ){}
   
-  ngOnInit(): void{}
+  ngOnInit(): void{
+      this.filesAccept = this.isInvoice ? 'image/*, application/pdf' : '*'
+  }
   
   
   /**
@@ -210,16 +213,27 @@ export class UploadAttachmentComponent {
       }
     }
     
+    if(this.isInvoice){
+      service = projectinvoice_mapping;
+      params = {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
+        fileUrl: attachmentFilesTemp[0].fileUrl
+      }
+    }
+    
     this.apolloService.mutate(service, params).then((res) => {
       const result: any = Object.values(res)[0];
       let message = '';
+      this.isUploading = false;
       if(!result.error){
         message = 'Upload successful';
-        this.modalRef.close('save success');
+        if(this.isInvoice)
+          this.modalRef.close({...result.data, ...attachmentFilesTemp[0], ...{id: 0, createdDate: new Date()}});
+        else
+          this.modalRef.close('save success');
       } else{
         message = result.message;
       }
-      this.isUploading = false;
       this.toastrService.info(message, '');
     }, error => {
       this.isUploading = false;

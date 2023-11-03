@@ -25,7 +25,7 @@ export class AddCostcodeComponent {
   @ViewChild('cancelcategory') cancelcategory: any;
   @Input() modalRef: any;
   @Input() type: any;
-  @Input() data: any;
+  @Input() data?: any;
   costcode = {
     id: 0,
     costCode: '',

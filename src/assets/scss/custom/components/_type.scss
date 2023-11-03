@@ -149,7 +149,7 @@ h6 {
   margin-right: 0.5rem !important;
 }
 
-.my-1-1{
+.my-1-1 {
   margin-top: 0.5rem !important;
   margin-bottom: 0.5rem !important;
 }
@@ -202,7 +202,7 @@ h6 {
   margin-top: 40px !important;
 }
 
-.p-1-1{
+.p-1-1 {
   padding: 0.5rem;
 }
 
@@ -256,7 +256,7 @@ h6 {
   padding: 24px !important;
 }
 
-.padding-32 {
+.p-4-1 {
   padding: 32px !important;
 }
 
@@ -499,6 +499,7 @@ h6 {
   line-height: 16px;
   letter-spacing: 0.4px;
 }
+
 .btn-text-12 {
   font-size: 12px;
   font-weight: 600;
@@ -592,5 +593,23 @@ body[data-layout-color="dark"] {
   h5,
   h6 {
     color: #{map-get($dark-grays, "800")};
+  }
+}
+
+
+ngx-extended-pdf-viewer .html * {
+  margin: 0;
+
+  #viewerContainer {
+    margin-top: -3px !important;
+    .pdfViewer.removePageBorders .page{
+      margin-bottom: 0px;
+      .canvasWrapper{
+        background-color: #E1E6EF;
+        canvas {
+          border-radius: 0.5rem;
+        }
+      }
+    }
   }
 }

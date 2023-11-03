@@ -60,6 +60,7 @@
     "ngx-chips": "^3.0.0",
     "ngx-countup": "^13.0.0",
     "ngx-dropzone": "^3.1.0",
+    "ngx-extended-pdf-viewer": "^18.1.4",
     "ngx-infinite-scroll": "^10.0.1",
     "ngx-joyride": "^2.5.0",
     "ngx-lightbox": "^2.5.2",
