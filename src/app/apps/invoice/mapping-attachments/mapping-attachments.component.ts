@@ -17,7 +17,7 @@ import { ToastrService } from "ngx-toastr";
 })
 export class MappingAttachmentsComponent {
   @Input() modalRef: NgbModalRef;
-  @Input() invoice;
+  @Input() initialInvoice;
   
   @ViewChild('addCostCode') addCostCode: NgbModalRef;
   @ViewChild('addVendor') addVendor: NgbModalRef;
@@ -26,13 +26,13 @@ export class MappingAttachmentsComponent {
   @ViewChild('deleteAttachment') deleteAttachment: NgbModalRef;
   
   idCompany;
-  initialInvoice;
+  invoice;
   projectList = [];
   projectGroupList = [];
   vendorList = [];
   costCodeList = [];
   orderList = [];
-  invoiceAttachment =[];
+  invoiceAttachment = [];
   
   project;
   orderFilter = '';
@@ -56,7 +56,7 @@ export class MappingAttachmentsComponent {
     btnConfirm: 'Confirm',
     serviceName: projectinvoice_deletefile,
     params: {},
-    btnSide: 'end',
+    btnSide: 'end'
   };
   
   
@@ -65,14 +65,15 @@ export class MappingAttachmentsComponent {
     private modalService: NgbModal,
     public globalService: GlobalFunctionsService,
     private http: HttpClient,
-    private toastrService: ToastrService,
+    private toastrService: ToastrService
   ){}
   
   ngOnInit(){
     this.idCompany = parseInt(localStorage.getItem('idcompany'));
-    if(this.invoice.id > 0){
+    if(this.initialInvoice.id > 0){
+      this.invoice = {...this.initialInvoice};
       this.getInvoiceAttachment();
-    }else if(this.invoice.fileUrl){
+    } else if(this.initialInvoice.fileUrl){
       this.getFileBlob();
     }
     this.getProjectList();
@@ -190,6 +191,7 @@ export class MappingAttachmentsComponent {
   
   selectOrder(order: any){
     this.invoice.orderNumber = order.orderNumber;
+    this.invoice.idOrder1 = order.id;
     this.invoice.status = order.status;
     this.invoice.txtAddress = order.txtAddress;
     this.invoice.txtCity = order.txtCity;
@@ -197,14 +199,18 @@ export class MappingAttachmentsComponent {
   }
   
   
-  
   getInvoiceAttachment(){
-    this.apolloService.query(projectinvoice_attachment, {idCompany: this.idCompany, idInvoice: this.invoice.id}).then((res) => {
+    this.apolloService.query(projectinvoice_attachment, {
+      idCompany: this.idCompany,
+      idInvoice: this.invoice.id
+    }).then((res) => {
       const result = res.projectinvoice_attachment;
       if(!result.error){
         this.invoiceAttachment = JSON.parse(JSON.stringify(result.data));
         if(this.invoiceAttachment.length > 0){
+          this.invoice.fileName = this.invoiceAttachment[0].fileName;
           this.invoice.fileUrl = this.invoiceAttachment[0].fileUrl;
+          this.invoice.fileType = this.invoiceAttachment[0].fileType;
           this.getFileBlob();
         }
       }
@@ -220,7 +226,7 @@ export class MappingAttachmentsComponent {
     }
     this.deleteAttachmentRef = this.modalService.open(this.deleteAttachment, {
       size: '443',
-      centered: true,
+      centered: true
     });
     this.deleteAttachmentRef.result.then(
       (result) => {
@@ -273,7 +279,7 @@ export class MappingAttachmentsComponent {
             console.log(reason);
           })
       }
-    }else{
+    } else{
       if(this.invoice.invoiceNumber == this.initialInvoice.invoiceNumber &&
         this.invoice.invoicedDate == this.initialInvoice.invoicedDate &&
         this.invoice.indvoicedueDate == this.initialInvoice.indvoicedueDate &&
@@ -283,7 +289,7 @@ export class MappingAttachmentsComponent {
         this.invoice.costCode == this.initialInvoice.costCode &&
         this.invoice.idOrder1 == this.initialInvoice.idOrder1){
         this.modalRef.dismiss();
-      }else {
+      } else{
         this.cancelModalRef = this.modalService.open(this.cancelModal, {
           size: '443',
           centered: true
@@ -304,15 +310,19 @@ export class MappingAttachmentsComponent {
   }
   
   cancelClose(){
-    this.modalService.dismissAll();
+    this.invoice = {...this.initialInvoice};
+    this.cancelModalRef.close();
   }
   
   save(type){
+    let message = 'Invoice saved to Inbox';
     if(this.invoice.invoicedDate.length == 0){
       this.invoiceError.invoicedDate = true;
+      message='Invoice saved to Inbox and marked as Error';
     }
     if(this.invoice.invoiceNumber.length == 0 || this.invoice.invoiceNumber == 0){
       this.invoiceError.invoiceNumber = true;
+      message='Invoice saved to Inbox and marked as Error';
     }
     if(this.invoice.idProject.length == 0 || this.invoice.idProject == 0){
       this.invoiceError.idProject = true;
@@ -321,11 +331,12 @@ export class MappingAttachmentsComponent {
     let serviceName;
     if(this.invoice.id == 0){
       serviceName = projectinvoice_new;
-    }else {
+    } else{
       serviceName = projectinvoice_update;
     }
     
     let params = {
+      id: parseInt(this.invoice.id),
       idCompany: this.idCompany,
       idProject: parseInt(this.invoice.idProject),
       idVendor: parseInt(this.invoice.idVendor),
@@ -335,11 +346,12 @@ export class MappingAttachmentsComponent {
       indvoicedueDate: this.invoice.indvoicedueDate,
       costCode: this.invoice.costCode,
       amount: parseFloat(this.invoice.amount),
+      revision: this.invoice.revision,
       invoiceFiles: [{
         fileName: this.invoice.fileName,
         fileType: this.invoice.fileType,
         fileSize: this.invoice.fileSize,
-        fileUrl: this.invoice.fileUrl,
+        fileUrl: this.invoice.fileUrl
       }]
     }
     
@@ -349,10 +361,10 @@ export class MappingAttachmentsComponent {
       if(!result.error){
         if(type == 'save'){
           this.modalRef.close();
-        }else{
+        } else{
           this.cancelModalRef.close();
         }
-        this.toastrService.info('Invoice saved to Inbox', '');
+        this.toastrService.info(message, '');
       } else{
         this.toastrService.info(result.message, '');
       }

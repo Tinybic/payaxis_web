@@ -46,7 +46,7 @@
             <div class="row">
                 <div class="col-md-6 text-start">
                     <div class="subtitle-2-500-12-14 text-white85">Order #</div>
-                    <div class="Subtitle-1-600 text-start">#{{this.relatedList[relatedIndex].orderNumber}}</div>
+                    <div class="Subtitle-1 text-start">#{{this.relatedList[relatedIndex].orderNumber}}</div>
                 </div>
                 <div class="col-md-6">
                     <img
@@ -90,7 +90,7 @@
                 <div class="col-md-6 text-start">
                     Total Amount due
                 </div>
-                <div class="col-md-6 Subtitle-1-600 text-end">
+                <div class="col-md-6 Subtitle-1 text-end">
                     ${{this.relatedList[relatedIndex].total}}
                 </div>
             </div>
@@ -101,14 +101,14 @@
                 [ngbTooltip]="tipContent" (mouseenter)="relatedIndex = i; t.open()" (mouseleave)="t.close()"
                 tooltipClass="my-tooltipClass" [autoClose]="true" triggers="manual" #t="ngbTooltip"
                 (click)="openDetail(item.id)">
-                <div class="Subtitle-1-600 text-start">
+                <div class="Subtitle-1 text-start">
                     #{{item.orderNumber}}
                 </div>
                 <div class="subtitle-2-400-12 text-typeblackdeactivated">
                     {{item.projectName}}
                 </div>
                 <div class="row mt-1-1">
-                    <div class="col-md-6 Subtitle-1-600 text-start">
+                    <div class="col-md-6 Subtitle-1 text-start">
                         ${{item.total}}
                     </div>
                     <div class="col-md-6 text-end">
@@ -621,7 +621,7 @@
                             Attachments
                         </a>
                         <ng-template ngbNavContent class="d-flex flex-column">
-                           
+                        
                         </ng-template>
                     </li>
                     <li [ngbNavItem]="3">
@@ -629,7 +629,7 @@
                             Activity
                         </a>
                         <ng-template ngbNavContent class="d-flex flex-column">
-                           
+                        
                         </ng-template>
                     </li>
                 </ul>

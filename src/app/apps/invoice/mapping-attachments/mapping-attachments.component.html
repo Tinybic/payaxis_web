@@ -176,7 +176,7 @@
     </div>
 </div>
 
-<div *ngIf="invoice.fileUrl.length > 0" style="width: 213px;height: 319px;">
+<div *ngIf="invoice.fileUrl && invoice.fileUrl.length > 0" style="width: 213px;height: 319px;">
     <div class="card p-1-1" style="border: 1px solid #E1E6EF;border-radius: 8px;">
         <div class="d-flex justify-content-between" style="height: 16px;">
             <div class="btn-text-12 text-overflow-ellipsis text-start" style="width: calc(100% - 60px)">
@@ -225,7 +225,7 @@
     <button class="btn btn-primary btn-height-40 ms-2-1" style="box-shadow: 0 0 0 2px #2B52DD;">Add to Order</button>
 </div>
 
-<div class="modal-x" (click)="modalRef.dismiss()">
+<div class="modal-x" (click)="cancel()">
     <i class="fe-x"></i>
 </div>
 
