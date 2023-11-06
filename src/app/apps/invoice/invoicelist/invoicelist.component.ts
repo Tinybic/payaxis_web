@@ -24,10 +24,13 @@ export class InvoicelistComponent extends Base {
   loading = true;
   direction = 'asc';
   sortColumn = '';
+  groupByStatusCount =[];
   
   uploadInvoiceRef: NgbModalRef;
   mappingAttachementsParams;
   mappingAttachmentsRef: NgbModalRef;
+  
+  objectKeys = Object.keys;
   
   constructor(
     private apolloService: ApolloService,
@@ -55,10 +58,21 @@ export class InvoicelistComponent extends Base {
           if (!result.error) {
             this.invoiceList = result.data;
             this.INVOICELIST = JSON.parse(JSON.stringify(result.data));
+            this.groupByStatus();
           }
           this.loading = false;
         });
     }
+  }
+  
+  // 根据 status 对 this.invoiceList 进行分组
+  groupByStatus() {
+    this.groupByStatusCount = this.invoiceList.reduce((acc, cur) => {
+      const status = cur.status.toLowerCase();
+      acc[status] = acc[status] || [];
+      acc[status].push(cur);
+      return acc;
+    }, {});
   }
 
   compare(v1: string | number, v2: string | number): any {
@@ -100,23 +114,10 @@ export class InvoicelistComponent extends Base {
 
   filterTable = (invoice: any) => {
     let values = Object.values(invoice);
+    
     return values.some(
-      (v) =>
-        invoice.vendorName
-          .toLowerCase()
-          .includes(this.keywords.toLowerCase()) ||
-        invoice.invoiceNumber
-          .toString()
-          .toLowerCase()
-          .includes(this.keywords.toLowerCase()) ||
-        invoice.orderNumber
-          .toString()
-          .toLowerCase()
-          .includes(this.keywords.toLowerCase()) ||
-        invoice.projectName
-          .toLowerCase()
-          .includes(this.keywords.toLowerCase()) ||
-        invoice.costCodeName.toLowerCase().includes(this.keywords.toLowerCase())
+      (v: any) =>
+        v.toString().toLowerCase().includes(this.keywords.toLowerCase())
     );
   };
 
@@ -134,9 +135,6 @@ export class InvoicelistComponent extends Base {
       });
   }
 
-  openInvoiceDetail(id){
-  
-  }
   uploadInvoices() {
     this.uploadInvoiceRef = this.modalService.open(this.uploadInvoice, {
       backdrop: 'static',
@@ -144,16 +142,15 @@ export class InvoicelistComponent extends Base {
       size: '530',
     })
     this.uploadInvoiceRef.result.then((res)=>{
-      console.log(res);
-      this.mappingAttachementsParams = res;
-      this.openMappingAttachments();
+      this.openMappingAttachments(res);
     }, (dismiss) => {
     
     })
   }
   
   
-  openMappingAttachments() {
+  openMappingAttachments(invoice) {
+    this.mappingAttachementsParams = invoice;
     this.mappingAttachmentsRef = this.modalService.open(this.mappingAttachments, {
       backdrop: 'static',
       modalDialogClass: 'modal-right',
@@ -169,4 +166,5 @@ export class InvoicelistComponent extends Base {
       }
     );
   }
+  
 }

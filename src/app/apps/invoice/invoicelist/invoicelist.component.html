@@ -1,136 +1,124 @@
 <div class="row">
-    <h5 class="col-md-3 bold-700 text-black">
+    <div class="col-md-3 headline-28 text-black" style="padding-top: 4px;">
         Invoice Inbox
-    </h5>
+    </div>
     <div class="col-md-9 text-end">
         <div class="d-inline-block  ms-2-1">
-            <button class="btn btn-outline-primary" (click)="uploadInvoices()"><i class="fe-upload me-1-1"></i>Upload Invoce</button>
+            <button class="btn btn-outline-primary btn-height-40" (click)="uploadInvoices()"><i class="fe-upload me-1-1"></i>Upload Invoce</button>
         </div>
-        <button class="btn btn-primary ms-2-1" (click)="uploadInvoices()">New Invoice</button>
+        <button class="btn btn-primary btn-height-40 ms-2-1" (click)="uploadInvoices()">New Invoice</button>
     </div>
 </div>
 
 <div class="row mt-2-1">
     <div class="col-md-8">
-        <span class="font-20 bold-600">{{invoiceList.length}} Invoices</span>
+        <span class="subtitle-2-600-24 text-black">{{invoiceList.length}} {{invoiceList.length > 1 ? 'Invoices' : 'Invoice'}}</span>
         
         <div class="d-inline-block dropdown ms-1-1" ngbDropdown>
-            <a class="dropdown-outline" href="javascript:void(0)" ngbDropdownToggle>
+            <a class="dropdown-outline btn-height-40" href="javascript:void(0)" ngbDropdownToggle>
                 Status
                 <b *ngIf="filterList.length>0 && filterList.length < 5">{{filterList.length}} selected</b>
                 <b *ngIf="filterList.length == 0||filterList.length == 5">All</b>
                 <i class="fe-chevron-down font-16 ms-1-1"></i>
             </a>
-            <div class="dropdown-menu" ngbDropdownMenu>
-                <div ngbDropdownItem (click)="filterVendorList('active')">
-                    <div class="form-check text-center">
-                        <input type="checkbox" class="form-check-input" id="activedropdownCheck"
-                               [checked]="filterList.includes('active')">
-                        <label class="form-check-label ms-1-1 bold-600" for="dropdownCheck">
-                            Active
+            <div class="dropdown-menu" ngbDropdownMenu style="padding: 8px 0;">
+                <div ngbDropdownItem *ngFor="let status of objectKeys(this.groupByStatusCount)" (click)="filterVendorList(status)"  style="padding: 8px 16px;border-radius: 0px;">
+                    <div class="form-check text-center c-p">
+                        <input type="checkbox" class="form-check-input" id="invoiceDropdownCheck_{{status}}"
+                               [checked]="filterList.includes(status)" style="margin-top: 4px;">
+                        <img class="mx-3-1" src="/assets/images/status-icons/{{status}}.png"
+                             style="height: 24px;" />
+                        <label class="text-end subtitle-2-400-12" for="invoiceDropdownCheck_{{status}}">
+                            {{this.groupByStatusCount[status].length}}
                         </label>
-                    </div>
-                </div>
-                <div ngbDropdownItem (click)="filterVendorList('invoiceOpen')">
-                    <div class="form-check text-center">
-                        <input type="checkbox" class="form-check-input" id="invoiceOpendropdownCheck"
-                               [checked]="filterList.includes('invoiceOpen')">
-                        <img src="/assets/images/status-icons/invoiceOpen.png"
-                             style="height: 24px; margin-left: 16px;" />
-                    </div>
-                </div>
-                <div ngbDropdownItem (click)="filterVendorList('overdue')">
-                    <div class="form-check text-center">
-                        <input type="checkbox" class="form-check-input" id="overduedropdownCheck"
-                               [checked]="filterList.includes('overdue')">
-                        <img src="/assets/images/status-icons/overdue.png" style="height: 24px; margin-left: 16px;" />
-                    </div>
-                </div>
-                <div ngbDropdownItem (click)="filterVendorList('draft')">
-                    <div class="form-check text-center">
-                        <input type="checkbox" class="form-check-input" id="DraftdropdownCheck"
-                               [checked]="filterList.includes('draft')">
-                        <label class="form-check-label ms-1-1 bold-600 text-info" for="dropdownCheck">
-                            Draft
-                        </label>
-                    </div>
-                </div>
-                <div ngbDropdownItem (click)="filterVendorList('archived')">
-                    <div class="form-check text-center">
-                        <input type="checkbox" class="form-check-input" id="ArchiveddropdownCheck"
-                               [checked]="filterList.includes('archived')">
-                        <div class="d-inline-block ArchivedTag">
-                            Archived
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     
     </div>
-    <div class="col-md-4 text-end mt-2-1">
-        <div class="d-inline-block ms-1-1">
-            <input class="form-control form-search" type="search" placeholder="Search here..." [(ngModel)]="keywords" />
+    <div class="col-md-4 text-end">
+        <div class="d-inline-block">
+            <input class="form-control form-search" type="search" placeholder="Search here..." [(ngModel)]="keywords" style="padding-top: 10px;padding-bottom: 10px;" />
         </div>
         <!-- end search-->
     </div>
 </div>
-<div class="row mt-3">
+<div class="row mt-2-1">
     <div class="col-md-12">
-        <table class="advanced-table">
+        <table class="advanced-table invoiceTable">
             <thead>
             <tr>
                 <th class="row_select"><input class="form-check" type="checkbox" /></th>
                 <th class="sortable"
-                    [ngClass]="{'sorting_asc':sortColumn == 'vendorName' && direction == 'asc','sorting_desc':sortColumn == 'vendorName' && direction == 'desc'}"
-                    (click)="onSort('vendorName')">Invoice Date</th>
+                    [ngClass]="{'sorting_asc':sortColumn == 'invoicedDate' && direction == 'asc','sorting_desc':sortColumn == 'invoicedDate' && direction == 'desc'}"
+                    (click)="onSort('invoicedDate')">Invoice Date</th>
                 <th class="sortable"
                     [ngClass]="{'sorting_asc':sortColumn == 'status' && direction == 'asc','sorting_desc':sortColumn == 'status' && direction == 'desc'}"
                     (click)="onSort('status')">Status</th>
                 <th class="sortable"
-                    [ngClass]="{'sorting_asc':sortColumn == 'approvalAmount' && direction == 'asc','sorting_desc':sortColumn == 'approvalAmount' && direction == 'desc'}"
-                    (click)="onSort('approvalAmount')">Invoice #</th>
+                    [ngClass]="{'sorting_asc':sortColumn == 'invoiceNumber' && direction == 'asc','sorting_desc':sortColumn == 'invoiceNumber' && direction == 'desc'}"
+                    (click)="onSort('invoiceNumber')">Invoice #</th>
                 <th class="sortable"
-                    [ngClass]="{'sorting_asc':sortColumn == 'active' && direction == 'asc','sorting_desc':sortColumn == 'active' && direction == 'desc'}"
-                    (click)="onSort('active')">Vendor</th>
+                    [ngClass]="{'sorting_asc':sortColumn == 'vendorName' && direction == 'asc','sorting_desc':sortColumn == 'vendorName' && direction == 'desc'}"
+                    (click)="onSort('vendorName')">Vendor</th>
                 <th class="sortable"
-                    [ngClass]="{'sorting_asc':sortColumn == 'active' && direction == 'asc','sorting_desc':sortColumn == 'active' && direction == 'desc'}"
-                    (click)="onSort('active')">Cost Code</th>
+                    [ngClass]="{'sorting_asc':sortColumn == 'costCodeName' && direction == 'asc','sorting_desc':sortColumn == 'costCodeName' && direction == 'desc'}"
+                    (click)="onSort('costCodeName')">Cost Code</th>
                 <th class="sortable"
-                    [ngClass]="{'sorting_asc':sortColumn == 'active' && direction == 'asc','sorting_desc':sortColumn == 'active' && direction == 'desc'}"
-                    (click)="onSort('active')">Due Date</th>
+                    [ngClass]="{'sorting_asc':sortColumn == 'indvoicedueDate' && direction == 'asc','sorting_desc':sortColumn == 'indvoicedueDate' && direction == 'desc'}"
+                    (click)="onSort('indvoicedueDate')">Due Date</th>
                 <th class="sortable"
-                    [ngClass]="{'sorting_asc':sortColumn == 'active' && direction == 'asc','sorting_desc':sortColumn == 'active' && direction == 'desc'}"
-                    (click)="onSort('active')">Project</th>
+                    [ngClass]="{'sorting_asc':sortColumn == 'projectName' && direction == 'asc','sorting_desc':sortColumn == 'projectName' && direction == 'desc'}"
+                    (click)="onSort('projectName')">Project</th>
                 <th class="sortable"
-                    [ngClass]="{'sorting_asc':sortColumn == 'active' && direction == 'asc','sorting_desc':sortColumn == 'active' && direction == 'desc'}"
-                    (click)="onSort('active')">Amount</th>
+                    [ngClass]="{'sorting_asc':sortColumn == 'amount' && direction == 'asc','sorting_desc':sortColumn == 'amount' && direction == 'desc'}"
+                    (click)="onSort('amount')">Amount</th>
                 <th class="sortable"
-                    [ngClass]="{'sorting_asc':sortColumn == 'active' && direction == 'asc','sorting_desc':sortColumn == 'active' && direction == 'desc'}"
-                    (click)="onSort('active')">Order #</th>
-                <th>Last payment</th>
+                    [ngClass]="{'sorting_asc':sortColumn == 'orderNumber' && direction == 'asc','sorting_desc':sortColumn == 'orderNumber' && direction == 'desc'}"
+                    (click)="onSort('orderNumber')">Order #</th>
+                <th></th>
             </tr>
             </thead>
             <tbody *ngIf="!loading">
-            <tr class="cursor-pointer" *ngFor="let item of invoiceList | callback:filterTable; let i = index">
+            <tr *ngFor="let item of invoiceList | callback:filterTable; let i = index">
                 <td><input class="form-check" type="checkbox" /></td>
+                <td>{{item.invoicedDate | date: 'M/dd/yy'}}</td>
                 <td>
-                    <div class="d-flex flex-row bold-600 ">
-                        {{item.vendorName}}
+                    <img src="assets/images/status-icons/{{item.status.toLowerCase()}}.png">
+                </td>
+                <td>{{item.invoiceNumber}}</td>
+                <td>{{item.vendorName}}</td>
+                <td>{{item.costCodeName}}</td>
+                <td>{{item.indvoicedueDate | date: 'M/dd/yy'}}</td>
+                <td>{{item.projectName}}</td>
+                <td class="text-end">{{item.amount | currency}}</td>
+                <td class="text-primary">{{item.orderNumber}}</td>
+                <td style="height: 41px;padding-top: 11px;">
+                    <span (click)="openMappingAttachments(item)" class="text-primary btn-text-12 c-p">
+                        <i class="fe-edit-1"></i> Edit
+                    </span>
+                    
+                    
+                    <div class="d-inline-block dropdown ms-1-1" ngbDropdown>
+                        <div ngbDropdownToggle>
+                            <i class="fe-more-vertical- ms-2-1 c-p"></i>
+                        </div>
+                        <div class="dropdown-menu" ngbDropdownMenu style="padding:0;">
+                            <div ngbDropdownItem class="subtitle-2-500" style="padding: 12px;border-radius: 0px;">
+                                <i class="fe-folder me-1-1"></i> Move to another Order
+                            </div>
+                            <div *ngIf="item.status == 'Active'" ngbDropdownItem class="text-red c-p subtitle-2-500" (click)="invoiceArchive(item.id, item.revision)" style="padding: 12px;border-radius: 0px;">
+                                <i class="fe-archive me-1-1"></i> Archive
+                            </div>
+                        </div>
                     </div>
                 </td>
-                <td>
-                    <div class="d-inline-block {{item.status}}Tag">{{item.status}}</div>
-                </td>
-                <td>
-                </td>
-                <td></td>
-                <td></td>
             </tr>
             </tbody>
             <tbody *ngIf="loading" class="bg-white">
             <tr>
-                <td colspan="12">
+                <td colspan="11">
                     <div style="position: relative; height: 400px;">
                         <app-ui-preloader [display]="loading"></app-ui-preloader>
                     </div>
@@ -139,7 +127,7 @@
             </tbody>
             <tbody *ngIf="invoiceList.length==0 && !loading" class="bg-white">
             <tr *ngIf="!loading && invoiceList.length==0"  style="position: relative; height: 400px;">
-                <td colspan="12" class="text-center">
+                <td colspan="11" class="text-center">
                     <div class="Paragraph-1 text-typeblackdeactivated bold-600  mt-40 ">No Invoice added yet</div>
                     <div class="Paragraph-2 text-typeblackdeactivated mt-1-1">Create new invoice in a few clicks
                     </div>
@@ -150,7 +138,7 @@
             </tbody>
             <tfoot style="height: 16px;">
             <tr>
-                <td colspan="12">&nbsp;</td>
+                <td colspan="11">&nbsp;</td>
             </tr>
             </tfoot>
         </table>
@@ -165,5 +153,5 @@
 
 <!--mappingAttachments-->
 <ng-template #mappingAttachments let-modal>
-    <app-mapping-attachments class="p-4-1" [invoice]="mappingAttachementsParams" [modalRef]="mappingAttachmentsRef" style="width: 100%;"></app-mapping-attachments>
+    <app-mapping-attachments class="p-4-1" [initialInvoice]="mappingAttachementsParams" [modalRef]="mappingAttachmentsRef" style="width: 100%;"></app-mapping-attachments>
 </ng-template>
