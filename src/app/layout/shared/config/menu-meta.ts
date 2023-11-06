@@ -30,7 +30,7 @@ const MENU_ITEMS: MenuItem[] = [
     key: 'receivables',
     label: 'Receivables',
     isTitle: false,
-    icon: 'fe-cloud-drizzle',
+    icon: 'payaxis-receivables',
     collapsed: true,
     url: '/apps/receivables',
   },

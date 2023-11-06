@@ -30,7 +30,7 @@ export class ReceivableAddComponent {
   orderList = [];
   ORDERLIST = [];
   paymentList = [];
-  orderError = {
+  txtError = {
     idVendor: 1,
   };
   format = 'yyyy-MM-dd';
@@ -57,6 +57,7 @@ export class ReceivableAddComponent {
     paymentfile: [],
   };
 
+  amountEdit = false;
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
@@ -70,6 +71,14 @@ export class ReceivableAddComponent {
     this.getProjectList();
     this.getOrderList();
     this.getPaymentList();
+  }
+
+  editAmount(){
+    this.amountEdit = true;
+  }
+
+  cancelAmount(){
+    this.amountEdit = false;
   }
 
   groupBy(arr, key) {
@@ -275,35 +284,36 @@ export class ReceivableAddComponent {
     }
   }
 
-  onSelectDocument(event: any){
-    event.addedFiles.map(file => {
+  onSelectDocument(event: any) {
+    event.addedFiles.map((file) => {
       this.getUploadUrl(file);
-    })
-  }
-  
-  getUploadUrl(file){
-    const fileName = getNewFileName(file.name);
-    file.filename = fileName;
-    this.apolloService.query(get_file_url, {
-      fileName: fileName,
-      folder: 'files'
-    }).then((res) => {
-      if(!res.get_file_url.error){
-        let uploadUrl = res.get_file_url.data;
-        this.httpService.put(uploadUrl, file).then((res) => {
-          this.projectpayment.paymentfile.push({
-            fileName: file.name,
-            fileSize: file.size,
-            fileType: file.name
-              .substring(file.name.lastIndexOf('.') + 1)
-              .toLowerCase(),
-            fileUrl: uploadUrl.split('?')[0],
-          });
-        });
-      }
-    })
+    });
   }
 
+  getUploadUrl(file) {
+    const fileName = getNewFileName(file.name);
+    file.filename = fileName;
+    this.apolloService
+      .query(get_file_url, {
+        fileName: fileName,
+        folder: 'files',
+      })
+      .then((res) => {
+        if (!res.get_file_url.error) {
+          let uploadUrl = res.get_file_url.data;
+          this.httpService.put(uploadUrl, file).then((res) => {
+            this.projectpayment.paymentfile.push({
+              fileName: file.name,
+              fileSize: file.size,
+              fileType: file.name
+                .substring(file.name.lastIndexOf('.') + 1)
+                .toLowerCase(),
+              fileUrl: uploadUrl.split('?')[0],
+            });
+          });
+        }
+      });
+  }
 
   deleteRef;
   deleteIndex = 0;
@@ -327,26 +337,34 @@ export class ReceivableAddComponent {
     this.projectpayment.paymentfile.splice(index, 1);
     this.deleteRef.close();
   }
-  
+
   closeModal() {
     this.modalRef.close();
   }
 
   save() {
-    this.apolloService
-      .mutate(projectpayment_new, this.projectpayment)
-      .then((res) => {
-        console.log(res);
-        const result = res.projectpayment_new;
-        if (!result.error) {
-          this.toastrService.info(
-            'New Request has been sent to' + this.vendor.vendorName,
-            ''
-          );
-          this.modalRef.close();
-        } else {
-          this.toastrService.info(result.message, '');
-        }
-      });
+    this.txtError.idVendor = this.projectpayment.idVendor;
+
+    if (this.txtError.idVendor > 0) {
+      if (this.projectpayment.amount > 0) {
+        this.apolloService
+          .mutate(projectpayment_new, this.projectpayment)
+          .then((res) => {
+            console.log(res);
+            const result = res.projectpayment_new;
+            if (!result.error) {
+              this.toastrService.info(
+                'New Request has been sent to' + this.vendor.vendorName,
+                ''
+              );
+              this.modalRef.close();
+            } else {
+              this.toastrService.info(result.message, '');
+            }
+          });
+      } else {
+        this.toastrService.info('Please enter amount', '');
+      }
+    }
   }
 }

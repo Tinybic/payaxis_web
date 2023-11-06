@@ -120,6 +120,7 @@ const vendor_list = gql`
         taxrate
         status
         active
+        avatar
         costcodes {
           costCode
           txtName
