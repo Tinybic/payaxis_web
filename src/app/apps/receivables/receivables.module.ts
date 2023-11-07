@@ -6,7 +6,7 @@ import { ReceivableListComponent } from './receivable-list/receivable-list.compo
 import { ReceivableAddComponent } from './receivable-add/receivable-add.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { FormsModule } from '@angular/forms';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDatepickerModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { UiModule } from 'src/app/shared/ui/ui.module';
 
@@ -22,8 +22,9 @@ import { UiModule } from 'src/app/shared/ui/ui.module';
     ReceivablesRoutingModule,
     NgxDropzoneModule,
     NgbDropdownModule,
+    NgbDatepickerModule,
     UiModule,
-    SharedModule
+    SharedModule,
   ]
 })
 export class ReceivablesModule { }

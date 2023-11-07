@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDate, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { companypayment_list } from 'src/app/core/gql/payment';
 import { projectpayment_list } from 'src/app/core/gql/receivables';
@@ -29,16 +29,27 @@ export class ReceivableListComponent {
   vendorList = [];
   paymentList = [];
   vendorFilter = 'Vendor';
+
+  selectedDateRange: string = 'Due date';
+  hoveredDate: NgbDate | null = null;
+  fromDate!: NgbDate;
+  toDate: NgbDate | null = null;
+
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private calendar: NgbCalendar
   ) {}
 
   ngOnInit(): void {
     this.getList();
     this.getVendorList();
     this.getPaymentList();
+
+    this.fromDate = this.calendar.getToday();
+    this.toDate = this.calendar.getNext(this.calendar.getToday(), 'd', 10);
+    this.selectedDateRange = 'Due date';
   }
 
   getVendorList() {
@@ -52,6 +63,98 @@ export class ReceivableListComponent {
           this.vendorList = result.data;
         }
       });
+  }
+
+  dueDateFilterList() {
+    this.paymentRequestList = JSON.parse(
+      JSON.stringify(this.PAYMENTREQUESTLIST)
+    );
+    if (this.selectedDateRange != 'Due date') {
+      const startDate =
+        this.fromDate.year +
+        '-' +
+        ('0' + this.fromDate.month).slice(-2) +
+        '-' +
+        ('0' + this.fromDate.day).slice(-2);
+
+      const endDate =
+        this.toDate.year +
+        '-' +
+        ('0' + this.toDate.month).slice(-2) +
+        '-' +
+        ('0' + this.toDate.day).slice(-2);
+
+        this.paymentRequestList = this.paymentRequestList.filter(
+          (item) => item.dueDate >= startDate && item.dueDate <= endDate
+        );
+    }
+  }
+
+  onDateSelection(date: NgbDate) {
+    if (!this.fromDate && !this.toDate) {
+      this.fromDate = date;
+      this.selectedDateRange =
+        this.fromDate.year +
+        '-' +
+        this.fromDate.month +
+        '-' +
+        this.fromDate.day;
+    } else if (this.fromDate && !this.toDate && date.after(this.fromDate)) {
+      this.toDate = date;
+      this.selectedDateRange =
+        this.fromDate.year +
+        '-' +
+        ('0' + this.fromDate.month).slice(-2) +
+        '-' +
+        ('0' + this.fromDate.day).slice(-2) +
+        ' - ' +
+        this.toDate.year +
+        '-' +
+        ('0' + this.toDate.month).slice(-2) +
+        '-' +
+        ('0' + this.toDate.day).slice(-2);
+      this.dueDateFilterList();
+    } else {
+      this.toDate = null;
+      this.fromDate = date;
+      this.selectedDateRange = 'Due date';
+      this.dueDateFilterList();
+    }
+  }
+
+  /**
+   * returns true/false based on whether date is hovered or not
+   * @param date date
+   */
+  isHovered(date: NgbDate) {
+    return (
+      this.fromDate &&
+      !this.toDate &&
+      this.hoveredDate &&
+      date.after(this.fromDate) &&
+      date.before(this.hoveredDate)
+    );
+  }
+
+  /**
+   * returns true if date is inside selected range
+   * @param date date
+   */
+  isInside(date: NgbDate) {
+    return this.toDate && date.after(this.fromDate) && date.before(this.toDate);
+  }
+
+  /**
+   * returns true if date is in range
+   * @param date date
+   */
+  isRange(date: NgbDate) {
+    return (
+      date.equals(this.fromDate) ||
+      (this.toDate && date.equals(this.toDate)) ||
+      this.isInside(date) ||
+      this.isHovered(date)
+    );
   }
 
   getPaymentList() {
@@ -124,7 +227,7 @@ export class ReceivableListComponent {
       this.paymentRequestList = this.paymentRequestList.filter(
         (item) => item.account.toLowerCase() == payment.toLowerCase()
       );
-    } 
+    }
   }
 
   getList() {
@@ -140,12 +243,15 @@ export class ReceivableListComponent {
 
         this.paymentRequestList.forEach((item) => {
           if (item.account.length > 4)
-            item.account = 'ACH * ' + item.account.substring(item.account.length - 4);
-          else{
+            item.account =
+              'ACH * ' + item.account.substring(item.account.length - 4);
+          else {
             item.account = 'ACH * ' + item.account;
           }
         });
-        this.PAYMENTREQUESTLIST = JSON.parse(JSON.stringify(this.paymentRequestList));
+        this.PAYMENTREQUESTLIST = JSON.parse(
+          JSON.stringify(this.paymentRequestList)
+        );
         this.loading = false;
       });
   }

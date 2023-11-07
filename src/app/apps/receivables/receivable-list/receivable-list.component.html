@@ -61,7 +61,7 @@
                 </a>
                 <div class="dropdown-menu" ngbDropdownMenu>
                     <div ngbDropdownItem (click)="paymentTypeFilterList(0,'All')">
-                        <div class="form-check" id="roleAll" >
+                        <div class="form-check" id="roleAll">
                             <input type="checkbox" class="form-check-input" id="dropdownCheckRolepaymentTypeAll"
                                 [checked]="paymentTypeFilter=='All'" />
                             <label class="form-check-label ms-1-1">
@@ -69,78 +69,79 @@
                             </label>
                         </div>
                     </div>
-                    <div ngbDropdownItem *ngFor = "let item of paymentList" (click)="paymentTypeFilterList(item.id, 'ACH * ' + item.account)">
-                        <div class="form-check" >
-                            <input type="checkbox" class="form-check-input" id="dropdownCheckpaymentType{{item.account}}"
+                    <div ngbDropdownItem *ngFor="let item of paymentList"
+                        (click)="paymentTypeFilterList(item.id, 'ACH * ' + item.account)">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input"
+                                id="dropdownCheckpaymentType{{item.account}}"
                                 [checked]="paymentTypeFilter=='ACH * ' + item.account">
                             <label class="form-check-label ms-1-1" for="dropdownCheckCheck">
-                               ACH * {{item.account}}
+                                ACH * {{item.account}}
                             </label>
                         </div>
                     </div>
-                   
+
                 </div>
             </div>
         </div>
         <!--end filter 1-->
         <div class="d-inline-block ms-1-1">
-            <div class="dropdown ms-1-1" ngbDropdown #approvalDrop="ngbDropdown">
-                <a class="dropdown-outline" href="javascript:void(0)" ngbDropdownToggle>
+            <ng-template #t let-date let-focused="focused">
+                <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
+                    [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
+                    (mouseleave)="hoveredDate = null">
+                    {{ date.day }}
+                </span>
+            </ng-template>
+            <div class="dropdown ms-1-1">
+                <a class="dropdown-outline" href="javascript:void(0)">
                     <i class="fe-dollar-sign font-16 me-1-1"></i>
-                    {{dueDateFilter}}
-                    <i class="fe-chevron-down font-16 ms-1-1"></i>
-                </a>
-                <div class="dropdown-menu" ngbDropdownMenu>
-                    <div ngbDropdownItem>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="dropdownCheckAmountAll"
-                                [checked]="dueDateFilter=='All'">
-                            <label class="form-check-label ms-1-1" for="dropdownCheck">
-                                ALL
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                    <div class="d-inline-block position-relative">
+                    <input style="border:0; outline: 0; width: 155px;" [value]="selectedDateRange" ngbDatepicker #datepicker8="ngbDatepicker" [dayTemplate]="t"
+                        (dateSelect)="onDateSelection($event)" (click)="datepicker8.toggle()" autoClose="'outside'" />
         </div>
-        <!--end filter 2-->
-        <div class="d-inline-block ms-1-1">
-            <div class="dropdown ms-1-1" ngbDropdown>
-                <a class="dropdown-outline" href="javascript:void(0)" ngbDropdownToggle>
-                    <i class="fe-folder font-16 me-1-1"></i>
-                    {{vendorFilter}}
-                    <i class="fe-chevron-down font-16 ms-1-1"></i>
-                </a>
-                <div class="dropdown-menu" ngbDropdownMenu style="height: 300px; overflow-y: auto;">
-
-                    <div ngbDropdownItem (click)="filterVendorList('All')">
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="activedropdownChecks"
-                                [checked]="vendorFilter == 'All'">
-                            <label class="form-check-label ms-1-1 bold-600" for="activedropdownChecks">
-                                All
-                            </label>
-                        </div>
-                    </div>
-
-                    <div *ngFor="let vendor of vendorList" (click)="filterVendorList(vendor.vendorName)" ngbDropdownItem>
-                        <div class="form-check">
-                            <input id="vendor_{{vendor.id}}" type="checkbox" class="form-check-input"
-                                [checked]="vendorFilter == vendor.vendorName">
-                            <label class="form-check-label ms-1-1" for="vendor_{{vendor.id}}">
-                                {{vendor.vendorName}}
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--end filter 3-->
-        <div class="d-inline-block ms-1-1">
-            <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords" />
-        </div>
-        <!-- end search-->
+        <i class="fe-chevron-down font-16 ms-1-1"></i>
+        </a>
     </div>
+</div>
+<!--end filter 2-->
+<div class="d-inline-block ms-1-1">
+    <div class="dropdown ms-1-1" ngbDropdown>
+        <a class="dropdown-outline" href="javascript:void(0)" ngbDropdownToggle>
+            <i class="fe-folder font-16 me-1-1"></i>
+            {{vendorFilter}}
+            <i class="fe-chevron-down font-16 ms-1-1"></i>
+        </a>
+        <div class="dropdown-menu" ngbDropdownMenu style="height: 300px; overflow-y: auto;">
+
+            <div ngbDropdownItem (click)="filterVendorList('All')">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="activedropdownChecks"
+                        [checked]="vendorFilter == 'All'">
+                    <label class="form-check-label ms-1-1 bold-600" for="activedropdownChecks">
+                        All
+                    </label>
+                </div>
+            </div>
+
+            <div *ngFor="let vendor of vendorList" (click)="filterVendorList(vendor.vendorName)" ngbDropdownItem>
+                <div class="form-check">
+                    <input id="vendor_{{vendor.id}}" type="checkbox" class="form-check-input"
+                        [checked]="vendorFilter == vendor.vendorName">
+                    <label class="form-check-label ms-1-1" for="vendor_{{vendor.id}}">
+                        {{vendor.vendorName}}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end filter 3-->
+<div class="d-inline-block ms-1-1">
+    <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords" />
+</div>
+<!-- end search-->
+</div>
 </div>
 <div class="row mt-3">
     <div class="col-md-12">
