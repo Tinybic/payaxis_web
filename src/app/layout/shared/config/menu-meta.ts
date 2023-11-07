@@ -26,6 +26,13 @@ const MENU_ITEMS: MenuItem[] = [
     icon: 'payaxis-invoice',
     collapsed: true,
     url: '/apps/invoice',
+  },{
+    key: 'receivables',
+    label: 'Receivables',
+    isTitle: false,
+    icon: 'payaxis-receivables',
+    collapsed: true,
+    url: '/apps/receivables',
   },
   {
     key: 'vendor',
