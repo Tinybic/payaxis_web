@@ -23,5 +23,9 @@ export const VENDOR_PAYMENTTERM = [
       id: 6,
       txtName: '60 Days',
     },
+    {
+      id: 7,
+      txtName: '90 Days',
+    },
   ];
   

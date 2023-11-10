@@ -2,13 +2,13 @@ import { formatDate } from '@angular/common';
 import { Component, Input, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { PAYMENTTERM } from 'src/app/core/constants/payment';
+import { VENDOR_PAYMENTTERM } from 'src/app/core/constants/vendor_payment';
 import { getNewFileName, get_file_url } from 'src/app/core/gql/file';
 import { projectorder_list } from 'src/app/core/gql/orders';
 import { companypayment_list } from 'src/app/core/gql/payment';
 import { companyproject_list } from 'src/app/core/gql/project';
 import { projectpayment_new } from 'src/app/core/gql/receivables';
-import { vendor_file_delete, vendor_list } from 'src/app/core/gql/vendor';
+import { vendor_list } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { HttpService } from 'src/app/core/service/http.service';
 
@@ -21,7 +21,7 @@ export class ReceivableAddComponent {
   @Input() modalRef: any;
   @Input() id: number = 0;
   @ViewChild('deleteModal') deleteModal: any;
-  paymentTermsList = PAYMENTTERM;
+  paymentTermsList = VENDOR_PAYMENTTERM;
   PROJECTLIST = [];
   projectList = [];
   vendorList = [];
@@ -73,11 +73,11 @@ export class ReceivableAddComponent {
     this.getPaymentList();
   }
 
-  editAmount(){
+  editAmount() {
     this.amountEdit = true;
   }
 
-  cancelAmount(){
+  cancelAmount() {
     this.amountEdit = false;
   }
 
@@ -197,6 +197,7 @@ export class ReceivableAddComponent {
   removeProject() {
     this.project = null;
     this.projectpayment.idProject = 0;
+    this.removOrder();
   }
 
   order: any;
@@ -222,12 +223,27 @@ export class ReceivableAddComponent {
   removOrder() {
     this.order = null;
     this.projectpayment.idOrder1 = 0;
+    if (!this.project)
+      this.orderList = JSON.parse(JSON.stringify(this.ORDERLIST));
   }
 
   vendor: any;
   keywordsVendor = '';
   selectVendor(vendor) {
     this.vendor = vendor;
+    let name = vendor.primaryContact.split(/\s+/);
+    name = name.filter((item) => item.trim().length > 0);
+    if (name.length > 0) {
+      this.vendor.firstName = name[0];
+      this.vendor.lastName = name[0];
+      if (name.length > 1) this.vendor.lastName = name[1];
+    } else {
+      name = vendor.vendorName.split(' ');
+      if (name.length > 0) this.vendor.firstName = name[0];
+      else this.vendor.firstName = '';
+      if (name.length > 1) this.vendor.lastName = name[1];
+      else this.vendor.lastName = '';
+    }
     this.projectpayment.idVendor = vendor.id;
   }
   vendorFilter() {
@@ -246,6 +262,20 @@ export class ReceivableAddComponent {
     this.projectpayment.paymentTerms = item;
     const date = new Date();
     switch (item) {
+      case '7 Days':
+        this.projectpayment.dueDate = formatDate(
+          date.setDate(date.getDate() + 7),
+          this.format,
+          this.locale
+        );
+        break;
+      case '15 Days':
+        this.projectpayment.dueDate = formatDate(
+          date.setDate(date.getDate() + 15),
+          this.format,
+          this.locale
+        );
+        break;
       case '30 Days':
         this.projectpayment.dueDate = formatDate(
           date.setDate(date.getDate() + 30),
@@ -253,9 +283,16 @@ export class ReceivableAddComponent {
           this.locale
         );
         break;
+      case '45 Days':
+        this.projectpayment.dueDate = formatDate(
+          date.setDate(date.getDate() + 45),
+          this.format,
+          this.locale
+        );
+        break;
       case '60 Days':
         this.projectpayment.dueDate = formatDate(
-          date.setDate(date.getDate() + 60),
+          date.setDate(date.getDate() + 65),
           this.format,
           this.locale
         );
@@ -267,14 +304,7 @@ export class ReceivableAddComponent {
           this.locale
         );
         break;
-      case '180 Days':
-        this.projectpayment.dueDate = formatDate(
-          date.setDate(date.getDate() + 180),
-          this.format,
-          this.locale
-        );
-        break;
-      case '1 Year':
+      case '60 Days':
         this.projectpayment.dueDate = formatDate(
           new Date().setDate(new Date().getFullYear() + 1),
           this.format,

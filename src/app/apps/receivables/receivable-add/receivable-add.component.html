@@ -48,7 +48,8 @@
                                 <div class="subtitle-2-400-12 ">{{vendor.phone}}</div>
                             </div>
                             <div class="col-md-3 text-end">
-
+                                <app-avatar [bgColor]="'bg-info'"  color="text-white" [url]="vendor.avatar" [firstName]="vendor.firstName" [lastName]="vendor.lastName" [size]="32"
+                            alt="user-img" class="ms-2"></app-avatar>
                             </div>
                         </div>
                     </div>
@@ -81,7 +82,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row mt-1-1 pt-1-1" style="border-top: 1px solid #E1E6EF;">
+                            <!-- <div class="row mt-1-1 pt-1-1" style="border-top: 1px solid #E1E6EF;">
                                 <div class="col-md-9">
                                     <div class="btn-text-12 text-start">{{item.primaryContact}}</div>
                                     <div class="text-typeblackdeactivated">Manager</div>
@@ -91,7 +92,7 @@
                                 <div class="col-md-3 text-end">
 
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -106,8 +107,8 @@
             <div class="col-md-6 subtitle-400-12-32-up">
                 Payment Details
             </div>
-            <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" (click)="editAmount()">
-                Edit Deposit Account
+            <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" >
+                <!-- Edit Deposit Account -->
             </div>
         </div>
 
@@ -119,9 +120,9 @@
 
         <div class="row p-3 mt-1-1" style="border-bottom: 1px solid #E1E6EF;">
             <div class="col-md-12 text-center ">
-                <input type="number" *ngIf="amountEdit" (blur)="cancelAmount()" class=" subtitle-700-37-40" style="border: 0px;outline: 0;text-align: center;"
+                <input type="text" *ngIf="amountEdit" mask="separator.2" (blur)="cancelAmount()" class=" subtitle-700-37-40" style="border: 0px;outline: 0;text-align: center;"
                     [(ngModel)]="projectpayment.amount" />
-                <label class="subtitle-700-37-40"  *ngIf="!amountEdit">{{projectpayment.amount | currency}}</label>
+                <label class="subtitle-700-37-40 cursor-pointer" (click)="editAmount()" *ngIf="!amountEdit">{{projectpayment.amount | currency}}</label>
             </div>
         </div>
 
