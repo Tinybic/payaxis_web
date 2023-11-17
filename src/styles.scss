@@ -322,3 +322,14 @@ i {
 .modal-content{
   overflow-y: auto;
 }
+
+
+input[type='date']{
+  position: relative;
+}
+input[type='date']::-webkit-calendar-picker-indicator {
+  position: absolute;
+  right: 16;
+  padding-left: calc(100% - 40px);
+  content: "\e83a";
+}

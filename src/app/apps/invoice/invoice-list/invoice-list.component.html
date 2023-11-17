@@ -1,0 +1,234 @@
+<div class="row">
+    <h5 class="col-md-3 bold-700 text-black">
+        Bill Inbox
+    </h5>
+    <div class="col-md-9 text-end">
+        <button class="btn btn-primary ms-2-1" (click)="openAddModal()">Add Invoice</button>
+    </div>
+</div>
+
+<div class="row mt-2-1">
+    <div class="col-md-4">
+        <span class="font-20 bold-600">{{invoiceList.length}} Invoices</span>
+        <div class="d-inline-block dropdown ms-1-1" ngbDropdown>
+            <a class="dropdown-outline" href="javascript:void(0)" ngbDropdownToggle>
+                <i class="fe-filter font-16 me-1-1"></i>
+                Status
+                <b>{{statusFilter}}</b>
+                <i class="fe-chevron-down font-16 ms-1-1"></i>
+            </a>
+            <div class="dropdown-menu" ngbDropdownMenu>
+                <div ngbDropdownItem (click)="filterListStatus('All')">
+                    <div class="form-check text-center">
+                        <input type="checkbox" class="form-check-input" id="activedropdownCheck"
+                            [checked]="statusFilter == 'All'">
+                        <label class="form-check-label ms-1-1 bold-600" for="dropdownCheck">
+                            All
+                        </label>
+                    </div>
+                </div>
+                <div ngbDropdownItem (click)="filterListStatus('Sent')">
+                    <div class="form-check text-center">
+                        <input type="checkbox" class="form-check-input" id="invoiceOpendropdownCheck"
+                            [checked]="statusFilter == 'Sent'">
+                        <img src="/assets/images/status-icons/sent.png" style="height: 24px; margin-left: 16px;" />
+                    </div>
+                </div>
+                <div ngbDropdownItem (click)="filterListStatus('Due')">
+                    <div class="form-check text-center">
+                        <input type="checkbox" class="form-check-input" id="overduedropdownCheck"
+                            [checked]="statusFilter == 'Due'">
+                        <img src="/assets/images/status-icons/due.png" style="height: 24px; margin-left: 16px;" />
+                    </div>
+                </div>
+                <div ngbDropdownItem (click)="filterListStatus('PastDue')">
+                    <div class="form-check text-center">
+                        <input type="checkbox" class="form-check-input" id="overduedropdownCheck"
+                            [checked]="statusFilter == 'PastDue'">
+                        <img src="/assets/images/status-icons/pastdue.png" style="height: 24px; margin-left: 16px;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8 text-end">
+        <div class="d-inline-block ms-1-1">
+            <div class="dropdown" ngbDropdown #roleDrop="ngbDropdown">
+                <a class="dropdown-outline" href="javascript:void(0)" ngbDropdownToggle>
+                    <i class="fe-user font-16 me-1-1"></i>
+                    {{paymentTypeFilter}}
+                    <i class="fe-chevron-down font-16 ms-1-1"></i>
+                </a>
+                <div class="dropdown-menu" ngbDropdownMenu>
+                    <div ngbDropdownItem (click)="paymentTypeFilterList(0,'All')">
+                        <div class="form-check" id="roleAll">
+                            <input type="checkbox" class="form-check-input" id="dropdownCheckRolepaymentTypeAll"
+                                [checked]="paymentTypeFilter=='All'" />
+                            <label class="form-check-label ms-1-1">
+                                ALL
+                            </label>
+                        </div>
+                    </div>
+                    <div ngbDropdownItem *ngFor="let item of paymentList"
+                        (click)="paymentTypeFilterList(item.id, 'ACH * ' + item.account)">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input"
+                                id="dropdownCheckpaymentType{{item.account}}"
+                                [checked]="paymentTypeFilter=='ACH * ' + item.account">
+                            <label class="form-check-label ms-1-1" for="dropdownCheckCheck">
+                                ACH * {{item.account}}
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!--end filter 1-->
+        <div class="d-inline-block ms-1-1">
+            <ng-template #t let-date let-focused="focused">
+                <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
+                    [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
+                    (mouseleave)="hoveredDate = null">
+                    {{ date.day }}
+                </span>
+            </ng-template>
+            <div class="dropdown ms-1-1">
+                <a class="dropdown-outline" href="javascript:void(0)">
+                    <i class="fe-dollar-sign font-16 me-1-1"></i>
+                    <div class="d-inline-block position-relative">
+                    <input style="border:0; outline: 0; width: 155px;" [value]="selectedDateRange" ngbDatepicker #datepicker8="ngbDatepicker" [dayTemplate]="t"
+                        (dateSelect)="onDateSelection($event)" (click)="datepicker8.toggle()" autoClose="'outside'" />
+        </div>
+        <i class="fe-chevron-down font-16 ms-1-1"></i>
+        </a>
+    </div>
+</div>
+<!--end filter 2-->
+<div class="d-inline-block ms-1-1">
+    <div class="dropdown ms-1-1" ngbDropdown>
+        <a class="dropdown-outline" href="javascript:void(0)" ngbDropdownToggle>
+            <i class="fe-folder font-16 me-1-1"></i>
+            {{vendorFilter}}
+            <i class="fe-chevron-down font-16 ms-1-1"></i>
+        </a>
+        <div class="dropdown-menu" ngbDropdownMenu style="height: 300px; overflow-y: auto;">
+
+            <div ngbDropdownItem (click)="filterVendorList('All')">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="activedropdownChecks"
+                        [checked]="vendorFilter == 'All'">
+                    <label class="form-check-label ms-1-1 bold-600" for="activedropdownChecks">
+                        All
+                    </label>
+                </div>
+            </div>
+
+            <div *ngFor="let vendor of vendorList" (click)="filterVendorList(vendor.vendorName)" ngbDropdownItem>
+                <div class="form-check">
+                    <input id="vendor_{{vendor.id}}" type="checkbox" class="form-check-input"
+                        [checked]="vendorFilter == vendor.vendorName">
+                    <label class="form-check-label ms-1-1" for="vendor_{{vendor.id}}">
+                        {{vendor.vendorName}}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end filter 3-->
+<div class="d-inline-block ms-1-1">
+    <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords" />
+</div>
+<!-- end search-->
+</div>
+</div>
+<div class="row mt-3">
+    <div class="col-md-12">
+        <table class="advanced-table">
+            <thead>
+                <tr>
+                    <th class="row_select"><input class="form-check" type="checkbox" /></th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortColumn == 'vendorName' && direction == 'asc','sorting_desc':sortColumn == 'vendorName' && direction == 'desc'}"
+                        (click)="onSort('vendorName')">Status</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortColumn == 'status' && direction == 'asc','sorting_desc':sortColumn == 'status' && direction == 'desc'}"
+                        (click)="onSort('status')">Bill #</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortColumn == 'approvalAmount' && direction == 'asc','sorting_desc':sortColumn == 'approvalAmount' && direction == 'desc'}"
+                        (click)="onSort('approvalAmount')">Due Date</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortColumn == 'active' && direction == 'asc','sorting_desc':sortColumn == 'active' && direction == 'desc'}"
+                        (click)="onSort('active')">Order #</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortColumn == 'active' && direction == 'asc','sorting_desc':sortColumn == 'active' && direction == 'desc'}"
+                        (click)="onSort('active')">Vendor</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortColumn == 'active' && direction == 'asc','sorting_desc':sortColumn == 'active' && direction == 'desc'}"
+                        (click)="onSort('active')">Payment type</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortColumn == 'active' && direction == 'asc','sorting_desc':sortColumn == 'active' && direction == 'desc'}"
+                        (click)="onSort('active')">Sent date</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortColumn == 'active' && direction == 'asc','sorting_desc':sortColumn == 'active' && direction == 'desc'}"
+                        (click)="onSort('active')">Amount</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody *ngIf="!loading">
+                <tr class="cursor-pointer" *ngFor="let item of invoiceList | callback:filterTable; let i = index"
+                    (click)="openEditModal(item.id)">
+                    <td><input class="form-check" type="checkbox" /></td>
+                    <td>
+                        <img src="assets/images/status-icons/{{item.status.toLowerCase()}}.png" />
+                    </td>
+                    <td>
+                        {{item.billNumber}}
+                    </td>
+                    <td>
+                        {{item.dueDate}}
+                    </td>
+                    <td> {{item.orderNumber}}</td>
+                    <td> {{item.vendorName}}</td>
+                    <td> {{item.account}}</td>
+                    <td> {{item.sentDate}}</td>
+                    <td> {{item.amount}}</td>
+                    <td class="text-end">
+                        <button type="button" class="btn btn-outline-primary padding-8-16 ms-1-1">Review Bill</button>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="loading" class="bg-white">
+                <tr>
+                    <td colspan="10">
+                        <div style="position: relative; height: 400px;">
+                            <app-ui-preloader [display]="loading"></app-ui-preloader>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="invoiceList.length==0 && !loading" class="bg-white">
+                <tr *ngIf="!loading && invoiceList.length==0">
+                    <td colspan="10" class="text-center">
+                        <div class="Paragraph-1 text-typeblackdeactivated bold-600  mt-40 ">No Invoices added yet</div>
+
+                        <div class="Paragraph-2 text-typeblackdeactivated mt-1-1">Add Invoice in a few clicks
+                        </div>
+                        <div class="mt-1-1"> <button class="btn btn-primary ms-2-1" (click)="openAddModal()"><i
+                                    class="fe-plus-square me-1-1"></i>Add Invoice</button></div>
+
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot style="height: 16px;">
+                <tr>
+                    <td colspan="10">&nbsp;</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<ng-template #addModal>
+    <app-invoice-add class="p-4-1" [modalRef]="addModalRef"></app-invoice-add>
+</ng-template>

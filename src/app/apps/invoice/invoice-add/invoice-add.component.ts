@@ -3,7 +3,9 @@ import { Component, Input, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { VENDOR_PAYMENTTERM } from 'src/app/core/constants/vendor_payment';
+import { categorycostcode_list } from 'src/app/core/gql/costcode';
 import { getNewFileName, get_file_url } from 'src/app/core/gql/file';
+import { projectinvoice_mapping } from 'src/app/core/gql/invoice';
 import { projectorder_list } from 'src/app/core/gql/orders';
 import { companypayment_list } from 'src/app/core/gql/payment';
 import { companyproject_list } from 'src/app/core/gql/project';
@@ -11,13 +13,12 @@ import { projectpayment_new } from 'src/app/core/gql/receivables';
 import { vendor_list } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { HttpService } from 'src/app/core/service/http.service';
-
 @Component({
-  selector: 'app-receivable-add',
-  templateUrl: './receivable-add.component.html',
-  styleUrls: ['./receivable-add.component.scss'],
+  selector: 'app-invoice-add',
+  templateUrl: './invoice-add.component.html',
+  styleUrls: ['./invoice-add.component.scss'],
 })
-export class ReceivableAddComponent {
+export class InvoiceAddComponent {
   @Input() modalRef: any;
   @Input() id: number = 0;
   @ViewChild('deleteModal') deleteModal: any;
@@ -36,8 +37,11 @@ export class ReceivableAddComponent {
   format = 'yyyy-MM-dd';
   locale = 'en-US';
 
+  showCostcode = true;
   myDate = new Date();
-
+  keywordsCostCode = '';
+  costCodeList = [];
+  COSTCODE_LIST = [];
   projectpayment = {
     idCompany: 0,
     idProject: 0,
@@ -45,13 +49,9 @@ export class ReceivableAddComponent {
     idOrder1: 0,
     idCompany_payment: 0,
     billNumber: '',
-    sentDate: formatDate(this.myDate, this.format, this.locale),
-    dueDate: formatDate(
-      this.myDate.setDate(this.myDate.getDate() + 30),
-      this.format,
-      this.locale
-    ),
-    paymentTerms: '30 Days',
+    sentDate: '',
+    dueDate: '',
+    paymentTerms: '',
     amount: 0.0,
     txtNotes: '',
     billyn: false,
@@ -73,6 +73,7 @@ export class ReceivableAddComponent {
     this.getProjectList();
     this.getOrderList();
     this.getPaymentList();
+    this.getCostCodeList();
   }
 
   editAmount() {
@@ -105,6 +106,60 @@ export class ReceivableAddComponent {
           }
         }
       });
+  }
+
+  setCostCodeName() {
+    this.costCodeList.forEach((item) => {
+      item.costcodelist.forEach((costcode) => {
+        if (costcode.costCode == this.projectpayment.costCode) {
+          this.vendorcostcodesText = costcode.txtName;
+          return;
+        }
+      });
+    });
+  }
+
+  getCostCodeList() {
+    this.apolloService
+      .query(categorycostcode_list, {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
+      })
+      .then((res) => {
+        const result = res.categorycostcode_list;
+        if (!result.error) {
+          this.costCodeList = result.data;
+          this.COSTCODE_LIST = JSON.parse(JSON.stringify(result.data));
+        }
+        this.setCostCodeName();
+      });
+  }
+  vendorcostcodesText = '';
+  costCodeSelect(event, item) {
+    if (event.currentTarget.checked) {
+      this.vendorcostcodesText = item.txtName;
+      this.projectpayment.costCode = item.costCode;
+    } else {
+      this.vendorcostcodesText = '';
+      this.projectpayment.costCode = '0';
+    }
+  }
+
+  setCostCodeSelect(costcode) {
+    let result = false;
+    if (this.projectpayment.costCode == costcode) {
+      result = true;
+    }
+    return result;
+  }
+
+  costCodeFilter() {
+    this.costCodeList = JSON.parse(JSON.stringify(this.COSTCODE_LIST));
+    this.costCodeList = this.costCodeList.filter((costcode) => {
+      costcode.costcodelist = costcode.costcodelist.filter((item) =>
+        item.txtName.toLowerCase().includes(this.keywordsCostCode.toLowerCase())
+      );
+      return costcode;
+    });
   }
 
   getVendorList() {
@@ -207,6 +262,11 @@ export class ReceivableAddComponent {
   selectOrder(order) {
     this.order = order;
     this.projectpayment.idOrder1 = order.id;
+    if (this.order.costCode != '') {
+      this.showCostcode = false;
+    } else {
+      this.projectpayment.costCode = this.order.costCode;
+    }
     if (!this.project) {
       this.project = { id: order.idProject, projectName: order.projectName };
       this.projectpayment.idProject = this.project.id;
@@ -225,6 +285,8 @@ export class ReceivableAddComponent {
   removOrder() {
     this.order = null;
     this.projectpayment.idOrder1 = 0;
+    this.projectpayment.costCode = '0';
+    this.showCostcode = true;
     if (!this.project)
       this.orderList = JSON.parse(JSON.stringify(this.ORDERLIST));
   }
@@ -323,6 +385,7 @@ export class ReceivableAddComponent {
   }
 
   getUploadUrl(file) {
+    this.projectpayment.paymentfile = [];
     const fileName = getNewFileName(file.name);
     file.filename = fileName;
     this.apolloService
@@ -342,7 +405,71 @@ export class ReceivableAddComponent {
                 .toLowerCase(),
               fileUrl: uploadUrl.split('?')[0],
             });
+            this.mapping();
           });
+        }
+      });
+  }
+
+  mapping() {
+    this.apolloService
+      .mutate(projectinvoice_mapping, {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
+        fileUrl: this.projectpayment.paymentfile[0].fileUrl,
+      })
+      .then((res) => {
+        const result = res.projectinvoice_mapping;
+
+        if (!result.error) {
+          if (!this.vendor) {
+            this.vendorList.forEach((item) => {
+              if (item.id == result.data.idVendor) {
+                this.vendor = item;
+                this.projectpayment.idVendor = item.id;
+              }
+            });
+          }
+
+          if (!this.projectpayment.costCode) {
+            this.costCodeList.forEach((item) => {
+              if (item.costcode == result.data.costCode) {
+                this.projectpayment.costCode = item.costcode;
+                this.vendorcostcodesText = item.txtName;
+              }
+            });
+          }
+          if (!this.projectpayment.sentDate) {
+            this.projectpayment.sentDate = result.data.invoicedDate;
+          }
+          if (!this.projectpayment.dueDate) {
+            this.projectpayment.dueDate = result.data.indvoicedueDate;
+          }
+
+          if (!this.projectpayment.billNumber) {
+            this.projectpayment.billNumber = result.data.invoiceNumber;
+          }
+
+          if (!(this.projectpayment.amount > 0)) {
+            this.projectpayment.amount = result.data.amount;
+          }
+
+          if (!this.project) {
+            this.projectList.forEach((item) => {
+              if (item.id == result.data.idProject) {
+                this.project = item;
+                this.projectpayment.idProject = item.id;
+              }
+            });
+          }
+
+          if (!this.order) {
+            this.orderList.forEach((item) => {
+              if (item.id == result.data.idOrder1) {
+                this.order = item;
+                this.projectpayment.idOrder1 = item.id;
+              }
+            });
+          }
         }
       });
   }

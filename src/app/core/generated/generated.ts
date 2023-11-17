@@ -747,6 +747,8 @@ export type MutationProjectpayment_DeletefileArgs = {
 export type MutationProjectpayment_NewArgs = {
   amount: Scalars['Float']['input'];
   billNumber: Scalars['billNumber_String_NotNull_maxLength_25']['input'];
+  billyn?: InputMaybe<Scalars['Boolean']['input']>;
+  costCode?: InputMaybe<Scalars['String']['input']>;
   dueDate: Scalars['String']['input'];
   idCompany: Scalars['Int']['input'];
   idCompany_payment: Scalars['Int']['input'];
@@ -780,6 +782,7 @@ export type MutationProjectpayment_RejectArgs = {
 export type MutationProjectpayment_UpdateArgs = {
   amount: Scalars['Float']['input'];
   billNumber: Scalars['billNumber_String_NotNull_maxLength_25']['input'];
+  costCode?: InputMaybe<Scalars['String']['input']>;
   dueDate: Scalars['String']['input'];
   id: Scalars['Int']['input'];
   idCompany: Scalars['Int']['input'];
@@ -1059,6 +1062,8 @@ export type Query = {
   profile_info: Resprofile;
   /** get project members for project */
   project_members: Projectmemberresult;
+  /** get projectpayment list */
+  projectbill_list: Projectpaymentlist;
   /** get project budget list */
   projectbudget_list: Projectbudgetlist;
   /** get projectinvoice attachment */
@@ -1081,8 +1086,6 @@ export type Query = {
   projectorder_reasonlist: Companyreasonlist;
   /** get related Orders */
   projectorder_related: Projectorderlist;
-  /** get projectpayment list */
-  projectpayable_list: Projectpaymentlist;
   /** get projectpayment attachment */
   projectpayment_attachment: Paymentfilelist;
   /** get projectpayment info */
@@ -1194,6 +1197,13 @@ export type QueryProject_MembersArgs = {
 };
 
 
+export type QueryProjectbill_ListArgs = {
+  idCompany: Scalars['Int']['input'];
+  idProject: Scalars['Int']['input'];
+  idVendor: Scalars['Int']['input'];
+};
+
+
 export type QueryProjectbudget_ListArgs = {
   idProject: Scalars['Int']['input'];
 };
@@ -1257,13 +1267,6 @@ export type QueryProjectorder_RelatedArgs = {
   idProject: Scalars['Int']['input'];
   idVendor: Scalars['Int']['input'];
   paidyn: Scalars['Boolean']['input'];
-};
-
-
-export type QueryProjectpayable_ListArgs = {
-  idCompany: Scalars['Int']['input'];
-  idProject: Scalars['Int']['input'];
-  idVendor: Scalars['Int']['input'];
 };
 
 
@@ -2025,6 +2028,10 @@ export type Project_Payment = {
   primaryContact: Scalars['String']['output'];
   projectName: Scalars['String']['output'];
   revision: Scalars['Int']['output'];
+  senderAvatar: Scalars['String']['output'];
+  senderEmail: Scalars['String']['output'];
+  senderFirstname: Scalars['String']['output'];
+  senderLastname: Scalars['String']['output'];
   sentDate: Scalars['String']['output'];
   status: Scalars['String']['output'];
   txtAddress: Scalars['String']['output'];
