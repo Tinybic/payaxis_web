@@ -245,17 +245,23 @@
     <div class="card-body padding-16">
         <div class="row">
             <div class="col-md-6  subtitle-400-12-32-up">
-                Order
+                {{orderCostCodeText}}
             </div>
-            <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" *ngIf="!order">
+            <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" *ngIf="!showCostcode"
+                (click)="showFindOrder()">
                 Find Cost Code
             </div>
-            <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" *ngIf="order" (click)="removOrder()">
+            <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" *ngIf="showCostcode && !order"
+                (click)="showFindCostCode()">
+                Find Order
+            </div>
+            <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" *ngIf="showCostcode && order"
+                (click)="removOrder()">
                 Edit Order
             </div>
         </div>
 
-        <div class="row mt-1-1">
+        <div class="row mt-1-1" *ngIf="!showCostcode">
             <div class="col-md-12">
                 <div ngbDropdown>
 
@@ -313,7 +319,7 @@
             </div>
         </div>
 
-        <div class="row mt-2-1" *ngIf="showCostcode">
+        <div class="row mt-1-1" *ngIf="showCostcode">
             <div class="col-md-12">
                 <div class="dropdown" ngbDropdown>
                     <input class="form-select" type="text" id="invoiceCostCode" [(ngModel)]="vendorcostcodesText"
@@ -348,10 +354,10 @@
         </div>
     </div>
 </div>
+{{showNotes}}
 
-
-<div class="row">
-    <div class="col-md-12">
+<div class="row mt-2-1 mb-2-1" *ngIf="!showNotes">
+    <div class="col-md-12" *ngIf="!file">
         <ngx-dropzone (change)="onSelectDocument($event)" class="dropzone justify-content-center"
             style="width: 100%;height: 208px;min-height: unset !important;border: 1px solid #2B52DD !important;background-color: #F7FAFC !important;border-radius: 16px !important;overflow: hidden;padding: 0 !important;"
             #drop>
@@ -370,10 +376,64 @@
             </ngx-dropzone-label>
         </ngx-dropzone>
     </div>
+    <div class="col-md-12" *ngIf="file">
+        <div class="Subtitle-1 text-start">
+            Uploading (1)
+        </div>
+        <div class="d-flex flex-row align-items-center mt-2-1">
+            <div style="width: calc(100% - 110px);float: left;" class="subtitle-2-600 text-overflow-ellipsis">
+                <i class="fe-file me-1-1"></i>{{file.fileName}}
+            </div>
+            <div class="d-flex flex-row subtitle-2-500 cursor-pointer" (click)="cancelUploading(file)"
+                style="width: 110px;float: right;" *ngIf="!mappingFlag">
+                <img class="me-1-1" src="../../../assets/images/stop-circle.png"
+                    style="width: 16px;height: 16px;margin-top: 4px;">
+                Cancel Upload
+            </div>
+            <div class="d-flex flex-row subtitle-2-500 cursor-pointer" style="width: 110px;float: right;"
+                *ngIf="mappingFlag">
+                <img class="me-1-1" src="../../../assets/images/loader.png"
+                    style="width: 16px;height: 16px;margin-top: 4px;">
+                Mapping..
+            </div>
+        </div>
+        <div class="progress progress-sm" style="margin-top: 8px;height: 8px !important;" *ngIf="!mappingFlag">
+            <div class="progress-bar wow bg-primary-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                style="width: {{file.uploadProgress}}%;h">
+            </div><!-- /.progress-bar .progress-bar-success -->
+        </div><!-- /.progress .no-rounded -->
+    </div>
 </div>
 
+<div class="card mt-2-1" *ngIf="showNotes">
+    <div class="card-body padding-16">
+        <div class="row">
+            <div class="row">
+                <div class="col-md-6 subtitle-400-12-32-up">
+                    mapped file
+                </div>
+                <div class="col-md-6 text-end">
+                    <a href="{{file.fileUrl}}" target="_blank" class="btn btn-outline-primary padding-8-16">
+                       <i class="fe-download me-1-1"></i> Download</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mt-1-1">
+                    <div style="padding: 8px 16px; border-radius: 8px; border:1px solid #E1E6EF; display: flex;" >
+                        <img src="/assets/images/ico_ai.png" style="height: 24px; width: 24px;"
+                            onerror="javascript:this.src='/assets/images/icon/dat.png';" />
+                        &nbsp;&nbsp;
+                        <div class="bold-600"
+                            style="flex: 1;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;line-height: 24px;">
+                            {{file.fileName}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<div class="card mt-2-1">
+<div class="card mt-2-1" *ngIf="showNotes">
     <div class="card-body padding-16">
         <div class="row">
             <div class="col-md-6 subtitle-400-12-32-up">
@@ -393,7 +453,7 @@
             </div>
         </div>
         <div class="row mt-2-1">
-            <div class="col-md-6 mt-1-1" *ngFor="let item of projectpayment.paymentfile; let i = index">
+            <div class="col-md-6 mt-1-1" *ngFor="let item of projectpayment.paymentfile| slice:1; let i = index; ">
                 <div style="padding: 8px 16px; border-radius: 8px; border:1px solid #E1E6EF; display: flex;">
                     <img src="/assets/images/icon/{{item.fileType}}.png" style="height: 24px; width: 24px;"
                         onerror="javascript:this.src='/assets/images/icon/dat.png';" />
@@ -411,9 +471,12 @@
                     style="width: 100%;height: 120px;min-height: unset !important;border: 1px solid #2B52DD !important;background-color: #F7FAFC !important;border-radius: 16px !important;overflow: hidden;padding: 0 !important;"
                     #drop>
                     <ngx-dropzone-label class="d-flex flex-column align-items-center">
-                        <div class="btn-text-12" style="letter-spacing: 1.5px;color: #2B52DD;">Drag Documents and Let
-                            <br />
-                            Payaxis AI Fill out the Bill for you
+                        <div
+                            style="height: 56px; width: 56px; background-color: #73B2FF33; color: #2B52DD; border-radius: 56px; text-align: center; line-height: 56px;">
+                            <i class="fe-upload-cloud font-24"></i>
+                        </div>
+                        <div class="btn-text-12"
+                            style="letter-spacing: 1.5px;color: #2B52DD; text-transform: uppercase;">drag file here
                         </div>
                     </ngx-dropzone-label>
                 </ngx-dropzone>
@@ -424,7 +487,7 @@
 
 <div class="row">
     <div class="col-md-12 d-grid">
-        <button type="button" class="btn btn-primary" (click)="save()">Send</button>
+        <button type="button" class="btn btn-primary" (click)="save()" [disabled]="projectpayment.idVendor == 0">Save and Review</button>
         <button type="button" class="btn btn-outline-primary mt-1-1" (clikc)="closeModal()">Cancel</button>
     </div>
 </div>

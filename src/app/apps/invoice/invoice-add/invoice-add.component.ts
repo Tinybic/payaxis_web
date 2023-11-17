@@ -1,4 +1,5 @@
 import { formatDate } from '@angular/common';
+import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
 import { Component, Input, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
@@ -37,7 +38,8 @@ export class InvoiceAddComponent {
   format = 'yyyy-MM-dd';
   locale = 'en-US';
 
-  showCostcode = true;
+  showCostcode = false;
+  orderCostCodeText = 'order';
   myDate = new Date();
   keywordsCostCode = '';
   costCodeList = [];
@@ -64,6 +66,7 @@ export class InvoiceAddComponent {
     private apolloService: ApolloService,
     private modalService: NgbModal,
     private toastrService: ToastrService,
+    private http: HttpClient,
     private httpService: HttpService
   ) {}
 
@@ -262,11 +265,7 @@ export class InvoiceAddComponent {
   selectOrder(order) {
     this.order = order;
     this.projectpayment.idOrder1 = order.id;
-    if (this.order.costCode != '') {
-      this.showCostcode = false;
-    } else {
-      this.projectpayment.costCode = this.order.costCode;
-    }
+    this.projectpayment.costCode = this.order.costCode;
     if (!this.project) {
       this.project = { id: order.idProject, projectName: order.projectName };
       this.projectpayment.idProject = this.project.id;
@@ -286,7 +285,6 @@ export class InvoiceAddComponent {
     this.order = null;
     this.projectpayment.idOrder1 = 0;
     this.projectpayment.costCode = '0';
-    this.showCostcode = true;
     if (!this.project)
       this.orderList = JSON.parse(JSON.stringify(this.ORDERLIST));
   }
@@ -378,14 +376,27 @@ export class InvoiceAddComponent {
     }
   }
 
+  showFindOrder() {
+    this.showCostcode = true;
+    this.orderCostCodeText = 'Cost code';
+  }
+
+  showFindCostCode() {
+    this.showCostcode = false;
+    this.orderCostCodeText = 'order';
+    this.order = null;
+    this.projectpayment.idOrder1 = 0;
+  }
+
   onSelectDocument(event: any) {
     event.addedFiles.map((file) => {
       this.getUploadUrl(file);
     });
   }
 
+  file;
+
   getUploadUrl(file) {
-    this.projectpayment.paymentfile = [];
     const fileName = getNewFileName(file.name);
     file.filename = fileName;
     this.apolloService
@@ -396,30 +407,76 @@ export class InvoiceAddComponent {
       .then((res) => {
         if (!res.get_file_url.error) {
           let uploadUrl = res.get_file_url.data;
-          this.httpService.put(uploadUrl, file).then((res) => {
-            this.projectpayment.paymentfile.push({
-              fileName: file.name,
-              fileSize: file.size,
-              fileType: file.name
-                .substring(file.name.lastIndexOf('.') + 1)
-                .toLowerCase(),
-              fileUrl: uploadUrl.split('?')[0],
+          if (this.projectpayment.paymentfile.length > 0) {
+            this.httpService.put(uploadUrl, file).then((res) => {
+              this.projectpayment.paymentfile.push({
+                fileName: file.name,
+                fileSize: file.size,
+                fileType: file.name
+                  .substring(file.name.lastIndexOf('.') + 1)
+                  .toLowerCase(),
+                fileUrl: uploadUrl.split('?')[0],
+              });
             });
-            this.mapping();
-          });
+          } else {
+            this.handleUploadFile(file, uploadUrl);
+          }
         }
       });
   }
 
+  handleUploadFile(file, uploadUrl) {
+    this.file = {
+      uploadProgress:0,
+      fileName: file.name,
+      fileSize: file.size,
+      fileType: file.name
+        .substring(file.name.lastIndexOf('.') + 1)
+        .toLowerCase(),
+      fileUrl: uploadUrl.split('?')[0],
+    };
+    file.subscription = this.http
+      .put(uploadUrl, file, {
+        headers: new HttpHeaders()
+          .set('x-ms-blob-type', 'BlockBlob')
+          .set('Content-Type', file.type),
+        reportProgress: true,
+        observe: 'events',
+      })
+      .subscribe({
+        next: (res) => {
+          if (res.type === HttpEventType.Response) {
+            this.projectpayment.paymentfile.push(this.file);
+            if (this.projectpayment.paymentfile.length == 1) this.mapping();
+          }
+          if (res.type === HttpEventType.UploadProgress) {
+            const percentDone = Math.round((100 * res.loaded) / res.total);
+            this.file.uploadProgress = percentDone;
+          }
+        },
+        error: (err) => {
+          this.toastrService.info(err, '');
+        },
+      });
+  }
+
+  cancelUploading(file) {
+    file.subscription.unsubscribe();
+    this.file = null;
+  }
+
+  showNotes = false;
+  mappingFlag = false;
   mapping() {
+    this.mappingFlag = true;
     this.apolloService
       .mutate(projectinvoice_mapping, {
         idCompany: parseInt(localStorage.getItem('idcompany')),
-        fileUrl: this.projectpayment.paymentfile[0].fileUrl,
+        fileUrl: this.file.fileUrl,
       })
       .then((res) => {
         const result = res.projectinvoice_mapping;
-
+        this.showNotes = true;
         if (!result.error) {
           if (!this.vendor) {
             this.vendorList.forEach((item) => {
@@ -485,6 +542,7 @@ export class InvoiceAddComponent {
       centered: true,
     });
   }
+
 
   cancelDelete() {
     this.deleteRef.close();
