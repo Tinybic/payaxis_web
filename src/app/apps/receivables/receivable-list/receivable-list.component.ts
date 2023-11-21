@@ -266,9 +266,11 @@ export class ReceivableListComponent {
     this.addModalRef.result.then(
       (res) => {
         this.addModalRef = null;
+        this.getList();
       },
       (dismiss) => {
         this.addModalRef = null;
+        this.getList();
       }
     );
   }

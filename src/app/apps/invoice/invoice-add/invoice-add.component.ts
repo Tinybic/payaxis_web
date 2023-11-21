@@ -10,7 +10,10 @@ import { projectinvoice_mapping } from 'src/app/core/gql/invoice';
 import { projectorder_list } from 'src/app/core/gql/orders';
 import { companypayment_list } from 'src/app/core/gql/payment';
 import { companyproject_list } from 'src/app/core/gql/project';
-import { projectpayment_new } from 'src/app/core/gql/receivables';
+import {
+  getassociatedcompany_list,
+  projectpayment_new,
+} from 'src/app/core/gql/receivables';
 import { vendor_list } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { HttpService } from 'src/app/core/service/http.service';
@@ -23,6 +26,9 @@ export class InvoiceAddComponent {
   @Input() modalRef: any;
   @Input() id: number = 0;
   @ViewChild('deleteModal') deleteModal: any;
+  @ViewChild('newVendorListModal') newVendorListModal: any;
+  @ViewChild('noVendorModal') noVendorModal: any;
+
   paymentTermsList = VENDOR_PAYMENTTERM;
   PROJECTLIST = [];
   projectList = [];
@@ -56,9 +62,12 @@ export class InvoiceAddComponent {
     paymentTerms: '',
     amount: 0.0,
     txtNotes: '',
-    billyn: false,
+    billyn: true,
     costCode: '0',
     paymentfile: [],
+    idInvitedCompany: 0,
+    vendorName: '',
+    vendorEmail: '',
   };
 
   amountEdit = false;
@@ -77,6 +86,76 @@ export class InvoiceAddComponent {
     this.getOrderList();
     this.getPaymentList();
     this.getCostCodeList();
+  }
+
+  newVendor = false;
+  createVendor() {
+    this.newVendor = true;
+  }
+
+  createVendorList = [];
+
+  findVendor() {
+    if (this.projectpayment.vendorEmail.length > 0) {
+      this.vendorList.forEach((item) => {
+        if (item.email == this.projectpayment.vendorEmail) {
+          this.selectVendor(item);
+          this.newVendor = false;
+          return;
+        }
+      });
+
+      if (this.projectpayment.idVendor > 0) {
+        return;
+      }
+
+      this.apolloService
+        .query(getassociatedcompany_list, {
+          idCompany: parseInt(localStorage.getItem('idcompany')),
+          vendorEmail: this.projectpayment.vendorEmail,
+        })
+        .then((res) => {
+          const result = res.getassociatedcompany_list;
+          if (!result.error) {
+            this.createVendorList = result.data;
+            if (this.createVendorList.length > 0) {
+              this.openNewVendorModal();
+            } else {
+              this.modalService.open(this.noVendorModal, {
+                size: '443',
+                centered: true,
+              });
+            }
+          }
+        });
+    }
+  }
+
+  newVendorRef;
+  openNewVendorModal() {
+    this.newVendorRef = this.modalService.open(this.newVendorListModal, {
+      backdrop: 'static',
+      size: '443',
+      centered: true,
+    });
+  }
+
+  cancelNewVendor() {
+    this.newVendorRef.close();
+  }
+
+  newVendorShow = false;
+  CreateNewVendor() {
+    this.createVendorList.forEach((item) => {
+      if (this.projectpayment.idInvitedCompany == item.idInvitedCompany) {
+        this.projectpayment.vendorName = item.companyName;
+        return;
+      }
+    });
+    if (this.projectpayment.idInvitedCompany > 0) {
+      this.newVendorShow = true;
+    }
+    this.newVendorRef.close();
   }
 
   editAmount() {
@@ -318,6 +397,9 @@ export class InvoiceAddComponent {
   removeVendor() {
     this.vendor = null;
     this.projectpayment.idVendor = 0;
+    if (this.newVendor) {
+      this.newVendorShow = false;
+    }
   }
 
   dropdownSelect(item) {
@@ -427,7 +509,7 @@ export class InvoiceAddComponent {
 
   handleUploadFile(file, uploadUrl) {
     this.file = {
-      uploadProgress:0,
+      uploadProgress: 0,
       fileName: file.name,
       fileSize: file.size,
       fileType: file.name
@@ -542,7 +624,6 @@ export class InvoiceAddComponent {
       centered: true,
     });
   }
-
 
   cancelDelete() {
     this.deleteRef.close();
