@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { NgbCalendar, NgbDate, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { companypayment_list } from 'src/app/core/gql/payment';
+import { companyproject_list } from 'src/app/core/gql/project';
 import { projectbill_list } from 'src/app/core/gql/receivables';
 import { vendor_list } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
@@ -21,7 +22,7 @@ export class InvoiceListComponent {
   direction = 'asc';
   sortColumn = '';
   keywords = '';
-  paymentTypeFilter = 'Payment type';
+  paymentTypeFilter = 'Sender';
   dueDateFilter = 'Due date';
   projectFilter = 'Project';
   statusFilter = 'All';
@@ -44,7 +45,7 @@ export class InvoiceListComponent {
 
   ngOnInit(): void {
     this.getList();
-    this.getVendorList();
+    this.getProjectList();
     this.getPaymentList();
 
     this.fromDate = this.calendar.getToday();
@@ -52,15 +53,15 @@ export class InvoiceListComponent {
     this.selectedDateRange = 'Due date';
   }
 
-  getVendorList() {
+  getProjectList() {
     this.apolloService
-      .query(vendor_list, {
+      .query(companyproject_list, {
         idCompany: parseInt(localStorage.getItem('idcompany')),
       })
       .then((res) => {
-        const result = res.vendor_list;
+        const result = res.companyproject_list;
         if (!result.error) {
-          this.vendorList = result.data;
+          this.projects = result.data;
         }
       });
   }
@@ -172,12 +173,12 @@ export class InvoiceListComponent {
       });
   }
 
-  filterVendorList(vendorName) {
-    this.vendorFilter = vendorName;
+  filterProjectList(projectName) {
+    this.vendorFilter = projectName;
     this.invoiceList = JSON.parse(JSON.stringify(this.INVOICELIST));
-    if (vendorName != 'All') {
+    if (projectName != 'All') {
       this.invoiceList = this.invoiceList.filter((item) =>
-        item.vendorName.toLowerCase().includes(vendorName.toLowerCase())
+        item.projectName.toLowerCase().includes(projectName.toLowerCase())
       );
     }
   }
