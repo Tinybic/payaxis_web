@@ -2,26 +2,27 @@ import { Component, ViewChild } from '@angular/core';
 import { NgbCalendar, NgbDate, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { companypayment_list } from 'src/app/core/gql/payment';
-import { projectpayment_list } from 'src/app/core/gql/receivables';
+import { companyproject_list } from 'src/app/core/gql/project';
+import { projectbill_list } from 'src/app/core/gql/receivables';
 import { vendor_list } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 
 @Component({
-  selector: 'app-receivable-list',
-  templateUrl: './receivable-list.component.html',
-  styleUrls: ['./receivable-list.component.scss'],
+  selector: 'app-invoice-list',
+  templateUrl: './invoice-list.component.html',
+  styleUrls: ['./invoice-list.component.scss'],
 })
-export class ReceivableListComponent {
+export class InvoiceListComponent {
   @ViewChild('addModal') addModal: any;
-
+  addModalRef;
+  invoiceList = [];
+  INVOICELIST = [];
   filterList = [];
   loading = true;
-  paymentRequestList = [];
-  PAYMENTREQUESTLIST = [];
   direction = 'asc';
   sortColumn = '';
   keywords = '';
-  paymentTypeFilter = 'Payment type';
+  paymentTypeFilter = 'Sender';
   dueDateFilter = 'Due date';
   projectFilter = 'Project';
   statusFilter = 'All';
@@ -44,7 +45,7 @@ export class ReceivableListComponent {
 
   ngOnInit(): void {
     this.getList();
-    this.getVendorList();
+    this.getProjectList();
     this.getPaymentList();
 
     this.fromDate = this.calendar.getToday();
@@ -52,23 +53,21 @@ export class ReceivableListComponent {
     this.selectedDateRange = 'Due date';
   }
 
-  getVendorList() {
+  getProjectList() {
     this.apolloService
-      .query(vendor_list, {
+      .query(companyproject_list, {
         idCompany: parseInt(localStorage.getItem('idcompany')),
       })
       .then((res) => {
-        const result = res.vendor_list;
+        const result = res.companyproject_list;
         if (!result.error) {
-          this.vendorList = result.data;
+          this.projects = result.data;
         }
       });
   }
 
   dueDateFilterList() {
-    this.paymentRequestList = JSON.parse(
-      JSON.stringify(this.PAYMENTREQUESTLIST)
-    );
+    this.invoiceList = JSON.parse(JSON.stringify(this.INVOICELIST));
     if (this.selectedDateRange != 'Due date') {
       const startDate =
         this.fromDate.year +
@@ -84,9 +83,9 @@ export class ReceivableListComponent {
         '-' +
         ('0' + this.toDate.day).slice(-2);
 
-        this.paymentRequestList = this.paymentRequestList.filter(
-          (item) => item.dueDate >= startDate && item.dueDate <= endDate
-        );
+      this.invoiceList = this.invoiceList.filter(
+        (item) => item.dueDate >= startDate && item.dueDate <= endDate
+      );
     }
   }
 
@@ -174,14 +173,12 @@ export class ReceivableListComponent {
       });
   }
 
-  filterVendorList(vendorName) {
-    this.vendorFilter = vendorName;
-    this.paymentRequestList = JSON.parse(
-      JSON.stringify(this.PAYMENTREQUESTLIST)
-    );
-    if (vendorName != 'All') {
-      this.paymentRequestList = this.paymentRequestList.filter((item) =>
-        item.vendorName.toLowerCase().includes(vendorName.toLowerCase())
+  filterProjectList(projectName) {
+    this.vendorFilter = projectName;
+    this.invoiceList = JSON.parse(JSON.stringify(this.INVOICELIST));
+    if (projectName != 'All') {
+      this.invoiceList = this.invoiceList.filter((item) =>
+        item.projectName.toLowerCase().includes(projectName.toLowerCase())
       );
     }
   }
@@ -207,11 +204,9 @@ export class ReceivableListComponent {
 
   filterListStatus(status) {
     this.statusFilter = status;
-    this.paymentRequestList = JSON.parse(
-      JSON.stringify(this.PAYMENTREQUESTLIST)
-    );
+    this.invoiceList = JSON.parse(JSON.stringify(this.INVOICELIST));
     if (status != 'All') {
-      this.paymentRequestList = this.paymentRequestList.filter(
+      this.invoiceList = this.invoiceList.filter(
         (item) => item.status.toLowerCase() == status.toLowerCase()
       );
     }
@@ -220,11 +215,9 @@ export class ReceivableListComponent {
   paymentTypeFilterList(id, payment) {
     console.log(payment);
     this.paymentTypeFilter = payment;
-    this.paymentRequestList = JSON.parse(
-      JSON.stringify(this.PAYMENTREQUESTLIST)
-    );
+    this.invoiceList = JSON.parse(JSON.stringify(this.INVOICELIST));
     if (payment != 'All') {
-      this.paymentRequestList = this.paymentRequestList.filter(
+      this.invoiceList = this.invoiceList.filter(
         (item) => item.account.toLowerCase() == payment.toLowerCase()
       );
     }
@@ -232,16 +225,16 @@ export class ReceivableListComponent {
 
   getList() {
     this.apolloService
-      .query(projectpayment_list, {
+      .query(projectbill_list, {
         idCompany: parseInt(localStorage.getItem('idcompany')),
         idProject: 0,
         idVendor: 0,
       })
       .then((res) => {
-        const result = res.projectpayment_list;
-        this.paymentRequestList = result.data;
+        const result = res.projectbill_list;
+        this.invoiceList = result.data;
 
-        this.paymentRequestList.forEach((item) => {
+        this.invoiceList.forEach((item) => {
           if (item.account.length > 4)
             item.account =
               'ACH * ' + item.account.substring(item.account.length - 4);
@@ -249,14 +242,11 @@ export class ReceivableListComponent {
             item.account = 'ACH * ' + item.account;
           }
         });
-        this.PAYMENTREQUESTLIST = JSON.parse(
-          JSON.stringify(this.paymentRequestList)
-        );
+        this.INVOICELIST = JSON.parse(JSON.stringify(this.invoiceList));
         this.loading = false;
       });
   }
 
-  addModalRef;
   openAddModal() {
     this.addModalRef = this.modalService.open(this.addModal, {
       backdrop: 'static',

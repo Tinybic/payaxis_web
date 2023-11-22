@@ -1,27 +1,34 @@
 import { formatDate } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
 import { Component, Input, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { VENDOR_PAYMENTTERM } from 'src/app/core/constants/vendor_payment';
+import { categorycostcode_list } from 'src/app/core/gql/costcode';
 import { getNewFileName, get_file_url } from 'src/app/core/gql/file';
+import { projectinvoice_mapping } from 'src/app/core/gql/invoice';
 import { projectorder_list } from 'src/app/core/gql/orders';
 import { companypayment_list } from 'src/app/core/gql/payment';
 import { companyproject_list } from 'src/app/core/gql/project';
-import { projectpayment_new } from 'src/app/core/gql/receivables';
+import {
+  getassociatedcompany_list,
+  projectpayment_new,
+} from 'src/app/core/gql/receivables';
 import { vendor_list } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { HttpService } from 'src/app/core/service/http.service';
-
 @Component({
-  selector: 'app-receivable-add',
-  templateUrl: './receivable-add.component.html',
-  styleUrls: ['./receivable-add.component.scss'],
+  selector: 'app-invoice-add',
+  templateUrl: './invoice-add.component.html',
+  styleUrls: ['./invoice-add.component.scss'],
 })
-export class ReceivableAddComponent {
+export class InvoiceAddComponent {
   @Input() modalRef: any;
   @Input() id: number = 0;
   @ViewChild('deleteModal') deleteModal: any;
+  @ViewChild('newVendorListModal') newVendorListModal: any;
+  @ViewChild('noVendorModal') noVendorModal: any;
+
   paymentTermsList = VENDOR_PAYMENTTERM;
   PROJECTLIST = [];
   projectList = [];
@@ -37,8 +44,12 @@ export class ReceivableAddComponent {
   format = 'yyyy-MM-dd';
   locale = 'en-US';
 
+  showCostcode = false;
+  orderCostCodeText = 'order';
   myDate = new Date();
-
+  keywordsCostCode = '';
+  costCodeList = [];
+  COSTCODE_LIST = [];
   projectpayment = {
     idCompany: 0,
     idProject: 0,
@@ -46,18 +57,17 @@ export class ReceivableAddComponent {
     idOrder1: 0,
     idCompany_payment: 0,
     billNumber: '',
-    sentDate: formatDate(this.myDate, this.format, this.locale),
-    dueDate: formatDate(
-      this.myDate.setDate(this.myDate.getDate() + 30),
-      this.format,
-      this.locale
-    ),
-    paymentTerms: '30 Days',
+    sentDate: '',
+    dueDate: '',
+    paymentTerms: '',
     amount: 0.0,
     txtNotes: '',
-    billyn: false,
+    billyn: true,
     costCode: '0',
     paymentfile: [],
+    idInvitedCompany: 0,
+    vendorName: '',
+    vendorEmail: '',
   };
 
   amountEdit = false;
@@ -65,6 +75,7 @@ export class ReceivableAddComponent {
     private apolloService: ApolloService,
     private modalService: NgbModal,
     private toastrService: ToastrService,
+    private http: HttpClient,
     private httpService: HttpService
   ) {}
 
@@ -74,6 +85,77 @@ export class ReceivableAddComponent {
     this.getProjectList();
     this.getOrderList();
     this.getPaymentList();
+    this.getCostCodeList();
+  }
+
+  newVendor = false;
+  createVendor() {
+    this.newVendor = true;
+  }
+
+  createVendorList = [];
+
+  findVendor() {
+    if (this.projectpayment.vendorEmail.length > 0) {
+      this.vendorList.forEach((item) => {
+        if (item.email == this.projectpayment.vendorEmail) {
+          this.selectVendor(item);
+          this.newVendor = false;
+          return;
+        }
+      });
+
+      if (this.projectpayment.idVendor > 0) {
+        return;
+      }
+
+      this.apolloService
+        .query(getassociatedcompany_list, {
+          idCompany: parseInt(localStorage.getItem('idcompany')),
+          vendorEmail: this.projectpayment.vendorEmail,
+        })
+        .then((res) => {
+          const result = res.getassociatedcompany_list;
+          if (!result.error) {
+            this.createVendorList = result.data;
+            if (this.createVendorList.length > 0) {
+              this.openNewVendorModal();
+            } else {
+              this.modalService.open(this.noVendorModal, {
+                size: '443',
+                centered: true,
+              });
+            }
+          }
+        });
+    }
+  }
+
+  newVendorRef;
+  openNewVendorModal() {
+    this.newVendorRef = this.modalService.open(this.newVendorListModal, {
+      backdrop: 'static',
+      size: '443',
+      centered: true,
+    });
+  }
+
+  cancelNewVendor() {
+    this.newVendorRef.close();
+  }
+
+  newVendorShow = false;
+  CreateNewVendor() {
+    this.createVendorList.forEach((item) => {
+      if (this.projectpayment.idInvitedCompany == item.idInvitedCompany) {
+        this.projectpayment.vendorName = item.companyName;
+        return;
+      }
+    });
+    if (this.projectpayment.idInvitedCompany > 0) {
+      this.newVendorShow = true;
+    }
+    this.newVendorRef.close();
   }
 
   editAmount() {
@@ -106,6 +188,60 @@ export class ReceivableAddComponent {
           }
         }
       });
+  }
+
+  setCostCodeName() {
+    this.costCodeList.forEach((item) => {
+      item.costcodelist.forEach((costcode) => {
+        if (costcode.costCode == this.projectpayment.costCode) {
+          this.vendorcostcodesText = costcode.txtName;
+          return;
+        }
+      });
+    });
+  }
+
+  getCostCodeList() {
+    this.apolloService
+      .query(categorycostcode_list, {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
+      })
+      .then((res) => {
+        const result = res.categorycostcode_list;
+        if (!result.error) {
+          this.costCodeList = result.data;
+          this.COSTCODE_LIST = JSON.parse(JSON.stringify(result.data));
+        }
+        this.setCostCodeName();
+      });
+  }
+  vendorcostcodesText = '';
+  costCodeSelect(event, item) {
+    if (event.currentTarget.checked) {
+      this.vendorcostcodesText = item.txtName;
+      this.projectpayment.costCode = item.costCode;
+    } else {
+      this.vendorcostcodesText = '';
+      this.projectpayment.costCode = '0';
+    }
+  }
+
+  setCostCodeSelect(costcode) {
+    let result = false;
+    if (this.projectpayment.costCode == costcode) {
+      result = true;
+    }
+    return result;
+  }
+
+  costCodeFilter() {
+    this.costCodeList = JSON.parse(JSON.stringify(this.COSTCODE_LIST));
+    this.costCodeList = this.costCodeList.filter((costcode) => {
+      costcode.costcodelist = costcode.costcodelist.filter((item) =>
+        item.txtName.toLowerCase().includes(this.keywordsCostCode.toLowerCase())
+      );
+      return costcode;
+    });
   }
 
   getVendorList() {
@@ -208,6 +344,7 @@ export class ReceivableAddComponent {
   selectOrder(order) {
     this.order = order;
     this.projectpayment.idOrder1 = order.id;
+    this.projectpayment.costCode = this.order.costCode;
     if (!this.project) {
       this.project = { id: order.idProject, projectName: order.projectName };
       this.projectpayment.idProject = this.project.id;
@@ -226,6 +363,7 @@ export class ReceivableAddComponent {
   removOrder() {
     this.order = null;
     this.projectpayment.idOrder1 = 0;
+    this.projectpayment.costCode = '0';
     if (!this.project)
       this.orderList = JSON.parse(JSON.stringify(this.ORDERLIST));
   }
@@ -259,6 +397,9 @@ export class ReceivableAddComponent {
   removeVendor() {
     this.vendor = null;
     this.projectpayment.idVendor = 0;
+    if (this.newVendor) {
+      this.newVendorShow = false;
+    }
   }
 
   dropdownSelect(item) {
@@ -317,11 +458,25 @@ export class ReceivableAddComponent {
     }
   }
 
+  showFindOrder() {
+    this.showCostcode = true;
+    this.orderCostCodeText = 'Cost code';
+  }
+
+  showFindCostCode() {
+    this.showCostcode = false;
+    this.orderCostCodeText = 'order';
+    this.order = null;
+    this.projectpayment.idOrder1 = 0;
+  }
+
   onSelectDocument(event: any) {
     event.addedFiles.map((file) => {
       this.getUploadUrl(file);
     });
   }
+
+  file;
 
   getUploadUrl(file) {
     const fileName = getNewFileName(file.name);
@@ -334,16 +489,126 @@ export class ReceivableAddComponent {
       .then((res) => {
         if (!res.get_file_url.error) {
           let uploadUrl = res.get_file_url.data;
-          this.httpService.put(uploadUrl, file).then((res) => {
-            this.projectpayment.paymentfile.push({
-              fileName: file.name,
-              fileSize: file.size,
-              fileType: file.name
-                .substring(file.name.lastIndexOf('.') + 1)
-                .toLowerCase(),
-              fileUrl: uploadUrl.split('?')[0],
+          if (this.projectpayment.paymentfile.length > 0) {
+            this.httpService.put(uploadUrl, file).then((res) => {
+              this.projectpayment.paymentfile.push({
+                fileName: file.name,
+                fileSize: file.size,
+                fileType: file.name
+                  .substring(file.name.lastIndexOf('.') + 1)
+                  .toLowerCase(),
+                fileUrl: uploadUrl.split('?')[0],
+              });
             });
-          });
+          } else {
+            this.handleUploadFile(file, uploadUrl);
+          }
+        }
+      });
+  }
+
+  handleUploadFile(file, uploadUrl) {
+    this.file = {
+      uploadProgress: 0,
+      fileName: file.name,
+      fileSize: file.size,
+      fileType: file.name
+        .substring(file.name.lastIndexOf('.') + 1)
+        .toLowerCase(),
+      fileUrl: uploadUrl.split('?')[0],
+    };
+    file.subscription = this.http
+      .put(uploadUrl, file, {
+        headers: new HttpHeaders()
+          .set('x-ms-blob-type', 'BlockBlob')
+          .set('Content-Type', file.type),
+        reportProgress: true,
+        observe: 'events',
+      })
+      .subscribe({
+        next: (res) => {
+          if (res.type === HttpEventType.Response) {
+            this.projectpayment.paymentfile.push(this.file);
+            if (this.projectpayment.paymentfile.length == 1) this.mapping();
+          }
+          if (res.type === HttpEventType.UploadProgress) {
+            const percentDone = Math.round((100 * res.loaded) / res.total);
+            this.file.uploadProgress = percentDone;
+          }
+        },
+        error: (err) => {
+          this.toastrService.info(err, '');
+        },
+      });
+  }
+
+  cancelUploading(file) {
+    file.subscription.unsubscribe();
+    this.file = null;
+  }
+
+  showNotes = false;
+  mappingFlag = false;
+  mapping() {
+    this.mappingFlag = true;
+    this.apolloService
+      .mutate(projectinvoice_mapping, {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
+        fileUrl: this.file.fileUrl,
+      })
+      .then((res) => {
+        const result = res.projectinvoice_mapping;
+        this.showNotes = true;
+        if (!result.error) {
+          if (!this.vendor) {
+            this.vendorList.forEach((item) => {
+              if (item.id == result.data.idVendor) {
+                this.vendor = item;
+                this.projectpayment.idVendor = item.id;
+              }
+            });
+          }
+
+          if (!this.projectpayment.costCode) {
+            this.costCodeList.forEach((item) => {
+              if (item.costcode == result.data.costCode) {
+                this.projectpayment.costCode = item.costcode;
+                this.vendorcostcodesText = item.txtName;
+              }
+            });
+          }
+          if (!this.projectpayment.sentDate) {
+            this.projectpayment.sentDate = result.data.invoicedDate;
+          }
+          if (!this.projectpayment.dueDate) {
+            this.projectpayment.dueDate = result.data.indvoicedueDate;
+          }
+
+          if (!this.projectpayment.billNumber) {
+            this.projectpayment.billNumber = result.data.invoiceNumber;
+          }
+
+          if (!(this.projectpayment.amount > 0)) {
+            this.projectpayment.amount = result.data.amount;
+          }
+
+          if (!this.project) {
+            this.projectList.forEach((item) => {
+              if (item.id == result.data.idProject) {
+                this.project = item;
+                this.projectpayment.idProject = item.id;
+              }
+            });
+          }
+
+          if (!this.order) {
+            this.orderList.forEach((item) => {
+              if (item.id == result.data.idOrder1) {
+                this.order = item;
+                this.projectpayment.idOrder1 = item.id;
+              }
+            });
+          }
         }
       });
   }

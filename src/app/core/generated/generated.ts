@@ -747,9 +747,12 @@ export type MutationProjectpayment_DeletefileArgs = {
 export type MutationProjectpayment_NewArgs = {
   amount: Scalars['Float']['input'];
   billNumber: Scalars['billNumber_String_NotNull_maxLength_25']['input'];
+  billyn?: InputMaybe<Scalars['Boolean']['input']>;
+  costCode?: InputMaybe<Scalars['String']['input']>;
   dueDate: Scalars['String']['input'];
   idCompany: Scalars['Int']['input'];
   idCompany_payment: Scalars['Int']['input'];
+  idInvitedCompany?: InputMaybe<Scalars['Int']['input']>;
   idOrder1: Scalars['Int']['input'];
   idProject: Scalars['Int']['input'];
   idVendor: Scalars['Int']['input'];
@@ -757,6 +760,8 @@ export type MutationProjectpayment_NewArgs = {
   paymentTerms: Scalars['paymentTerms_String_NotNull_maxLength_50']['input'];
   sentDate: Scalars['String']['input'];
   txtNotes: Scalars['txtNotes_String_NotNull_maxLength_512']['input'];
+  vendorEmail?: InputMaybe<Scalars['String']['input']>;
+  vendorName?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -780,6 +785,7 @@ export type MutationProjectpayment_RejectArgs = {
 export type MutationProjectpayment_UpdateArgs = {
   amount: Scalars['Float']['input'];
   billNumber: Scalars['billNumber_String_NotNull_maxLength_25']['input'];
+  costCode?: InputMaybe<Scalars['String']['input']>;
   dueDate: Scalars['String']['input'];
   id: Scalars['Int']['input'];
   idCompany: Scalars['Int']['input'];
@@ -888,6 +894,7 @@ export type MutationVendor_InviteArgs = {
 export type MutationVendor_NewArgs = {
   email: Scalars['email_String_NotNull_maxLength_180_format_email']['input'];
   idCompany: Scalars['Int']['input'];
+  idInvitedCompany?: InputMaybe<Scalars['Int']['input']>;
   phone: Scalars['phone_String_NotNull_maxLength_20']['input'];
   primaryContact: Scalars['primaryContact_String_NotNull_maxLength_50']['input'];
   suiteNumber: Scalars['suiteNumber_String_NotNull_maxLength_30']['input'];
@@ -1055,10 +1062,14 @@ export type Query = {
   companyrole_list: Rolelistresult;
   /** get url for a new file */
   get_file_url: FileResponse;
+  /** get associated company list */
+  getassociatedcompany_list: Associatedcompanylist;
   /** retrieve profile for the loging user */
   profile_info: Resprofile;
   /** get project members for project */
   project_members: Projectmemberresult;
+  /** get projectpayment list */
+  projectbill_list: Projectpaymentlist;
   /** get project budget list */
   projectbudget_list: Projectbudgetlist;
   /** get projectinvoice attachment */
@@ -1081,8 +1092,6 @@ export type Query = {
   projectorder_reasonlist: Companyreasonlist;
   /** get related Orders */
   projectorder_related: Projectorderlist;
-  /** get projectpayment list */
-  projectpayable_list: Projectpaymentlist;
   /** get projectpayment attachment */
   projectpayment_attachment: Paymentfilelist;
   /** get projectpayment info */
@@ -1188,9 +1197,22 @@ export type QueryGet_File_UrlArgs = {
 };
 
 
+export type QueryGetassociatedcompany_ListArgs = {
+  idCompany: Scalars['Int']['input'];
+  vendorEmail: Scalars['String']['input'];
+};
+
+
 export type QueryProject_MembersArgs = {
   idCompany: Scalars['Int']['input'];
   idProject: Scalars['Int']['input'];
+};
+
+
+export type QueryProjectbill_ListArgs = {
+  idCompany: Scalars['Int']['input'];
+  idProject: Scalars['Int']['input'];
+  idVendor: Scalars['Int']['input'];
 };
 
 
@@ -1257,13 +1279,6 @@ export type QueryProjectorder_RelatedArgs = {
   idProject: Scalars['Int']['input'];
   idVendor: Scalars['Int']['input'];
   paidyn: Scalars['Boolean']['input'];
-};
-
-
-export type QueryProjectpayable_ListArgs = {
-  idCompany: Scalars['Int']['input'];
-  idProject: Scalars['Int']['input'];
-  idVendor: Scalars['Int']['input'];
 };
 
 
@@ -1356,6 +1371,20 @@ export type Allocatebudget = {
   budgetAmount: Scalars['Float']['input'];
   budgetPercentage: Scalars['Float']['input'];
   idCategory: Scalars['Int']['input'];
+};
+
+export type Associatedcompany = {
+  __typename?: 'associatedcompany';
+  companyName: Scalars['String']['output'];
+  idInvitedCompany: Scalars['Int']['output'];
+};
+
+export type Associatedcompanylist = {
+  __typename?: 'associatedcompanylist';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Array<Associatedcompany>>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
 };
 
 export type Banknameresult = {
@@ -2002,6 +2031,8 @@ export type Project_Payment = {
   amount: Scalars['Float']['output'];
   avatar: Scalars['String']['output'];
   billNumber: Scalars['String']['output'];
+  costCode: Scalars['String']['output'];
+  costCodeName: Scalars['String']['output'];
   costcodes?: Maybe<Array<_Order_Costcode>>;
   createdBy: Scalars['Int']['output'];
   createdDate: Scalars['String']['output'];
@@ -2025,6 +2056,10 @@ export type Project_Payment = {
   primaryContact: Scalars['String']['output'];
   projectName: Scalars['String']['output'];
   revision: Scalars['Int']['output'];
+  senderAvatar: Scalars['String']['output'];
+  senderEmail: Scalars['String']['output'];
+  senderFirstname: Scalars['String']['output'];
+  senderLastname: Scalars['String']['output'];
   sentDate: Scalars['String']['output'];
   status: Scalars['String']['output'];
   txtAddress: Scalars['String']['output'];
