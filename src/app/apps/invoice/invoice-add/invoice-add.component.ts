@@ -163,6 +163,9 @@ export class InvoiceAddComponent {
   }
 
   cancelAmount() {
+    if (this.projectpayment.amount.toString().length == 0) {
+      this.projectpayment.amount = 0;
+    }
     this.amountEdit = false;
   }
 
@@ -563,8 +566,8 @@ export class InvoiceAddComponent {
           if (!this.vendor) {
             this.vendorList.forEach((item) => {
               if (item.id == result.data.idVendor) {
-                this.vendor = item;
-                this.projectpayment.idVendor = item.id;
+                this.selectVendor(item);
+                return;
               }
             });
           }
@@ -577,6 +580,7 @@ export class InvoiceAddComponent {
               }
             });
           }
+
           if (!this.projectpayment.sentDate) {
             this.projectpayment.sentDate = result.data.invoicedDate;
           }
@@ -593,10 +597,14 @@ export class InvoiceAddComponent {
           }
 
           if (!this.project) {
-            this.projectList.forEach((item) => {
+            const projectListTemp = JSON.parse(
+              JSON.stringify(this.PROJECTLIST)
+            );
+
+            projectListTemp.forEach((item) => {
               if (item.id == result.data.idProject) {
-                this.project = item;
-                this.projectpayment.idProject = item.id;
+                this.selectProject(item);
+                return;
               }
             });
           }
