@@ -53,6 +53,11 @@
                                     alt="user-img" class="ms-2"></app-avatar>
                             </div>
                         </div>
+                        <div class="text-primary subtitle-2-400-12 mt-1-1 text-center cursor-pointer"
+                            (click)="resetValue(1)"
+                            *ngIf="handleData && (handleData.idVendor!=vendor.id && handleData.idVendor!= 0)">
+                            <i class="fe-copy me-1-1"></i>Reset to: {{handleData.vendorName}}
+                        </div>
                     </div>
 
                     <input *ngIf="!vendor && !newVendor" class="form-control form-search" type="search"
@@ -162,11 +167,15 @@
 
         <div class="row p-3 mt-1-1" style="border-bottom: 1px solid #E1E6EF;">
             <div class="col-md-12 text-center ">
-                <input type="text" *ngIf="amountEdit" mask="separator.2" (blur)="cancelAmount()"
+                <input #amount type="text" *ngIf="amountEdit" mask="separator.2" (blur)="cancelAmount()"
                     class=" subtitle-700-37-40" style="border: 0px;outline: 0;text-align: center;"
                     [(ngModel)]="projectpayment.amount" />
                 <label class="subtitle-700-37-40 cursor-pointer" (click)="editAmount()"
                     *ngIf="!amountEdit">{{projectpayment.amount | currency}}</label>
+            </div>
+            <div class="text-primary subtitle-2-400-12 mt-1-1 text-center cursor-pointer" (click)="resetValue(2)"
+                *ngIf="handleData && (handleData.amount!=projectpayment.amount && handleData.amount!= 0)">
+                <i class="fe-copy me-1-1"></i>Reset to: {{handleData.amount}}
             </div>
         </div>
 
@@ -176,11 +185,19 @@
                 <label class="form-label" i18n>Invoice Number</label>
                 <input type="text" class="form-control" placeholder="Add Number"
                     [(ngModel)]="projectpayment.billNumber" />
+                <div class="text-primary subtitle-2-400-12 mt-1-1 text-center cursor-pointer" (click)="resetValue(3)"
+                    *ngIf="handleData && (handleData.invoiceNumber!=projectpayment.billNumber && handleData.invoiceNumber!= 0)">
+                    <i class="fe-copy me-1-1"></i>Reset to: {{handleData.invoiceNumber}}
+                </div>
             </div>
             <div class="col-md-4">
                 <label class="form-label" i18n>Due Date</label>
                 <input type="date" class="form-control" placeholder="Add Due Date"
                     [(ngModel)]="projectpayment.dueDate" />
+                <div class="text-primary subtitle-2-400-12 mt-1-1 text-center cursor-pointer" (click)="resetValue(4)"
+                    *ngIf="handleData && (handleData.indvoicedueDate!=projectpayment.dueDate && handleData.indvoicedueDate.length>0)">
+                    <i class="fe-copy me-1-1"></i>Reset to: {{handleData.indvoicedueDate}}
+                </div>
             </div>
             <div class="col-md-4">
                 <label class="form-label" i18n>Receiving Date</label>
@@ -189,6 +206,10 @@
                 </label>
                 <input type="date" class="form-control" placeholder="Add Sent Date"
                     [(ngModel)]="projectpayment.sentDate" />
+                <div class="text-primary subtitle-2-400-12 mt-1-1 text-center cursor-pointer" (click)="resetValue(5)"
+                    *ngIf="handleData && (handleData.invoicedDate!=projectpayment.sentDate && handleData.invoicedDate.length>0)">
+                    <i class="fe-copy me-1-1"></i>Reset to: {{handleData.invoicedDate}}
+                </div>
             </div>
         </div>
 
@@ -255,6 +276,11 @@
                             <div class="col-md-2 line-32 text-end">
                                 <i class="fe-external-link text-primary"></i>
                             </div>
+                        </div>
+                        <div class="text-primary subtitle-2-400-12 mt-1-1 text-center cursor-pointer"
+                            (click)="resetValue(6)"
+                            *ngIf="handleData && (handleData.idProject!=project.id && handleData.idProject!= 0)">
+                            <i class="fe-copy me-1-1"></i>Reset to: {{handleData.projectName}}
                         </div>
                     </div>
                     <input *ngIf="!project" class="form-control form-search" type="search" placeholder="Find Project"
@@ -325,6 +351,11 @@
                                 <div class="vendorCostcode subtitle-2-600 d-inline-block">{{order.costCodeName}}
                                 </div>
                             </div>
+                        </div>
+                        <div class="text-primary subtitle-2-400-12 mt-1-1 text-center cursor-pointer"
+                            (click)="resetValue(7)"
+                            *ngIf="handleData && (handleData.idOrder1!=order.id && handleData.idOrder1!= 0)">
+                            <i class="fe-copy me-1-1"></i>Reset to: {{handleData.orderNumber}}
                         </div>
                     </div>
 

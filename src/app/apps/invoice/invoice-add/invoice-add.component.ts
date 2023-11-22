@@ -1,6 +1,6 @@
 import { formatDate } from '@angular/common';
 import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { VENDOR_PAYMENTTERM } from 'src/app/core/constants/vendor_payment';
@@ -28,6 +28,7 @@ export class InvoiceAddComponent {
   @ViewChild('deleteModal') deleteModal: any;
   @ViewChild('newVendorListModal') newVendorListModal: any;
   @ViewChild('noVendorModal') noVendorModal: any;
+  @ViewChild('amount') inputAmout: ElementRef;
 
   paymentTermsList = VENDOR_PAYMENTTERM;
   PROJECTLIST = [];
@@ -160,6 +161,11 @@ export class InvoiceAddComponent {
 
   editAmount() {
     this.amountEdit = true;
+    setTimeout(() => {
+      this.inputAmout.nativeElement.focus();
+    }, 10);
+
+    if (this.projectpayment.amount == 0) this.projectpayment.amount = null;
   }
 
   cancelAmount() {
@@ -550,8 +556,43 @@ export class InvoiceAddComponent {
     this.file = null;
   }
 
+  resetValue(type) {
+    if (type == 1) {
+      this.vendorList.forEach((item) => {
+        if (item.id == this.handleData.idVendor) {
+          this.selectVendor(item);
+          return;
+        }
+      });
+    } else if (type == 2) {
+      this.projectpayment.amount = this.handleData.amount;
+    } else if (type == 3) {
+      this.projectpayment.billNumber = this.handleData.invoiceNumber;
+    } else if (type == 4) {
+      this.projectpayment.dueDate = this.handleData.indvoicedueDate;
+    } else if (type == 5) {
+      this.projectpayment.sentDate = this.handleData.invoicedDate;
+    } else if (type == 6) {
+      const projectListTemp = JSON.parse(JSON.stringify(this.PROJECTLIST));
+
+      projectListTemp.forEach((item) => {
+        if (item.id == this.handleData.idProject) {
+          this.selectProject(item);
+          return;
+        }
+      });
+    } else if (type == 7) {
+      this.orderList.forEach((item) => {
+        if (item.id == this.handleData.idOrder1) {
+          this.selectOrder(item);
+        }
+      });
+    }
+  }
+
   showNotes = false;
   mappingFlag = false;
+  handleData;
   mapping() {
     this.mappingFlag = true;
     this.apolloService
@@ -561,6 +602,7 @@ export class InvoiceAddComponent {
       })
       .then((res) => {
         const result = res.projectinvoice_mapping;
+        this.handleData = result.data;
         this.showNotes = true;
         if (!result.error) {
           if (!this.vendor) {
@@ -612,8 +654,7 @@ export class InvoiceAddComponent {
           if (!this.order) {
             this.orderList.forEach((item) => {
               if (item.id == result.data.idOrder1) {
-                this.order = item;
-                this.projectpayment.idOrder1 = item.id;
+                this.selectOrder(item);
               }
             });
           }
