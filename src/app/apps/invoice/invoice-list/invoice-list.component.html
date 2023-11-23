@@ -3,7 +3,7 @@
         Bill Inbox
     </h5>
     <div class="col-md-9 text-end">
-        <button class="btn btn-primary ms-2-1" (click)="openAddModal()">Add Invoice</button>
+        <button class="btn btn-primary ms-2-1" (click)="openPayingBill()">Add Invoice</button>
     </div>
 </div>
 
@@ -231,4 +231,8 @@
 </div>
 <ng-template #addModal>
     <app-invoice-add class="p-4-1" [modalRef]="addModalRef"></app-invoice-add>
+</ng-template>
+
+<ng-template #payingBill>
+    <app-paying-bill [modalRef]="payingBillModalRef"></app-paying-bill>
 </ng-template>

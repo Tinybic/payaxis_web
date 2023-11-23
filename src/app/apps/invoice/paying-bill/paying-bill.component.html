@@ -1,0 +1,209 @@
+<div class="modal-body modal-form-control" ngbAutoFocus style="padding: 32px 24px 140px;">
+    <div class="headline-24">Paying Bill</div>
+    
+    
+    <div *ngIf="step < 3">
+        <div class="my-3-1">
+            <div class="headline-24-400">{{step == 1 ? 'How do you want to pay these Bills ?' : 'When would you like this payment sent?'}}</div>
+            <div class="search-text mt-1-1">{{step == 1 ? 'Put amount and check Payment method' : 'Choose a date for the payment to be sent.'}}</div>
+            <ngb-progressbar [value]="20" class="progress-md mt-1-1"></ngb-progressbar>
+        </div>
+        
+        <div *ngIf="step  == 1" class="d-inline-block form-check form-switch">
+            <input type="checkbox" id="customCombine" class="form-check-input mt-none me-1-1" [(ngModel)]="combine"/>
+            <label for="customCombine" class="form-check-label align-middle subtitle-2-500">Combine similar vendors into
+                one
+                payment</label>
+        </div>
+        
+        <div class="card mt-3-1">
+            <div class="card-body p-2-1">
+                <div *ngIf="step  == 1" class="row">
+                    <div class="col-12 Subtitle-1 text-start">Joe & Son Plumbing Services</div>
+                    <div class="col-6 mt-2-1">
+                        <div class="Subtitle-2 font-12">#{{billNumber}}</div>
+                        <div class="search-text">
+                            Due {{(dueDate.year + '-' + dueDate.month + '-' + dueDate.day) | date: 'MMM d, y'}}</div>
+                    </div>
+                    <div class="col-6 mt-2-1">
+                        <input id="projectBudget"
+                               class="form-control Subtitle-1"
+                               type="text"
+                               [(ngModel)]="amount"
+                               prefix="$"
+                               mask="separator.2"
+                               thousandSeparator=","
+                               allowNegativeNumbers="false"
+                               i18n-placeholder placeholder="0.00"
+                               style="text-align: right;padding: 6px 16px;"
+                        />
+                        <div class="subtitle-2-400-12 text-end mt-0-1">Remaining order balance $0</div>
+                    </div>
+                    <div class="col-12 mt-2-1">
+                        <label class="form-label" style="margin-bottom: 0;" i18n>Memo</label>
+                        <span class="float-end text-optional mt-0-1">Optional</span>
+                        <textarea class="form-control" type="text" id="memo" required i18n-placeholder rows="3"
+                                  placeholder="" [(ngModel)]="memo" maxlength="250"></textarea>
+                    </div>
+                    <div class="col-6 mt-2-1 search-text" style="color: #4B5563;
+">
+                        Sent by Check from Chase 4556
+                    </div>
+                    <div class="col-6 mt-2-1 text-end" style="color: #2B52DD;">
+                        <i class="fe-edit me-1-1 font-16"></i>
+                        <span class="btn-text-12">Edit Payment Method</span>
+                    </div>
+                </div>
+                <div *ngIf="step==2">
+                    <div class="d-flex justify-content-between mb-1-1">
+                        <button class="btn btn-outline-primary ms-2-1" (click)="navigateToMonth('prev')"
+                                style="width: 40px;height: 40px;padding: 6px;">
+                            <i class="fe-chevron-left font-24 text-primary"></i>
+                        </button>
+                        <div class="Subtitle-1 p-1-1">{{(blueDate.year + '-' + blueDate.month + '-' + blueDate.day) | date: 'MMM d, y'}}</div>
+                        <button class="btn btn-outline-primary me-2-1" (click)="navigateToMonth('next')"
+                                style="width: 40px;height: 40px;padding: 6px;">
+                            <i class="fe-chevron-right font-24 text-primary"></i>
+                        </button>
+                    </div>
+                    <div id="paymentRangeDate">
+                        <ngb-datepicker #dp
+                                        (dateSelect)="onDateSelection($event)"
+                                        (navigate)="getDate($event)"
+                                        [displayMonths]="1"
+                                        [dayTemplate]="paymentRangeDate"
+                                        [outsideDays]="outsideDays">
+                        </ngb-datepicker>
+                        
+                        <ng-template #paymentRangeDate let-date let-currentMonth="currentMonth">
+                            <div class="{{isCurrentMonth(date, currentMonth)}}"
+                                 [class.range]="isRange(date)"
+                                 [class.focused]="false"
+                                 (mouseenter)="hoveredDate = date"
+                                 (mouseleave)="hoveredDate = null">
+                                <img *ngIf="date.equals(dueDate)" class="due"
+                                     src="assets/images/status-icons/due-red.png">
+                                <div class="selected-dot"></div>
+                                <span class="Subtitle-1-400" [class.blue]="date.equals(blueDate)">
+                                    {{ date.day }}
+                                </span>
+                            </div>
+                        </ng-template>
+                    </div>
+                    
+                    <div class="search-text mt-2-1" style="color: #4B5563;">
+                        Estimate payment delivery
+                    </div>
+                    <div class="Subtitle-1 text-start">
+                        {{getDeliveryDateRange()}}
+                    </div>
+                    <div class="search-text" style="color: #202020CC;">
+                        Check will be sent out on the {{blueDate.day}}th
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div *ngIf="step === 3" class="card mt-3-1">
+        <div class="card-body">
+            <div class="d-flex flex-row justify-content-between align-items-center">
+                <div class="d-flex flex-row">
+                    <div class="mt-1-1"
+                         style="width: 24px; height: 24px;border-radius: 4px;background-color: #202020;padding: 3px;">
+                        <img src="assets/images/bill.png">
+                    </div>
+                    <div class="ms-1-1">
+                        <div class="Subtitle-1 text-start">Check for 1 Bill</div>
+                        <div class="search-text" style="color: #202020CC;">Check will be sent out on
+                            the {{blueDate.day}}th
+                        </div>
+                    </div>
+                </div>
+                <div class="text-end cursor-pointer" style="padding-right: 12px;color: #2B52DD;">
+                    <i class="fe-edit me-1-1 font-16"></i>
+                    <span class="btn-text-12">Edit</span>
+                </div>
+            </div>
+            <div class="mt-2-1" style="border: 1px solid #E1E6EF;border-radius: 8px;">
+                <div class="p-2-1">
+                    <div class="d-flex flex-row justify-content-between">
+                        <div>
+                            <div class="Subtitle-1 text-start">{{vendor}}</div>
+                            <div class="label-tips text-start" style="color: #202020cc;">{{address}}</div>
+                        </div>
+                        <div class="text-end">
+                            <img src="assets/images/status-icons/plumbing.png">
+                        </div>
+                    </div>
+                    <hr class="mt-2-1 mb-1-1" style="border-top: 1px solid #E1E6EF;">
+                    <div class="d-flex flex-row justify-content-between mb-1-1">
+                        <div class="search-text" style="color: #4B5563;">Vendor default payment method</div>
+                        <div class="Subtitle-2 text-end font-12">Check</div>
+                    </div>
+                    <div class="d-flex flex-row justify-content-between mb-1-1">
+                        <div class="search-text" style="color: #4B5563;">Payment method</div>
+                        <div class="Subtitle-2 text-end font-12">Check from Chase 4556</div>
+                    </div>
+                    <div class="d-flex flex-row justify-content-between mb-1-1">
+                        <div class="search-text" style="color: #4B5563;">Estimate payment delivery</div>
+                        <div class="Subtitle-2 text-end font-12">{{getDeliveryDateRange()}}</div>
+                    </div>
+                    <div class="d-flex flex-row justify-content-between mb-1-1">
+                        <div class="search-text" style="flex:1;color: #4B5563;">Memo</div>
+                        <div class="Subtitle-2 text-end font-12" style="flex:1;">{{memo}}</div>
+                    </div>
+                    <hr class="my-1-1" style="border-top: 1px solid #E1E6EF;">
+                    <div class="d-flex flex-row justify-content-between mb-1-1">
+                        <div class="Subtitle-1" style="color: #4B5563;">#54564</div>
+                        <div class="text-end">
+                            <img src="assets/images/status-icons/due-1.png">
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row justify-content-between">
+                        <div class="search-text" style="color: #4B5563;">Due date</div>
+                        <div class="Subtitle-2 text-end font-12">{{(dueDate.year + '-' + dueDate.month + '-' + dueDate.day) | date: 'M/d/yy'}}</div>
+                    </div>
+                </div>
+                <div class="mt-1-1 p-2-1" style="background-color: #F8F9FC;">
+                    <div class="d-flex flex-row justify-content-between">
+                        <div class="search-text" style="color: #4B5563;">Remaining balance</div>
+                        <div class="Subtitle-2 text-end font-12">$1,346</div>
+                    </div>
+                    <ngb-progressbar [value]="75" type="success" class="progress-md mt-1-1"></ngb-progressbar>
+                    <div class="d-flex flex-row justify-content-between mt-1-1">
+                        <div class="d-flex search-text align-items-end" style="color: #4B5563;">Total Amount due</div>
+                        <div class="text-end"
+                             style="font-size: 38px;font-weight: 700;line-height: 40px;letter-spacing: 0.25px;text-align: right;">
+                            $100.00
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div *ngIf="step === 4" class="d-flex flex-column justify-content-center align-items-center"
+         style="height: 80vh;color: #202020CC;">
+        <img src="assets/images/check-mark.png"/>
+        <div class="headline-24 mt-3-1">Payment Sent!</div>
+        <div class="Subtitle-1-400 mt-3-1 px-2-1" style="padding: 0 70px;">Congrats! Payment has been sent to <span
+                class="Subtitle-1">[Vendor]</span>. Budget amount will be updated.
+        </div>
+    </div>
+    
+    <div class="d-grid" style="width: calc(100% - 48px);position: fixed;bottom: 24px;right: 24px;">
+        <button class="btn mb-1-1 {{ step === 3 ? 'btn-success' : 'btn-primary'}}" (click)="nextStep(step+1)"
+                style="border: none;">
+            {{btnOK}}
+        </button>
+        <button class="btn btn-outline-primary" (click)="nextStep(step < 4 ? step-1 : step)">
+            <i *ngIf="step === 2 || step === 3" class="mdi mdi-arrow-left"></i>
+            {{btnCancel}}
+        </button>
+    </div>
+</div>
+
+<div class="modal-x" (click)="modalRef.dismiss()">
+    <i class="fe-x"></i>
+</div>
