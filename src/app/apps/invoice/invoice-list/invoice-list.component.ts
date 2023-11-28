@@ -19,10 +19,8 @@ import { ApolloService } from 'src/app/core/service/apollo.service';
 })
 export class InvoiceListComponent {
   @ViewChild('addModal') addModal: any;
-  @ViewChild('payingBill') payingBillModal: NgbModalRef;
 
   addModalRef;
-  payingBillModalRef: NgbModalRef;
   invoiceList = [];
   INVOICELIST = [];
   filterList = [];
@@ -289,20 +287,4 @@ export class InvoiceListComponent {
     this.openInvoiceModal();
   }
 
-  openPayingBill() {
-    this.payingBillModalRef = this.modalService.open(this.payingBillModal, {
-      backdrop: 'static',
-      modalDialogClass: 'modal-right',
-      size: '640',
-    });
-
-    this.payingBillModalRef.result.then(
-      (res) => {
-        console.log('OK');
-      },
-      (dismiss) => {
-        console.log('dismiss');
-      }
-    );
-  }
 }
