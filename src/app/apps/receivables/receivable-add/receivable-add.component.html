@@ -120,7 +120,7 @@
 
         <div class="row p-3 mt-1-1" style="border-bottom: 1px solid #E1E6EF;">
             <div class="col-md-12 text-center ">
-                <input type="text" *ngIf="amountEdit" mask="separator.2" (blur)="cancelAmount()" class=" subtitle-700-37-40" style="border: 0px;outline: 0;text-align: center;"
+                <input #amount type="text" *ngIf="amountEdit" mask="separator.2" (blur)="cancelAmount()" class=" subtitle-700-37-40" style="border: 0px;outline: 0;text-align: center;"
                     [(ngModel)]="projectpayment.amount" />
                 <label class="subtitle-700-37-40 cursor-pointer" (click)="editAmount()" *ngIf="!amountEdit">{{projectpayment.amount | currency}}</label>
             </div>

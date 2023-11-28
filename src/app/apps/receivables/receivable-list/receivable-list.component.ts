@@ -84,9 +84,9 @@ export class ReceivableListComponent {
         '-' +
         ('0' + this.toDate.day).slice(-2);
 
-        this.paymentRequestList = this.paymentRequestList.filter(
-          (item) => item.dueDate >= startDate && item.dueDate <= endDate
-        );
+      this.paymentRequestList = this.paymentRequestList.filter(
+        (item) => item.dueDate >= startDate && item.dueDate <= endDate
+      );
     }
   }
 
@@ -186,7 +186,24 @@ export class ReceivableListComponent {
     }
   }
 
-  onSort(item) {}
+  compare(v1: string | number, v2: string | number): any {
+    return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
+  }
+
+  onSort(column) {
+    this.sortColumn = column;
+    if (this.direction == 'desc') {
+      this.direction = 'asc';
+    } else {
+      this.direction = 'desc';
+    }
+
+    this.paymentRequestList = [...this.paymentRequestList].sort((a, b) => {
+      const res = this.compare(a[this.sortColumn], b[this.sortColumn]);
+      return this.direction === 'asc' ? res : -res;
+    });
+  }
+
   filterTable = (request: any) => {
     let values = Object.values(request);
     return values.some(

@@ -1,6 +1,6 @@
 import { formatDate } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { VENDOR_PAYMENTTERM } from 'src/app/core/constants/vendor_payment';
@@ -22,6 +22,7 @@ export class ReceivableAddComponent {
   @Input() modalRef: any;
   @Input() id: number = 0;
   @ViewChild('deleteModal') deleteModal: any;
+  @ViewChild('amount') inputAmout: ElementRef;
   paymentTermsList = VENDOR_PAYMENTTERM;
   PROJECTLIST = [];
   projectList = [];
@@ -78,9 +79,17 @@ export class ReceivableAddComponent {
 
   editAmount() {
     this.amountEdit = true;
+    setTimeout(() => {
+      this.inputAmout.nativeElement.focus();
+    }, 10);
+
+    if (this.projectpayment.amount == 0) this.projectpayment.amount = null;
   }
 
   cancelAmount() {
+    if (!this.projectpayment.amount) {
+      this.projectpayment.amount = 0;
+    }
     this.amountEdit = false;
   }
 

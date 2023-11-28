@@ -74,7 +74,7 @@ export class InvoiceAddComponent {
     vendorEmail: '',
     status: '',
   };
-  
+
   payingBillModalRef: NgbModalRef;
 
   amountEdit = false;
@@ -127,7 +127,7 @@ export class InvoiceAddComponent {
             idInvitedCompany: 0,
             vendorName: result.data.vendorName,
             vendorEmail: result.data.primaryContact,
-            status: result.data.status
+            status: result.data.status,
           };
         }
         this.getVendorList();
@@ -195,6 +195,11 @@ export class InvoiceAddComponent {
     this.newVendor = true;
   }
 
+  showVendor() {
+    this.newVendor = false;
+    this.projectpayment.vendorEmail = '';
+    this.projectpayment.vendorName = '';
+  }
   createVendorList = [];
 
   findVendor() {
@@ -208,6 +213,7 @@ export class InvoiceAddComponent {
       });
 
       if (this.projectpayment.idVendor > 0) {
+        this.save();
         return;
       }
 
@@ -223,13 +229,12 @@ export class InvoiceAddComponent {
             if (this.createVendorList.length > 0) {
               this.openNewVendorModal();
             } else {
-              this.modalService.open(this.noVendorModal, {
-                size: '443',
-                centered: true,
-              });
+              this.save();
             }
           }
         });
+    } else if (this.projectpayment.idVendor > 0) {
+      this.save();
     }
   }
 
@@ -248,16 +253,18 @@ export class InvoiceAddComponent {
 
   newVendorShow = false;
   CreateNewVendor() {
-    this.createVendorList.forEach((item) => {
-      if (this.projectpayment.idInvitedCompany == item.idInvitedCompany) {
-        this.projectpayment.vendorName = item.companyName;
-        return;
-      }
-    });
-    if (this.projectpayment.idInvitedCompany > 0) {
-      this.newVendorShow = true;
-    }
+    // this.createVendorList.forEach((item) => {
+    //   if (this.projectpayment.idInvitedCompany == item.idInvitedCompany) {
+    //     this.projectpayment.vendorName = item.companyName;
+    //     return;
+    //   }
+    // });
+    // if (this.projectpayment.idInvitedCompany > 0) {
+    //   this.newVendorShow = true;
+    // }
+
     this.newVendorRef.close();
+    this.save();
   }
 
   editAmount() {
@@ -270,7 +277,7 @@ export class InvoiceAddComponent {
   }
 
   cancelAmount() {
-    if (this.projectpayment.amount.toString().length == 0) {
+    if (!this.projectpayment.amount) {
       this.projectpayment.amount = 0;
     }
     this.amountEdit = false;
@@ -510,6 +517,8 @@ export class InvoiceAddComponent {
   removeVendor() {
     this.vendor = null;
     this.projectpayment.idVendor = 0;
+    this.projectpayment.vendorEmail = '';
+    this.projectpayment.vendorName = '';
     if (this.newVendor) {
       this.newVendorShow = false;
     }
@@ -719,6 +728,7 @@ export class InvoiceAddComponent {
             this.vendorList.forEach((item) => {
               if (item.id == result.data.idVendor) {
                 this.selectVendor(item);
+                this.newVendor = false;
                 return;
               }
             });
@@ -800,38 +810,39 @@ export class InvoiceAddComponent {
   }
 
   save() {
-    this.txtError.idVendor = this.projectpayment.idVendor;
+    //this.txtError.idVendor = this.projectpayment.idVendor;
 
-    if (this.txtError.idVendor > 0) {
-      if (this.projectpayment.amount > 0) {
-        this.apolloService
-          .mutate(projectpayment_new, this.projectpayment)
-          .then((res) => {
-            const result = res.projectpayment_new;
-            if (!result.error) {
-              this.toastrService.info(
-                'New Request has been sent to' + this.vendor.vendorName,
-                ''
-              );
-              this.modalRef.close();
-            } else {
-              this.toastrService.info(result.message, '');
-            }
-          });
-      } else {
-        this.toastrService.info('Please enter amount', '');
-      }
+    // if (this.txtError.idVendor > 0) {
+    if (this.projectpayment.amount > 0) {
+      this.apolloService
+        .mutate(projectpayment_new, this.projectpayment)
+        .then((res) => {
+          const result = res.projectpayment_new;
+          if (!result.error) {
+            this.toastrService.info(
+              'Bill for ' +
+                this.projectpayment.vendorName +
+                ' has been saved to Bill Inbox.',
+              ''
+            );
+            this.modalRef.close();
+          } else {
+            this.toastrService.info(result.message, '');
+          }
+        });
+    } else {
+      this.toastrService.info('Please enter amount', '');
     }
+    //}
   }
-  
-  
+
   openPayingBill() {
     this.payingBillModalRef = this.modalService.open(this.payingBillModal, {
       backdrop: 'static',
       modalDialogClass: 'modal-right',
       size: '640',
     });
-    
+
     this.payingBillModalRef.result.then(
       (res) => {
         console.log('OK');

@@ -196,7 +196,24 @@ export class InvoiceListComponent {
     }
   }
 
-  onSort(item) {}
+  compare(v1: string | number, v2: string | number): any {
+    return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
+  }
+
+  onSort(column) {
+    this.sortColumn = column;
+    if (this.direction == 'desc') {
+      this.direction = 'asc';
+    } else {
+      this.direction = 'desc';
+    }
+
+    this.invoiceList = [...this.invoiceList].sort((a, b) => {
+      const res = this.compare(a[this.sortColumn], b[this.sortColumn]);
+      return this.direction === 'asc' ? res : -res;
+    });
+  }
+
   filterTable = (request: any) => {
     let values = Object.values(request);
     return values.some(
