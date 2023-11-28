@@ -2,7 +2,7 @@
     <div class="col-md-12  headline text-black" *ngIf="id == 0">
         Add Invoice
     </div>
-    <div class="col-md-12  headline text-black" *ngIf="id > 0">
+    <div class="col-md-12  headline text-black" *ngIf="id > 0 && this.projectpayment.status">
         Bill #{{this.projectpayment.billNumber}} <img
             src="assets/images/status-icons/{{this.projectpayment.status.toLowerCase()}}.png" />
     </div>
@@ -19,6 +19,10 @@
             <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer"
                 *ngIf="vendor || (newVendor && newVendorShow)" (click)="removeVendor()">
                 Edit Vendor
+            </div>
+            <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" *ngIf="newVendor && !newVendorShow "
+                (click)="showVendor()">
+                Select Vendor
             </div>
         </div>
 
@@ -78,14 +82,14 @@
                             <label class="form-label" i18n>New Vendor name</label>
                             <input type="text" class="form-control" placeholder="New Vendor name"
                                 [(ngModel)]="projectpayment.vendorName" />
-                            <div class="mt-1-1">
+                            <div class="mt-1-1" *ngIf="this.createVendorList.length == 0 && false">
                                 <i class="fe-alert-triangle me-1-1" style="color: #EAC608;"></i>Vendor will be created
                                 as Draft
                             </div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label" i18n>Email</label>
-                            <input type="text" class="form-control" placeholder="Email" (blur)="findVendor()"
+                            <input type="text" class="form-control" placeholder="Email"
                                 [(ngModel)]="projectpayment.vendorEmail" />
                         </div>
                     </div>
@@ -98,10 +102,6 @@
                                 <div class="d-inline-block ms-1-1"><i class="fe-external-link text-primary"></i>
                                 </div>
                             </div>
-                        </div>
-                        <div class="mt-1-1">
-                            <i class="fe-alert-triangle me-1-1" style="color: #EAC608;"></i>Vendor will be created
-                            as Draft
                         </div>
                     </div>
                     <div class="padding-16" class="dropdown-menu"
@@ -172,7 +172,7 @@
         </div>
 
         <div class="row p-3 mt-1-1" style="border-bottom: 1px solid #E1E6EF;">
-            <div class="col-md-12 text-center ">
+            <div class="col-md-12 text-center overflow-hidden">
                 <input #amount type="text" *ngIf="amountEdit" mask="separator.2" (blur)="cancelAmount()"
                     class=" subtitle-700-37-40" style="border: 0px;outline: 0;text-align: center;"
                     [(ngModel)]="projectpayment.amount" />
@@ -561,7 +561,8 @@
 
 <div class="row" *ngIf="id == 0">
     <div class="col-md-12 d-grid">
-        <button type="button" class="btn btn-primary" (click)="save()" [disabled]="projectpayment.idVendor == 0">Save
+        <button type="button" class="btn btn-primary" (click)="findVendor()"
+            [disabled]="projectpayment.idVendor == 0 && !(this.newVendor && this.projectpayment.vendorEmail)">Save
             and Review</button>
         <button type="button" class="btn btn-outline-primary mt-1-1" (clikc)="closeModal()">Cancel</button>
     </div>
