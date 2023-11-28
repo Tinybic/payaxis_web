@@ -139,7 +139,7 @@
                         </div>
                     </td>
                     <td>
-                        <div class="d-inline-block {{item.status}}Tag">{{item.status}}</div>
+                        <div class="d-inline-block {{item.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{item.status}}</div>
                     </td>
                     <td>
                     </td>
@@ -195,6 +195,6 @@
 
 <ng-template #addVendor let-modal>
     <app-vendoradd class="flex-column-1"
-        style="width: calc(100vw - 216px); padding:32px 32px 0; background-color: #F8F9FC;overflow-y: auto;"
+        style="width: calc(100vw - 216px); padding:32px 32px 0; background-color: #F8F9FC;overflow-y: auto;" [modalRef] = "modalRef"
         [idvendor]="idvendor"></app-vendoradd>
 </ng-template>

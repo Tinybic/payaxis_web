@@ -3,8 +3,8 @@
         Add Invoice
     </div>
     <div class="col-md-12  headline text-black" *ngIf="id > 0 && this.projectpayment.status">
-        Bill #{{this.projectpayment.billNumber}} <img
-            src="assets/images/status-icons/{{this.projectpayment.status.toLowerCase()}}.png" />
+        Bill #{{this.projectpayment.billNumber}} 
+        <div class="d-inline-block {{projectpayment.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">{{projectpayment.status}}</div>
     </div>
     <div class="subtitle-2-500 text-typeblack80" *ngIf="id > 0 && this.projectpayment.paymentFiles.length>0">
         Mapped from file
