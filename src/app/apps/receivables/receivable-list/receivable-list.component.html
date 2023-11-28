@@ -181,7 +181,7 @@
                     (click)="openEditModal(item.id)">
                     <td><input class="form-check" type="checkbox" /></td>
                     <td>
-                        <img src="assets/images/status-icons/{{item.status.toLowerCase()}}.png" />
+                        <div class="d-inline-block {{item.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{item.status}}</div>
                     </td>
                     <td>
                         {{item.billNumber}}
