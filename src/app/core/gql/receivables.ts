@@ -49,6 +49,59 @@ const projectpayment_new = gql`
   }
 `;
 
+const projectpayment_info = gql`
+  query projectpayment_info($idCompany: Int!, $id: Int!) {
+    projectpayment_info(idCompany: $idCompany, id: $id) {
+      error
+      code
+      message
+      data {
+        id
+        revision
+        createdBy
+        createdDate
+        modifiedBy
+        modifiedDate
+        idCompany
+        idProject
+        projectName
+        idVendor
+        vendorName
+        vendorType
+        txtAddress
+        txtCity
+        txtState
+        primaryContact
+        email
+        phone
+        avatar
+        senderFirstname
+        senderLastname
+        senderAvatar
+        senderEmail
+        idOrder1
+        orderNumber
+        orderDue
+        orderStatus
+        idCompany_payment
+        account
+        payType
+        holderName
+        billNumber
+        costCode
+        costCodeName
+        sentDate
+        dueDate
+        paymentTerms
+        amount
+        txtNotes
+        status
+        active
+      }
+    }
+  }
+`;
+
 const projectpayment_list = gql`
   query projectpayment_list(
     $idCompany: Int!
@@ -167,6 +220,33 @@ const projectbill_list = gql`
   }
 `;
 
+const projectpayment_attachment = gql`
+  query projectpayment_attachment($idCompany: Int!, $idPayment: Int!) {
+    projectpayment_attachment(idCompany: $idCompany, idPayment: $idPayment) {
+      error
+      code
+      message
+      data {
+        id
+        revision
+        createdBy
+        createdDate
+        modifiedBy
+        modifiedDate
+        firstName
+        lastName
+        avatar
+        idPayment
+        fileName
+        fileSize
+        fileType
+        fileUrl
+        active
+      }
+    }
+  }
+`;
+
 const getassociatedcompany_list = gql`
   query getassociatedcompany_list($idCompany: Int!, $vendorEmail: String!) {
     getassociatedcompany_list(
@@ -189,4 +269,6 @@ export {
   projectpayment_list,
   projectbill_list,
   getassociatedcompany_list,
+  projectpayment_info,
+  projectpayment_attachment
 };

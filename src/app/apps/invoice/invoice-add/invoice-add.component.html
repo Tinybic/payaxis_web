@@ -1,6 +1,13 @@
 <div class="row">
-    <div class="col-md-12  headline text-black">
+    <div class="col-md-12  headline text-black" *ngIf="id == 0">
         Add Invoice
+    </div>
+    <div class="col-md-12  headline text-black" *ngIf="id > 0">
+        Bill #{{this.projectpayment.billNumber}} <img
+            src="assets/images/status-icons/{{this.projectpayment.status.toLowerCase()}}.png" />
+    </div>
+    <div class="subtitle-2-500 text-typeblack80" *ngIf="id > 0 && this.projectpayment.paymentFiles.length>0">
+        Mapped from file
     </div>
 </div>
 <div class="card mt-1-1">
@@ -9,7 +16,6 @@
             <div class="col-md-6 subtitle-400-12-32-up">
                 VENDOR
             </div>
-
             <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer"
                 *ngIf="vendor || (newVendor && newVendorShow)" (click)="removeVendor()">
                 Edit Vendor
@@ -473,7 +479,7 @@
     </div>
 </div>
 
-<div class="card mt-2-1" *ngIf="showNotes">
+<div class="card mt-2-1" *ngIf="showNotes ">
     <div class="card-body padding-16">
         <div class="row">
             <div class="row">
@@ -521,7 +527,7 @@
             </div>
         </div>
         <div class="row mt-2-1">
-            <div class="col-md-6 mt-1-1" *ngFor="let item of projectpayment.paymentfile| slice:1; let i = index; ">
+            <div class="col-md-6 mt-1-1" *ngFor="let item of projectpayment.paymentFiles| slice:1; let i = index; ">
                 <div style="padding: 8px 16px; border-radius: 8px; border:1px solid #E1E6EF; display: flex;">
                     <img src="/assets/images/icon/{{item.fileType}}.png" style="height: 24px; width: 24px;"
                         onerror="javascript:this.src='/assets/images/icon/dat.png';" />
@@ -553,11 +559,25 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row" *ngIf="id == 0">
     <div class="col-md-12 d-grid">
         <button type="button" class="btn btn-primary" (click)="save()" [disabled]="projectpayment.idVendor == 0">Save
             and Review</button>
         <button type="button" class="btn btn-outline-primary mt-1-1" (clikc)="closeModal()">Cancel</button>
+    </div>
+</div>
+
+<div class="row" *ngIf="id > 0"
+    style="height: 72px;background-color: #2B2D30;box-shadow: 0px 25px 50px 0px #00000040;padding: 16px 32px;position: fixed;bottom: 0;width: 100%;margin-left: -32px;z-index: 9999;">
+    <div class="col-md-4 d-grid">
+        <button class="btn btn-primary"
+            style="border:1px solid #ffffff; box-shadow: none; background-color: #2B2D30;">Decline</button>
+    </div>
+    <div class="col-md-4 d-grid">
+        <button class="btn btn-primary" style="border:0px; box-shadow: none;">Pay Now</button>
+    </div>
+    <div class="col-md-4 d-grid">
+        <button class="btn btn-primary" style="border:0px; box-shadow: none;">Save</button>
     </div>
 </div>
 

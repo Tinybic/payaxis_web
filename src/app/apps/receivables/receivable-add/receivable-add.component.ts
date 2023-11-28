@@ -57,7 +57,7 @@ export class ReceivableAddComponent {
     txtNotes: '',
     billyn: false,
     costCode: '0',
-    paymentfile: [],
+    paymentFiles: [],
   };
 
   amountEdit = false;
@@ -335,7 +335,7 @@ export class ReceivableAddComponent {
         if (!res.get_file_url.error) {
           let uploadUrl = res.get_file_url.data;
           this.httpService.put(uploadUrl, file).then((res) => {
-            this.projectpayment.paymentfile.push({
+            this.projectpayment.paymentFiles.push({
               fileName: file.name,
               fileSize: file.size,
               fileType: file.name
@@ -367,7 +367,7 @@ export class ReceivableAddComponent {
   fileDelete() {
     let index = this.deleteIndex;
     let item = this.deleteItem;
-    this.projectpayment.paymentfile.splice(index, 1);
+    this.projectpayment.paymentFiles.splice(index, 1);
     this.deleteRef.close();
   }
 
