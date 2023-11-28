@@ -262,7 +262,7 @@ export class InvoiceAddComponent {
     // if (this.projectpayment.idInvitedCompany > 0) {
     //   this.newVendorShow = true;
     // }
-    
+
     this.newVendorRef.close();
     this.save();
   }
@@ -810,7 +810,7 @@ export class InvoiceAddComponent {
   }
 
   save() {
-    this.txtError.idVendor = this.projectpayment.idVendor;
+    //this.txtError.idVendor = this.projectpayment.idVendor;
 
     // if (this.txtError.idVendor > 0) {
     if (this.projectpayment.amount > 0) {
@@ -820,7 +820,9 @@ export class InvoiceAddComponent {
           const result = res.projectpayment_new;
           if (!result.error) {
             this.toastrService.info(
-              'New Request has been sent to' + this.vendor.vendorName,
+              'Bill for ' +
+                this.projectpayment.vendorName +
+                ' has been saved to Bill Inbox.',
               ''
             );
             this.modalRef.close();
