@@ -511,6 +511,7 @@ export class VendoraddComponent {
           if (this.createVendorList.length > 0) {
             this.openNewVendorModal();
           } else {
+            this.save();
           }
         }
       });
@@ -531,12 +532,15 @@ export class VendoraddComponent {
 
   newVendorShow = false;
   CreateNewVendor() {
-    this.createVendorList.forEach((item) => {
-      if (this.vendor.idInvitedCompany == item.idInvitedCompany) {
-        this.vendor.vendorName = item.companyName;
-        return;
-      }
-    });
     this.newVendorRef.close();
+    this.save();
+    // this.createVendorList.forEach((item) => {
+    //   if (this.vendor.idInvitedCompany == item.idInvitedCompany) {
+    //     this.vendor.vendorName = item.companyName;
+    //     this.save();
+    //     return;
+    //   }
+    // });
+    // this.newVendorRef.close();
   }
 }
