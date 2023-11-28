@@ -10,8 +10,9 @@ import { formatDate, formatCurrency} from "@angular/common";
   styleUrls: ['./paying-bill.component.scss']
 })
 export class PayingBillComponent {
-  @ViewChild('dp') dp: NgbDatepicker;
   @Input() modalRef: NgbModalRef;
+  @Input() payment;
+  @ViewChild('dp') dp: NgbDatepicker;
   
   billNumber = 0;
   combine: boolean = true;

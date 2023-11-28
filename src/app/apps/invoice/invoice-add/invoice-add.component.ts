@@ -1,7 +1,7 @@
 import { formatDate } from '@angular/common';
 import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { VENDOR_PAYMENTTERM } from 'src/app/core/constants/vendor_payment';
 import { categorycostcode_list } from 'src/app/core/gql/costcode';
@@ -31,6 +31,7 @@ export class InvoiceAddComponent {
   @ViewChild('newVendorListModal') newVendorListModal: any;
   @ViewChild('noVendorModal') noVendorModal: any;
   @ViewChild('amount') inputAmout: ElementRef;
+  @ViewChild('payingBill') payingBillModal: NgbModalRef;
 
   paymentTermsList = VENDOR_PAYMENTTERM;
   PROJECTLIST = [];
@@ -73,6 +74,8 @@ export class InvoiceAddComponent {
     vendorEmail: '',
     status: '',
   };
+  
+  payingBillModalRef: NgbModalRef;
 
   amountEdit = false;
   constructor(
@@ -819,5 +822,23 @@ export class InvoiceAddComponent {
         this.toastrService.info('Please enter amount', '');
       }
     }
+  }
+  
+  
+  openPayingBill() {
+    this.payingBillModalRef = this.modalService.open(this.payingBillModal, {
+      backdrop: 'static',
+      modalDialogClass: 'modal-right',
+      size: '640',
+    });
+    
+    this.payingBillModalRef.result.then(
+      (res) => {
+        console.log('OK');
+      },
+      (dismiss) => {
+        console.log('dismiss');
+      }
+    );
   }
 }

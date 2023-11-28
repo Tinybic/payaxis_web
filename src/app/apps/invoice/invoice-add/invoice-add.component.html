@@ -577,7 +577,7 @@
         <button class="btn btn-primary" style="border:0px; box-shadow: none;">Pay Now</button>
     </div>
     <div class="col-md-4 d-grid">
-        <button class="btn btn-primary" style="border:0px; box-shadow: none;">Save</button>
+        <button class="btn btn-primary" (click)="openPayingBill()" style="border:0px; box-shadow: none;">Save</button>
     </div>
 </div>
 
@@ -665,4 +665,9 @@
             </div>
         </div>
     </div>
+</ng-template>
+
+
+<ng-template #payingBill>
+    <app-paying-bill [payment]="projectpayment" [modalRef]="payingBillModalRef"></app-paying-bill>
 </ng-template>
