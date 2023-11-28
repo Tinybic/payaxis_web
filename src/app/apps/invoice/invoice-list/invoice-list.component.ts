@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NgbCalendar, NgbDate, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDate, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { companypayment_list } from 'src/app/core/gql/payment';
 import { companyproject_list } from 'src/app/core/gql/project';
@@ -14,7 +14,10 @@ import { ApolloService } from 'src/app/core/service/apollo.service';
 })
 export class InvoiceListComponent {
   @ViewChild('addModal') addModal: any;
+  @ViewChild('payingBill') payingBillModal: NgbModalRef;
+  
   addModalRef;
+  payingBillModalRef: NgbModalRef;
   invoiceList = [];
   INVOICELIST = [];
   filterList = [];
@@ -266,4 +269,21 @@ export class InvoiceListComponent {
   }
 
   openEditModal(id) {}
+  
+  openPayingBill() {
+    this.payingBillModalRef = this.modalService.open(this.payingBillModal, {
+      backdrop: 'static',
+      modalDialogClass: 'modal-right',
+      size: '640',
+    })
+    
+    this.payingBillModalRef.result.then(
+      (res) => {
+        console.log('OK')
+      },
+      (dismiss) => {
+        console.log('dismiss')
+      }
+    )
+  }
 }
