@@ -1,5 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
-import { NgbCalendar, NgbDate, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbCalendar,
+  NgbDate,
+  NgbModal,
+  NgbModalRef,
+} from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { companypayment_list } from 'src/app/core/gql/payment';
 import { companyproject_list } from 'src/app/core/gql/project';
@@ -15,7 +20,7 @@ import { ApolloService } from 'src/app/core/service/apollo.service';
 export class InvoiceListComponent {
   @ViewChild('addModal') addModal: any;
   @ViewChild('payingBill') payingBillModal: NgbModalRef;
-  
+
   addModalRef;
   payingBillModalRef: NgbModalRef;
   invoiceList = [];
@@ -38,6 +43,7 @@ export class InvoiceListComponent {
   hoveredDate: NgbDate | null = null;
   fromDate!: NgbDate;
   toDate: NgbDate | null = null;
+  idInvoice = 0;
 
   constructor(
     private apolloService: ApolloService,
@@ -174,9 +180,7 @@ export class InvoiceListComponent {
 
   filterVendorList(vendorName) {
     this.vendorFilter = vendorName;
-    this.invoiceList = JSON.parse(
-      JSON.stringify(this.INVOICELIST)
-    );
+    this.invoiceList = JSON.parse(JSON.stringify(this.INVOICELIST));
     if (vendorName != 'All') {
       this.invoiceList = this.invoiceList.filter((item) =>
         item.vendorName.toLowerCase().includes(vendorName.toLowerCase())
@@ -224,7 +228,6 @@ export class InvoiceListComponent {
   }
 
   paymentTypeFilterList(id, payment) {
-    console.log(payment);
     this.paymentTypeFilter = payment;
     this.invoiceList = JSON.parse(JSON.stringify(this.INVOICELIST));
     if (payment != 'All') {
@@ -258,7 +261,7 @@ export class InvoiceListComponent {
       });
   }
 
-  openAddModal() {
+  openInvoiceModal() {
     this.addModalRef = this.modalService.open(this.addModal, {
       backdrop: 'static',
       modalDialogClass: 'modal-right',
@@ -276,22 +279,30 @@ export class InvoiceListComponent {
     );
   }
 
-  openEditModal(id) {}
-  
+  openAddModal() {
+    this.idInvoice = 0;
+    this.openInvoiceModal();
+  }
+
+  openEditModal(id) {
+    this.idInvoice = id;
+    this.openInvoiceModal();
+  }
+
   openPayingBill() {
     this.payingBillModalRef = this.modalService.open(this.payingBillModal, {
       backdrop: 'static',
       modalDialogClass: 'modal-right',
       size: '640',
-    })
-    
+    });
+
     this.payingBillModalRef.result.then(
       (res) => {
-        console.log('OK')
+        console.log('OK');
       },
       (dismiss) => {
-        console.log('dismiss')
+        console.log('dismiss');
       }
-    )
+    );
   }
 }

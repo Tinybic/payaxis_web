@@ -12,6 +12,8 @@ import { companypayment_list } from 'src/app/core/gql/payment';
 import { companyproject_list } from 'src/app/core/gql/project';
 import {
   getassociatedcompany_list,
+  projectpayment_attachment,
+  projectpayment_info,
   projectpayment_new,
 } from 'src/app/core/gql/receivables';
 import { vendor_list } from 'src/app/core/gql/vendor';
@@ -65,10 +67,11 @@ export class InvoiceAddComponent {
     txtNotes: '',
     billyn: true,
     costCode: '0',
-    paymentfile: [],
+    paymentFiles: [],
     idInvitedCompany: 0,
     vendorName: '',
     vendorEmail: '',
+    status: '',
   };
 
   amountEdit = false;
@@ -82,11 +85,106 @@ export class InvoiceAddComponent {
 
   ngOnInit(): void {
     this.projectpayment.idCompany = parseInt(localStorage.getItem('idcompany'));
-    this.getVendorList();
-    this.getProjectList();
-    this.getOrderList();
-    this.getPaymentList();
-    this.getCostCodeList();
+
+    if (this.id > 0) {
+      this.getInvoiceInfo();
+    } else {
+      this.getVendorList();
+      this.getProjectList();
+      this.getOrderList();
+      //this.getPaymentList();
+      this.getCostCodeList();
+    }
+  }
+
+  getInvoiceInfo() {
+    this.apolloService
+      .query(projectpayment_info, {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
+        id: this.id,
+      })
+      .then((res) => {
+        const result = res.projectpayment_info;
+        if (!result.error) {
+          this.projectpayment = {
+            idCompany: result.data.idCompany,
+            idProject: result.data.idProject,
+            idVendor: result.data.idVendor,
+            idOrder1: result.data.idOrder1,
+            idCompany_payment: result.data.idCompany_payment,
+            billNumber: result.data.billNumber,
+            sentDate: result.data.sentDate,
+            dueDate: result.data.dueDate,
+            paymentTerms: result.data.paymentTerms,
+            amount: result.data.amount,
+            txtNotes: result.data.txtNotes,
+            billyn: true,
+            costCode: result.data.costCode,
+            paymentFiles: [],
+            idInvitedCompany: 0,
+            vendorName: result.data.vendorName,
+            vendorEmail: result.data.primaryContact,
+            status: result.data.status
+          };
+        }
+        this.getVendorList();
+        this.getProjectList();
+        this.getOrderList();
+        this.getAttachment();
+      });
+  }
+
+  getAttachment() {
+    this.apolloService
+      .query(projectpayment_attachment, {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idPayment: this.id,
+      })
+      .then((res) => {
+        const result = res.projectpayment_attachment;
+        if (!result.error) {
+          this.projectpayment.paymentFiles = result.data;
+          if (this.projectpayment.paymentFiles.length > 0) {
+            this.file = this.projectpayment.paymentFiles[0];
+            this.showNotes = true;
+          }
+        }
+      });
+  }
+
+  setOrder() {
+    if (this.projectpayment.idOrder1 > 0) {
+      this.orderList.forEach((item) => {
+        if (item.id == this.projectpayment.idOrder1) {
+          this.order = item;
+          return;
+        }
+      });
+    }
+  }
+
+  setProject() {
+    if (this.projectpayment.idProject > 0) {
+      this.projectGroupList.forEach((item) => {
+        item.forEach((project) => {
+          if (this.projectpayment.idProject == project.id) {
+            this.project = project;
+            return;
+          }
+        });
+      });
+    }
+  }
+
+  setVendor() {
+    if (this.projectpayment.idVendor > 0) {
+      this.vendorList.forEach((item) => {
+        if (item.id == this.projectpayment.idVendor) {
+          this.selectVendor(item);
+          return;
+        }
+      });
+    }
   }
 
   newVendor = false;
@@ -195,6 +293,7 @@ export class InvoiceAddComponent {
           for (let key in this.projectList) {
             this.projectGroupList.push(this.projectList[key]);
           }
+          this.setProject();
         }
       });
   }
@@ -263,6 +362,7 @@ export class InvoiceAddComponent {
         if (!result.error) {
           this.vendorList = result.data;
           this.VENDORLIST = JSON.parse(JSON.stringify(this.vendorList));
+          this.setVendor();
         }
       });
   }
@@ -278,6 +378,7 @@ export class InvoiceAddComponent {
         if (!result.error) {
           this.orderList = result.data;
           this.ORDERLIST = JSON.parse(JSON.stringify(result.data));
+          this.setOrder();
         }
       });
   }
@@ -498,9 +599,9 @@ export class InvoiceAddComponent {
       .then((res) => {
         if (!res.get_file_url.error) {
           let uploadUrl = res.get_file_url.data;
-          if (this.projectpayment.paymentfile.length > 0) {
+          if (this.projectpayment.paymentFiles.length > 0) {
             this.httpService.put(uploadUrl, file).then((res) => {
-              this.projectpayment.paymentfile.push({
+              this.projectpayment.paymentFiles.push({
                 fileName: file.name,
                 fileSize: file.size,
                 fileType: file.name
@@ -537,8 +638,14 @@ export class InvoiceAddComponent {
       .subscribe({
         next: (res) => {
           if (res.type === HttpEventType.Response) {
-            this.projectpayment.paymentfile.push(this.file);
-            if (this.projectpayment.paymentfile.length == 1) this.mapping();
+            this.projectpayment.paymentFiles.push({
+              fileName: file.name,
+              fileSize: file.size,
+              fileType: file.type,
+              fileUrl: uploadUrl.split('?')[0],
+            });
+            console.log(this.projectpayment.paymentFiles);
+            if (this.projectpayment.paymentFiles.length == 1) this.mapping();
           }
           if (res.type === HttpEventType.UploadProgress) {
             const percentDone = Math.round((100 * res.loaded) / res.total);
@@ -681,7 +788,7 @@ export class InvoiceAddComponent {
   fileDelete() {
     let index = this.deleteIndex;
     let item = this.deleteItem;
-    this.projectpayment.paymentfile.splice(index, 1);
+    this.projectpayment.paymentFiles.splice(index, 1);
     this.deleteRef.close();
   }
 
@@ -697,7 +804,6 @@ export class InvoiceAddComponent {
         this.apolloService
           .mutate(projectpayment_new, this.projectpayment)
           .then((res) => {
-            console.log(res);
             const result = res.projectpayment_new;
             if (!result.error) {
               this.toastrService.info(

@@ -182,8 +182,7 @@
                 </tr>
             </thead>
             <tbody *ngIf="!loading">
-                <tr class="cursor-pointer" *ngFor="let item of invoiceList | callback:filterTable; let i = index"
-                    (click)="openEditModal(item.id)">
+                <tr class="cursor-pointer" *ngFor="let item of invoiceList | callback:filterTable; let i = index">
                     <td><input class="form-check" type="checkbox" /></td>
                     <td>
                         {{item.sentDate}}
@@ -214,7 +213,8 @@
                     <td> {{item.orderNumber}} </td>
                     <td> {{item.amount}}</td>
                     <td class="text-end">
-                        <button type="button" class="btn btn-outline-primary padding-8-16 ms-1-1">Review Bill</button>
+                        <button type="button" class="btn btn-primary padding-8-16" id="reviewBill{{item.id}}" (click) ="openEditModal(item.id)">Review Bill</button>
+                        <i class="fe-more-vertical- ms-1-1"></i>
                     </td>
                 </tr>
             </tbody>
@@ -249,7 +249,7 @@
     </div>
 </div>
 <ng-template #addModal>
-    <app-invoice-add class="p-4-1" [modalRef]="addModalRef"></app-invoice-add>
+    <app-invoice-add class="p-4-1" [modalRef]="addModalRef" [id] = "idInvoice"></app-invoice-add>
 </ng-template>
 
 <ng-template #payingBill>
