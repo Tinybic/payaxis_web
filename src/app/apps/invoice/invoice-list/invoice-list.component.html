@@ -3,7 +3,7 @@
         Bill Inbox
     </h5>
     <div class="col-md-9 text-end">
-        <button class="btn btn-primary ms-2-1" (click)="openPayingBill()">Add Invoice</button>
+        <button class="btn btn-primary ms-2-1" (click)="openAddModal()">Add Invoice</button>
     </div>
 </div>
 
@@ -56,27 +56,27 @@
             <div class="dropdown" ngbDropdown #roleDrop="ngbDropdown">
                 <a class="dropdown-outline" href="javascript:void(0)" ngbDropdownToggle>
                     <i class="fe-user font-16 me-1-1"></i>
-                    {{paymentTypeFilter}}
+                    {{vendorFilter}}
                     <i class="fe-chevron-down font-16 ms-1-1"></i>
                 </a>
-                <div class="dropdown-menu" ngbDropdownMenu>
-                    <div ngbDropdownItem (click)="paymentTypeFilterList(0,'All')">
+                <div class="dropdown-menu" ngbDropdownMenu style="max-height: 300px; overflow-y: auto;">
+                    <div ngbDropdownItem (click)="filterVendorList('All')">
                         <div class="form-check" id="roleAll">
                             <input type="checkbox" class="form-check-input" id="dropdownCheckRolepaymentTypeAll"
-                                [checked]="paymentTypeFilter=='All'" />
+                                [checked]="vendorFilter=='All'" />
                             <label class="form-check-label ms-1-1">
                                 ALL
                             </label>
                         </div>
                     </div>
-                    <div ngbDropdownItem *ngFor="let item of paymentList"
-                        (click)="paymentTypeFilterList(item.id, 'ACH * ' + item.account)">
+                    <div ngbDropdownItem *ngFor="let item of vendorList"
+                        (click)="filterVendorList(item.vendorName)">
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input"
-                                id="dropdownCheckpaymentType{{item.account}}"
-                                [checked]="paymentTypeFilter=='ACH * ' + item.account">
+                                id="dropdownCheckpaymentType{{item.id}}"
+                                [checked]="vendorFilter==item.vendorName">
                             <label class="form-check-label ms-1-1" for="dropdownCheckCheck">
-                                ACH * {{item.account}}
+                                {{item.vendorName}}
                             </label>
                         </div>
                     </div>
@@ -97,7 +97,7 @@
                     <div ngbDropdownItem (click)="filterProjectList('All')">
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" id="activedropdownChecks"
-                                [checked]="vendorFilter == 'All'">
+                                [checked]="projectFilter == 'All'">
                             <label class="form-check-label ms-1-1 bold-600" for="activedropdownChecks">
                                 All
                             </label>
@@ -108,7 +108,7 @@
                         ngbDropdownItem>
                         <div class="form-check">
                             <input id="vendor_{{project.id}}" type="checkbox" class="form-check-input"
-                                [checked]="vendorFilter == project.projectName">
+                                [checked]="projectFilter == project.projectName">
                             <label class="form-check-label ms-1-1" for="vendor_{{project.id}}">
                                 {{project.projectName}}
                             </label>

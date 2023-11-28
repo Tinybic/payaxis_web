@@ -32,7 +32,7 @@ export class InvoiceListComponent {
   projects = [];
   vendorList = [];
   paymentList = [];
-  vendorFilter = 'Vendor';
+  vendorFilter = 'Sender';
 
   selectedDateRange: string = 'Due date';
   hoveredDate: NgbDate | null = null;
@@ -49,7 +49,7 @@ export class InvoiceListComponent {
   ngOnInit(): void {
     this.getList();
     this.getProjectList();
-    this.getPaymentList();
+    this.getVendorList();
 
     this.fromDate = this.calendar.getToday();
     this.toDate = this.calendar.getNext(this.calendar.getToday(), 'd', 10);
@@ -159,25 +159,33 @@ export class InvoiceListComponent {
     );
   }
 
-  getPaymentList() {
+  getVendorList() {
     this.apolloService
-      .query(companypayment_list, {
+      .query(vendor_list, {
         idCompany: parseInt(localStorage.getItem('idcompany')),
       })
       .then((res) => {
-        const result = res.companypayment_list;
+        const result = res.vendor_list;
         if (!result.error) {
-          this.paymentList = result.data;
-          this.paymentList.forEach((item) => {
-            if (item.account.length > 4)
-              item.account = item.account.substring(item.account.length - 4);
-          });
+          this.vendorList = result.data;
         }
       });
   }
 
+  filterVendorList(vendorName) {
+    this.vendorFilter = vendorName;
+    this.invoiceList = JSON.parse(
+      JSON.stringify(this.INVOICELIST)
+    );
+    if (vendorName != 'All') {
+      this.invoiceList = this.invoiceList.filter((item) =>
+        item.vendorName.toLowerCase().includes(vendorName.toLowerCase())
+      );
+    }
+  }
+
   filterProjectList(projectName) {
-    this.vendorFilter = projectName;
+    this.projectFilter = projectName;
     this.invoiceList = JSON.parse(JSON.stringify(this.INVOICELIST));
     if (projectName != 'All') {
       this.invoiceList = this.invoiceList.filter((item) =>
