@@ -500,10 +500,18 @@ export class InvoiceAddComponent {
       if (name.length > 1) this.vendor.lastName = name[1];
     } else {
       name = vendor.vendorName.split(' ');
-      if (name.length > 0) this.vendor.firstName = name[0];
-      else this.vendor.firstName = '';
-      if (name.length > 1) this.vendor.lastName = name[1];
-      else this.vendor.lastName = '';
+      if (name.length == 1) {
+        if (name[0].length > 1) {
+          this.vendor.firstName = name[0].substring(0, 1);
+          this.vendor.lastName = name[0].substring(1, 2);
+        } else if (name[0].length == 1) {
+          this.vendor.firstName = name[0];
+          this.vendor.lastName = name[0];
+        }
+      } else if (name.length > 1) {
+        this.vendor.firstName = name[0];
+        this.vendor.lastName = name[1];
+      }
     }
     this.projectpayment.idVendor = vendor.id;
   }
