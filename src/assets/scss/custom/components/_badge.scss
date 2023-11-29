@@ -90,6 +90,29 @@ $value in $theme-colors {
     width: 128px;
 }
 
+.invoiceopenTag {
+    background-color: #FFED8E;
+    border-radius: 8px;
+    border: 1px solid #EAC608;
+    padding: 0px 8px;
+    width: 128px;
+}
+
+.overdueTag {
+    background-color: #F87171;
+    border-radius: 8px;
+    color: #ffffff !important;
+    width: 128px;
+}
+
+.pastdueTag {
+    background-color: #F87171;
+    border-radius: 8px;
+    color: #ffffff !important;
+    width: 128px;
+}
+
+
 .sentTag {
     background-color: #BFDBFE;
     border-radius: 8px;

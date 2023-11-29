@@ -399,7 +399,8 @@ export class VendoraddComponent {
 
   cancelClose() {
     if (this.modalRef) {
-      this.modalRef.dismiss();
+      this.modalRef.close();
+      this.cancelRef.close();
     } else {
       this.modalService.dismissAll();
     }
