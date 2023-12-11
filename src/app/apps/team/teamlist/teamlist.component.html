@@ -228,8 +228,8 @@
                                 '1.0-0' }}</span></span>
                     </td>
                     <td>
-                        <span *ngIf="item.idUser>0">{{item.active?'Active':'InActive'}}</span>
-                        <img *ngIf="item.idUser == 0" src="/assets/images/status-icons/pending.png" />
+                        <div *ngIf="item.idUser > 0" class="d-inline-block {{item.active?'active':'inactive'}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{item.active?'Active':'InActive'}}</div>
+                        <div *ngIf="item.idUser == 0" class="d-inline-block pendingTag subtitle-2-600 text-blackprimary-op-50 text-center">Peding</div>
                     </td>
                     <td><i class=" fe-trash-2 cursor-pointer"
                             *ngIf="canEdit && item.role != 'Owner' && item.active"
