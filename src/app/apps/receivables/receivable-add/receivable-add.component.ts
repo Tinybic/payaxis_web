@@ -8,7 +8,12 @@ import { getNewFileName, get_file_url } from 'src/app/core/gql/file';
 import { projectorder_list } from 'src/app/core/gql/orders';
 import { companypayment_list } from 'src/app/core/gql/payment';
 import { companyproject_list } from 'src/app/core/gql/project';
-import { projectpayment_new } from 'src/app/core/gql/receivables';
+import {
+  projectpayment_attachment,
+  projectpayment_info,
+  projectpayment_new,
+  projectpayment_update,
+} from 'src/app/core/gql/receivables';
 import { vendor_list } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { HttpService } from 'src/app/core/service/http.service';
@@ -59,6 +64,11 @@ export class ReceivableAddComponent {
     billyn: false,
     costCode: '0',
     paymentFiles: [],
+    idInvitedCompany: 0,
+    vendorName: '',
+    vendorEmail: '',
+    status: '',
+    revision: 0,
   };
 
   amountEdit = false;
@@ -71,10 +81,70 @@ export class ReceivableAddComponent {
 
   ngOnInit(): void {
     this.projectpayment.idCompany = parseInt(localStorage.getItem('idcompany'));
-    this.getVendorList();
-    this.getProjectList();
-    this.getOrderList();
-    this.getPaymentList();
+    if (this.id > 0) {
+      this.getDetail();
+    } else {
+      this.getVendorList();
+      this.getProjectList();
+      this.getOrderList();
+      this.getPaymentList();
+    }
+  }
+
+  getDetail() {
+    this.apolloService
+      .query(projectpayment_info, {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
+        id: this.id,
+      })
+      .then((res) => {
+        const result = res.projectpayment_info;
+        if (!result.error) {
+          this.projectpayment = {
+            idCompany: result.data.idCompany,
+            idProject: result.data.idProject,
+            idVendor: result.data.idVendor,
+            idOrder1: result.data.idOrder1,
+            idCompany_payment: result.data.idCompany_payment,
+            billNumber: result.data.billNumber,
+            sentDate: result.data.sentDate,
+            dueDate: result.data.dueDate,
+            paymentTerms: result.data.paymentTerms,
+            amount: result.data.amount,
+            txtNotes: result.data.txtNotes,
+            billyn: true,
+            costCode: result.data.costCode,
+            paymentFiles: [],
+            idInvitedCompany: 0,
+            vendorName: result.data.vendorName,
+            vendorEmail: result.data.primaryContact,
+            status: result.data.status,
+            revision: result.data.revision,
+          };
+        }
+        this.getVendorList();
+        this.getProjectList();
+        this.getOrderList();
+        this.getAttachment();
+      });
+  }
+
+  getAttachment() {
+    this.apolloService
+      .query(projectpayment_attachment, {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idPayment: this.id,
+      })
+      .then((res) => {
+        const result = res.projectpayment_attachment;
+        if (!result.error) {
+          this.projectpayment.paymentFiles = result.data;
+          // if (this.projectpayment.paymentFiles.length > 0) {
+          //   this.file = this.projectpayment.paymentFiles[0];
+          //   this.showNotes = true;
+          // }
+        }
+      });
   }
 
   editAmount() {
@@ -91,6 +161,18 @@ export class ReceivableAddComponent {
       this.projectpayment.amount = 0;
     }
     this.amountEdit = false;
+    this.orderList = JSON.parse(JSON.stringify(this.ORDERLIST));
+    if (this.project) {
+      this.orderList = this.orderList.filter(
+        (item) =>
+          item.idProject == this.project.id &&
+          item.total >= this.projectpayment.amount
+      );
+    } else {
+      this.orderList = this.orderList.filter(
+        (item) => item.total >= this.projectpayment.amount
+      );
+    }
   }
 
   groupBy(arr, key) {
@@ -113,8 +195,22 @@ export class ReceivableAddComponent {
           for (let key in this.projectList) {
             this.projectGroupList.push(this.projectList[key]);
           }
+          this.setProject();
         }
       });
+  }
+
+  setProject() {
+    if (this.projectpayment.idProject > 0) {
+      this.projectGroupList.forEach((item) => {
+        item.forEach((project) => {
+          if (this.projectpayment.idProject == project.id) {
+            this.project = project;
+            return;
+          }
+        });
+      });
+    }
   }
 
   getVendorList() {
@@ -127,8 +223,20 @@ export class ReceivableAddComponent {
         if (!result.error) {
           this.vendorList = result.data;
           this.VENDORLIST = JSON.parse(JSON.stringify(this.vendorList));
+          this.setVendor();
         }
       });
+  }
+
+  setVendor() {
+    if (this.projectpayment.idVendor > 0) {
+      this.vendorList.forEach((item) => {
+        if (item.id == this.projectpayment.idVendor) {
+          this.selectVendor(item);
+          return;
+        }
+      });
+    }
   }
 
   getOrderList() {
@@ -142,8 +250,23 @@ export class ReceivableAddComponent {
         if (!result.error) {
           this.orderList = result.data;
           this.ORDERLIST = JSON.parse(JSON.stringify(result.data));
+          this.setOrder();
         }
       });
+  }
+
+  setOrder() {
+    if (this.projectpayment.idOrder1 > 0) {
+      this.orderList = this.orderList.filter(
+        (item) => item.total >= this.projectpayment.amount
+      );
+      this.orderList.forEach((item) => {
+        if (item.id == this.projectpayment.idOrder1) {
+          this.order = item;
+          return;
+        }
+      });
+    }
   }
 
   payment = {
@@ -188,7 +311,8 @@ export class ReceivableAddComponent {
     this.projectpayment.idProject = project.id;
     this.orderList = JSON.parse(JSON.stringify(this.ORDERLIST));
     this.orderList = this.orderList.filter(
-      (item) => item.idProject == project.id
+      (item) =>
+        item.idProject == project.id && item.total >= this.projectpayment.amount
     );
   }
 
@@ -226,17 +350,19 @@ export class ReceivableAddComponent {
   orderFilter() {
     this.orderList = JSON.parse(JSON.stringify(this.ORDERLIST));
     this.orderList = this.orderList.filter((item) =>
-      item.projectName
-        .toLowerCase()
-        .includes(this.keywordsProject.toLowerCase())
+      item.projectName.toLowerCase().includes(this.keywordsOrder.toLowerCase())
     );
   }
 
   removOrder() {
     this.order = null;
     this.projectpayment.idOrder1 = 0;
-    if (!this.project)
+    if (!this.project) {
       this.orderList = JSON.parse(JSON.stringify(this.ORDERLIST));
+      this.orderList = this.orderList.filter(
+        (item) => item.total >= this.projectpayment.amount
+      );
+    }
   }
 
   vendor: any;
@@ -415,6 +541,27 @@ export class ReceivableAddComponent {
       } else {
         this.toastrService.info('Please enter amount', '');
       }
+    }
+  }
+
+  update() {
+    if (this.id > 0) {
+      this.apolloService
+        .mutate(projectpayment_update, this.projectpayment)
+        .then((res) => {
+          const result = res.projectpayment_update;
+          if (!result.error) {
+            this.toastrService.info(
+              'Bill for ' +
+                this.projectpayment.vendorName +
+                ' has been updated.',
+              ''
+            );
+            this.modalRef.close();
+          } else {
+            this.toastrService.info(result.message, '');
+          }
+        });
     }
   }
 }

@@ -50,6 +50,50 @@ const projectpayment_new = gql`
   }
 `;
 
+const projectpayment_update = gql`
+  mutation projectpayment_update(
+    $idCompany: Int!
+    $id: Int!
+    $revision: Int!
+    $idProject: Int!
+    $idVendor: Int!
+    $idOrder1: Int!
+    $idCompany_payment: Int!
+    $billNumber: billNumber_String_NotNull_maxLength_25!
+    $costCode: String
+    $sentDate: String!
+    $dueDate: String!
+    $paymentTerms: paymentTerms_String_NotNull_maxLength_50!
+    $amount: Float!
+    $txtNotes: txtNotes_String_NotNull_maxLength_512!
+  ) {
+    projectpayment_update(
+      idCompany: $idCompany
+      id: $id
+      revision: $revision
+      idProject: $idProject
+      idVendor: $idVendor
+      idOrder1: $idOrder1
+      idCompany_payment: $idCompany_payment
+      billNumber: $billNumber
+      costCode: $costCode
+      sentDate: $sentDate
+      dueDate: $dueDate
+      paymentTerms: $paymentTerms
+      amount: $amount
+      txtNotes: $txtNotes
+    ) {
+      error
+      code
+      message
+      data {
+        id
+        revision
+      }
+    }
+  }
+`;
+
 const projectpayment_info = gql`
   query projectpayment_info($idCompany: Int!, $id: Int!) {
     projectpayment_info(idCompany: $idCompany, id: $id) {
@@ -157,6 +201,7 @@ const projectpayment_list = gql`
         txtNotes
         status
         active
+        paidDate
       }
     }
   }
@@ -216,6 +261,7 @@ const projectbill_list = gql`
         txtNotes
         status
         active
+        paidDate
       }
     }
   }
@@ -296,5 +342,6 @@ export {
   getassociatedcompany_list,
   projectpayment_info,
   projectpayment_attachment,
-  projectpayment_pay
+  projectpayment_pay,
+  projectpayment_update,
 };

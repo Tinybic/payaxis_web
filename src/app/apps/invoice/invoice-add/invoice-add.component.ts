@@ -15,6 +15,7 @@ import {
   projectpayment_attachment,
   projectpayment_info,
   projectpayment_new,
+  projectpayment_update,
 } from 'src/app/core/gql/receivables';
 import { vendor_list } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
@@ -75,6 +76,7 @@ export class InvoiceAddComponent {
     vendorName: '',
     vendorEmail: '',
     status: '',
+    revision: 0,
   };
 
   payingBillModalRef: NgbModalRef;
@@ -132,6 +134,7 @@ export class InvoiceAddComponent {
             vendorName: result.data.vendorName,
             vendorEmail: result.data.primaryContact,
             status: result.data.status,
+            revision: result.data.revision,
           };
         }
         this.getVendorList();
@@ -285,6 +288,18 @@ export class InvoiceAddComponent {
       this.projectpayment.amount = 0;
     }
     this.amountEdit = false;
+    this.orderList = JSON.parse(JSON.stringify(this.ORDERLIST));
+    if (this.project) {
+      this.orderList = this.orderList.filter(
+        (item) =>
+          item.idProject == this.project.id &&
+          item.total >= this.projectpayment.amount
+      );
+    } else {
+      this.orderList = this.orderList.filter(
+        (item) => item.total >= this.projectpayment.amount
+      );
+    }
   }
 
   groupBy(arr, key) {
@@ -314,12 +329,14 @@ export class InvoiceAddComponent {
 
   setCostCodeName() {
     this.costCodeList.forEach((item) => {
-      item.costcodelist.forEach((costcode) => {
-        if (costcode.costCode == this.projectpayment.costCode) {
-          this.vendorcostcodesText = costcode.txtName;
-          return;
-        }
-      });
+      if (item.costcode) {
+        item.costcodelist.forEach((costcode) => {
+          if (costcode.costCode == this.projectpayment.costCode) {
+            this.vendorcostcodesText = costcode.txtName;
+            return;
+          }
+        });
+      }
     });
   }
 
@@ -439,7 +456,8 @@ export class InvoiceAddComponent {
     this.projectpayment.idProject = project.id;
     this.orderList = JSON.parse(JSON.stringify(this.ORDERLIST));
     this.orderList = this.orderList.filter(
-      (item) => item.idProject == project.id
+      (item) =>
+        item.idProject == project.id && item.total >= this.projectpayment.amount
     );
   }
 
@@ -478,9 +496,7 @@ export class InvoiceAddComponent {
   orderFilter() {
     this.orderList = JSON.parse(JSON.stringify(this.ORDERLIST));
     this.orderList = this.orderList.filter((item) =>
-      item.projectName
-        .toLowerCase()
-        .includes(this.keywordsProject.toLowerCase())
+      item.projectName.toLowerCase().includes(this.keywordsOrder.toLowerCase())
     );
   }
 
@@ -488,8 +504,12 @@ export class InvoiceAddComponent {
     this.order = null;
     this.projectpayment.idOrder1 = 0;
     this.projectpayment.costCode = '0';
-    if (!this.project)
+    if (!this.project) {
       this.orderList = JSON.parse(JSON.stringify(this.ORDERLIST));
+      this.orderList = this.orderList.filter(
+        (item) => item.total >= this.projectpayment.amount
+      );
+    }
   }
 
   vendor: any;
@@ -846,6 +866,27 @@ export class InvoiceAddComponent {
       this.toastrService.info('Please enter amount', '');
     }
     //}
+  }
+
+  update() {
+    if (this.id > 0) {
+      this.apolloService
+        .mutate(projectpayment_update, this.projectpayment)
+        .then((res) => {
+          const result = res.projectpayment_update;
+          if (!result.error) {
+            this.toastrService.info(
+              'Bill for ' +
+                this.projectpayment.vendorName +
+                ' has been updated.',
+              ''
+            );
+            this.modalRef.close();
+          } else {
+            this.toastrService.info(result.message, '');
+          }
+        });
+    }
   }
 
   openPayingBill() {

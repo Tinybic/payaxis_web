@@ -34,7 +34,7 @@ export class ReceivableListComponent {
   hoveredDate: NgbDate | null = null;
   fromDate!: NgbDate;
   toDate: NgbDate | null = null;
-
+  selectId = 0;
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
@@ -274,7 +274,9 @@ export class ReceivableListComponent {
   }
 
   addModalRef;
-  openAddModal() {
+
+
+  openModal(){
     this.addModalRef = this.modalService.open(this.addModal, {
       backdrop: 'static',
       modalDialogClass: 'modal-right',
@@ -292,5 +294,13 @@ export class ReceivableListComponent {
     );
   }
 
-  openEditModal(id) {}
+  openAddModal() {
+    this.selectId = 0;
+    this.openModal();
+  }
+
+  openEditModal(id) {
+    this.selectId = id;
+    this.openModal();
+  }
 }
