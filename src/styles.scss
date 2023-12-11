@@ -465,7 +465,7 @@ input[type='date']::-webkit-calendar-picker-indicator {
     position: relative;
     z-index: 2;
 
-    &.blue{
+    &.blue, &:hover{
       background-color: #2B52DD;
       color: #FFF;
     }

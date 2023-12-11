@@ -174,6 +174,8 @@ export type Mutation = {
   projectpayment_new: Projectpaymentresult;
   /** open project payment */
   projectpayment_open: Projectpaymentresult;
+  /** pay project payment */
+  projectpayment_pay: Projectpaymentresult;
   /** reject project payment */
   projectpayment_reject: Projectpaymentresult;
   /** update project payment */
@@ -769,6 +771,16 @@ export type MutationProjectpayment_NewArgs = {
 export type MutationProjectpayment_OpenArgs = {
   id: Scalars['Int']['input'];
   idCompany: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationProjectpayment_PayArgs = {
+  amount: Scalars['Float']['input'];
+  id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
+  paidDate: Scalars['String']['input'];
   revision: Scalars['Int']['input'];
 };
 
@@ -2050,6 +2062,7 @@ export type Project_Payment = {
   orderDue: Scalars['Float']['output'];
   orderNumber: Scalars['Int']['output'];
   orderStatus: Scalars['String']['output'];
+  paidDate: Scalars['String']['output'];
   payType: Scalars['String']['output'];
   paymentTerms: Scalars['String']['output'];
   phone: Scalars['String']['output'];
