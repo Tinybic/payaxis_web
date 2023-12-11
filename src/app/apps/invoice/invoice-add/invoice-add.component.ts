@@ -55,6 +55,8 @@ export class InvoiceAddComponent {
   costCodeList = [];
   COSTCODE_LIST = [];
   projectpayment = {
+    id:0,
+    revision: 0,
     idCompany: 0,
     idProject: 0,
     idVendor: 0,
@@ -110,6 +112,8 @@ export class InvoiceAddComponent {
         const result = res.projectpayment_info;
         if (!result.error) {
           this.projectpayment = {
+            id: result.data.id,
+            revision: result.data.revision,
             idCompany: result.data.idCompany,
             idProject: result.data.idProject,
             idVendor: result.data.idVendor,

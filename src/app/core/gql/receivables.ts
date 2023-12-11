@@ -1,4 +1,5 @@
 import { gql } from 'apollo-angular';
+
 const projectpayment_new = gql`
   mutation projectpayment_new(
     $idCompany: Int!
@@ -264,11 +265,36 @@ const getassociatedcompany_list = gql`
   }
 `;
 
+const projectpayment_pay = gql`
+  mutation projectpayment_pay($idCompany: Int!,
+    $id: Int!,
+    $revision: Int!,
+    $paidDate: String!,
+    $amount: Float!) {
+    projectpayment_pay(
+      idCompany: $idCompany
+      id: $id
+      revision: $revision
+      paidDate: $paidDate
+      amount: $amount
+    ) {
+      error
+      code
+      message
+      data {
+        id
+        revision
+      }
+    }
+  }
+`;
+
 export {
   projectpayment_new,
   projectpayment_list,
   projectbill_list,
   getassociatedcompany_list,
   projectpayment_info,
-  projectpayment_attachment
+  projectpayment_attachment,
+  projectpayment_pay
 };

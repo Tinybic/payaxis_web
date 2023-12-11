@@ -1,8 +1,9 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { NgbCalendar, NgbDate, NgbModal, NgbModalRef, NgbDatepicker } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDate, NgbModal, NgbModalRef, NgbDatepicker, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { ApolloService } from "../../../core/service/apollo.service";
 import { ToastrService } from "ngx-toastr";
-import { formatDate, formatCurrency} from "@angular/common";
+import { formatDate, formatCurrency } from "@angular/common";
+import { projectpayment_pay } from "../../../core/gql/receivables";
 
 @Component({
   selector: 'app-paying-bill',
@@ -11,49 +12,75 @@ import { formatDate, formatCurrency} from "@angular/common";
 })
 export class PayingBillComponent {
   @Input() modalRef: NgbModalRef;
-  @Input() payment;
+  @Input() payment: any;
+  @Input() vendor: any;
   @ViewChild('dp') dp: NgbDatepicker;
   
-  billNumber = 0;
   combine: boolean = true;
-  amount = '0.00';
-  vendor = '';
-  address = '';
+  amount = {
+    value: '0.00',
+    balance: '$0.00',
+    redColor: false
+  }
   memo = '';
   step = 1;
   btnOK = 'Continue';
   btnCancel = 'Cancel';
   
   currentDate: NgbDate = this.calendar.getToday()
-  hoveredDate: NgbDate | null = null;
-  fromDate: NgbDate = this.calendar.getToday();
-  toDate: NgbDate | null = this.calendar.getNext(this.fromDate, 'd', 3);
+  fromDate: NgbDate | null = null;
+  toDate: NgbDate | null = null;
   outsideDays = 'visible';
-  dueDate: NgbDate | null = this.calendar.getNext(this.fromDate, 'd', -3);
-  blueDate: NgbDate | null = this.calendar.getNext(this.fromDate, 'd', -6);
+  dueDate: NgbDate | null = null;
+  blueDate: NgbDate | null = null;
   
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
     private toastrService: ToastrService,
-    private calendar: NgbCalendar
+    private calendar: NgbCalendar,
+    private ngbDateFormater: NgbDateParserFormatter
   ){}
   
   ngOnInit(): void{
-    this.amount = '100.00';
-    this.billNumber = 256511;
-    this.vendor = 'Joe & Son Plumbing Services';
-    this.address = '1234 Main Street, Chicago IL 54667, United States';
+    this.amount.value = parseFloat(this.payment.amount).toFixed(2);
+    this.dueDate = NgbDate.from(this.ngbDateFormater.parse(this.payment.dueDate));
+    this.onDateSelection(this.currentDate);
+  }
+  
+  getRemainingOrderBalance(){
+    if(Number.isFinite(parseFloat(this.amount.value))){
+      const balance = this.payment.amount - parseFloat(this.amount.value);
+      if(balance < 0){
+        this.amount.redColor = true;
+        this.amount.balance = '($' + (balance * -1).toFixed(2) + ')';
+      } else{
+        this.amount.redColor = false;
+        this.amount.balance = balance.toFixed(2);
+      }
+    } else{
+      this.amount.redColor = false;
+      this.amount.balance = this.payment.amount;
+    }
   }
   
   onDateSelection(date: NgbDate){
-    if(!this.fromDate && !this.toDate){
-      this.fromDate = date;
-    } else if(this.fromDate && !this.toDate && date.after(this.fromDate)){
-      this.toDate = date;
-    } else{
-      this.toDate = null;
-      this.fromDate = date;
+    this.blueDate = date;
+    
+    const weekDay = this.calendar.getWeekday(this.blueDate);
+    switch(weekDay){
+      case 6:
+        this.fromDate = this.calendar.getNext(this.blueDate, 'd', 6);
+        this.toDate = this.calendar.getNext(this.blueDate, 'd', 10);
+        break;
+      case 7:
+        this.fromDate = this.calendar.getNext(this.blueDate, 'd', 5);
+        this.toDate = this.calendar.getNext(this.blueDate, 'd', 9);
+        break;
+      default:
+        this.fromDate = this.calendar.getNext(this.blueDate, 'd', 7);
+        this.toDate = this.calendar.getNext(this.blueDate, 'd', 11);
+        break;
     }
   }
   
@@ -81,41 +108,62 @@ export class PayingBillComponent {
     if(this.toDate){
       if(this.toDate.year == this.fromDate.year){
         if(this.toDate.month == this.fromDate.month){
-          return formatDate(this.fromDate.month + '-' +this.fromDate.day, 'MMM d', 'en') + ' - ' + this.toDate.day+','+this.fromDate.year;
-        }else{
-          return formatDate(this.fromDate.month + '-' +this.fromDate.day, 'MMM d', 'en') + ' - ' + formatDate(this.toDate.month + '-' +this.toDate.day, 'MMM d', 'en')+', '+this.fromDate.year;
+          return formatDate(this.fromDate.month + '-' + this.fromDate.day, 'MMM d', 'en') + ' - ' + this.toDate.day + ',' + this.fromDate.year;
+        } else{
+          return formatDate(this.fromDate.month + '-' + this.fromDate.day, 'MMM d', 'en') + ' - ' + formatDate(this.toDate.month + '-' + this.toDate.day, 'MMM d', 'en') + ', ' + this.fromDate.year;
         }
-      }else {
-        return formatDate(this.fromDate.year + '-' + this.fromDate.month + '-' +this.fromDate.day, 'MMM d, y', 'en') + ' - ' + formatDate(this.toDate.year + '-' + this.toDate.month + '-' +this.toDate.day, 'MMM d, y', 'en');
+      } else{
+        return formatDate(this.fromDate.year + '-' + this.fromDate.month + '-' + this.fromDate.day, 'MMM d, y', 'en') + ' - ' + formatDate(this.toDate.year + '-' + this.toDate.month + '-' + this.toDate.day, 'MMM d, y', 'en');
       }
-    }else{
-      return formatDate(this.fromDate.year + '-' + this.fromDate.month + '-' +this.fromDate.day, 'MMM d, y', 'en');
+    } else{
+      return formatDate(this.fromDate.year + '-' + this.fromDate.month + '-' + this.fromDate.day, 'MMM d, y', 'en');
     }
   }
   
-  isHovered(date: NgbDate){
-    return (
-      this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate)
-    );
-  }
-  
-  isInside(date: NgbDate){
-    return this.toDate && date.after(this.fromDate) && date.before(this.toDate);
-  }
-  
   isRange(date: NgbDate){
-    return (
-      date.equals(this.fromDate) ||
-      (this.toDate && date.equals(this.toDate)) ||
-      (this.hoveredDate && date.equals(this.hoveredDate)) ||
-      this.isInside(date) ||
-      this.isHovered(date)
-    );
+    return this.fromDate && this.toDate && ((date.equals(this.fromDate) || date.equals(this.toDate))
+      || (date.after(this.fromDate) && date.before(this.toDate)))
   }
   
-  nextStep(step){
-    if(step > 0 && step < 5){
-      this.step = step;
+  savePayingBill(){
+    let params = {
+      idCompany: parseInt(this.payment.idCompany),
+      id: parseInt(this.payment.id),
+      revision: parseInt(this.payment.revision),
+      paidDate: this.blueDate.year + '-' + this.blueDate.month + '-' + this.blueDate.day,
+      amount: this.amount.value
+    }
+    
+    this.apolloService.mutate(projectpayment_pay, params).then((res) => {
+      let result = res.projectpayment_pay;
+      if(!result.error){
+        this.step++;
+        this.btnOK = 'Notify my vendor';
+        this.btnCancel = 'Thanks, I’m done here';
+      } else{
+        this.toastrService.info(result.message, '');
+      }
+    })
+    
+  }
+  
+  nextStep(direction){
+    if(this.step === 4){
+      this.modalService.dismissAll();
+      return;
+    }
+    if(direction == 'continue'){
+      if(this.step !== 3){
+        this.step++;
+      } else{
+        this.savePayingBill();
+      }
+    } else{
+      if(this.step < 4){
+        this.step--;
+      }
+    }
+    if(this.step > 0 && this.step < 5){
       switch(this.step){
         case 1:
           this.btnOK = 'Continue';
@@ -140,4 +188,6 @@ export class PayingBillComponent {
       }
     }
   }
+  
+  protected readonly parseFloat = parseFloat;
 }

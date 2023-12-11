@@ -6,7 +6,7 @@
         <div class="my-3-1">
             <div class="headline-24-400">{{step == 1 ? 'How do you want to pay these Bills ?' : 'When would you like this payment sent?'}}</div>
             <div class="search-text mt-1-1">{{step == 1 ? 'Put amount and check Payment method' : 'Choose a date for the payment to be sent.'}}</div>
-            <ngb-progressbar [value]="20" class="progress-md mt-1-1"></ngb-progressbar>
+            <ngb-progressbar [value]=" step == 1 ? 20 : 60" class="progress-md mt-1-1"></ngb-progressbar>
         </div>
         
         <div *ngIf="step  == 1" class="d-inline-block form-check form-switch">
@@ -19,17 +19,18 @@
         <div class="card mt-3-1">
             <div class="card-body p-2-1">
                 <div *ngIf="step  == 1" class="row">
-                    <div class="col-12 Subtitle-1 text-start">Joe & Son Plumbing Services</div>
+                    <div class="col-12 Subtitle-1 text-start">{{payment.vendorName}}</div>
                     <div class="col-6 mt-2-1">
-                        <div class="Subtitle-2 font-12">#{{billNumber}}</div>
+                        <div class="Subtitle-2 font-12">#{{payment.billNumber}}</div>
                         <div class="search-text">
-                            Due {{(dueDate.year + '-' + dueDate.month + '-' + dueDate.day) | date: 'MMM d, y'}}</div>
+                            Due {{payment.dueDate | date: 'MMM d, y'}}</div>
                     </div>
                     <div class="col-6 mt-2-1">
                         <input id="projectBudget"
                                class="form-control Subtitle-1"
                                type="text"
-                               [(ngModel)]="amount"
+                               [(ngModel)]="amount.value"
+                               (keyup)="getRemainingOrderBalance()"
                                prefix="$"
                                mask="separator.2"
                                thousandSeparator=","
@@ -37,7 +38,7 @@
                                i18n-placeholder placeholder="0.00"
                                style="text-align: right;padding: 6px 16px;"
                         />
-                        <div class="subtitle-2-400-12 text-end mt-0-1">Remaining order balance $0</div>
+                        <div class="subtitle-2-400-12 text-end mt-0-1">Remaining order balance <span [class.txtRed]="amount.redColor">{{amount.balance}}</span></div>
                     </div>
                     <div class="col-12 mt-2-1">
                         <label class="form-label" style="margin-bottom: 0;" i18n>Memo</label>
@@ -78,9 +79,7 @@
                         <ng-template #paymentRangeDate let-date let-currentMonth="currentMonth">
                             <div class="{{isCurrentMonth(date, currentMonth)}}"
                                  [class.range]="isRange(date)"
-                                 [class.focused]="false"
-                                 (mouseenter)="hoveredDate = date"
-                                 (mouseleave)="hoveredDate = null">
+                                 [class.focused]="false">
                                 <img *ngIf="date.equals(dueDate)" class="due"
                                      src="assets/images/status-icons/due-red.png">
                                 <div class="selected-dot"></div>
@@ -129,8 +128,13 @@
                 <div class="p-2-1">
                     <div class="d-flex flex-row justify-content-between">
                         <div>
-                            <div class="Subtitle-1 text-start">{{vendor}}</div>
-                            <div class="label-tips text-start" style="color: #202020cc;">{{address}}</div>
+                            <div class="Subtitle-1 text-start">{{vendor.vendorName}}</div>
+                            <div class="label-tips text-start" style="color: #202020cc;">
+                                <span *ngIf="vendor.txtAddress">{{vendor.txtAddress}},</span>
+                                <span *ngIf="vendor.txtCity">{{vendor.txtCity}},</span>
+                                <span *ngIf="vendor.txtState">{{vendor.txtState}},</span>
+                                {{vendor.txtZipcode}}
+                            </div>
                         </div>
                         <div class="text-end">
                             <img src="assets/images/status-icons/plumbing.png">
@@ -155,7 +159,7 @@
                     </div>
                     <hr class="my-1-1" style="border-top: 1px solid #E1E6EF;">
                     <div class="d-flex flex-row justify-content-between mb-1-1">
-                        <div class="Subtitle-1" style="color: #4B5563;">#54564</div>
+                        <div class="Subtitle-1" style="color: #4B5563;">#{{payment.billNumber}}</div>
                         <div class="text-end">
                             <img src="assets/images/status-icons/due-1.png">
                         </div>
@@ -168,14 +172,14 @@
                 <div class="mt-1-1 p-2-1" style="background-color: #F8F9FC;">
                     <div class="d-flex flex-row justify-content-between">
                         <div class="search-text" style="color: #4B5563;">Remaining balance</div>
-                        <div class="Subtitle-2 text-end font-12">$1,346</div>
+                        <div class="Subtitle-2 text-end font-12">{{amount.balance}}</div>
                     </div>
-                    <ngb-progressbar [value]="75" type="success" class="progress-md mt-1-1"></ngb-progressbar>
+                    <ngb-progressbar [value]="parseFloat(amount.balance)/payment.amount*100" type="success" class="progress-md mt-1-1"></ngb-progressbar>
                     <div class="d-flex flex-row justify-content-between mt-1-1">
                         <div class="d-flex search-text align-items-end" style="color: #4B5563;">Total Amount due</div>
                         <div class="text-end"
                              style="font-size: 38px;font-weight: 700;line-height: 40px;letter-spacing: 0.25px;text-align: right;">
-                            $100.00
+                            ${{amount.value}}
                         </div>
                     </div>
                 </div>
@@ -192,12 +196,12 @@
         </div>
     </div>
     
-    <div class="d-grid" style="width: calc(100% - 48px);position: fixed;bottom: 24px;right: 24px;">
-        <button class="btn mb-1-1 {{ step === 3 ? 'btn-success' : 'btn-primary'}}" (click)="nextStep(step+1)"
-                style="border: none;">
+    <div class="d-grid" style="width: calc(100% - 48px);position: fixed;bottom: 24px;right: 24px;z-index: 10;">
+        <button class="btn mb-1-1 {{ step === 3 ? 'btn-success' : 'btn-primary'}}" (click)="nextStep('continue')"
+                style="height: 44px;border: none;">
             {{btnOK}}
         </button>
-        <button class="btn btn-outline-primary" (click)="nextStep(step < 4 ? step-1 : step)">
+        <button class="btn btn-outline-primary" (click)="nextStep('back')" style="height: 44px;">
             <i *ngIf="step === 2 || step === 3" class="mdi mdi-arrow-left"></i>
             {{btnCancel}}
         </button>
