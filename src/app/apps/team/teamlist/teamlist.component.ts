@@ -254,10 +254,6 @@ export class TeamlistComponent extends Base {
     if(this.members[this.deleteIndex].idUser == 0){
       gql = company_invitedmember_deactivate;
     }
-
-
-    console.log(this.members[this.deleteIndex])
-
     this.apolloService
       .mutate(gql, {
         idCompany: parseInt(localStorage.getItem('idcompany')),

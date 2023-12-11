@@ -408,7 +408,7 @@
                         </div>
                         <div *ngFor="let item of costCodeList">
                             <div style="color: #215EA9; font-weight: 600; margin-bottom: 8px; margin-top: 8px;"
-                                *ngIf="item.costcodelist.length>0">
+                                *ngIf="item.costcodelist && item.costcodelist.length>0">
                                 {{item.txtName}}
                             </div>
                             <div class="mb-1" *ngFor="let costcode of item.costcodelist">
@@ -568,7 +568,7 @@
     </div>
 </div>
 
-<div class="row" *ngIf="id > 0 && projectpayment.status == 'Send'"
+<div class="row" *ngIf="id > 0 && projectpayment.status == 'Sent'"
     style="height: 72px;background-color: #2B2D30;box-shadow: 0px 25px 50px 0px #00000040;padding: 16px 32px;position: fixed;bottom: 0;width: 100%;margin-left: -32px;z-index: 9999;">
     <div class="col-md-4 d-grid">
         <button class="btn btn-primary"
@@ -578,7 +578,7 @@
         <button class="btn btn-primary" (click)="openPayingBill()" style="border:0px; box-shadow: none;">Pay Now</button>
     </div>
     <div class="col-md-4 d-grid">
-        <button class="btn btn-primary" style="border:0px; box-shadow: none;">Save</button>
+        <button class="btn btn-primary" style="border:0px; box-shadow: none;" (click)="update()">Save</button>
     </div>
 </div>
 

@@ -1,6 +1,15 @@
 <div class="row">
-    <div class="col-md-12  headline text-black">
+    <div class="col-md-12  headline text-black" *ngIf="id == 0">
         New Payment Request
+    </div>
+    <div class="col-md-12  headline text-black" *ngIf="id > 0 && this.projectpayment.status">
+        Payment Request #{{this.projectpayment.billNumber}}
+        <div
+            class="d-inline-block {{projectpayment.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">
+            {{projectpayment.status}}</div>
+    </div>
+    <div class="subtitle-2-500 text-typeblack80" *ngIf="id > 0 && order">
+        For Order #{{order.orderNumber}}
     </div>
 </div>
 <div class="card mt-1-1">
@@ -48,8 +57,9 @@
                                 <div class="subtitle-2-400-12 ">{{vendor.phone}}</div>
                             </div>
                             <div class="col-md-3 text-end">
-                                <app-avatar [bgColor]="'bg-info'"  color="text-white" [url]="vendor.avatar" [firstName]="vendor.firstName" [lastName]="vendor.lastName" [size]="32"
-                            alt="user-img" class="ms-2"></app-avatar>
+                                <app-avatar [bgColor]="'bg-info'" color="text-white" [url]="vendor.avatar"
+                                    [firstName]="vendor.firstName" [lastName]="vendor.lastName" [size]="32"
+                                    alt="user-img" class="ms-2"></app-avatar>
                             </div>
                         </div>
                     </div>
@@ -107,7 +117,7 @@
             <div class="col-md-6 subtitle-400-12-32-up">
                 Payment Details
             </div>
-            <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" >
+            <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer">
                 <!-- Edit Deposit Account -->
             </div>
         </div>
@@ -120,9 +130,11 @@
 
         <div class="row p-3 mt-1-1" style="border-bottom: 1px solid #E1E6EF;">
             <div class="col-md-12 text-center ">
-                <input #amount type="text" *ngIf="amountEdit" mask="separator.2" (blur)="cancelAmount()" class=" subtitle-700-37-40" style="border: 0px;outline: 0;text-align: center;"
+                <input #amount type="text" *ngIf="amountEdit" mask="separator.2" (blur)="cancelAmount()"
+                    class=" subtitle-700-37-40" style="border: 0px;outline: 0;text-align: center;"
                     [(ngModel)]="projectpayment.amount" />
-                <label class="subtitle-700-37-40 cursor-pointer" (click)="editAmount()" *ngIf="!amountEdit">{{projectpayment.amount | currency}}</label>
+                <label class="subtitle-700-37-40 cursor-pointer" (click)="editAmount()"
+                    *ngIf="!amountEdit">{{projectpayment.amount | currency}}</label>
             </div>
         </div>
 
