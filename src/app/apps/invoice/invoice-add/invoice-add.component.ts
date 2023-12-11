@@ -76,7 +76,6 @@ export class InvoiceAddComponent {
     vendorName: '',
     vendorEmail: '',
     status: '',
-    revision: 0,
   };
 
   payingBillModalRef: NgbModalRef;
@@ -134,7 +133,6 @@ export class InvoiceAddComponent {
             vendorName: result.data.vendorName,
             vendorEmail: result.data.primaryContact,
             status: result.data.status,
-            revision: result.data.revision,
           };
         }
         this.getVendorList();
