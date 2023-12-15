@@ -147,6 +147,7 @@ export class RegisterComponent implements OnInit {
             this.companyListRef = this.modalService.open(
               this.companyListModal,
               {
+                size:'489',
                 backdrop: 'static',
                 centered: true,
               }
@@ -243,6 +244,7 @@ export class RegisterComponent implements OnInit {
       this.modalService.dismissAll();
     } else {
       this.infoModalRef = this.modalService.open(this.infoModal, {
+        size:'489',
         backdrop: 'static',
         centered: true,
       });

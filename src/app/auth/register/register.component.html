@@ -110,18 +110,19 @@
     </ng-template>
 
     <ng-template #companyListModal>
-        <div class="modal-body">
+        <div class="modal-body padding-32-24">
             <input type="text" style="display: none;" />
-            <div class="headline">
+            <div class="headline text-center">
                 Hey! Are you one of this company?
             </div>
-            <div class="subtitle-2-500-18 mb-1-1">
+            <div class="subtitle-2-500-18 mb-1-1 text-center">
                 Do you want to ask to join or create a new one?
             </div>
             <div *ngFor="let item of companyList"
                 style="border: 1px solid #E5E7EB; padding: 16px; border-radius: 8px; display: flex; margin-top: 16px;">
                 <div class="text-start" style="width: 50px;">
-                    <app-avatar></app-avatar>
+                    <app-avatar [url]="item.avatar" [companyName]="item.txtName"  [size]="40"
+                                    alt="user-img"></app-avatar>
                 </div>
                 <div class="text-start" style="flex: 1;">
                     <span class="Subtitle-1 text-start">{{item.txtName}}</span> <br />
@@ -135,7 +136,7 @@
                 <div class="text-start" style="width: 50px;">
                     <img src="/assets/images/new-company.png" />
                 </div>
-                <div class="text-start" style="flex: 1;">
+                <div class="text-start" style="flex: 1; line-height: 40px;">
                     <span class="Subtitle-1 text-start">Create new Company</span>
                 </div>
                 <div class="text-end" style="width: 100px;">
@@ -145,9 +146,9 @@
         </div>
     </ng-template>
     <ng-template #infoModal>
-        <div class="modal-body">
+        <div class="modal-body padding-32-24">
             <input type="text" style="display: none;" />
-            <div class="subtitle-2-500-18 mb-1-1">
+            <div class="subtitle-2-500-18 mb-1-1 text-center">
                 Please add your first and last name so that the owner knows more about you.
             </div>
             <div class="mt-2-1">
