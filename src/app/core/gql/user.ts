@@ -9,18 +9,12 @@ const profile_2fa = gql`
 const profile_activate = gql`
   mutation profile_activate(
     $revision: Int!
-    $firstName: String!
-    $lastName: String!
-    $companyName: String!
     $mobile: String!
     $twofa: Boolean!
     $verificationCode: String!
   ) {
     profile_activate(
       revision: $revision
-      firstName: $firstName
-      lastName: $lastName
-      companyName: $companyName
       mobile: $mobile
       twofa: $twofa
       verificationCode: $verificationCode

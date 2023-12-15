@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { UiModule } from '../shared/ui/ui.module';
 import { AuthRoutingModule } from './auth-routing.module';
@@ -19,6 +19,8 @@ import { RecoverPasswordPhoneComponent } from './recover-password-phone/recover-
 import { InvitingRegisterComponent } from './inviting-register/inviting-register.component';
 import { RecaptchaModule } from "ng-recaptcha";
 import { InvitingVendorComponent } from './inviting-vendor/inviting-vendor.component';
+import { AvatarModule } from '../shared/avatar/avatar.module';
+import { JoinCompanyComponent } from './join-company/join-company.component';
 const maskConfig: Partial<IConfig> = {
   validation: false,
 };
@@ -34,10 +36,12 @@ const maskConfig: Partial<IConfig> = {
     ResetPasswordComponent,
     RecoverPasswordPhoneComponent,
     InvitingRegisterComponent,
-    InvitingVendorComponent
+    InvitingVendorComponent,
+    JoinCompanyComponent
   ],
   imports: [
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     NgbAlertModule,
     UiModule,
@@ -47,6 +51,7 @@ const maskConfig: Partial<IConfig> = {
     NgxMaskPipe,
     CodeInputModule,
     RecaptchaModule,
+    AvatarModule
   ],
   providers:[
     provideNgxMask()

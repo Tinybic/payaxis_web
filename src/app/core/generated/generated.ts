@@ -74,6 +74,8 @@ export type Mutation = {
   company_member_edit: Invitememberresult;
   /** new company_invitedmember */
   company_member_invite: Invitememberresult;
+  /** request to join company */
+  company_member_join: Invitememberresult;
   /** new company details */
   company_new: Comresult;
   /** update company details */
@@ -256,6 +258,13 @@ export type MutationCompany_Member_EditArgs = {
 export type MutationCompany_Member_InviteArgs = {
   idCompany: Scalars['Int']['input'];
   inviteMembers?: InputMaybe<Array<Invitemember>>;
+};
+
+
+/** structure to handle table sms */
+export type MutationCompany_Member_JoinArgs = {
+  idCompany: Scalars['Int']['input'];
+  idUser: Scalars['Int']['input'];
 };
 
 
@@ -1505,6 +1514,7 @@ export type Company_Member = {
   idRole: Scalars['Int']['output'];
   idUser: Scalars['Int']['output'];
   lastName: Scalars['String']['output'];
+  memberType: Scalars['Int']['output'];
   modifiedBy: Scalars['Int']['output'];
   modifiedDate: Scalars['String']['output'];
   revision: Scalars['Int']['output'];
