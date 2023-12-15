@@ -54,48 +54,30 @@ export class InfoComponent implements OnInit {
 
   ngOnInit(): void {
     this.companyFlag = localStorage.getItem('join') == '0' ? true : false;
-    this.toastr.info(
-      `
-    <div class="d-inline-block msssageIconDiv"><i class="fe-mail"></i></div>Please confirm verification via email
-    `,
-      '',
-      {
-        timeOut: 50000,
-        enableHtml: true,
-      }
-    );
-    // this.apolloService
-    //   .query(profile_info, {})
-    //   .then((res) => {
-    //     this.loading = false;
-
-    //     const result = res.profile_info;
-
-    //     if (!result.error) {
-    //       if (!result.data.active) {
-    //         this.formValues['firstname'].setValue(result.data.firstName);
-    //         this.formValues['lastname'].setValue(result.data.lastName);
-    //         this.formValues['companyName'].setValue(result.data.companyName);
-    //         this.formValues['phone'].setValue(result.data.mobile);
-    //         this.formValues['f2_auth'].setValue(result.data.twofa);
-    //         this.revision = result.data.revision;
-    //       } else {
-    //         localStorage.setItem('firstName', result.data.firstName);
-    //         localStorage.setItem('lastName', result.data.lastName);
-    //         localStorage.setItem('memberyn', result.data.memberyn.toString());
-    //         localStorage.setItem('id', result.data.id.toString());
-    //         localStorage.setItem('avatar', result.data.avatar);
-    //         this.toastr.info(
-    //           'This account has been activated. Please log in.',
-    //           'Account information update.'
-    //         );
-    //         this.router.navigate(['auth/login']);
-    //       }
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     this.loading = false;
-    //   });
+    if (!this.companyFlag) {
+      this.toastr.info(
+        `
+          <div class="d-inline-block msssageIconDiv"><i class="fe-mail"></i></div>Please confirm verification via email
+        `,
+        '',
+        {
+          timeOut: 50000,
+          enableHtml: true,
+        }
+      );
+    }
+    this.apolloService
+      .query(profile_info, {})
+      .then((res) => {
+        this.loading = false;
+        const result = res.profile_info;
+        if (!result.error) {
+          this.revision = result.data.revision;
+        }
+      })
+      .catch((err) => {
+        this.loading = false;
+      });
   }
 
   /**

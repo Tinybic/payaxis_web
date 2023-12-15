@@ -22,7 +22,7 @@ export class JoinCompanyComponent {
 
   public successAlertOption: SweetAlertOptions = {
     html: `<div style="overflow: hidden">
-    <div class="swal2-alert-title">Verification confirmed</div>
+    <div class="swal2-alert-title">Request completed</div>
     <div class="swal2-alert-content">Thank you!</div>
     <div class="swal2-icon swal2-success swal2-icon-show" style="display: flex;transform: scale(0.5);margin-top: -5px;">
        <div class="swal2-success-circular-line-left" style="background-color: rgb(255, 255, 255);"></div>

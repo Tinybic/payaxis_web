@@ -132,8 +132,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
-
-  getProfileInfo(){
+  getProfileInfo() {
     this.apolloService.query(profile_info, {}).then((res) => {
       if (!res.profile_info.error) {
         const result = res.profile_info.data;
@@ -149,7 +148,6 @@ export class LoginComponent implements OnInit {
       this.loading = false;
     });
   }
-
 
   onCodeChanged(code: string) {}
 

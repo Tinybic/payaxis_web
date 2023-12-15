@@ -83,13 +83,15 @@ export class ProfileComponent extends Base implements OnInit, OnDestroy {
 
   canEdit = false;
   ngOnInit(): void {
-    this.canEdit = super.setRole('Edit Company details');
+    
     this.statesList = STATES;
     let gql = company_info;
     let data = {};
     if (localStorage.getItem('idcompany')) {
+      this.canEdit = super.setRole('Edit Company details');
       data = { id: parseInt(localStorage.getItem('idcompany')) };
     } else {
+      this.canEdit = true;
       data = { id: 0 };
     }
 
