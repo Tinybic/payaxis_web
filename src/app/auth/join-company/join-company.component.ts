@@ -54,7 +54,7 @@ export class JoinCompanyComponent {
             this.ajaxRequest1.fire();
             setTimeout(() => {
               this.router.navigate(['auth/login']);
-            }, 100);
+            }, 2000);
           } else {
           }
         })
@@ -62,7 +62,7 @@ export class JoinCompanyComponent {
           this.toastr.info(error, '');
             setTimeout(() => {
               this.router.navigate(['auth/login']);
-            }, 100);
+            }, 1000);
         });
     }
   }
