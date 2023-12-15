@@ -88,23 +88,10 @@ export class LoginComponent implements OnInit {
           password: this.formValues['password'].value,
         })
         .then((res) => {
-          if (!res.error) {
+          if (!res.error || res.code == 103) {
             localStorage.setItem('refreshToken', res.data.refreshToken);
             localStorage.setItem('token', res.data.token);
-            this.apolloService.query(profile_info, {}).then((res) => {
-              if (!res.profile_info.error) {
-                const result = res.profile_info.data;
-                localStorage.setItem('email', this.formValues['email'].value);
-                localStorage.setItem('firstName', result.firstName);
-                localStorage.setItem('lastName', result.lastName);
-                localStorage.setItem('memberyn', result.memberyn.toString());
-                localStorage.setItem('id', result.id.toString());
-                localStorage.setItem('avatar', result.avatar);
-                localStorage.setItem('welcomeyn', result.welcomeyn.toString());
-                this.router.navigate(['apps/projects']);
-              }
-              this.loading = false;
-            });
+            this.getProfileInfo();
           } else if (res.code == 113) {
             localStorage.setItem('refreshToken', res.data.refreshToken);
             localStorage.setItem('token', res.data.token);
@@ -145,6 +132,25 @@ export class LoginComponent implements OnInit {
     }
   }
 
+
+  getProfileInfo(){
+    this.apolloService.query(profile_info, {}).then((res) => {
+      if (!res.profile_info.error) {
+        const result = res.profile_info.data;
+        localStorage.setItem('email', this.formValues['email'].value);
+        localStorage.setItem('firstName', result.firstName);
+        localStorage.setItem('lastName', result.lastName);
+        localStorage.setItem('memberyn', result.memberyn.toString());
+        localStorage.setItem('id', result.id.toString());
+        localStorage.setItem('avatar', result.avatar);
+        localStorage.setItem('welcomeyn', result.welcomeyn.toString());
+        this.router.navigate(['apps/projects']);
+      }
+      this.loading = false;
+    });
+  }
+
+
   onCodeChanged(code: string) {}
 
   onCodeCompleted(code: string) {
@@ -155,23 +161,10 @@ export class LoginComponent implements OnInit {
         code: code,
       })
       .then((res) => {
-        if (!res.error) {
+        if (!res.error || res.code == 103) {
           localStorage.setItem('refreshToken', res.data.refreshToken);
           localStorage.setItem('token', res.data.token);
-          this.apolloService.query(profile_info, {}).then((res) => {
-            if (!res.profile_info.error) {
-              const result = res.profile_info.data;
-              localStorage.setItem('email', this.formValues['email'].value);
-              localStorage.setItem('firstName', result.firstName);
-              localStorage.setItem('lastName', result.lastName);
-              localStorage.setItem('memberyn', result.memberyn.toString());
-              localStorage.setItem('id', result.id.toString());
-              localStorage.setItem('avatar', result.avatar);
-              localStorage.setItem('welcomeyn', result.welcomeyn.toString());
-              this.router.navigate(['apps/projects']);
-            }
-            this.loading = false;
-          });
+          this.getProfileInfo();
         } else if (res.code == 113) {
           localStorage.setItem('refreshToken', res.data.refreshToken);
           localStorage.setItem('token', res.data.token);

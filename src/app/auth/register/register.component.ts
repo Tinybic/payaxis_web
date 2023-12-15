@@ -13,6 +13,7 @@ import { HttpService } from 'src/app/core/service/http.service';
 
 // types
 import { PasswordValidator } from 'src/app/core/helpers/password.validator';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-auth-register',
@@ -22,6 +23,9 @@ import { PasswordValidator } from 'src/app/core/helpers/password.validator';
 export class RegisterComponent implements OnInit {
   @ViewChild('ajaxRequest1') ajaxRequest1!: SwalComponent;
   @ViewChild('resendModal') resendModal: NgbModalRef;
+  @ViewChild('companyListModal') companyListModal: NgbModalRef;
+  @ViewChild('infoModal') infoModal: NgbModalRef;
+  @ViewChild('loadModal') loadModal: NgbModalRef;
 
   signUpForm: UntypedFormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -36,9 +40,14 @@ export class RegisterComponent implements OnInit {
   countDown: number = 1000;
   resend: string = 'initial';
   intervalResend: any;
-
+  loading2 = true;
   email: '';
   emailDisabled = false;
+
+  firstName = '';
+  lastName = '';
+
+  companyList = [];
 
   public successAlertOption: SweetAlertOptions = {
     html: `<div style="overflow: hidden">
@@ -63,7 +72,8 @@ export class RegisterComponent implements OnInit {
     private router: Router,
     private httpService: HttpService,
     private activatedRoute: ActivatedRoute,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -84,8 +94,18 @@ export class RegisterComponent implements OnInit {
             this.ajaxRequest1.fire();
             localStorage.setItem('refreshToken', res.data.refreshToken);
             localStorage.setItem('token', res.data.token);
+            this.toastr.info(
+              `
+            <div class="d-inline-block msssageIconDiv"><i class="fe-check-circle"></i></div>Verification is done. Welcome!
+            `,
+              '',
+              {
+                timeOut: 50000,
+                enableHtml: true,
+              }
+            );
             setTimeout(() => {
-              this.router.navigate(['auth/info']);
+              this.router.navigate(['auth/login']);
             }, 3000);
           } else {
             this.error = res.message;
@@ -110,6 +130,38 @@ export class RegisterComponent implements OnInit {
 
   inputShowPassword() {
     this.showPassword = !this.showPassword;
+  }
+
+  companyListRef;
+
+  getCompanyList() {
+    this.httpService
+      .post('emailcompanylist', {
+        email: this.formValues['email'].value,
+      })
+      .then((res) => {
+        this.loading = false;
+        if (!res.error) {
+          this.companyList = res.data;
+          if (this.companyList.length > 0) {
+            this.companyListRef = this.modalService.open(
+              this.companyListModal,
+              {
+                backdrop: 'static',
+                centered: true,
+              }
+            );
+          } else {
+            this.askToJoin(0);
+          }
+        } else {
+          this.error = res.message;
+        }
+      })
+      .catch((error) => {
+        this.loading = false;
+        this.error = error;
+      });
   }
 
   setResendInterval() {
@@ -172,47 +224,64 @@ export class RegisterComponent implements OnInit {
     this.error = '';
     if (this.signUpForm.valid) {
       this.loading = true;
-      this.httpService
-        .post('signup', {
-          email: this.formValues['email'].value,
-          password: this.formValues['password'].value,
-        })
-        .then((res) => {
-          this.loading = false;
-          if (!res.error) {
-            if (this.email.length > 0) {
-              this.httpService
-                .post('login', {
-                  email: this.formValues['email'].value,
-                  password: this.formValues['password'].value,
-                })
-                .then((res) => {
-                  if (res.error && res.code == 113) {
-                    localStorage.setItem('refreshToken', res.data.refreshToken);
-                    localStorage.setItem('token', res.data.token);
-                    this.router.navigate(['auth/info']);
-                  } else {
-                    this.router.navigate(['auth/login']);
-                  }
-                });
-            } else {
-              this.openResendModal();
-            }
-          } else {
-            this.error = res.message;
-            if (res.code == 103) {
-              this.openResendModal();
-            }
-          }
-        })
-        .catch((error) => {
-          this.loading = false;
-          this.error = error;
-        });
+      this.getCompanyList();
     }
   }
 
   ngOnDestroy() {
     clearInterval(this.intervalResend);
+  }
+
+  infoModalRef;
+  askToJoin(id) {
+    if (this.companyListRef) this.companyListRef.close();
+    localStorage.setItem('join', id);
+    if (id == 0) {
+      this.router.navigate(['auth/info']);
+      localStorage.setItem('email', this.formValues['email'].value);
+      localStorage.setItem('password', this.formValues['password'].value);
+      this.modalService.dismissAll();
+    } else {
+      this.infoModalRef = this.modalService.open(this.infoModal, {
+        backdrop: 'static',
+        centered: true,
+      });
+    }
+  }
+
+  signUpRef;
+  signUp() {
+    this.infoModalRef.close();
+    this.signUpRef = this.modalService.open(this.loadModal, {
+      backdrop: 'static',
+      centered: true,
+    });
+
+    this.httpService
+      .post('signup', {
+        email: this.formValues['email'].value,
+        password: this.formValues['password'].value,
+        firstname: this.firstName,
+        lastname: this.lastName,
+        idcompany: parseInt(localStorage.getItem('join')),
+        companyname: ' ',
+      })
+      .then((res) => {
+        this.loading = false;
+        if (!res.error) {
+          localStorage.setItem('refreshToken', res.data.refreshToken);
+          localStorage.setItem('token', res.data.token);
+          setTimeout(() => {
+            this.signUpRef.close();
+            this.router.navigate(['auth/info']);
+          }, 2000);
+        } else {
+          this.error = res.message;
+        }
+      })
+      .catch((error) => {
+        this.loading = false;
+        this.error = error;
+      });
   }
 }

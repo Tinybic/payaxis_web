@@ -72,6 +72,11 @@ export class LeftSidebarComponent implements OnInit {
       this.apolloService.query(company_list, {}).then((res) => {
         if (!res.company_list.error) {
           this.companyList = res.company_list.data;
+
+          if(this.companyList.length == 0){
+            this.router.navigate(['apps/setting']);
+          }
+          else{
           if (
             this.companyList.length > 0 &&
             (localStorage.getItem('idcompany') == '0' ||
@@ -117,6 +122,7 @@ export class LeftSidebarComponent implements OnInit {
             }
           }
         }
+      }
       });
     }
   }

@@ -175,7 +175,7 @@
                     </div>
                 </ng-template>
             </li>
-            <li [ngbNavItem]="2">
+            <li [ngbNavItem]="2" [disabled]="company.id==0">
                 <a ngbNavLink>
                     Cost Codes
                 </a>
@@ -183,7 +183,7 @@
                     <app-costcode></app-costcode>
                 </ng-template>
             </li>
-            <li [ngbNavItem]="3">
+            <li [ngbNavItem]="3" [disabled]="company.id==0">
                 <a ngbNavLink>
                     Payment
                 </a>
@@ -191,7 +191,7 @@
                     <app-payment></app-payment>
                 </ng-template>
             </li>
-            <li [ngbNavItem]="4">
+            <li [ngbNavItem]="4" [disabled]="company.id==0">
                 <a ngbNavLink>
                     Roles
                 </a>

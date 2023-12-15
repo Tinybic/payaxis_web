@@ -68,9 +68,14 @@ export class OrderComponent extends Base {
 
   ngOnInit(): void {
     this.canEdit = super.setRole('Manage company users');
-    this.getOrders();
-    this.getRoles();
-    this.getProjects();
+    if (localStorage.getItem('idcompany')) {
+      this.getOrders();
+      this.getRoles();
+      this.getProjects();
+    }
+    else{
+      this.loading = false;
+    }
   }
 
   getOrders() {

@@ -17,7 +17,7 @@ import {
   profile_info,
 } from 'src/app/core/gql/user';
 import { ToastrService } from 'ngx-toastr';
-import { companyNew } from 'src/app/core/gql/company';
+import { HttpService } from 'src/app/core/service/http.service';
 @Component({
   selector: 'app-auth-info',
   templateUrl: './info.component.html',
@@ -27,9 +27,9 @@ export class InfoComponent implements OnInit {
   @ViewChild('centeredModal') centeredModal: any;
 
   signUpForm2: UntypedFormGroup = this.fb.group({
-    firstname: ['', [Validators.required]],
-    lastname: ['', [Validators.required]],
-    companyName: ['', [Validators.required]],
+    firstname: [''],
+    lastname: [''],
+    companyName: [''],
     phone: [''],
     f2_auth: [false],
   });
@@ -41,47 +41,61 @@ export class InfoComponent implements OnInit {
   mobile: string = '';
   revision: number = 1;
 
+  companyFlag = true;
+
   constructor(
     private fb: UntypedFormBuilder,
     private router: Router,
     private apolloService: ApolloService,
     private modalService: NgbModal,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private httpService: HttpService
   ) {}
 
   ngOnInit(): void {
-    this.apolloService
-      .query(profile_info, {})
-      .then((res) => {
-        this.loading = false;
+    this.companyFlag = localStorage.getItem('join') == '0' ? true : false;
+    this.toastr.info(
+      `
+    <div class="d-inline-block msssageIconDiv"><i class="fe-mail"></i></div>Please confirm verification via email
+    `,
+      '',
+      {
+        timeOut: 50000,
+        enableHtml: true,
+      }
+    );
+    // this.apolloService
+    //   .query(profile_info, {})
+    //   .then((res) => {
+    //     this.loading = false;
 
-        const result = res.profile_info;
+    //     const result = res.profile_info;
 
-        if (!result.error) {
-          if (!result.data.active) {
-            this.formValues['firstname'].setValue(result.data.firstName);
-            this.formValues['lastname'].setValue(result.data.lastName);
-            this.formValues['companyName'].setValue(result.data.companyName);
-            this.formValues['phone'].setValue(result.data.mobile);
-            this.formValues['f2_auth'].setValue(result.data.twofa);
-            this.revision = result.data.revision;
-          } else {
-            localStorage.setItem('firstName', result.data.firstName);
-            localStorage.setItem('lastName', result.data.lastName);
-            localStorage.setItem('memberyn', result.data.memberyn.toString());
-            localStorage.setItem('id', result.data.id.toString());
-            localStorage.setItem('avatar', result.data.avatar);
-            this.toastr.info(
-              'This account has been activated. Please log in.',
-              'Account information update.'
-            );
-            this.router.navigate(['auth/login']);
-          }
-        }
-      })
-      .catch((err) => {
-        this.loading = false;
-      });
+    //     if (!result.error) {
+    //       if (!result.data.active) {
+    //         this.formValues['firstname'].setValue(result.data.firstName);
+    //         this.formValues['lastname'].setValue(result.data.lastName);
+    //         this.formValues['companyName'].setValue(result.data.companyName);
+    //         this.formValues['phone'].setValue(result.data.mobile);
+    //         this.formValues['f2_auth'].setValue(result.data.twofa);
+    //         this.revision = result.data.revision;
+    //       } else {
+    //         localStorage.setItem('firstName', result.data.firstName);
+    //         localStorage.setItem('lastName', result.data.lastName);
+    //         localStorage.setItem('memberyn', result.data.memberyn.toString());
+    //         localStorage.setItem('id', result.data.id.toString());
+    //         localStorage.setItem('avatar', result.data.avatar);
+    //         this.toastr.info(
+    //           'This account has been activated. Please log in.',
+    //           'Account information update.'
+    //         );
+    //         this.router.navigate(['auth/login']);
+    //       }
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     this.loading = false;
+    //   });
   }
 
   /**
@@ -91,17 +105,27 @@ export class InfoComponent implements OnInit {
     return this.signUpForm2.controls;
   }
 
-  onCodeChanged(code: string) {}
+  getProfileInfo() {
+    this.apolloService.query(profile_info, {}).then((res) => {
+      if (!res.profile_info.error) {
+        const result = res.profile_info.data;
+        localStorage.setItem('email', result.email);
+        localStorage.setItem('firstName', result.firstName);
+        localStorage.setItem('lastName', result.lastName);
+        localStorage.setItem('memberyn', result.memberyn.toString());
+        localStorage.setItem('id', result.id.toString());
+        localStorage.setItem('avatar', result.avatar);
+        localStorage.setItem('welcomeyn', result.welcomeyn.toString());
+        this.router.navigate(['apps/projects']);
+      }
+      this.loading = false;
+    });
+  }
 
-  onCodeCompleted(code: string) {
-    this.modalService.dismissAll();
-    this.loading = true;
+  updatePhone(code) {
     this.apolloService
       .mutate(profile_activate, {
         revision: this.revision,
-        firstName: this.formValues['firstname'].value,
-        lastName: this.formValues['lastname'].value,
-        companyName: this.formValues['companyName'].value,
         mobile: this.formValues['phone'].value,
         twofa: this.formValues['f2_auth'].value,
         verificationCode: code,
@@ -109,54 +133,7 @@ export class InfoComponent implements OnInit {
       .then((res) => {
         this.loading = false;
         if (!res.profile_activate.error) {
-          this.apolloService
-            .mutate(companyNew, {
-              id: 0,
-              revision: 0,
-              txtName: this.formValues['companyName'].value,
-              taxId: '',
-              idMasterCompany: 0,
-              industry: '',
-              paymentTerms: '',
-              website: '',
-              txtAddress: '',
-              txtCity: '',
-              txtState: '',
-              txtZipcode: '',
-              contactNumber: '',
-              description: '',
-              avatar: '',
-              suiteNumber: '',
-            })
-            .then((res) => {
-              let result;
-              result = res.company_new;
-              if (!result.error) {
-                localStorage.setItem('idcompany', result.data.id);
-
-                this.apolloService.query(profile_info, {}).then((res) => {
-                  if (!res.profile_info.error) {
-                    const result = res.profile_info.data;
-                    localStorage.setItem('email', result.email);
-                    localStorage.setItem('firstName', result.firstName);
-                    localStorage.setItem('lastName', result.lastName);
-                    localStorage.setItem(
-                      'memberyn',
-                      result.memberyn.toString()
-                    );
-                    localStorage.setItem('id', result.id.toString());
-                    localStorage.setItem('avatar', result.avatar);
-                    localStorage.setItem(
-                      'welcomeyn',
-                      result.welcomeyn.toString()
-                    );
-
-                    this.router.navigate(['apps/projects']);
-                  }
-                  this.loading = false;
-                });
-              }
-            });
+          this.getProfileInfo();
         } else {
           this.error = res.profile_activate.message;
         }
@@ -164,6 +141,43 @@ export class InfoComponent implements OnInit {
       .catch((err) => {
         this.loading = false;
       });
+  }
+
+  onCodeChanged(code: string) {}
+
+  onCodeCompleted(code: string) {
+    this.modalService.dismissAll();
+
+    this.loading = true;
+
+    if (this.companyFlag) {
+      this.httpService
+        .post('signup', {
+          email: localStorage.getItem('email'),
+          password: localStorage.getItem('password'),
+          firstname: this.formValues['firstname'].value,
+          lastname: this.formValues['lastname'].value,
+          idcompany: parseInt(localStorage.getItem('id')),
+          companyname: this.formValues['companyName'].value,
+        })
+        .then((res) => {
+          this.loading = false;
+          if (!res.error) {
+            localStorage.removeItem('password');
+            localStorage.setItem('refreshToken', res.data.refreshToken);
+            localStorage.setItem('token', res.data.token);
+            this.updatePhone(code);
+          } else {
+            this.error = res.message;
+          }
+        })
+        .catch((error) => {
+          this.loading = false;
+          this.error = error;
+        });
+    } else {
+      this.updatePhone(code);
+    }
   }
 
   openVerticallyCentered(content: TemplateRef<NgbModal>): void {

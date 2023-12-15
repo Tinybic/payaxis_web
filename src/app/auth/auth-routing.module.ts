@@ -11,6 +11,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { RecoverPasswordPhoneComponent } from './recover-password-phone/recover-password-phone.component';
 import { InvitingRegisterComponent } from './inviting-register/inviting-register.component';
 import { InvitingVendorComponent } from './inviting-vendor/inviting-vendor.component';
+import { JoinCompanyComponent } from './join-company/join-company.component';
 
 const routes: Routes = [
   {
@@ -56,6 +57,10 @@ const routes: Routes = [
   {
     path: 'inviting-vendor',
     component: InvitingVendorComponent
+  },
+  {
+    path: 'join-company',
+    component: JoinCompanyComponent
   }
 ];
 

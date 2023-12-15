@@ -12,10 +12,13 @@ import { ROLEITEMS, APPROVALAMOUNT } from 'src/app/core/constants/members';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { SweetAlertOptions } from 'sweetalert2';
 import { SwalComponent } from '@sweetalert2/ngx-sweetalert2';
-import { company_invitedmember_deactivate, company_roles } from 'src/app/core/gql/company';
+import {
+  company_invitedmember_deactivate,
+  company_roles,
+} from 'src/app/core/gql/company';
 import { FormControl } from '@angular/forms';
 import { Base } from 'src/app/core/base';
-import { companyproject_list } from "../../../core/gql/project";
+import { companyproject_list } from '../../../core/gql/project';
 @Component({
   selector: 'app-teamlist',
   templateUrl: './teamlist.component.html',
@@ -60,7 +63,7 @@ export class TeamlistComponent extends Base {
   edit = [];
   approvalAmountFilter = 'Approval Amount';
   roleFilter = 'Approval';
-  projectFilter = 'Project'
+  projectFilter = 'Project';
   loading = true;
 
   canEdit = false;
@@ -134,7 +137,6 @@ export class TeamlistComponent extends Base {
     this.members = this.COMPANY_MEMBERS;
     this.showCount = this.allCount;
     if (filter == 'Active') {
-      
       this.members = this.members.filter(
         (member) => member.active && member.idUser > 0
       );
@@ -165,47 +167,54 @@ export class TeamlistComponent extends Base {
 
   ngOnInit(): void {
     this.canEdit = super.setRole('Manage company users');
-    this.idUser = localStorage.getItem('id');
-    this.idUserOwner = localStorage.getItem('idUserOwner');
-    this.companyName = localStorage.getItem('companyName');
+    if (localStorage.getItem('idcompany')) {
+      this.idUser = localStorage.getItem('id');
+      this.idUserOwner = localStorage.getItem('idUserOwner');
+      this.companyName = localStorage.getItem('companyName');
 
+      this.apolloService
+        .query(company_roles, {
+          idCompany: parseInt(localStorage.getItem('idcompany')),
+        })
+        .then((res) => {
+          const result = res.company_roles;
+          if (!result.error) {
+            this.roleItems = result.data.map((item) => {
+              return Object.assign(
+                {},
+                {
+                  id: item.idRole,
+                  text: item.txtName,
+                }
+              );
+            });
+          }
+        });
+
+      this.getProjects();
+      this.getCompanyMembers();
+    } else {
+      this.loading = false;
+    }
+  }
+
+  getProjects() {
     this.apolloService
-      .query(company_roles, {
+      .query(companyproject_list, {
         idCompany: parseInt(localStorage.getItem('idcompany')),
       })
       .then((res) => {
-        const result = res.company_roles;
+        const result = res.companyproject_list;
         if (!result.error) {
-          this.roleItems = result.data.map((item) => {
-            return Object.assign(
-              {},
-              {
-                id: item.idRole,
-                text: item.txtName,
-              }
-            );
+          this.projects = JSON.parse(JSON.stringify(result.data));
+          this.projects.map((project) => (project['checked'] = false));
+          this.projects.unshift({
+            id: 'all',
+            projectName: 'All',
+            checked: false,
           });
         }
       });
-    
-    this.getProjects();
-    this.getCompanyMembers();
-  }
-  
-  getProjects(){
-    this.apolloService.query(companyproject_list,
-      {idCompany: parseInt(localStorage.getItem('idcompany'))}).then((res) => {
-      const result = res.companyproject_list;
-      if(!result.error){
-        this.projects = JSON.parse(JSON.stringify(result.data));
-        this.projects.map(project => project['checked'] = false);
-        this.projects.unshift({
-          id: 'all',
-          projectName: 'All',
-          checked: false
-        })
-      }
-    });
   }
 
   getCompanyMembers() {
@@ -249,9 +258,8 @@ export class TeamlistComponent extends Base {
   }
 
   deactiveMembers() {
-
     let gql = company_member_deactivate;
-    if(this.members[this.deleteIndex].idUser == 0){
+    if (this.members[this.deleteIndex].idUser == 0) {
       gql = company_invitedmember_deactivate;
     }
     this.apolloService
@@ -263,20 +271,18 @@ export class TeamlistComponent extends Base {
       .then((res) => {
         let message = '';
         let result;
-        if(this.members[this.deleteIndex].idUser == 0){
+        if (this.members[this.deleteIndex].idUser == 0) {
           result = company_invitedmember_deactivate;
-        }
-        else{
+        } else {
           result = res.company_member_deactivate;
         }
-    
+
         message = result.message;
         this.getCompanyMembers();
         this.toastrService.info(message, '');
         this.modalService.dismissAll();
       });
   }
-
 
   // compares two cell values
   compare(v1: string | number, v2: string | number): any {
