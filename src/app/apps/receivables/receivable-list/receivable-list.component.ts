@@ -43,13 +43,17 @@ export class ReceivableListComponent {
   ) {}
 
   ngOnInit(): void {
-    this.getList();
-    this.getVendorList();
-    this.getPaymentList();
+    if (localStorage.getItem('idcompany')) {
+      this.getList();
+      this.getVendorList();
+      this.getPaymentList();
 
-    this.fromDate = this.calendar.getToday();
-    this.toDate = this.calendar.getNext(this.calendar.getToday(), 'd', 10);
-    this.selectedDateRange = 'Due date';
+      this.fromDate = this.calendar.getToday();
+      this.toDate = this.calendar.getNext(this.calendar.getToday(), 'd', 10);
+      this.selectedDateRange = 'Due date';
+    } else {
+      this.loading = false;
+    }
   }
 
   getVendorList() {
@@ -275,8 +279,7 @@ export class ReceivableListComponent {
 
   addModalRef;
 
-
-  openModal(){
+  openModal() {
     this.addModalRef = this.modalService.open(this.addModal, {
       backdrop: 'static',
       modalDialogClass: 'modal-right',

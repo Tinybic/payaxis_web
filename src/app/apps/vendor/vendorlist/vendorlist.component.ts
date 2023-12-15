@@ -43,8 +43,12 @@ export class VendorlistComponent extends Base {
 
   ngOnInit(): void {
     this.canEdit = super.setRole('Edit Vendors');
-    this.canImport = super.setRole('Sync with accounting software');
-    this.getVendorList();
+    if (localStorage.getItem('idcompany')) {
+      this.canImport = super.setRole('Sync with accounting software');
+      this.getVendorList();
+    } else {
+      this.loading = false;
+    }
   }
 
   getVendorList() {
@@ -218,7 +222,6 @@ export class VendorlistComponent extends Base {
       }
     );
   }
-  
 
   filterList = [];
   filterVendorList(item) {

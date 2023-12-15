@@ -30,4 +30,6 @@ import { DropdowndataModule } from '../shared/dropdowndata/dropdowndata.module';
     DropdowndataModule,
   ],
 })
-export class AppsModule {}
+export class AppsModule {
+  
+}

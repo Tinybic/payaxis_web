@@ -151,8 +151,7 @@ export class RegisterComponent implements OnInit {
                 centered: true,
               }
             );
-          }
-          else{
+          } else {
             this.askToJoin(0);
           }
         } else {
@@ -235,7 +234,7 @@ export class RegisterComponent implements OnInit {
 
   infoModalRef;
   askToJoin(id) {
-    this.companyListRef.close();
+    if (this.companyListRef) this.companyListRef.close();
     localStorage.setItem('join', id);
     if (id == 0) {
       this.router.navigate(['auth/info']);

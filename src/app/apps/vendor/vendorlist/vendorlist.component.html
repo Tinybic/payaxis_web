@@ -151,7 +151,7 @@
                 </tr>
             </tbody>
             <tbody *ngIf="vendorlist.length==0 && !loading" class="bg-white">
-                <tr *ngIf="!loading && vendorlist.length==0">
+                <tr *ngIf="!loading && vendorlist.length==0 && canEdit">
                     <td colspan="6" class="text-center">
                         <div class="Paragraph-1 text-typeblackdeactivated bold-600  mt-40 ">No Vendors added yet</div>
                         <div class="Paragraph-2 text-typeblackdeactivated mt-1-1">Create new vendor in a few clicks

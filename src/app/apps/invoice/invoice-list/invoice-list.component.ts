@@ -51,13 +51,17 @@ export class InvoiceListComponent {
   ) {}
 
   ngOnInit(): void {
-    this.getList();
-    this.getProjectList();
-    this.getVendorList();
+    if (localStorage.getItem('idcompany')) {
+      this.getList();
+      this.getProjectList();
+      this.getVendorList();
 
-    this.fromDate = this.calendar.getToday();
-    this.toDate = this.calendar.getNext(this.calendar.getToday(), 'd', 10);
-    this.selectedDateRange = 'Due date';
+      this.fromDate = this.calendar.getToday();
+      this.toDate = this.calendar.getNext(this.calendar.getToday(), 'd', 10);
+      this.selectedDateRange = 'Due date';
+    } else {
+      this.loading = false;
+    }
   }
 
   getProjectList() {
@@ -303,5 +307,4 @@ export class InvoiceListComponent {
     this.idInvoice = id;
     this.openInvoiceModal();
   }
-
 }
