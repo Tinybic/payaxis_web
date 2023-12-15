@@ -63,6 +63,7 @@ export class InfoComponent implements OnInit {
         {
           timeOut: 50000,
           enableHtml: true,
+          positionClass:'toast-top-right1'
         }
       );
     }
