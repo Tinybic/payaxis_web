@@ -118,29 +118,32 @@
             <div class="subtitle-2-500-18 mb-1-1 text-center">
                 Do you want to ask to join or create a new one?
             </div>
-            <div *ngFor="let item of companyList"
-                style="border: 1px solid #E5E7EB; padding: 16px; border-radius: 8px; display: flex; margin-top: 16px;">
-                <div class="text-start" style="width: 50px;">
-                    <app-avatar [url]="item.avatar" [companyName]="item.txtName"  [size]="40"
-                                    alt="user-img"></app-avatar>
+            <div style="max-height: 500px; overflow-y: auto;">
+                <div *ngFor="let item of companyList"
+                    style="border: 1px solid #E5E7EB; padding: 16px; border-radius: 8px; display: flex; margin-top: 16px;">
+                    <div class="text-start" style="width: 50px;">
+                        <app-avatar [url]="item.avatar" [companyName]="item.txtName" [size]="40"
+                            alt="user-img"></app-avatar>
+                    </div>
+                    <div class="text-start" style="flex: 1;">
+                        <span class="Subtitle-1 text-start">{{item.txtName}}</span> <br />
+                        <span class="text-blackprimary-op-50">{{item.firstName}}&nbsp;{{item.lastName}}</span>
+                    </div>
+                    <div class="text-end" style="width: 100px;">
+                        <button class="btn btn-primary padding-8-16" (click)="askToJoin(item.id)">Ask to join</button>
+                    </div>
                 </div>
-                <div class="text-start" style="flex: 1;">
-                    <span class="Subtitle-1 text-start">{{item.txtName}}</span> <br />
-                    <span class="text-blackprimary-op-50">{{item.firstName}}&nbsp;{{item.lastName}}</span>
-                </div>
-                <div class="text-end" style="width: 100px;">
-                    <button class="btn btn-primary padding-8-16" (click)="askToJoin(item.id)">Ask to join</button>
-                </div>
-            </div>
-            <div style="border: 1px solid #E5E7EB; padding: 16px; border-radius: 8px; display: flex; margin-top: 16px;">
-                <div class="text-start" style="width: 50px;">
-                    <img src="/assets/images/new-company.png" />
-                </div>
-                <div class="text-start" style="flex: 1; line-height: 40px;">
-                    <span class="Subtitle-1 text-start">Create new Company</span>
-                </div>
-                <div class="text-end" style="width: 100px;">
-                    <button class="btn btn-primary padding-8-16" (click)="askToJoin(0)">Create</button>
+                <div
+                    style="border: 1px solid #E5E7EB; padding: 16px; border-radius: 8px; display: flex; margin-top: 16px;">
+                    <div class="text-start" style="width: 50px;">
+                        <img src="/assets/images/new-company.png" (click)="askToJoin(0)" />
+                    </div>
+                    <div class="text-start" style="flex: 1; line-height: 40px;">
+                        <span class="Subtitle-1 text-start">Create new Company</span>
+                    </div>
+                    <div class="text-end" style="width: 100px;">
+                        <button class="btn btn-primary padding-8-16" (click)="askToJoin(0)">Create</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -158,11 +161,11 @@
             </div>
             <div class="mt-2-1">
                 <label for="lastName" class="form-label" i18n>Last Name</label>
-                <input class="form-control mb-1-1" type="text" id="lastName"  [(ngModel)]="lastName" required i18n-placeholder
-                    placeholder="Last Name" />
+                <input class="form-control mb-1-1" type="text" id="lastName" [(ngModel)]="lastName" required
+                    i18n-placeholder placeholder="Last Name" />
             </div>
             <div class="mt-2-1 d-grid">
-                <button class="btn btn-primary" (click) = "signUp()">Continue</button>
+                <button class="btn btn-primary" (click)="signUp()">Continue</button>
             </div>
         </div>
     </ng-template>
