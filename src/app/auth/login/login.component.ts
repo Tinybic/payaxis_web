@@ -12,6 +12,7 @@ import { SocialUser } from '@abacritt/angularx-social-login';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { interval, take } from 'rxjs';
 import { ApolloService } from 'src/app/core/service/apollo.service';
+import { companyNew, company_member_join } from 'src/app/core/gql/company';
 
 @Component({
   selector: 'app-auth-login',
@@ -20,6 +21,11 @@ import { ApolloService } from 'src/app/core/service/apollo.service';
 })
 export class LoginComponent implements OnInit {
   @ViewChild('centeredModal') centeredModal: any;
+  @ViewChild('companyListModal') companyListModal: any;
+  @ViewChild('companyListModal1') companyListModal1: any;
+  @ViewChild('createCompanyModal') createCompanyModal: any;
+  @ViewChild('loadModal') loadModal: any;
+
   loginForm: UntypedFormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required],
@@ -34,6 +40,8 @@ export class LoginComponent implements OnInit {
   title: string = 'Log in';
   email: '';
   emailDisabled = false;
+  loading2 = true;
+  companyName = '';
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -76,6 +84,8 @@ export class LoginComponent implements OnInit {
   paracont = 'Resend';
   takeFourNumbers: any;
 
+  companyList;
+  companyListModalRef;
   onSubmit(): void {
     this.error = '';
     this.modalService.dismissAll();
@@ -88,6 +98,7 @@ export class LoginComponent implements OnInit {
           password: this.formValues['password'].value,
         })
         .then((res) => {
+          this.loading = false;
           if (!res.error || res.code == 103) {
             localStorage.setItem('refreshToken', res.data.refreshToken);
             localStorage.setItem('token', res.data.token);
@@ -97,8 +108,31 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('token', res.data.token);
             this.router.navigate(['auth/info']);
           } else if (res.code == 112) {
-            this.loading = false;
             this.openmodal();
+          } else if (res.code == 116) {
+            this.companyList = res.data.companylist;
+            localStorage.setItem('refreshToken', res.data.token.refreshToken);
+            localStorage.setItem('token', res.data.token.token);
+            this.companyListModalRef = this.modalService.open(
+              this.companyListModal,
+              {
+                backdrop: 'static',
+                size: '489',
+                centered: true,
+              }
+            );
+          } else if (res.code == 117) {
+            this.companyList = res.data.companylist;
+            localStorage.setItem('refreshToken', res.data.token.refreshToken);
+            localStorage.setItem('token', res.data.token.token);
+            this.companyListModalRef = this.modalService.open(
+              this.companyListModal1,
+              {
+                backdrop: 'static',
+                size: '489',
+                centered: true,
+              }
+            );
           } else {
             this.loading = false;
             this.error = res.message;
@@ -170,6 +204,30 @@ export class LoginComponent implements OnInit {
         } else if (res.code == 112) {
           this.loading = false;
           this.openmodal();
+        } else if (res.code == 116) {
+          this.companyList = res.data.companylist;
+          localStorage.setItem('refreshToken', res.data.token.refreshToken);
+          localStorage.setItem('token', res.data.token.token);
+          this.companyListModalRef = this.modalService.open(
+            this.companyListModal,
+            {
+              backdrop: 'static',
+              size: '489',
+              centered: true,
+            }
+          );
+        } else if (res.code == 117) {
+          this.companyList = res.data.companylist;
+          localStorage.setItem('refreshToken', res.data.token.refreshToken);
+          localStorage.setItem('token', res.data.token.token);
+          this.companyListModalRef = this.modalService.open(
+            this.companyListModal1,
+            {
+              backdrop: 'static',
+              size: '489',
+              centered: true,
+            }
+          );
         } else {
           this.loading = false;
           this.error = res.message;
@@ -183,5 +241,73 @@ export class LoginComponent implements OnInit {
 
   openVerticallyCentered(content: TemplateRef<NgbModal>): void {
     this.modalService.open(content, { backdrop: 'static', centered: true });
+  }
+
+  createCompanyModalRef;
+  loadModalRef;
+  askToJoin(id) {
+    this.companyListModalRef.close();
+    if (id == 0) {
+      this.createCompanyModalRef = this.modalService.open(
+        this.createCompanyModal,
+        {
+          backdrop: 'static',
+          size: '489',
+          centered: true,
+        }
+      );
+    } else {
+      this.apolloService
+        .mutate(company_member_join, {
+          idCompany: parseInt(id),
+        })
+        .then((res) => {
+          const result = res.company_member_join;
+          if (!result.error) {
+
+            this.loadModalRef = this.modalService.open(this.loadModal, {
+              backdrop: 'static',
+              size: '489',
+              centered: true,
+            });
+            setTimeout(() => {
+              // this.formValues['email'].setValue('');
+              // this.formValues['password'].setValue('');
+              this.loadModalRef.close();
+            }, 2000);
+          }
+        });
+    }
+  }
+
+  createCompany() {
+    this.apolloService
+      .mutate(companyNew, {
+        id: 0,
+        revision: 0,
+        txtName: this.companyName,
+        taxId: '',
+        idMasterCompany: 0,
+        industry: '',
+        paymentTerms: '',
+        website: '',
+        txtAddress: '',
+        txtCity: '',
+        txtState: '',
+        txtZipcode: '',
+        contactNumber: '',
+        description: '',
+        avatar: '',
+        suiteNumber: '',
+      })
+      .then((res) => {
+        const result = res.company_new;
+        if (!result.error) {
+          this.createCompanyModalRef.close();
+          this.getProfileInfo();
+        } else {
+          this.error = result.message;
+        }
+      });
   }
 }
