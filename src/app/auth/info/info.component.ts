@@ -66,19 +66,19 @@ export class InfoComponent implements OnInit {
           positionClass: 'toast-top-right1',
         }
       );
+      this.apolloService
+        .query(profile_info, {})
+        .then((res) => {
+          this.loading = false;
+          const result = res.profile_info;
+          if (!result.error) {
+            this.revision = result.data.revision;
+          }
+        })
+        .catch((err) => {
+          this.loading = false;
+        });
     }
-    this.apolloService
-      .query(profile_info, {})
-      .then((res) => {
-        this.loading = false;
-        const result = res.profile_info;
-        if (!result.error) {
-          this.revision = result.data.revision;
-        }
-      })
-      .catch((err) => {
-        this.loading = false;
-      });
   }
 
   /**

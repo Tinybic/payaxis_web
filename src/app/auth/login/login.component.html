@@ -98,28 +98,30 @@
       <div class="subtitle-2-500-18 mb-1-1 text-center">
         Do you want to ask to join or create a new one?
       </div>
-      <div *ngFor="let item of companyList"
-        style="border: 1px solid #E5E7EB; padding: 16px; border-radius: 8px; display: flex; margin-top: 16px;">
-        <div class="text-start" style="width: 50px;">
-          <app-avatar [url]="item.avatar" [companyName]="item.txtName" [size]="40" alt="user-img"></app-avatar>
+      <div style="max-height: 500px; overflow-y: auto;">
+        <div *ngFor="let item of companyList"
+          style="border: 1px solid #E5E7EB; padding: 16px; border-radius: 8px; display: flex; margin-top: 16px;">
+          <div class="text-start" style="width: 50px;">
+            <app-avatar [url]="item.avatar" [companyName]="item.txtName" [size]="40" alt="user-img"></app-avatar>
+          </div>
+          <div class="text-start" style="flex: 1;">
+            <span class="Subtitle-1 text-start">{{item.txtName}}</span> <br />
+            <span class="text-blackprimary-op-50">{{item.firstName}}&nbsp;{{item.lastName}}</span>
+          </div>
+          <div class="text-end" style="width: 160px;">
+            <button class="btn btn-primary padding-8-16" disabled="disabled">Pending Request</button>
+          </div>
         </div>
-        <div class="text-start" style="flex: 1;">
-          <span class="Subtitle-1 text-start">{{item.txtName}}</span> <br />
-          <span class="text-blackprimary-op-50">{{item.firstName}}&nbsp;{{item.lastName}}</span>
-        </div>
-        <div class="text-end" style="width: 160px;">
-          <button class="btn btn-primary padding-8-16" disabled="disabled">Pending Request</button>
-        </div>
-      </div>
-      <div style="border: 1px solid #E5E7EB; padding: 16px; border-radius: 8px; display: flex; margin-top: 16px;">
-        <div class="text-start" style="width: 50px;">
-          <img src="/assets/images/new-company.png" />
-        </div>
-        <div class="text-start" style="flex: 1; line-height: 40px;">
-          <span class="Subtitle-1 text-start">Create new Company</span>
-        </div>
-        <div class="text-end" style="width: 100px;">
-          <button class="btn btn-primary padding-8-16" (click)="askToJoin(0)">Create</button>
+        <div style="border: 1px solid #E5E7EB; padding: 16px; border-radius: 8px; display: flex; margin-top: 16px;">
+          <div class="text-start" style="width: 50px;">
+            <img src="/assets/images/new-company.png" (click)="askToJoin(0)" />
+          </div>
+          <div class="text-start" style="flex: 1; line-height: 40px;">
+            <span class="Subtitle-1 text-start">Create new Company</span>
+          </div>
+          <div class="text-end" style="width: 100px;">
+            <button class="btn btn-primary padding-8-16" (click)="askToJoin(0)">Create</button>
+          </div>
         </div>
       </div>
     </div>
@@ -134,29 +136,32 @@
       <div class="subtitle-2-500-18 mb-1-1 text-center">
         It's was a mistake? Do you want to send a request to another company?
       </div>
-      <div *ngFor="let item of companyList"
-        style="border: 1px solid #E5E7EB; padding: 16px; border-radius: 8px; display: flex; margin-top: 16px;">
-        <div class="text-start" style="width: 50px;">
-          <app-avatar [url]="item.avatar" [companyName]="item.txtName" [size]="40" alt="user-img"></app-avatar>
+      <div style="max-height: 500px; overflow-y: auto;">
+        <div *ngFor="let item of companyList"
+          style="border: 1px solid #E5E7EB; padding: 16px; border-radius: 8px; display: flex; margin-top: 16px;">
+          <div class="text-start" style="width: 50px;">
+            <app-avatar [url]="item.avatar" [companyName]="item.txtName" [size]="40" alt="user-img"></app-avatar>
+          </div>
+          <div class="text-start" style="flex: 1;">
+            <span class="Subtitle-1 text-start">{{item.txtName}}</span> <br />
+            <span class="text-blackprimary-op-50">{{item.firstName}}&nbsp;{{item.lastName}}</span>
+          </div>
+          <div class="text-end" style="width: 100px;">
+            <button class="btn btn-primary padding-8-16" *ngIf="item.decline == 0" (click)="askToJoin(item.id)">Ask to
+              join</button>
+            <button class="btn btn-primary padding-8-16" *ngIf="item.decline == 1" disabled="disabled">Declined</button>
+          </div>
         </div>
-        <div class="text-start" style="flex: 1;">
-          <span class="Subtitle-1 text-start">{{item.txtName}}</span> <br />
-          <span class="text-blackprimary-op-50">{{item.firstName}}&nbsp;{{item.lastName}}</span>
-        </div>
-        <div class="text-end" style="width: 100px;">
-          <button class="btn btn-primary padding-8-16" *ngIf="item.decline == 0" (click)="askToJoin(item.id)">Ask to join</button>
-          <button class="btn btn-primary padding-8-16" *ngIf="item.decline == 1" disabled="disabled">Declined</button>
-        </div>
-      </div>
-      <div style="border: 1px solid #E5E7EB; padding: 16px; border-radius: 8px; display: flex; margin-top: 16px;">
-        <div class="text-start" style="width: 50px;">
-          <img src="/assets/images/new-company.png" />
-        </div>
-        <div class="text-start" style="flex: 1; line-height: 40px;">
-          <span class="Subtitle-1 text-start">Create new Company</span>
-        </div>
-        <div class="text-end" style="width: 100px;">
-          <button class="btn btn-primary padding-8-16" (click)="askToJoin(0)">Create</button>
+        <div style="border: 1px solid #E5E7EB; padding: 16px; border-radius: 8px; display: flex; margin-top: 16px;">
+          <div class="text-start" style="width: 50px;">
+            <img src="/assets/images/new-company.png" (click)="askToJoin(0)" />
+          </div>
+          <div class="text-start" style="flex: 1; line-height: 40px;">
+            <span class="Subtitle-1 text-start">Create new Company</span>
+          </div>
+          <div class="text-end" style="width: 100px;">
+            <button class="btn btn-primary padding-8-16" (click)="askToJoin(0)">Create</button>
+          </div>
         </div>
       </div>
     </div>
@@ -181,10 +186,10 @@
       <div class="mt-2-1">
         <label for="companyName" class="form-label" i18n>Email</label>
         <input class="form-control" type="text" id="companyName" required i18n-placeholder placeholder="Company Name"
-          [readonly]="emailDisabled" [(ngModel)] = "companyName" />
+          [readonly]="emailDisabled" [(ngModel)]="companyName" />
       </div>
       <div class="mt-2-1 d-grid">
-        <button class="btn btn-primary" (click) = "createCompany()">Create</button>
+        <button class="btn btn-primary" (click)="createCompany()">Create</button>
       </div>
     </div>
   </ng-template>
