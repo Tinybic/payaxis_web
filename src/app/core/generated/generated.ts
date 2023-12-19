@@ -264,7 +264,6 @@ export type MutationCompany_Member_InviteArgs = {
 /** structure to handle table sms */
 export type MutationCompany_Member_JoinArgs = {
   idCompany: Scalars['Int']['input'];
-  idUser: Scalars['Int']['input'];
 };
 
 
@@ -566,9 +565,6 @@ export type MutationProfile_2faArgs = {
 
 /** structure to handle table sms */
 export type MutationProfile_ActivateArgs = {
-  companyName: Scalars['String']['input'];
-  firstName: Scalars['String']['input'];
-  lastName: Scalars['String']['input'];
   mobile: Scalars['String']['input'];
   revision: Scalars['Int']['input'];
   twofa: Scalars['Boolean']['input'];

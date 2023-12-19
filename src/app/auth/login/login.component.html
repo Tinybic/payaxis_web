@@ -23,8 +23,9 @@
     </ngb-alert>
     <div class="mb-2-1">
       <label for="emailaddress" class="form-label" i18n>Email</label>
-      <input class="form-control" type="email" id="emailaddress" required i18n-placeholder placeholder="Enter Email"  [readonly]="emailDisabled"
-        formControlName="email" [ngClass]="{'is-invalid':formSubmitted && formValues['email'].invalid}" />
+      <input class="form-control" type="email" id="emailaddress" required i18n-placeholder placeholder="Enter Email"
+        [readonly]="emailDisabled" formControlName="email"
+        [ngClass]="{'is-invalid':formSubmitted && formValues['email'].invalid}" />
 
       <div *ngIf="formSubmitted && formValues['email'].invalid" class="invalid-feedback">
 
@@ -73,18 +74,119 @@
 
   <ng-template #centeredModal let-modal>
     <div class="modal-header">
-        <i class="fe-x swal2-close align-text-bottom "  (click)="modal.dismiss('Cross click')"></i>
+      <i class="fe-x swal2-close align-text-bottom " (click)="modal.dismiss('Cross click')"></i>
     </div>
     <div class="modal-body" style="padding-top: 0;">
-        <div class="swal2-alert-title">Two-factor authentication is enabled</div>
-        <div class="swal2-alert-content">Enter the 4-digit code sent to you </div>
+      <div class="swal2-alert-title">Two-factor authentication is enabled</div>
+      <div class="swal2-alert-content">Enter the 4-digit code sent to you </div>
 
-        <div class="code-input-container" >
-            <code-input [initialFocusField]="0" [isCodeHidden]="false" [codeLength]="4"
-                (codeChanged)="onCodeChanged($event)" (codeCompleted)="onCodeCompleted($event)">
-            </code-input>
-        </div>
-        <div aria-disabled="paracont!='Resend'" class="swal2-alert-link" (click) = "onSubmit()">{{paracont}}</div>
+      <div class="code-input-container">
+        <code-input [initialFocusField]="0" [isCodeHidden]="false" [codeLength]="4"
+          (codeChanged)="onCodeChanged($event)" (codeCompleted)="onCodeCompleted($event)">
+        </code-input>
+      </div>
+      <div aria-disabled="paracont!='Resend'" class="swal2-alert-link" (click)="onSubmit()">{{paracont}}</div>
     </div>
-</ng-template>
+  </ng-template>
+
+  <ng-template #companyListModal>
+    <div class="modal-body padding-32-24">
+      <input type="text" style="display: none;" />
+      <div class="headline text-center">
+        Hey! Are you one of this company?
+      </div>
+      <div class="subtitle-2-500-18 mb-1-1 text-center">
+        Do you want to ask to join or create a new one?
+      </div>
+      <div *ngFor="let item of companyList"
+        style="border: 1px solid #E5E7EB; padding: 16px; border-radius: 8px; display: flex; margin-top: 16px;">
+        <div class="text-start" style="width: 50px;">
+          <app-avatar [url]="item.avatar" [companyName]="item.txtName" [size]="40" alt="user-img"></app-avatar>
+        </div>
+        <div class="text-start" style="flex: 1;">
+          <span class="Subtitle-1 text-start">{{item.txtName}}</span> <br />
+          <span class="text-blackprimary-op-50">{{item.firstName}}&nbsp;{{item.lastName}}</span>
+        </div>
+        <div class="text-end" style="width: 160px;">
+          <button class="btn btn-primary padding-8-16" disabled="disabled">Pending Request</button>
+        </div>
+      </div>
+      <div style="border: 1px solid #E5E7EB; padding: 16px; border-radius: 8px; display: flex; margin-top: 16px;">
+        <div class="text-start" style="width: 50px;">
+          <img src="/assets/images/new-company.png" />
+        </div>
+        <div class="text-start" style="flex: 1; line-height: 40px;">
+          <span class="Subtitle-1 text-start">Create new Company</span>
+        </div>
+        <div class="text-end" style="width: 100px;">
+          <button class="btn btn-primary padding-8-16" (click)="askToJoin(0)">Create</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #companyListModal1>
+    <div class="modal-body padding-32-24">
+      <input type="text" style="display: none;" />
+      <div class="headline text-center">
+        Your request has been declined.
+      </div>
+      <div class="subtitle-2-500-18 mb-1-1 text-center">
+        It's was a mistake? Do you want to send a request to another company?
+      </div>
+      <div *ngFor="let item of companyList"
+        style="border: 1px solid #E5E7EB; padding: 16px; border-radius: 8px; display: flex; margin-top: 16px;">
+        <div class="text-start" style="width: 50px;">
+          <app-avatar [url]="item.avatar" [companyName]="item.txtName" [size]="40" alt="user-img"></app-avatar>
+        </div>
+        <div class="text-start" style="flex: 1;">
+          <span class="Subtitle-1 text-start">{{item.txtName}}</span> <br />
+          <span class="text-blackprimary-op-50">{{item.firstName}}&nbsp;{{item.lastName}}</span>
+        </div>
+        <div class="text-end" style="width: 100px;">
+          <button class="btn btn-primary padding-8-16" *ngIf="item.decline == 0" (click)="askToJoin(item.id)">Ask to join</button>
+          <button class="btn btn-primary padding-8-16" *ngIf="item.decline == 1" disabled="disabled">Declined</button>
+        </div>
+      </div>
+      <div style="border: 1px solid #E5E7EB; padding: 16px; border-radius: 8px; display: flex; margin-top: 16px;">
+        <div class="text-start" style="width: 50px;">
+          <img src="/assets/images/new-company.png" />
+        </div>
+        <div class="text-start" style="flex: 1; line-height: 40px;">
+          <span class="Subtitle-1 text-start">Create new Company</span>
+        </div>
+        <div class="text-end" style="width: 100px;">
+          <button class="btn btn-primary padding-8-16" (click)="askToJoin(0)">Create</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #loadModal>
+    <div class="modal-body">
+      <div class="subtitle-2-500-18 mb-1-1">
+        We've sent the owner a request to join the company.
+      </div>
+      <div class="mt-2-1" style="height: 50px;padding-top: 10px;position: relative;">
+        <app-ui-preloader [display]="loading2"></app-ui-preloader>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #createCompanyModal>
+    <div class="modal-body">
+      <div class="subtitle-2-500-18 mb-1-1">
+        Create Company
+      </div>
+      <div class="mt-2-1">
+        <label for="companyName" class="form-label" i18n>Email</label>
+        <input class="form-control" type="text" id="companyName" required i18n-placeholder placeholder="Company Name"
+          [readonly]="emailDisabled" [(ngModel)] = "companyName" />
+      </div>
+      <div class="mt-2-1 d-grid">
+        <button class="btn btn-primary" (click) = "createCompany()">Create</button>
+      </div>
+    </div>
+  </ng-template>
+
 </app-default-layout>

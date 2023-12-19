@@ -63,7 +63,7 @@ export class InfoComponent implements OnInit {
         {
           timeOut: 50000,
           enableHtml: true,
-          positionClass:'toast-top-right1'
+          positionClass: 'toast-top-right1',
         }
       );
     }
@@ -100,6 +100,12 @@ export class InfoComponent implements OnInit {
         localStorage.setItem('avatar', result.avatar);
         localStorage.setItem('welcomeyn', result.welcomeyn.toString());
         this.router.navigate(['apps/projects']);
+      } else {
+        // this.toastr.info(
+        //   'Registration successful. Please wait for verification.',
+        //   ''
+        // );
+        this.router.navigate(['auth/login']);
       }
       this.loading = false;
     });

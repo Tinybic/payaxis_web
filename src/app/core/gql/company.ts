@@ -188,6 +188,17 @@ const company_invitedmember_deactivate = gql`
   }
 `;
 
+const company_member_join = gql`
+  mutation refactored49($idCompany: Int!) {
+    company_member_join(idCompany: $idCompany) {
+      error
+      code
+      message
+      data
+    }
+  }
+`;
+
 export {
   companyNew,
   companyUpate,
@@ -195,4 +206,5 @@ export {
   company_info,
   company_roles,
   company_invitedmember_deactivate,
+  company_member_join,
 };
