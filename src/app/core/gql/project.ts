@@ -327,6 +327,7 @@ const companyproject_info = gql`
         projectName
         projectAddress
         projectBudget
+        projectUsed
         projectSqft
         idGroup
         groupName

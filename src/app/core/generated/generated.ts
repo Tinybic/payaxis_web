@@ -1656,6 +1656,7 @@ export type Companyproject = {
   projectBudget: Scalars['Float']['output'];
   projectName: Scalars['String']['output'];
   projectSqft: Scalars['Float']['output'];
+  projectUsed: Scalars['Float']['output'];
   revision: Scalars['Int']['output'];
   status: Scalars['String']['output'];
 };

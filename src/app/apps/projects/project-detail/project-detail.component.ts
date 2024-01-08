@@ -29,6 +29,7 @@ export class ProjectDetailComponent extends Base {
     projectName: '',
     projectAddress: '',
     projectBudget: 0.0,
+    projectUsed: 0.0,
     projectSqft: 0.0,
     idGroup: 0,
     groupName: '',
