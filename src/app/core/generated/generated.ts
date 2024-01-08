@@ -2111,6 +2111,7 @@ export type Projectbudgets = {
   active: Scalars['Boolean']['output'];
   budgetAmount: Scalars['Float']['output'];
   budgetPercentage: Scalars['Float']['output'];
+  budgetUsed: Scalars['Float']['output'];
   category: Scalars['String']['output'];
   createdBy: Scalars['Int']['output'];
   createdDate: Scalars['String']['output'];
