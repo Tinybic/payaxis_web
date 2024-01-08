@@ -54,7 +54,14 @@ export class ProjectsComponent extends Base implements OnInit {
     projectcount: 0,
   };
   group: any;
-
+  bgColors = [
+    'bg-primary',
+    'bg-secondary',
+    'bg-danger',
+    'bg-success',
+    'bg-warning',
+    'bg-info',
+  ];
   deleteObj = {
     title: '',
     message: '',
@@ -153,6 +160,12 @@ export class ProjectsComponent extends Base implements OnInit {
           const result = res.companyproject_list;
           if (!result.error) {
             this.projectList = result.data;
+            this.projectList.forEach((item) => {
+              if (item.projectBudget > 0)
+                item.progress = item.projectUsed / item.projectBudget * 100;
+              else item.progress = 0;
+            });
+            console.log(this.projectList)
           }
           this.isLoading = false;
         });
