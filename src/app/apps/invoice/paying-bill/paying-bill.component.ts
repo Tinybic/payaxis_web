@@ -131,7 +131,7 @@ export class PayingBillComponent {
       id: parseInt(this.payment.id),
       revision: parseInt(this.payment.revision),
       paidDate: this.blueDate.year + '-' + this.blueDate.month + '-' + this.blueDate.day,
-      amount: this.amount.value
+      amount: this.parseFloat(this.amount.value)
     }
     
     this.apolloService.mutate(projectpayment_pay, params).then((res) => {
