@@ -28,6 +28,7 @@ const companyproject_list = gql`
         active
         canDelete
         projectUsed
+        overdue
         members {
           firstName
           lastName

@@ -95,60 +95,56 @@ export class ProjectsComponent extends Base implements OnInit {
   }
 
   ngOnInit(): void {
-    if (localStorage.getItem('idcompany')) {
-      this.showNewProject = super.setRole('Create Projects');
-      this.eventService.broadcast(EventType.CHANGE_PAGE_TITLE, {
-        title: 'Projects',
-        breadCrumbItems: [
-          {
-            label: 'Apps',
-            path: '.',
-          },
-          {
-            label: 'Projects',
-            path: '.',
-            active: true,
-          },
-        ],
-      });
-      if (localStorage.getItem('welcomeyn') === 'true') {
-        this.isLoading = false;
-        if (localStorage.getItem('memberyn') === 'true') {
-          setTimeout(() => {
-            this.modalService.open(this.joinUsModal, {
-              backdrop: 'static',
-              centered: true,
-              windowClass: 'centerModal',
-            });
-          }, 30);
-        } else {
-          setTimeout(() => {
-            this.modalService.open(this.welcomeModal, {
-              backdrop: 'static',
-              size: '443',
-              centered: true,
-            });
-          }, 30);
-        }
+    this.showNewProject = super.setRole('Create Projects');
+    this.eventService.broadcast(EventType.CHANGE_PAGE_TITLE, {
+      title: 'Projects',
+      breadCrumbItems: [
+        {
+          label: 'Apps',
+          path: '.',
+        },
+        {
+          label: 'Projects',
+          path: '.',
+          active: true,
+        },
+      ],
+    });
+    if (localStorage.getItem('welcomeyn') === 'true') {
+      this.isLoading = false;
+      if (localStorage.getItem('memberyn') === 'true') {
+        setTimeout(() => {
+          this.modalService.open(this.joinUsModal, {
+            backdrop: 'static',
+            centered: true,
+            windowClass: 'centerModal',
+          });
+        }, 30);
       } else {
-        if (localStorage.getItem('idcompany')) {
-          this.idCompany = parseInt(localStorage.getItem('idcompany'));
-          this.getProjectList();
-          this.getCompanyGroupList('all');
-        } else {
-          this.subscription = this.globalService.companyID$.subscribe(
-            (companyID) => {
-              if (companyID !== 0) {
-                this.idCompany = companyID;
-                this.getProjectList();
-                this.getCompanyGroupList('all');
-              }
-            }
-          );
-        }
+        setTimeout(() => {
+          this.modalService.open(this.welcomeModal, {
+            backdrop: 'static',
+            size: '443',
+            centered: true,
+          });
+        }, 30);
       }
     } else {
-      this.isLoading = false;
+      if (localStorage.getItem('idcompany')) {
+        this.idCompany = parseInt(localStorage.getItem('idcompany'));
+        this.getProjectList();
+        this.getCompanyGroupList('all');
+      } else {
+        this.subscription = this.globalService.companyID$.subscribe(
+          (companyID) => {
+            if (companyID !== 0) {
+              this.idCompany = companyID;
+              this.getProjectList();
+              this.getCompanyGroupList('all');
+            }
+          }
+        );
+      }
     }
   }
 
@@ -162,10 +158,9 @@ export class ProjectsComponent extends Base implements OnInit {
             this.projectList = result.data;
             this.projectList.forEach((item) => {
               if (item.projectBudget > 0)
-                item.progress = item.projectUsed / item.projectBudget * 100;
+                item.progress = (item.projectUsed / item.projectBudget) * 100;
               else item.progress = 0;
             });
-            console.log(this.projectList)
           }
           this.isLoading = false;
         });
