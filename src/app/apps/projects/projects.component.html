@@ -120,7 +120,7 @@
                         <div class="d-flex align-items-center subtitle-2-500-12 text-optional">
                             Overdue
                             <span class="ms-1 text-center"
-                                style="min-width: 20px;height: 20px;border-radius: 10px;background-color: #F87171;color: white;    line-height: 22px;">{{project.overdue}}</span>
+                                style="min-width: 20px;height: 20px;border-radius: 10px;background-color: {{project.overdue>0?'#F87171':'#E5E7EB'}};color: white;    line-height: 22px;">{{project.overdue}}</span>
                         </div>
                     </div>
                 </div>
@@ -309,7 +309,7 @@
                             <!--                            {{project.status}}-->
                             Overdue
                             <span class="ms-1 text-center"
-                                style="min-width: 20px;height: 20px;border-radius: 10px;background-color: #F87171;color: white;    line-height: 22px;">{{project.overdue}}</span>
+                                style="min-width: 20px;height: 20px;border-radius: 10px;background-color: {{project.overdue>0?'#F87171':'#E5E7EB'}};color: white;    line-height: 22px;">{{project.overdue}}</span>
                         </div>
                     </div>
                 </div>
