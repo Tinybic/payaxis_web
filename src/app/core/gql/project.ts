@@ -361,6 +361,7 @@ const projectbudget_list = gql`
         category
         budgetPercentage
         budgetAmount
+        budgetUsed
         active
       }
     }
