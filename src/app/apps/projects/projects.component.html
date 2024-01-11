@@ -74,13 +74,13 @@
                                 (click)="pinProject(project,false)"></i>
                         </div>
                     </div>
-                    <div class="d-flex mt-2-1" style="height: 58px;">
+                    <div class="d-flex mt-2-1 cursor-pointer" style="height: 58px;" (click)="navProjectDetail(project.id)">
                         <div class="me-1-1 flex-shrink-0"
                             style="width: 42px; height: 42px; line-height: 42px;margin-top: 4px;text-align: center; border-radius: 8px; background-color: {{project.color}};">
                             <i class="{{project.icon}} font-26 text-white"></i>
                         </div>
-                        <div class="d-flex align-items-center cursor-pointer" style="width: 100%;height: 50px;">
-                            <div class="align-items-start headline-24" (click)="navProjectDetail(project.id)"
+                        <div class="d-flex align-items-center" style="width: 100%;height: 50px;">
+                            <div class="align-items-start headline-24"
                                 style="max-width: calc(100% - 12px);max-height: 50px;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;text-overflow: ellipsis;">
                                 {{project.projectName}}
                             </div>
@@ -263,13 +263,13 @@
                                 (click)="pinProject(project,true)"></i>
                         </div>
                     </div>
-                    <div class="d-flex mt-2-1">
+                    <div class="d-flex mt-2-1 cursor-pointer" (click)="navProjectDetail(project.id)">
                         <div class="me-1-1 flex-shrink-0"
                             style="width: 42px; height: 42px; line-height: 42px;margin-top: 4px; text-align: center; border-radius: 8px; background-color: {{project.color}}33;">
                             <i class="{{project.icon}} font-26 " style="color: {{project.color}}"></i>
                         </div>
-                        <div class="d-flex align-items-center cursor-pointer" style="width: 100%;height: 50px;">
-                            <div class="align-items-start headline-24" (click)="navProjectDetail(project.id)"
+                        <div class="d-flex align-items-center" style="width: 100%;height: 50px;">
+                            <div class="align-items-start headline-24"
                                 style="max-width: calc(100% - 12px);max-height: 50px;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;text-overflow: ellipsis;">
                                 {{project.projectName}}
                             </div>
