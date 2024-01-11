@@ -10,6 +10,7 @@ import {
 } from 'src/app/core/gql/project';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { EventService } from 'src/app/core/service/event.service';
+import { companycategory_list, companycategory_new } from "../../../core/gql/costcode";
 
 @Component({
   selector: 'app-project-detail',
@@ -19,6 +20,7 @@ import { EventService } from 'src/app/core/service/event.service';
 export class ProjectDetailComponent extends Base {
   @ViewChild('editProjectModal') editProjectModal: NgbModalRef;
   @ViewChild('editBudgetModal') editBudgetModal: NgbModalRef;
+  @ViewChild('addCategoryModal') addCategoryModal: any;
   tabs = 1;
   keywords = '';
 
@@ -44,9 +46,13 @@ export class ProjectDetailComponent extends Base {
 
   budgetList = [];
   isLoading = true;
+  categoryName = '';
+  categoryNameError = false;
+  categoryList =[];
 
   editProjectModalRef: NgbModalRef;
   editBudgetModalRef: NgbModalRef;
+  addCategoryModalRef: NgbModalRef;
 
   constructor(
     private modalService: NgbModal,
@@ -66,6 +72,8 @@ export class ProjectDetailComponent extends Base {
       const idProject = parseInt(params['id']);
       this.getProjectInfo(idProject);
       this.getProjectBudgetList(idProject);
+      
+      this.getCategoryList();
     });
   }
 
@@ -132,8 +140,68 @@ export class ProjectDetailComponent extends Base {
   }
   
   createNew(){
-    if(this.tabs === 2){
+    if(this.tabs < 3){
       this.router.navigate(['apps/order/detail/-'+ this.project.id])
+    }
+  }
+  
+  
+  openAddCategoryModal() {
+    this.categoryNameError = false;
+    this.addCategoryModalRef = this.modalService.open(this.addCategoryModal, {
+      modalDialogClass: 'modal-right',
+      size: '530',
+      centered: true,
+    });
+    this.categoryName = '';
+  }
+  
+  getCategoryList() {
+    if (this.project.idCompany != 0) {
+      this.apolloService
+      .query(companycategory_list, { idCompany: this.project.idCompany })
+      .then((res) => {
+        const result = res.companycategory_list;
+        if (!result.error) {
+          this.categoryList = result.data;
+        }
+      });
+    }
+  }
+  
+  checkCategoryExist(name) {
+    for (let i = 0; i < this.categoryList.length; i++) {
+      if (this.categoryList[i].txtName == name) {
+        return false;
+      }
+    }
+    return true;
+  }
+  
+  createCategory() {
+    if (
+      this.categoryName.toLocaleLowerCase() != 'others' &&
+      this.checkCategoryExist(this.categoryName)
+    ) {
+      this.apolloService
+      .mutate(companycategory_new, {
+        idCompany: this.project.idCompany,
+        txtName: this.categoryName,
+      })
+      .then((res) => {
+        const result = res.companycategory_new;
+        let message = '';
+        if (!result.error) {
+          message = 'Add category successfully';
+          this.getCategoryList();
+          this.addCategoryModalRef.close();
+        } else {
+          message = result.message;
+        }
+        this.toastrService.info(message, '');
+      });
+    } else {
+      this.categoryNameError = true;
     }
   }
 }
