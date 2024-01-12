@@ -73,56 +73,55 @@ export class LeftSidebarComponent implements OnInit {
         if (!res.company_list.error) {
           this.companyList = res.company_list.data;
 
-          if(this.companyList.length == 0){
+          if (this.companyList.length == 0) {
             this.router.navigate(['apps/setting']);
-          }
-          else{
-          if (
-            this.companyList.length > 0 &&
-            (localStorage.getItem('idcompany') == '0' ||
-              localStorage.getItem('idcompany') == null ||
-              localStorage.getItem('idUserOwner') == null)
-          ) {
-            localStorage.setItem(
-              'idcompany',
-              this.companyList[0].id.toString()
-            );
-            localStorage.setItem('companyName', this.companyList[0].txtName);
-            localStorage.setItem(
-              'idUserOwner',
-              this.companyList[0].idUserOwner
-            );
-            localStorage.setItem(
-              'companyAccess',
-              JSON.stringify(this.companyList[0].companyAccess)
-            );
-            this.globalService.setCompanyID(
-              parseInt(this.companyList[0].id.toString())
-            );
           } else {
-            for (let i = 0; i < this.companyList.length; i++) {
-              if (
-                this.companyList[i].id.toString() ==
-                localStorage.getItem('idcompany')
-              ) {
-                localStorage.setItem(
-                  'companyName',
-                  this.companyList[i].txtName
-                );
-                localStorage.setItem(
-                  'idUserOwner',
-                  this.companyList[i].idUserOwner
-                );
-                localStorage.setItem(
-                  'companyAccess',
-                  JSON.stringify(this.companyList[i].companyAccess)
-                );
-                break;
+            if (
+              this.companyList.length > 0 &&
+              (localStorage.getItem('idcompany') == '0' ||
+                localStorage.getItem('idcompany') == null ||
+                localStorage.getItem('idUserOwner') == null)
+            ) {
+              localStorage.setItem(
+                'idcompany',
+                this.companyList[0].id.toString()
+              );
+              localStorage.setItem('companyName', this.companyList[0].txtName);
+              localStorage.setItem(
+                'idUserOwner',
+                this.companyList[0].idUserOwner
+              );
+              localStorage.setItem(
+                'companyAccess',
+                JSON.stringify(this.companyList[0].companyAccess)
+              );
+              this.globalService.setCompanyID(
+                parseInt(this.companyList[0].id.toString())
+              );
+            } else {
+              for (let i = 0; i < this.companyList.length; i++) {
+                if (
+                  this.companyList[i].id.toString() ==
+                  localStorage.getItem('idcompany')
+                ) {
+                  localStorage.setItem(
+                    'companyName',
+                    this.companyList[i].txtName
+                  );
+                  localStorage.setItem(
+                    'idUserOwner',
+                    this.companyList[i].idUserOwner
+                  );
+                  localStorage.setItem(
+                    'companyAccess',
+                    JSON.stringify(this.companyList[i].companyAccess)
+                  );
+                  break;
+                }
               }
             }
           }
         }
-      }
       });
     }
   }
@@ -133,12 +132,14 @@ export class LeftSidebarComponent implements OnInit {
   }
 
   selectCompanyName(id, name, idUserOwner, companyAccess) {
+    const cIdCompany = localStorage.getItem('idcompany');
     localStorage.setItem('idcompany', id);
     localStorage.setItem('companyName', name);
     localStorage.setItem('idUserOwner', idUserOwner);
     localStorage.setItem('companyAccess', JSON.stringify(companyAccess));
     this.globalService.setCompanyID(parseInt(id));
-    this.toastrService.info('Switch to Company ' + name, 'Successful');
+    if (cIdCompany != localStorage.getItem('idcompany'))
+      this.toastrService.info('Switch to Company ' + name, 'Successful');
     this.router.navigate(['apps/projects']).then(() => {
       this.router.navigate(['apps/setting']);
     });
