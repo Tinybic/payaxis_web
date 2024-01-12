@@ -6,7 +6,7 @@ import { ProjectsComponent } from './projects.component';
 import {
   NgbAlertModule,
   NgbTooltipModule,
-  NgbProgressbarModule, NgbDropdownModule, NgbNavModule
+  NgbProgressbarModule, NgbDropdownModule, NgbNavModule, NgbDatepickerModule
 } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProjectsGuidComponent } from './projects-guid/projects-guid.component';
@@ -58,6 +58,7 @@ import { SimplebarAngularModule } from "simplebar-angular";
     DropdowndataModule,
     TagInputModule,
     SimplebarAngularModule,
+    NgbDatepickerModule
   ],
   providers:[
     provideNgxMask()

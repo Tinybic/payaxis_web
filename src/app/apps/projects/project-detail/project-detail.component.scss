@@ -5,6 +5,18 @@
 .budgetItem{
     width: calc(20% - 13px);
 }
+.number-rounded{
+  &.bg-red{
+    background-color: #F87171;
+  }
+  &.bg-blue{
+    background-color: #215EA9;
+  }
+  &.bg-yellow{
+    background-color: #EAC608;
+  }
+}
+
 .triangle {
     width: 0;
     height: 7px;
