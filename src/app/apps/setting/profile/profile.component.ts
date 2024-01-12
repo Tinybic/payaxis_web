@@ -78,12 +78,12 @@ export class ProfileComponent extends Base implements OnInit, OnDestroy {
     private toastrService: ToastrService,
     private eventService: EventService,
     private httpService: HttpService
-  ) {super()}
-
+  ) {
+    super();
+  }
 
   canEdit = false;
   ngOnInit(): void {
-    
     this.statesList = STATES;
     let gql = company_info;
     let data = {};
@@ -169,26 +169,31 @@ export class ProfileComponent extends Base implements OnInit, OnDestroy {
   }
 
   saveCompany() {
-    let gql = companyNew;
-    if (this.company.id != 0) {
-      gql = companyUpate;
-    }
-    this.apolloService.mutate(gql, this.company).then((res) => {
-      let result;
+    if (this.company.txtName.length > 0) {
+      let gql = companyNew;
       if (this.company.id != 0) {
-        result = res.company_update;
-      } else {
-        result = res.company_new;
+        gql = companyUpate;
       }
+      this.apolloService.mutate(gql, this.company).then((res) => {
+        let result;
+        if (this.company.id != 0) {
+          result = res.company_update;
+        } else {
+          result = res.company_new;
+        }
 
-      if (!result.error) {
-        this.company.id = result.data.id;
-        this.company.revision = result.data.revision;
-        localStorage.setItem('idcompany', this.company.id.toString());
-        this.eventService.broadcast(EventType.CHANGE_COMPANY, true);
-      }
-      this.toastrService.info(result.message, '');
-    });
+        if (!result.error) {
+          this.company.id = result.data.id;
+          this.company.revision = result.data.revision;
+          localStorage.setItem('idcompany', this.company.id.toString());
+          this.eventService.broadcast(EventType.CHANGE_COMPANY, true);
+        }
+        this.toastrService.info(result.message, '');
+      });
+    }
+    else{
+      this.toastrService.info('Company name required!', '');
+    }
   }
 
   ngOnDestroy() {

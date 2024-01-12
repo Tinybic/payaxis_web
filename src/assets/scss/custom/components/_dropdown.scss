@@ -30,6 +30,12 @@
 .dropdown-item{
     border-radius: 8px;
     padding: 8px;
+    cursor: pointer;
+}
+
+
+.dropdown-item .form-check label{
+    cursor: pointer;
 }
 
 .dropdown-outline{

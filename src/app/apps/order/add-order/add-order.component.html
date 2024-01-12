@@ -50,7 +50,9 @@
                     <div class="Subtitle-1 text-start">#{{this.relatedList[relatedIndex].orderNumber}}</div>
                 </div>
                 <div class="col-md-6">
-                    <div class="d-inline-block {{this.relatedList[relatedIndex].status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{this.relatedList[relatedIndex].status}}</div>
+                    <div
+                        class="d-inline-block {{this.relatedList[relatedIndex].status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
+                        {{this.relatedList[relatedIndex].status}}</div>
                 </div>
             </div>
             <div class="row mt-1-1">
@@ -112,7 +114,9 @@
                         ${{item.total}}
                     </div>
                     <div class="col-md-6 text-end">
-                        <div class="d-inline-block {{this.relatedList[relatedIndex].status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{this.relatedList[relatedIndex].status}}</div>
+                        <div
+                            class="d-inline-block {{this.relatedList[relatedIndex].status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
+                            {{this.relatedList[relatedIndex].status}}</div>
                     </div>
                 </div>
             </div>
@@ -138,7 +142,9 @@
                     class="d-inline-block ms-1-1 DraftTag subtitle-2-600 text-typeblackdeactivated">
                     Draft
                 </div>
-                <div *ngIf="order.status" class="d-inline-block {{order.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{order.status}}</div>
+                <div *ngIf="order.status"
+                    class="d-inline-block {{order.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
+                    {{order.status}}</div>
 
                 <!-- <div class="d-inline-block ms-1-1 activeTag">
             Active
@@ -567,7 +573,7 @@
                                                                 </td>
                                                                 <td>
                                                                     <i class="fe-copy cursor-pointer"
-                                                                        (click)="listItemCopy(item)"></i>
+                                                                        (click)="listItemCopy(item,i)"></i>
                                                                     <i class="fe-trash-2 ms-1-1 cursor-pointer"
                                                                         (click)="listItemDelete(i,item)"></i>
                                                                 </td>
@@ -679,8 +685,7 @@
 </ng-template>
 
 <ng-template #addproject let-modal>
-    <app-create-project [modalRef]="addProjectmodalRef"
-        style="height: 100%;overflow-y: auto;"></app-create-project>
+    <app-create-project [modalRef]="addProjectmodalRef" style="height: 100%;overflow-y: auto;"></app-create-project>
 </ng-template>
 
 <ng-template #addvendor let-modal>

@@ -130,9 +130,11 @@
   <ng-template #companyListModal1>
     <div class="modal-body padding-32-24">
       <input type="text" style="display: none;" />
+      <i class="fe-x cursor-pointer float-end" (click) ="closeCompanyListModal1()"></i>
       <div class="headline text-center">
         Your request has been declined.
       </div>
+
       <div class="subtitle-2-500-18 mb-1-1 text-center">
         It's was a mistake? Do you want to send a request to another company?
       </div>

@@ -140,30 +140,34 @@ export class InfoComponent implements OnInit {
     this.loading = true;
 
     if (this.companyFlag) {
-      this.httpService
-        .post('signup', {
-          email: localStorage.getItem('email'),
-          password: localStorage.getItem('password'),
-          firstname: this.formValues['firstname'].value,
-          lastname: this.formValues['lastname'].value,
-          idcompany: parseInt(localStorage.getItem('id')),
-          companyname: this.formValues['companyName'].value,
-        })
-        .then((res) => {
-          this.loading = false;
-          if (!res.error) {
-            localStorage.removeItem('password');
-            localStorage.setItem('refreshToken', res.data.refreshToken);
-            localStorage.setItem('token', res.data.token);
-            this.updatePhone(code);
-          } else {
-            this.error = res.message;
-          }
-        })
-        .catch((error) => {
-          this.loading = false;
-          this.error = error;
-        });
+      if (this.formValues['companyName'].value.length > 0) {
+        this.httpService
+          .post('signup', {
+            email: localStorage.getItem('email'),
+            password: localStorage.getItem('password'),
+            firstname: this.formValues['firstname'].value,
+            lastname: this.formValues['lastname'].value,
+            idcompany: parseInt(localStorage.getItem('id')),
+            companyname: this.formValues['companyName'].value,
+          })
+          .then((res) => {
+            this.loading = false;
+            if (!res.error) {
+              localStorage.removeItem('password');
+              localStorage.setItem('refreshToken', res.data.refreshToken);
+              localStorage.setItem('token', res.data.token);
+              this.updatePhone(code);
+            } else {
+              this.error = res.message;
+            }
+          })
+          .catch((error) => {
+            this.loading = false;
+            this.error = error;
+          });
+      } else {
+        this.toastr.info('Company name required!', '');
+      }
     } else {
       this.updatePhone(code);
     }
