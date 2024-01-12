@@ -147,7 +147,7 @@ export class RegisterComponent implements OnInit {
             this.companyListRef = this.modalService.open(
               this.companyListModal,
               {
-                size:'489',
+                size: '489',
                 backdrop: 'static',
                 centered: true,
               }
@@ -244,7 +244,7 @@ export class RegisterComponent implements OnInit {
       this.modalService.dismissAll();
     } else {
       this.infoModalRef = this.modalService.open(this.infoModal, {
-        size:'489',
+        size: '489',
         backdrop: 'static',
         centered: true,
       });
@@ -259,31 +259,35 @@ export class RegisterComponent implements OnInit {
       centered: true,
     });
 
-    this.httpService
-      .post('signup', {
-        email: this.formValues['email'].value,
-        password: this.formValues['password'].value,
-        firstname: this.firstName,
-        lastname: this.lastName,
-        idcompany: parseInt(localStorage.getItem('join')),
-        companyname: ' ',
-      })
-      .then((res) => {
-        this.loading = false;
-        if (!res.error) {
-          localStorage.setItem('refreshToken', res.data.refreshToken);
-          localStorage.setItem('token', res.data.token);
-          setTimeout(() => {
-            this.signUpRef.close();
-            this.router.navigate(['auth/info']);
-          }, 2000);
-        } else {
-          this.error = res.message;
-        }
-      })
-      .catch((error) => {
-        this.loading = false;
-        this.error = error;
-      });
+    if (localStorage.getItem('join').length > 0) {
+      this.httpService
+        .post('signup', {
+          email: this.formValues['email'].value,
+          password: this.formValues['password'].value,
+          firstname: this.firstName,
+          lastname: this.lastName,
+          idcompany: parseInt(localStorage.getItem('join')),
+          companyname: ' ',
+        })
+        .then((res) => {
+          this.loading = false;
+          if (!res.error) {
+            localStorage.setItem('refreshToken', res.data.refreshToken);
+            localStorage.setItem('token', res.data.token);
+            setTimeout(() => {
+              this.signUpRef.close();
+              this.router.navigate(['auth/info']);
+            }, 2000);
+          } else {
+            this.error = res.message;
+          }
+        })
+        .catch((error) => {
+          this.loading = false;
+          this.error = error;
+        });
+    } else {
+      this.toastr.info('Company required!', '');
+    }
   }
 }
