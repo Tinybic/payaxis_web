@@ -337,6 +337,14 @@ const companyproject_info = gql`
         color
         icon
         pinyn
+        owed
+        owedTotal
+        overdue
+        overdueTotal
+        dueseven
+        duesevenTotal
+        duefilter
+        duefilterTotal
         status
         active
         canDelete
@@ -363,10 +371,27 @@ const projectbudget_list = gql`
         budgetPercentage
         budgetAmount
         budgetUsed
+        overdue
+        dueseven
+        duefilter
         active
       }
     }
   }
+`;
+
+const companyproject_date = gql`
+  query companyproject_date($idProject: Int!, $dateFrom: String!, $dateTo: String!) {
+  companyproject_date(idProject: $idProject, dateFrom: $dateFrom, dateTo: $dateTo) {
+    error
+    code
+    message
+    data {
+      duefilter
+      duefilterTotal
+    }
+  }
+}
 `;
 
 export {
@@ -385,4 +410,5 @@ export {
   companygroup_deactivate,
   companyproject_info,
   projectbudget_list,
+  companyproject_date,
 };

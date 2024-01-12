@@ -1,97 +1,13 @@
-<div class="row" style="height: 56px;">
-    <div class="col-md-4">
+<div class="d-flex justify-content-between">
+    <div class="flex-grow-1">
         <div class="headline font-28 line-32 text-overflow-ellipsis">
             {{project.projectName}}
         </div>
         <div class="subtitle-2-500 text-typeblack80 text-overflow-ellipsis">
             {{project.projectAddress}}
         </div>
-    </div>
-    <div class="col-md-6">
-        <div *ngIf="tabs == 2" class="row">
-            <div class="col-md-3">
-                <div class="card" style="height: 104px;">
-                    <div class="card-body padding-24">
-                        <div class="subtitle-2-500-16 text-typeblack80">Owed</div>
-                        <div class="subtitle-2-500-24 mt-2-1">$38,189</div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card" style="height: 104px;">
-                    <div class="card-body padding-24">
-                        <div class="subtitle-2-500-16 text-typeblack80">Overdue</div>
-                        <div class="d-flex subtitle-2-500-24 mt-2-1">$1,537
-                            <span class="badge rounded-pill subtitle-2-500-12"
-                                  style="min-width:24px;height:24px;background-color: #F87171;padding: 6px;margin-left: 4px;">4</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card" style="height: 104px;">
-                    <div class="card-body padding-24">
-                        <div class="subtitle-2-500-16 text-typeblack80">Due in 7</div>
-                        <div class="d-flex subtitle-2-500-24 mt-2-1">$2,818
-                            <span class="badge rounded-pill subtitle-2-500-12"
-                                  style="min-width:24px;height:24px;background-color: #EAC608;padding: 6px;margin-left: 4px;">8</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card" style="height: 104px;">
-                    <div class="card-body padding-24">
-                        <div class="subtitle-2-500-16" style="color: #215EA9;">Apr 7 - May 7
-                            <i class="fa-caret-down fas ms-1-1"></i></div>
-                        <div class="d-flex subtitle-2-500-24 mt-2-1">$38,189
-                            <span class="badge rounded-pill subtitle-2-500-12"
-                                  style="min-width:24px;height:24px;background-color: #215EA9;padding: 6px;margin-left: 4px;">1</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-2 text-end line-56">
-        <div *ngIf="tabs < 3" class="d-inline-block" ngbDropdown>
-            <button class="btn btn-primary ms-2-1" ngbDropdownToggle style="padding: 10px 16px;">New Order<i
-                    class="fe-chevron-down ms-1-1"></i></button>
-            <div ngbDropdownMenu style="padding: 4px 8px;">
-                <a class="subtitle-2-500" href="javascript:void(0);" (click)="createNew()" style="padding: 12px 4px;" ngbDropdownItem>
-                    <i class="fe-plus me-1-1"></i>
-                    Create New
-                </a>
-                <a class="subtitle-2-500" href="javascript:void(0);" style="padding: 12px 4px;" ngbDropdownItem>
-                    <i class="fe-upload me-1-1"></i>
-                    Upload
-                </a>
-            </div>
-        </div>
-        <div *ngIf="tabs == 1" class="d-inline-block ms-2-1" ngbDropdown>
-            <span ngbDropdownToggle><i class="fe-more-vertical- font-24 cursor-pointer"></i></span>
-            <div ngbDropdownMenu style="padding: 4px 8px;" *ngIf="canEdit">
-                <a class="subtitle-2-500" href="javascript:void(0);" (click)="editProjectDetails()" style="padding: 12px 4px;" ngbDropdownItem>
-                    <i class="fe-edit me-1-1"></i>
-                    Edit Project Details
-                </a>
-                <a class="subtitle-2-500" href="javascript:void(0);" style="padding: 12px 4px;" (click)="editProjectBudget()" ngbDropdownItem>
-                    <i class="fe-file-text me-1-1"></i>
-                    Edit Project Budget
-                </a>
-                <a class="subtitle-2-500" href="javascript:void(0);" style="padding: 12px 4px;color: #EA001E;"
-                    ngbDropdownItem>
-                    <i class="fe-trash-2 me-1-1"></i>
-                    Remove project
-                </a>
-            </div>
-        </div>
-        <button class="btn btn-primary" *ngIf="tabs == 4 && canInviteMember" (click) = "inviteMembers()"><i class="fe-plus-square me-1-1"></i>Invite Member</button>
-    </div>
-</div>
-<div class="row mt-1-1">
-    <div class="col-md-12">
-        <ul ngbNav #nav="ngbNav" [(activeId)]="tabs" class="nav-pills navtab-bg">
+        
+        <ul ngbNav #nav="ngbNav" [(activeId)]="tabs" class="nav-pills navtab-bg mt-1-1">
             <li [ngbNavItem]="1">
                 <a ngbNavLink>
                     Budget
@@ -106,28 +22,34 @@
                                             <div class="subtitle-2-500-16 text-typeblack80">Used</div>
                                             <div class="d-flex align-items-top mt-2-1"><span
                                                     class="subtitle-2-500-24">{{project.projectUsed | currency}}</span>
-                                                <span class="subtitle-2-500-16 text-typeblack80 ms-1-1 line-20">{{project.projectBudget == 0 ? '0.00' : (project.projectUsed/project.projectBudget*100).toFixed(2)}}%</span>
+                                                <span class="subtitle-2-500-16 text-typeblack80 ms-1-1 line-20">{{project.projectBudget == 0 ? '0.00' : (project.projectUsed / project.projectBudget * 100).toFixed(2)}}
+                                                    %</span>
                                             </div>
                                         </div>
                                         <div class="col-md-6 text-end">
                                             <div class="subtitle-2-500-16 text-typeblack80">Left</div>
-                                            <div class="subtitle-2-500-24 mt-2-1" [ngClass]="{'text-danger': project.projectBudget < project.projectUsed}">
+                                            <div class="subtitle-2-500-24 mt-2-1"
+                                                 [ngClass]="{'text-danger': project.projectBudget < project.projectUsed}">
                                                 {{project.projectBudget - project.projectUsed | currency}}
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mt-1">
                                         <div *ngIf="project.projectUsed>project.projectBudget" class="col-md-12">
-                                            <ngb-progressbar [value]="project.projectBudget/project.projectUsed*100" class="mt-1-1 bg-danger" type="success" height="8px"></ngb-progressbar>
+                                            <ngb-progressbar [value]="project.projectBudget/project.projectUsed*100"
+                                                             class="mt-1-1 bg-danger" type="success"
+                                                             height="8px"></ngb-progressbar>
                                         </div>
                                         <div *ngIf="!(project.projectUsed>project.projectBudget)" class="col-md-12">
-                                            <ngb-progressbar [value]="project.projectUsed==0 ? 0 : project.projectUsed/project.projectBudget*100" class="mt-1-1" type="success" height="8px"></ngb-progressbar>
+                                            <ngb-progressbar
+                                                    [value]="project.projectUsed==0 ? 0 : project.projectUsed/project.projectBudget*100"
+                                                    class="mt-1-1" type="success" height="8px"></ngb-progressbar>
                                         </div>
                                     </div>
-
+                                    
                                     <div class="d-flex flex-row mt-3-1" style="border-top:1px solid #E5E7EB">
                                         <div
-                                            style="border-right: 1px solid #E5E7EB;flex: 1; height: 56px; margin-top: 24px;">
+                                                style="border-right: 1px solid #E5E7EB;flex: 1; height: 56px; margin-top: 24px;">
                                             <div class="subtitle-2-500-16 text-typeblack80">Total</div>
                                             <div class="subtitle-2-500-24 mt-2-1">
                                                 {{project.projectBudget | currency}}
@@ -138,11 +60,11 @@
                                             <div class="subtitle-2-500-24 mt-2-1">
                                                 <span *ngIf="project.projectSqft == 0">-</span><span
                                                     *ngIf="project.projectSqft>0">{{project.projectSqft | currency
-                                                    :'':''}}</span>
+                                                :'':''}}</span>
                                             </div>
                                         </div>
                                         <div
-                                            style="border-left: 1px solid #E5E7EB;flex: 1; height: 56px; margin-top: 24px; padding-left: 24px;">
+                                                style="border-left: 1px solid #E5E7EB;flex: 1; height: 56px; margin-top: 24px; padding-left: 24px;">
                                             <div class="subtitle-2-500-16 text-typeblack80">Account</div>
                                             <div class="d-flex align-items-center mt-2-1"><span
                                                     class="subtitle-2-500-24">-</span>
@@ -156,38 +78,66 @@
                         <div class="col-md-5">
                             <div class="row">
                                 <div class="col-md-6" style="padding-left:4px">
-                                    <div class="card" style="height: 120px;margin-bottom: 16px">
-                                        <div class="card-body padding-24">
+                                    <div class="card mb-2-1">
+                                        <div class="card-body" style="padding: 30px 24px;">
                                             <div class="subtitle-2-500-16 text-typeblack80">Owed</div>
-                                            <div class="subtitle-2-500-24 mt-2-1">-</div>
+                                            <div class="subtitle-2-500-24 mt-2-1">
+                                                {{project.owedTotal | currency}}
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="card" style="height: 120px;">
-                                        <div class="card-body padding-24">
+                                    <div class="card">
+                                        <div class="card-body" style="padding: 30px 24px;">
                                             <div class="subtitle-2-500-16 text-typeblack80">Due in 7 days</div>
-                                            <div class="subtitle-2-500-24 mt-2-1">-</div>
+                                            <div class="d-flex align-items-center subtitle-2-500-24 mt-2-1">
+                                                {{project.duesevenTotal | currency}}
+                                                <div *ngIf="project.dueseven > 0"
+                                                     class="number-rounded ms-1 bg-yellow">{{project.dueseven}}</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6" style="padding-left:4px">
-                                    <div class="card" style="height: 120px;margin-bottom: 16px">
-                                        <div class="card-body padding-24">
+                                    <div class="card mb-2-1">
+                                        <div class="card-body" style="padding: 30px 24px;">
                                             <div class="subtitle-2-500-16 text-typeblack80">Overdue</div>
-                                            <div class="subtitle-2-500-24 mt-2-1">-</div>
+                                            <div class="d-flex align-items-center subtitle-2-500-24 mt-2-1">
+                                                {{project.overdueTotal | currency}}
+                                                <div *ngIf="project.overdue > 0"
+                                                     class="number-rounded ms-1 bg-red">{{project.overdue}}</div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="card" style="height: 120px;margin-bottom: 16px">
-                                        <div class="card-body padding-24">
-                                            <div class="subtitle-2-500-16" style="color: #215EA9;">Pick Dates<i class="fa-caret-down fas ms-1-1"></i></div>
-                                            <div class="subtitle-2-500-24 mt-2-1">-</div>
+                                    <div class="card mb-2-1">
+                                        <div class="card-body" style="padding: 30px 24px;">
+                                            <div class="d-inline-block" ngbDropdown #pickDatesDrop="ngbDropdown"
+                                                 placement="bottom-end" style="width: 100%;">
+                                                <div id="pickDatesDropBtn1"
+                                                     class="subtitle-2-500-16 me-2 cursor-pointer" ngbDropdownAnchor
+                                                     (click)="pickDatesDrop.toggle()" style="color: #215EA9;">
+                                                    {{selectedDateRange}}
+                                                    <i class="fa-caret-down fas ms-1-1" style="color: #215EA9;"></i>
+                                                </div>
+                                                <div ngbDropdownMenu aria-labelledby="pickDatesDropBtn1">
+                                                    <ngb-datepicker [dayTemplate]="t"
+                                                                    (dateSelect)="onDateSelection($event)"
+                                                    />
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="d-flex align-items-center subtitle-2-500-24 mt-2-1">
+                                                {{project.duefilterTotal | currency}}
+                                                <div *ngIf="project.duefilter > 0"
+                                                     class="number-rounded ms-1 bg-blue">{{project.duefilter}}</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
+                        
                         </div>
                     </div>
-
+                    
                     <div class="row">
                         <div class="col-md-6 subtitle-2-600-24">
                             Budgets
@@ -195,19 +145,20 @@
                         <div class="col-md-6 text-end">
                             <div class="d-inline-block">
                                 <input class="form-control form-search" type="search" placeholder="Search here"
-                                    [(ngModel)]="keywords" />
+                                       [(ngModel)]="keywords"/>
                             </div>
                             <div class="d-inline-block ms-2-1" ngbDropdown>
                                 <button class="btn btn-primary" style="padding: 8px 16px;" ngbDropdownToggle>Add
                                     Category<i class="fe-chevron-down ms-1-1"></i></button>
                                 <div ngbDropdownMenu style="padding: 4px 8px;">
-                                    <a class="subtitle-2-500" href="javascript:void(0);" (click)="openAddCategoryModal()" style="padding: 12px 4px;"
-                                        ngbDropdownItem>
+                                    <a class="subtitle-2-500" href="javascript:void(0);"
+                                       (click)="openAddCategoryModal()" style="padding: 12px 4px;"
+                                       ngbDropdownItem>
                                         <i class="fe-plus me-1-1"></i>
                                         Create New
                                     </a>
                                     <a class="subtitle-2-500" href="javascript:void(0);" style="padding: 12px 4px;"
-                                        ngbDropdownItem>
+                                       ngbDropdownItem>
                                         <i class="fe-upload me-1-1"></i>
                                         Upload
                                     </a>
@@ -220,45 +171,53 @@
                             <app-ui-preloader [display]="isLoading"></app-ui-preloader>
                         </div>
                     </div>
-
+                    
                     <div class="row" *ngIf="budgetList.length == 0 && !isLoading">
                         <div class="col-md-12 text-center" style="padding-top: 80px;">
                             <div class="Subtitle-1 text-typeblackdeactivated">No budget...</div>
                             <div class="text-typeblackdeactivated mt-1-1 ">Get your project on track in a few clicks
                             </div>
-                            <div class="mt-1-1"><button class="btn btn-outline-primary" style="padding: 8px 16px;"><i
-                                        class="fe-plus me-1-1"></i>Create</button></div>
+                            <div class="mt-1-1">
+                                <button class="btn btn-outline-primary" style="padding: 8px 16px;"><i
+                                        class="fe-plus me-1-1"></i>Create
+                                </button>
+                            </div>
                         </div>
                     </div>
-
+                    
                     <div class="d-flex flex-wrap mt-2-1" *ngIf="budgetList.length > 0 && !isLoading">
                         <div class="card budgetItem" *ngFor="let item of budgetList; let i = index"
-                            [ngClass]="{'ms-2-1':i % 5 > 0}">
+                             [ngClass]="{'ms-2-1':i % 5 > 0}">
                             <div class="card-body p-2-1">
                                 <div class="row">
                                     <div class="col-md-6 Subtitle-1 text-start line-20">{{item.category}}</div>
-                                    <div class="col-md-6 text-end">
-                                        <span class="subtitle-2-400-14">{{item.budgetAmount | currency}}</span>
-                                        <div class="number-rounded ms-1" style="background-color: #F87171;">
-                                            3
+                                    <div class="col-md-6 d-flex flex-row justify-content-end">
+                                        <div class="subtitle-2-400-14"
+                                             style="padding-top: 3px;">{{item.budgetAmount | currency}}</div>
+                                        <div *ngIf="item.overdue> 0 || item.dueseven> 0 || item.duefilter > 0"
+                                             class="number-rounded ms-1" [ngClass]="getBackgroundColor(item)">
+                                            {{item.overdue > 0 ? item.overdue : item.dueseven > 0 ? item.dueseven : item.duefilter > 0 ? item.duefilter : ''}}
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
                                     <div *ngIf="item.budgetUsed > item.budgetAmount" class="col-md-12">
-                                        <ngb-progressbar class="bg-danger mt-1-1" type="success" height="8px" [value]="item.budgetAmount/item.budgetUsed*100"></ngb-progressbar>
+                                        <ngb-progressbar class="bg-danger mt-1-1" type="success" height="8px"
+                                                         [value]="item.budgetAmount/item.budgetUsed*100"></ngb-progressbar>
                                     </div>
                                     <div *ngIf="!(item.budgetUsed > item.budgetAmount)" class="col-md-12">
-                                        <ngb-progressbar class="mt-1-1" type="success" height="8px" [value]="item.budgetAmount == 0 ? 0 : item.budgetUsed/item.budgetAmount*100"></ngb-progressbar>
+                                        <ngb-progressbar class="mt-1-1" type="success" height="8px"
+                                                         [value]="item.budgetAmount == 0 ? 0 : item.budgetUsed/item.budgetAmount*100"></ngb-progressbar>
                                     </div>
                                 </div>
-                                <div class="row mt-2">
-                                    <div class="col-md-6 d-inline-flex subtitle-2-500-12">
+                                <div class="d-flex justify-content-between mt-2">
+                                    <div class="d-inline-flex subtitle-2-500-12">
                                         <span class="text-typeblack80">Used</span>&nbsp;
                                         <span>{{item.budgetUsed | currency}}</span>&nbsp;
-                                        <span class="text-typeblackdeactivated">{{item.budgetAmount == 0 ? '0.00' : (item.budgetUsed/item.budgetAmount*100).toFixed(2)}}%</span>
+                                        <span class="text-typeblackdeactivated">{{item.budgetAmount == 0 ? '0.00' : (item.budgetUsed / item.budgetAmount * 100).toFixed(2)}}
+                                            %</span>
                                     </div>
-                                    <div class="col-md-6 subtitle-2-500-12 text-end">
+                                    <div class="subtitle-2-500-12 text-end">
                                         <span class="text-typeblack80">Left</span>&nbsp;
                                         <span [ngClass]="{'text-danger': item.budgetAmount < item.budgetUsed}">{{(item.budgetAmount - item.budgetUsed) | currency}}</span>
                                     </div>
@@ -273,7 +232,7 @@
                     Orders
                 </a>
                 <ng-template ngbNavContent>
-                    <app-project-orders [idProject]="project.id" ></app-project-orders>
+                    <app-project-orders [idProject]="project.id"></app-project-orders>
                 </ng-template>
             </li>
             <li [ngbNavItem]="3">
@@ -296,9 +255,114 @@
             </li>
         </ul>
     </div>
+    <div class="flex-grow-1">
+        <div *ngIf="tabs === 2" class="d-flex">
+            <div class="card mb-0 me-2-1" style="height: 104px;">
+                <div class="card-body padding-24">
+                    <div class="subtitle-2-500-16 text-typeblack80">Owed</div>
+                    <div class="subtitle-2-500-24 mt-2-1">{{project.owedTotal | currency}}</div>
+                </div>
+            </div>
+            <div class="card mb-0 me-2-1" style="height: 104px;">
+                <div class="card-body padding-24">
+                    <div class="subtitle-2-500-16 text-typeblack80">Overdue</div>
+                    <div class="d-flex align-items-center subtitle-2-500-24 mt-2-1">
+                        {{project.overdueTotal | currency}}
+                        <div *ngIf="project.overdue > 0" class="number-rounded ms-1 bg-red">{{project.overdue}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-0 me-2-1" style="height: 104px;">
+                <div class="card-body padding-24">
+                    <div class="subtitle-2-500-16 text-typeblack80">Due in 7</div>
+                    <div class="d-flex align-items-center subtitle-2-500-24 mt-2-1">
+                        {{project.duesevenTotal | currency}}
+                        <div *ngIf="project.dueseven > 0"
+                             class="number-rounded ms-1 bg-yellow">{{project.dueseven}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-0" style="height: 104px;">
+                <div class="card-body padding-24">
+                    
+                    <div class="d-inline-block" ngbDropdown #pickDatesDrop="ngbDropdown" placement="bottom-end"
+                         style="width: 100%;">
+                        <div id="pickDatesDropBtn2" class="subtitle-2-500-16 me-2 cursor-pointer" ngbDropdownAnchor
+                             (click)="pickDatesDrop.toggle()" style="color: #215EA9;">
+                            {{selectedDateRange}}
+                            <i class="fa-caret-down fas ms-1-1" style="color: #215EA9;"></i>
+                        </div>
+                        <div ngbDropdownMenu aria-labelledby="pickDatesDropBtn2">
+                            <ngb-datepicker [dayTemplate]="t"
+                                            (dateSelect)="onDateSelection($event)"
+                            />
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-center subtitle-2-500-24 mt-2-1">
+                        {{project.duefilterTotal | currency}}
+                        <div *ngIf="project.duefilter > 0"
+                             class="number-rounded ms-1 bg-blue">{{project.duefilter}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex align-items-center text-end line-56">
+        <div *ngIf="tabs < 3" class="d-inline-block" ngbDropdown>
+            <button class="btn btn-primary ms-2-1" ngbDropdownToggle style="padding: 10px 16px;">New Order<i
+                    class="fe-chevron-down ms-1-1"></i></button>
+            <div ngbDropdownMenu style="padding: 4px 8px;">
+                <a class="subtitle-2-500" href="javascript:void(0);" (click)="createNew()" style="padding: 12px 4px;"
+                   ngbDropdownItem>
+                    <i class="fe-plus me-1-1"></i>
+                    Create New
+                </a>
+                <a class="subtitle-2-500" href="javascript:void(0);" style="padding: 12px 4px;" ngbDropdownItem>
+                    <i class="fe-upload me-1-1"></i>
+                    Upload
+                </a>
+            </div>
+        </div>
+        <div *ngIf="tabs == 1" class="d-inline-block ms-2-1" ngbDropdown>
+            <span ngbDropdownToggle><i class="fe-more-vertical- font-24 cursor-pointer"></i></span>
+            <div ngbDropdownMenu style="padding: 4px 8px;" *ngIf="canEdit">
+                <a class="subtitle-2-500" href="javascript:void(0);" (click)="editProjectDetails()"
+                   style="padding: 12px 4px;" ngbDropdownItem>
+                    <i class="fe-edit me-1-1"></i>
+                    Edit Project Details
+                </a>
+                <a class="subtitle-2-500" href="javascript:void(0);" style="padding: 12px 4px;"
+                   (click)="editProjectBudget()" ngbDropdownItem>
+                    <i class="fe-file-text me-1-1"></i>
+                    Edit Project Budget
+                </a>
+                <a class="subtitle-2-500" href="javascript:void(0);" style="padding: 12px 4px;color: #EA001E;"
+                   ngbDropdownItem>
+                    <i class="fe-trash-2 me-1-1"></i>
+                    Remove project
+                </a>
+            </div>
+        </div>
+        <button class="btn btn-primary" *ngIf="tabs == 4 && canInviteMember" (click)="inviteMembers()"><i
+                class="fe-plus-square me-1-1"></i>Invite Member
+        </button>
+    </div>
+</div>
+
+<div class="row">
     <div [ngbNavOutlet]="nav" class="mb-0 b-0 pt-0"></div>
 </div>
 
+<ng-template #t let-date let-focused="focused">
+   <span class="custom-day" [class.focused]="focused"
+         [class.range]="isRange(date)"
+         [class.faded]="isHovered(date) || isInside(date)"
+         (mouseenter)="hoveredDate = date"
+         (mouseleave)="hoveredDate = null">
+       {{ date.day }}
+   </span>
+</ng-template>
 
 <!--#editProjectModal-->
 <ng-template #editProjectModal let-modal>
@@ -308,7 +372,8 @@
 
 <!--#editBudgetModal-->
 <ng-template #editBudgetModal let-modal>
-    <app-create-budget [project]="project"  [budgetAllocation]="budgetList" [modalRef]="editBudgetModalRef"></app-create-budget>
+    <app-create-budget [project]="project" [budgetAllocation]="budgetList"
+                       [modalRef]="editBudgetModalRef"></app-create-budget>
 </ng-template>
 
 <!--#addcategoryModal-->
@@ -323,7 +388,7 @@
                             <label class="form-label" i18n>Name</label>
                             <input class="form-control" type="text" id="name" required i18n-placeholder
                                    placeholder="Enter Name" [(ngModel)]="categoryName"
-                                   [ngClass]="{'is-invalid':categoryNameError}" />
+                                   [ngClass]="{'is-invalid':categoryNameError}"/>
                             <div *ngIf="categoryNameError" class="mt-1" i18n>
                                 <i class="fe-alert-triangle invalid-feedback-icon"></i>
                                 Category name cannot be set to 'Others' or this name exist
@@ -337,7 +402,8 @@
             <div class="row">
                 <div class="col-md-12 d-grid">
                     <button class="btn btn-primary" (click)="createCategory()"
-                            [disabled]="categoryName.length ==0">Create</button>
+                            [disabled]="categoryName.length ==0">Create
+                    </button>
                 </div>
             </div>
             <div class="row mt-1-1">

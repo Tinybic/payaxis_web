@@ -1,12 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDate, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Base } from 'src/app/core/base';
 import { EventType } from 'src/app/core/constants/events';
 import {
   companyproject_info,
   projectbudget_list,
+  companyproject_date,
 } from 'src/app/core/gql/project';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { EventService } from 'src/app/core/service/event.service';
@@ -28,8 +29,8 @@ export class ProjectDetailComponent extends Base {
     id: 0,
     revision: 0,
     idCompany: 0,
-    projectName: '',
-    projectAddress: '',
+    projectName: 'Project Name',
+    projectAddress: 'project address',
     projectBudget: 0.0,
     projectUsed: 0.0,
     projectSqft: 0.0,
@@ -39,6 +40,14 @@ export class ProjectDetailComponent extends Base {
     color: '',
     icon: '',
     pinyn: false,
+    owed: 0,
+    owedTotal: 0.0,
+    overdue: 0,
+    overdueTotal: 0.0,
+    dueseven: 0,
+    duesevenTotal: 0.0,
+    duefilter: 0,
+    duefilterTotal: 0.0,
     status: '',
     active: false,
     canDelete: false,
@@ -49,6 +58,11 @@ export class ProjectDetailComponent extends Base {
   categoryName = '';
   categoryNameError = false;
   categoryList =[];
+  
+  selectedDateRange: string = 'Pick Dates';
+  hoveredDate: NgbDate | null = null;
+  fromDate!: NgbDate;
+  toDate: NgbDate | null = null;
 
   editProjectModalRef: NgbModalRef;
   editBudgetModalRef: NgbModalRef;
@@ -60,7 +74,8 @@ export class ProjectDetailComponent extends Base {
     private apolloService: ApolloService,
     private toastrService: ToastrService,
     private activatedRoute: ActivatedRoute,
-    private eventService: EventService
+    private eventService: EventService,
+    private calendar: NgbCalendar
   ) {super()}
 
   canEdit = false;
@@ -68,6 +83,16 @@ export class ProjectDetailComponent extends Base {
   ngOnInit(): void {
     this.canEdit = super.setRole('Edit Projects');
     this.canInviteMember = super.setRole('Manage project users');
+    this.fromDate = this.calendar.getToday();
+    this.toDate = this.calendar.getNext(this.fromDate, 'm', 1);
+    this.selectedDateRange =
+      this.getShortMonth(this.fromDate.month) +
+      ' ' +
+      this.fromDate.day +
+      ' - ' +
+      this.getShortMonth(this.toDate.month) +
+      ' ' +
+      this.toDate.day;
     this.activatedRoute.params.subscribe((params) => {
       const idProject = parseInt(params['id']);
       this.getProjectInfo(idProject);
@@ -98,7 +123,19 @@ export class ProjectDetailComponent extends Base {
         this.isLoading = false;
       });
   }
-
+  
+  getDueDateFilter(fromDate, toDate) {
+    this.apolloService
+    .query(companyproject_date, { idProject: this.project.id, dateFrom: fromDate, dateTo: toDate })
+    .then((res) => {
+      const result = res.companyproject_date;
+      if (!result.error) {
+        this.project.duefilter = result.data.duefilter;
+        this.project.duefilterTotal = result.data.duefilterTotal;
+      }
+      this.isLoading = false;
+    });
+  }
   editProjectDetails() {
     this.editProjectModalRef = this.modalService.open(this.editProjectModal, {
       modalDialogClass: 'modal-right',
@@ -115,6 +152,19 @@ export class ProjectDetailComponent extends Base {
         console.log(reason);
       }
     );
+  }
+  
+  getBackgroundColor(budget){
+    if(budget.overdue > 0){
+      return 'bg-red';
+    }
+    if(budget.dueseven > 0){
+      return 'bg-yellow';
+    }
+    if(budget.duefilter > 0){
+      return 'bg-blue';
+    }
+    return  'bg-white';
   }
 
   editProjectBudget() {
@@ -143,6 +193,96 @@ export class ProjectDetailComponent extends Base {
     if(this.tabs < 3){
       this.router.navigate(['apps/order/detail/-'+ this.project.id])
     }
+  }
+  
+  
+  
+  dueDateFilterList() {
+    if (this.selectedDateRange != 'Due date') {
+      const startDate =
+        this.fromDate.year +
+        '-' +
+        ('0' + this.fromDate.month).slice(-2) +
+        '-' +
+        ('0' + this.fromDate.day).slice(-2);
+      
+      const endDate =
+        this.toDate.year +
+        '-' +
+        ('0' + this.toDate.month).slice(-2) +
+        '-' +
+        ('0' + this.toDate.day).slice(-2);
+      this.getDueDateFilter(startDate, endDate);
+    }
+  }
+  
+  getShortMonth(month: number){
+      const date = new Date(1980, month, 0);
+      return date.toLocaleDateString('en-US',{
+        month: 'short'
+      })
+  }
+  
+  onDateSelection(date: NgbDate) {
+    if (!this.fromDate && !this.toDate) {
+      this.fromDate = date;
+      this.selectedDateRange =
+        this.getShortMonth(this.fromDate.month) +
+        ' ' +
+        this.fromDate.day;
+    } else if (this.fromDate && !this.toDate && date.after(this.fromDate)) {
+      this.toDate = date;
+      this.selectedDateRange =
+        this.getShortMonth(this.fromDate.month) +
+        ' ' +
+        this.fromDate.day +
+        ' - ' +
+        this.getShortMonth(this.toDate.month) +
+        ' ' +
+        this.toDate.day;
+      this.dueDateFilterList();
+    } else {
+      this.toDate = null;
+      this.fromDate = date;
+      this.selectedDateRange = 'Due date';
+      this.project.duefilter=0;
+      this.project.duefilterTotal=0;
+    }
+  }
+  
+  /**
+   * returns true/false based on whether date is hovered or not
+   * @param date date
+   */
+  isHovered(date: NgbDate) {
+    return (
+      this.fromDate &&
+      !this.toDate &&
+      this.hoveredDate &&
+      date.after(this.fromDate) &&
+      date.before(this.hoveredDate)
+    );
+  }
+  
+  /**
+   * returns true if date is inside selected range
+   * @param date date
+   */
+  isInside(date: NgbDate) {
+    return this.toDate && date.after(this.fromDate) && date.before(this.toDate);
+  }
+  
+  /**
+   * returns true if date is in range
+   * @param date date
+   */
+  isRange(date: NgbDate) {
+    return (
+      date.equals(this.fromDate) ||
+      (this.toDate && date.equals(this.toDate)) ||
+      this.isInside(date) ||
+      this.isHovered(date)
+    );
   }
   
   

@@ -1071,6 +1071,8 @@ export type Query = {
   companypayment_info: Paymentinforesult;
   /** get companypayment list */
   companypayment_list: Paymentlist;
+  /** get project summary */
+  companyproject_date: Projectsummaryresult;
   /** get companyproject info */
   companyproject_info: Projectinforesult;
   /** get companyproject list */
@@ -1190,6 +1192,13 @@ export type QueryCompanypayment_InfoArgs = {
 
 export type QueryCompanypayment_ListArgs = {
   idCompany: Scalars['Int']['input'];
+};
+
+
+export type QueryCompanyproject_DateArgs = {
+  dateFrom: Scalars['String']['input'];
+  dateTo: Scalars['String']['input'];
+  idProject: Scalars['Int']['input'];
 };
 
 
@@ -1561,7 +1570,6 @@ export type Companygroup = {
   modifiedBy: Scalars['Int']['output'];
   modifiedDate: Scalars['String']['output'];
   projectcount: Scalars['Int']['output'];
-  projectlist?: Maybe<Array<Maybe<Companyproject>>>;
   revision: Scalars['Int']['output'];
   txtName: Scalars['String']['output'];
 };
@@ -1642,6 +1650,10 @@ export type Companyproject = {
   color: Scalars['String']['output'];
   createdBy: Scalars['Int']['output'];
   createdDate: Scalars['String']['output'];
+  duefilter: Scalars['Int']['output'];
+  duefilterTotal: Scalars['Float']['output'];
+  dueseven: Scalars['Int']['output'];
+  duesevenTotal: Scalars['Float']['output'];
   groupName: Scalars['String']['output'];
   icon: Scalars['String']['output'];
   id: Scalars['Int']['output'];
@@ -1651,6 +1663,10 @@ export type Companyproject = {
   members?: Maybe<Array<_Project_Member>>;
   modifiedBy: Scalars['Int']['output'];
   modifiedDate: Scalars['String']['output'];
+  overdue: Scalars['Int']['output'];
+  overdueTotal: Scalars['Float']['output'];
+  owed: Scalars['Int']['output'];
+  owedTotal: Scalars['Float']['output'];
   pinyn: Scalars['Boolean']['output'];
   projectAddress: Scalars['String']['output'];
   projectBudget: Scalars['Float']['output'];
@@ -2115,11 +2131,14 @@ export type Projectbudgets = {
   category: Scalars['String']['output'];
   createdBy: Scalars['Int']['output'];
   createdDate: Scalars['String']['output'];
+  duefilter: Scalars['Int']['output'];
+  dueseven: Scalars['Int']['output'];
   id: Scalars['Int']['output'];
   idCategory: Scalars['Int']['output'];
   idProject: Scalars['Int']['output'];
   modifiedBy: Scalars['Int']['output'];
   modifiedDate: Scalars['String']['output'];
+  overdue: Scalars['Int']['output'];
   revision: Scalars['Int']['output'];
 };
 
@@ -2407,6 +2426,20 @@ export type Projectresult = {
   __typename?: 'projectresult';
   code: Scalars['Int']['output'];
   data?: Maybe<Projectidrevision>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Projectsummary = {
+  __typename?: 'projectsummary';
+  duefilter: Scalars['Int']['output'];
+  duefilterTotal: Scalars['Float']['output'];
+};
+
+export type Projectsummaryresult = {
+  __typename?: 'projectsummaryresult';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Projectsummary>;
   error: Scalars['Boolean']['output'];
   message: Scalars['String']['output'];
 };
