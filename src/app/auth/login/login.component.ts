@@ -13,6 +13,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { interval, take } from 'rxjs';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { companyNew, company_member_join } from 'src/app/core/gql/company';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-auth-login',
@@ -49,7 +50,8 @@ export class LoginComponent implements OnInit {
     private httpService: HttpService,
     private fb: UntypedFormBuilder,
     private modalService: NgbModal,
-    private apolloService: ApolloService
+    private apolloService: ApolloService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -264,7 +266,6 @@ export class LoginComponent implements OnInit {
         .then((res) => {
           const result = res.company_member_join;
           if (!result.error) {
-
             this.loadModalRef = this.modalService.open(this.loadModal, {
               backdrop: 'static',
               size: '489',
@@ -281,33 +282,41 @@ export class LoginComponent implements OnInit {
   }
 
   createCompany() {
-    this.apolloService
-      .mutate(companyNew, {
-        id: 0,
-        revision: 0,
-        txtName: this.companyName,
-        taxId: '',
-        idMasterCompany: 0,
-        industry: '',
-        paymentTerms: '',
-        website: '',
-        txtAddress: '',
-        txtCity: '',
-        txtState: '',
-        txtZipcode: '',
-        contactNumber: '',
-        description: '',
-        avatar: '',
-        suiteNumber: '',
-      })
-      .then((res) => {
-        const result = res.company_new;
-        if (!result.error) {
-          this.createCompanyModalRef.close();
-          this.getProfileInfo();
-        } else {
-          this.error = result.message;
-        }
-      });
+    if (this.companyName.length > 0) {
+      this.apolloService
+        .mutate(companyNew, {
+          id: 0,
+          revision: 0,
+          txtName: this.companyName,
+          taxId: '',
+          idMasterCompany: 0,
+          industry: '',
+          paymentTerms: '',
+          website: '',
+          txtAddress: '',
+          txtCity: '',
+          txtState: '',
+          txtZipcode: '',
+          contactNumber: '',
+          description: '',
+          avatar: '',
+          suiteNumber: '',
+        })
+        .then((res) => {
+          const result = res.company_new;
+          if (!result.error) {
+            this.createCompanyModalRef.close();
+            this.getProfileInfo();
+          } else {
+            this.error = result.message;
+          }
+        });
+    } else {
+      this.toastr.info('Company name required!', '');
+    }
+  }
+
+  closeCompanyListModal1() {
+    this.companyListModalRef.close();
   }
 }
