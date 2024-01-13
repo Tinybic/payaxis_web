@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between">
-    <div class="flex-grow-1">
+    <div class="flex-grow-1" style="max-width: 40%;">
         <div class="headline font-28 line-32 text-overflow-ellipsis">
             {{project.projectName}}
         </div>
@@ -138,31 +138,18 @@
                         </div>
                     </div>
                     
-                    <div class="row">
-                        <div class="col-md-6 subtitle-2-600-24">
+                    <div class="row mt-3-1">
+                        <div class="col-md-6 subtitle-2-600-24 pt-1-1">
                             Budgets
                         </div>
                         <div class="col-md-6 text-end">
                             <div class="d-inline-block">
                                 <input class="form-control form-search" type="search" placeholder="Search here"
-                                       [(ngModel)]="keywords"/>
+                                       [(ngModel)]="keywords" style="padding: 10px 1rem 10px 36px;"/>
                             </div>
-                            <div class="d-inline-block ms-2-1" ngbDropdown>
-                                <button class="btn btn-primary" style="padding: 8px 16px;" ngbDropdownToggle>Add
-                                    Category<i class="fe-chevron-down ms-1-1"></i></button>
-                                <div ngbDropdownMenu style="padding: 4px 8px;">
-                                    <a class="subtitle-2-500" href="javascript:void(0);"
-                                       (click)="openAddCategoryModal()" style="padding: 12px 4px;"
-                                       ngbDropdownItem>
-                                        <i class="fe-plus me-1-1"></i>
-                                        Create New
-                                    </a>
-                                    <a class="subtitle-2-500" href="javascript:void(0);" style="padding: 12px 4px;"
-                                       ngbDropdownItem>
-                                        <i class="fe-upload me-1-1"></i>
-                                        Upload
-                                    </a>
-                                </div>
+                            <div class="d-inline-block ms-2-1">
+                                <button class="btn btn-primary" (click)="openAddCategoryModal()" style="padding: 6px 16px;" >Add
+                                    Category</button>
                             </div>
                         </div>
                     </div>
@@ -255,7 +242,7 @@
             </li>
         </ul>
     </div>
-    <div class="flex-grow-1">
+    <div class="flex-grow-1 d-flex justify-content-center">
         <div *ngIf="tabs === 2" class="d-flex">
             <div class="card mb-0 me-2-1" style="height: 104px;">
                 <div class="card-body padding-24">
