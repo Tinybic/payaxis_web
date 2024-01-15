@@ -276,7 +276,7 @@
                                                             </div>
                                                             <div *ngFor="let item of costCodeList">
                                                                 <div style="color: #215EA9; font-weight: 600; margin-bottom: 8px; margin-top: 8px;"
-                                                                    *ngIf="item.costcodelist.length>0">
+                                                                    *ngIf="item.costcodelist && item.costcodelist.length>0">
                                                                     {{item.txtName}}
                                                                 </div>
                                                                 <div class="mb-1"
