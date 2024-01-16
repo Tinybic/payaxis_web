@@ -354,7 +354,6 @@ export class ProjectsComponent extends Base implements OnInit {
         .mutate(companyproject_pin, {
           idCompany: this.idCompany,
           id: item.id,
-          revision: item.revision,
           pinyn: pinyn,
         })
         .then((res) => {

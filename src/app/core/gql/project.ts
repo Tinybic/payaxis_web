@@ -154,25 +154,12 @@ const companyproject_coloricon = gql`
 `;
 
 const companyproject_pin = gql`
-  mutation companyproject_pin(
-    $idCompany: Int!
-    $id: Int!
-    $revision: Int!
-    $pinyn: Boolean!
-  ) {
-    companyproject_pin(
-      idCompany: $idCompany
-      id: $id
-      revision: $revision
-      pinyn: $pinyn
-    ) {
+  mutation companyproject_pin($idCompany: Int!, $id: Int!, $pinyn: Boolean!) {
+    companyproject_pin(idCompany: $idCompany, id: $id, pinyn: $pinyn) {
       error
       code
       message
-      data {
-        id
-        revision
-      }
+      data
     }
   }
 `;
@@ -381,17 +368,25 @@ const projectbudget_list = gql`
 `;
 
 const companyproject_date = gql`
-  query companyproject_date($idProject: Int!, $dateFrom: String!, $dateTo: String!) {
-  companyproject_date(idProject: $idProject, dateFrom: $dateFrom, dateTo: $dateTo) {
-    error
-    code
-    message
-    data {
-      duefilter
-      duefilterTotal
+  query companyproject_date(
+    $idProject: Int!
+    $dateFrom: String!
+    $dateTo: String!
+  ) {
+    companyproject_date(
+      idProject: $idProject
+      dateFrom: $dateFrom
+      dateTo: $dateTo
+    ) {
+      error
+      code
+      message
+      data {
+        duefilter
+        duefilterTotal
+      }
     }
   }
-}
 `;
 
 export {

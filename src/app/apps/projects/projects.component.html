@@ -5,7 +5,7 @@
     </div>
     <div class="col-md-6 text-end">
         <button *ngIf="showNewProject" class="btn btn-primary btn-text-12" (click)="createProject('')"
-            style="padding: 10px 16px;">
+            style="padding: 10px 16px; margin-right: 2px; margin-top: 2px;">
             <i class="fe-file-plus font-16 me-1-1"></i>New Project
         </button>
     </div>
@@ -13,7 +13,7 @@
 
 <div *ngIf="!isLoading && projectList.length > 0">
     <div class="row">
-        <div class="col col-3" *ngFor="let project of (projectList | callback: filterPinProjectList); let i=index;">
+        <div class="col col-md-3" *ngFor="let project of (projectList | callback: filterPinProjectList); let i=index;">
             <div class="card cursor-pointer" style="background-color: {{project.color}}26;">
                 <div class="card-body">
                     <div>
@@ -202,7 +202,7 @@
         </div>
     </div>
     <div class="row mt-2-1">
-        <div class="col col-3" *ngFor="let project of projectList | callback: filterGroupProjectList; let i=index;">
+        <div class="col col-md-3" *ngFor="let project of projectList | callback: filterGroupProjectList; let i=index;">
             <div class="card cursor-pointer" style="background-color: #ffffff;">
                 <div class="card-body">
                     <div>

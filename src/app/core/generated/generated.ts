@@ -121,7 +121,7 @@ export type Mutation = {
   /** new companyproject */
   companyproject_new: Projectresult;
   /** pin companyproject */
-  companyproject_pin: Projectresult;
+  companyproject_pin: Projectbooleanresult;
   /** update companyproject budget */
   companyproject_updatebudget: Projectresult;
   /** update companyproject detail */
@@ -495,7 +495,6 @@ export type MutationCompanyproject_PinArgs = {
   id: Scalars['Int']['input'];
   idCompany: Scalars['Int']['input'];
   pinyn: Scalars['Boolean']['input'];
-  revision: Scalars['Int']['input'];
 };
 
 
@@ -1071,12 +1070,14 @@ export type Query = {
   companypayment_info: Paymentinforesult;
   /** get companypayment list */
   companypayment_list: Paymentlist;
-  /** get project summary */
-  companyproject_date: Projectsummaryresult;
+  /** get project summary date */
+  companyproject_date: Projectsummarydateresult;
   /** get companyproject info */
   companyproject_info: Projectinforesult;
   /** get companyproject list */
   companyproject_list: Projectlist;
+  /** get project summary all */
+  companyproject_summary: Projectsummaryallresult;
   /** get company role list */
   companyrole_list: Rolelistresult;
   /** get url for a new file */
@@ -1198,6 +1199,7 @@ export type QueryCompanypayment_ListArgs = {
 export type QueryCompanyproject_DateArgs = {
   dateFrom: Scalars['String']['input'];
   dateTo: Scalars['String']['input'];
+  idCategory?: InputMaybe<Scalars['Int']['input']>;
   idProject: Scalars['Int']['input'];
 };
 
@@ -1209,6 +1211,14 @@ export type QueryCompanyproject_InfoArgs = {
 
 export type QueryCompanyproject_ListArgs = {
   idCompany: Scalars['Int']['input'];
+};
+
+
+export type QueryCompanyproject_SummaryArgs = {
+  dateFrom: Scalars['String']['input'];
+  dateTo: Scalars['String']['input'];
+  idCategory?: InputMaybe<Scalars['Int']['input']>;
+  idProject: Scalars['Int']['input'];
 };
 
 
@@ -1285,6 +1295,7 @@ export type QueryProjectorder_InfoArgs = {
 
 
 export type QueryProjectorder_ListArgs = {
+  idCategory?: InputMaybe<Scalars['Int']['input']>;
   idCompany: Scalars['Int']['input'];
   idProject: Scalars['Int']['input'];
 };
@@ -2430,16 +2441,36 @@ export type Projectresult = {
   message: Scalars['String']['output'];
 };
 
-export type Projectsummary = {
-  __typename?: 'projectsummary';
+export type Projectsummaryall = {
+  __typename?: 'projectsummaryall';
+  duefilter: Scalars['Int']['output'];
+  duefilterTotal: Scalars['Float']['output'];
+  dueseven: Scalars['Int']['output'];
+  duesevenTotal: Scalars['Float']['output'];
+  overdue: Scalars['Int']['output'];
+  overdueTotal: Scalars['Float']['output'];
+  owed: Scalars['Int']['output'];
+  owedTotal: Scalars['Float']['output'];
+};
+
+export type Projectsummaryallresult = {
+  __typename?: 'projectsummaryallresult';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Projectsummaryall>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Projectsummarydate = {
+  __typename?: 'projectsummarydate';
   duefilter: Scalars['Int']['output'];
   duefilterTotal: Scalars['Float']['output'];
 };
 
-export type Projectsummaryresult = {
-  __typename?: 'projectsummaryresult';
+export type Projectsummarydateresult = {
+  __typename?: 'projectsummarydateresult';
   code: Scalars['Int']['output'];
-  data?: Maybe<Projectsummary>;
+  data?: Maybe<Projectsummarydate>;
   error: Scalars['Boolean']['output'];
   message: Scalars['String']['output'];
 };

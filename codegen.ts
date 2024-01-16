@@ -3,7 +3,7 @@ import type { CodegenConfig } from '@graphql-codegen/cli';
     schema: [{
       'http://192.168.99.18:4000/graphql': {
       headers: {
-        Authorization: `Bearer Y0NRs1DW5vOhzEjGx0UyFs9xKoK9y31p4WaMIFnUIaxCzmSJSClsQ+t4PuC5Refuo8+e6x1hi+mUGPaRE1UExRpWeMF93PtquudVWXeVoXomV/FSqPVLTHmRYNLNKd9V9LgdYdyVXQSRcQK3Rl++KB/kMEqHeiuzYxzmP8ZhmVAHQNk/GQ90awIlDT6AMvPCY62lDhuyhjqmt75rZVsWXpjljrxoDCxzV3ENMNKy4YybFvaLbdbXII9HXWu+x44hko5d+RgHFCqRmGfgA5Iu/FVHSZGXWq/irV+PvRFm0u/J6fBx6lF+JwmyDSw+eOCGo7Q4YyygCZ5M39L1pJo2qw==`,
+        Authorization: `Bearer Y0NRs1DW5vOhzEjGx0UyFs9xKoK9y31p4WaMIFnUIaxCzmSJSClsQ+t4PuC5Refuo8+e6x1hi+mUGPaRE1UExRpWeMF93PtquudVWXeVoXomV/FSqPVLTHmRYNLNKd9V9LgdYdyVXQSRcQK3Rl++KB/kMEqHeiuzYxzmP8ZhmVAHQNk/GQ90awIlDT6AMvPCY62lDhuyhjqmt75rZVsWXpjljrxoDCxzV3ENMNKy4Yw4JC2z/T3j/5WO/q67qcrTJd1LlbRR0AXVWmJLEjAGarbvnZ2jo0eSOfyr5rIfasl7G73g+ekSJw8xUk/vDLZycCiHa7lgqh9LDJ7ubFOd6w==`,
       },
     }
   }],

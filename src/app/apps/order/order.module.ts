@@ -17,6 +17,7 @@ import { VendoraddModule } from '../vendor/vendoradd/vendoradd.module';
 import { ProjectsModule } from '../projects/projects.module';
 import { MomentModule } from 'ngx-moment';
 import { HttpClientModule } from '@angular/common/http';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 
 
 
@@ -37,6 +38,8 @@ import { HttpClientModule } from '@angular/common/http';
     DropdowndataModule,
     AvatarModule,
     NgbModalModule,
+    NgxMaskDirective,
+    NgxMaskPipe,
     UiModule,
     SharedModule,
     SimplebarAngularModule,
@@ -46,6 +49,9 @@ import { HttpClientModule } from '@angular/common/http';
     NgbTooltipModule,
     MomentModule,
     HttpClientModule
+  ],
+  providers:[
+    provideNgxMask()
   ],
   exports:[
     AddOrderComponent
