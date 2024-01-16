@@ -368,41 +368,57 @@ const projectbudget_list = gql`
 `;
 
 const companyproject_date = gql`
-  query companyproject_date($idProject: Int!, $idCategory: Int, $dateFrom: String!, $dateTo: String!) {
-  companyproject_date(idProject: $idProject, idCategory:$idCategory, dateFrom: $dateFrom, dateTo: $dateTo) {
-    error
-    code
-    message
-    data {
-      duefilter
-      duefilterTotal
+  query companyproject_date(
+    $idProject: Int!
+    $idCategory: Int
+    $dateFrom: String!
+    $dateTo: String!
+  ) {
+    companyproject_date(
+      idProject: $idProject
+      idCategory: $idCategory
+      dateFrom: $dateFrom
+      dateTo: $dateTo
+    ) {
+      error
+      code
+      message
+      data {
+        duefilter
+        duefilterTotal
+      }
     }
   }
 `;
 
 const companyproject_summary = gql`
-  query companyproject_summary($idProject: Int!, $idCategory: Int, $dateFrom: String!, $dateTo: String!) {
-  companyproject_summary(
-    idProject: $idProject
-    idCategory: $idCategory
-    dateFrom: $dateFrom
-    dateTo: $dateTo
+  query companyproject_summary(
+    $idProject: Int!
+    $idCategory: Int
+    $dateFrom: String!
+    $dateTo: String!
   ) {
-    error
-    code
-    message
-    data {
-      owed
-      owedTotal
-      overdue
-      overdueTotal
-      dueseven
-      duesevenTotal
-      duefilter
-      duefilterTotal
+    companyproject_summary(
+      idProject: $idProject
+      idCategory: $idCategory
+      dateFrom: $dateFrom
+      dateTo: $dateTo
+    ) {
+      error
+      code
+      message
+      data {
+        owed
+        owedTotal
+        overdue
+        overdueTotal
+        dueseven
+        duesevenTotal
+        duefilter
+        duefilterTotal
+      }
     }
   }
-}
 `;
 
 export {
