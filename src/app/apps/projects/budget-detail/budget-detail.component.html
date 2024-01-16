@@ -1,0 +1,245 @@
+<div class="d-flex justify-content-between">
+    <div class="flex-grow-1 d-flex flex-column" style="max-width: 30%;">
+        <div class="d-flex align-items-center">
+            <i class="fe-chevron-left"></i>
+            <a [routerLink]="['/apps/projects/detail/'+projectId]" class="subtitle-2-500 text-overflow-ellipsis me-1-1 text-blackprimary" style="max-width: 50%; ">{{projectName}}</a> / <div class="subtitle-2-800 text-primary text-overflow-ellipsis ms-1-1" style="max-width: 50%;">{{name}}</div>
+        </div>
+        <div class="headline-24 text-overflow-ellipsis mt-2-1">{{name}}</div>
+    </div>
+    <div class="flex-grow-1 d-flex justify-content-center">
+        <div class="d-flex">
+            <div class="card mb-0 me-2-1" style="height: 104px;">
+                <div class="card-body padding-24">
+                    <div class="subtitle-2-500-16 text-typeblack80">Owed</div>
+                    <div class="subtitle-2-500-24 mt-2-1">{{budgetSummary['owedTotal'] | currency}}</div>
+                </div>
+            </div>
+            <div class="card mb-0 me-2-1" style="height: 104px;">
+                <div class="card-body padding-24">
+                    <div class="subtitle-2-500-16 text-typeblack80">Overdue</div>
+                    <div class="d-flex align-items-center subtitle-2-500-24 mt-2-1">
+                        {{budgetSummary['overdueTotal'] | currency}}
+                        <div *ngIf="budgetSummary['overdue'] > 0" class="number-rounded ms-1 bg-red">{{budgetSummary['overdue']}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-0 me-2-1" style="height: 104px;">
+                <div class="card-body padding-24">
+                    <div class="subtitle-2-500-16 text-typeblack80">Due in 7</div>
+                    <div class="d-flex align-items-center subtitle-2-500-24 mt-2-1">
+                        {{budgetSummary['duesevenTotal'] | currency}}
+                        <div *ngIf="budgetSummary['dueseven'] > 0"
+                             class="number-rounded ms-1 bg-yellow">{{budgetSummary['dueseven']}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-0" style="height: 104px;">
+                <div class="card-body padding-24">
+                    
+                    <div class="d-inline-block" ngbDropdown #pickDatesDrop="ngbDropdown" placement="bottom-end"
+                         style="width: 100%;">
+                        <div id="pickDatesDropBtn2" class="subtitle-2-500-16 me-2 cursor-pointer" ngbDropdownAnchor
+                             (click)="pickDatesDrop.toggle()" style="color: #215EA9;">
+                            {{selectedDateRange}}
+                            <i class="fa-caret-down fas ms-1-1" style="color: #215EA9;"></i>
+                        </div>
+                        <div ngbDropdownMenu aria-labelledby="pickDatesDropBtn2">
+                            <ngb-datepicker [dayTemplate]="t"
+                                            (dateSelect)="onDateSelection($event)"
+                            />
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-center subtitle-2-500-24 mt-2-1">
+                        {{budgetSummary['duefilterTotal'] | currency}}
+                        <div *ngIf="budgetSummary['duefilter'] > 0"
+                             class="number-rounded ms-1 bg-blue">{{budgetSummary['duefilter']}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex align-items-center text-end line-56">
+        <button class="btn btn-outline-primary ms-1-1 btn-text-12" style="width: 94px;padding: 11px 16px;">Add Bill
+        </button>
+        <div class="d-inline-block" ngbDropdown>
+            <button class="btn btn-primary ms-2-1" ngbDropdownToggle style="padding: 10px 16px;margin-top: -1px;">New Order<i
+                    class="fe-chevron-down ms-1-1"></i></button>
+            <div ngbDropdownMenu style="padding: 4px 8px;">
+                <a class="subtitle-2-500" href="javascript:void(0);" (click)="createNew()" style="padding: 12px 4px;"
+                   ngbDropdownItem>
+                    <i class="fe-plus me-1-1"></i>
+                    Create New
+                </a>
+                <a class="subtitle-2-500" href="javascript:void(0);" style="padding: 12px 4px;" ngbDropdownItem>
+                    <i class="fe-upload me-1-1"></i>
+                    Upload
+                </a>
+            </div>
+        </div>
+        <button class="ms-2-1" style="background-color: inherit;border: none;">
+            <i class="fe-more-vertical- font-24 cursor-pointer"></i>
+        </button>
+    </div>
+</div>
+
+
+<div class="orders-dropdown row mt-2-1">
+    <div class="col-md-4">
+        <div class="d-flex align-items-center">
+            <span class="subtitle-2-600-24">{{statusFilter}} ({{ordersStatusCount[statusFilter]}})</span>
+            <div class="dropdown-outline ms-1-2" ngbDropdown #statusDrop="ngbDropdown" style="padding: 10px 16px;">
+                <a href="javascript:void(0)"
+                   ngbDropdownToggle>
+                    <span class="text-typeblack80">Status</span>
+                    <span class="ms-1-1 text-black btn-text-12">{{statusFilter}}</span>
+                    <i class="fe-chevron-down text-black ms-1-1"></i></a>
+                <div class="dropdown-menu" ngbDropdownMenu>
+                    <div *ngFor="let status of objectKeys(ordersStatusCount)" ngbDropdownItem>
+                        <div class="form-check">
+                            <input id="status_{{status}}" type="checkbox" class="form-check-input" [checked]="statusFilter==status" (change)="statusFilterChange($event, status, 'statusFilter')">
+                            <label class="form-check-label" for="status_{{status}}">
+                                {{status}} ({{ordersStatusCount[status]}})
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8 d-flex flex-row justify-content-end">
+        <div class="d-inline-block ms-1-1">
+            <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords"
+                   style="padding: 10px 16px 10px 36px;"/>
+        </div>
+        
+        <div class="d-flex align-items-center ms-2-1">
+            <button class="btn btn-primary btn-text-12" [disabled]="true"
+                    style="padding: 6px 16px;">
+                Pay Selected
+            </button>
+        </div>
+    </div>
+</div>
+<ngx-simplebar [options]="scrollOptions" class="mt-2-1" style="height: calc(100vh - 270px);">
+    <table class="orders-table advanced-table" style="width: max-content;min-width: 100%;">
+        <thead>
+        <tr>
+            <th class="row_select"><input class="form-check" type="checkbox"/></th>
+            <th class="sortable"
+                [ngClass]="{'sorting_asc':sortColumn == 'status' && direction == 'asc','sorting_desc':sortColumn == 'status' && direction == 'desc'}"
+                (click)="onSort('status')">Status
+            </th>
+            <th class="sortable"
+                [ngClass]="{'sorting_asc':sortColumn == 'indvoicedueDate' && direction == 'asc','sorting_desc':sortColumn == 'indvoicedueDate' && direction == 'desc'}"
+                (click)="onSort('indvoicedueDate')">Due Date
+            </th>
+            <th class="sortable"
+                [ngClass]="{'sorting_asc':sortColumn == 'orderNumber' && direction == 'asc','sorting_desc':sortColumn == 'orderNumber' && direction == 'desc'}"
+                (click)="onSort('orderNumber')">Order #
+            </th>
+            <th class="sortable"
+                [ngClass]="{'sorting_asc':sortColumn == 'vendorName' && direction == 'asc','sorting_desc':sortColumn == 'vendorName' && direction == 'desc'}"
+                (click)="onSort('vendorName')">Vendor
+            </th>
+            <th class="sortable"
+                [ngClass]="{'sorting_asc':sortColumn == 'invoiceNumber' && direction == 'asc','sorting_desc':sortColumn == 'invoiceNumber' && direction == 'desc'}"
+                (click)="onSort('invoiceNumber')">Invoice
+            </th>
+            <th class="sortable"
+                [ngClass]="{'sorting_asc':sortColumn == 'costCodeName' && direction == 'asc','sorting_desc':sortColumn == 'costCodeName' && direction == 'desc'}"
+                (click)="onSort('costCodeName')">Cost Code
+            </th>
+            <th class="sortable"
+                [ngClass]="{'sorting_asc':sortColumn == 'remainingAmount' && direction == 'asc','sorting_desc':sortColumn == 'remainingAmount' && direction == 'desc'}"
+                (click)="onSort('remainingAmount')">Amount
+            </th>
+            <th class="sortable"
+                [ngClass]="{'sorting_asc':sortColumn == 'projectName' && direction == 'asc','sorting_desc':sortColumn == 'projectName' && direction == 'desc'}"
+                (click)="onSort('projectName')">Project
+            </th>
+            <th class="sortable"
+                [ngClass]="{'sorting_asc':sortColumn == 'vendorName' && direction == 'asc','sorting_desc':sortColumn == 'vendorName' && direction == 'desc'}"
+                (click)="onSort('vendorName')">Approval
+            </th>
+            <th>Action
+            </th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="c-p" *ngFor="let item of orders | callback: filterTable; let i = index" (click)="openDetail(item.id)">
+            <td><input class="form-check" type="checkbox"/></td>
+            <td>
+                <div class="d-inline-block {{item.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{item.status}}</div>
+            </td>
+            <td>
+                {{item.indvoicedueDate | date: 'M/dd/yy'}}
+            </td>
+            <td>
+                {{item.orderNumber}}
+            </td>
+            <td>
+                {{item.vendorName}}
+            </td>
+            <td>
+                {{item.invoiceNumber}}
+            </td>
+            <td>
+                {{item.costCodeName}}
+            </td>
+            <td class="text-end">
+                {{item.remainingAmount | currency}}
+            </td>
+            <td>
+                {{item.projectName}}
+            </td>
+            <td>
+                <div class="d-flex flex-row">
+                    <div class="me-1-1">
+                        <app-avatar [bgColor]="bgColors[i % 6]" [url]="" [companyName]="item.vendorName" color="text-white" [size]="32"
+                                    alt="user-img"></app-avatar>
+                    </div>
+                    <div class="d-flex flex-column search-text">
+                        <div class="text-blackprimary text-overflow-ellipsis"
+                             style="max-width: 120px;">{{item.vendorName}}</div>
+                        <div class="text-blackprimary-op-50">{{item.vendorType}} 1111</div>
+                    </div>
+                </div>
+            </td>
+            <td class="text-center">
+                <img class="c-p" src="assets/images/status-icons/payBill.png">
+            </td>
+            <td class="text-center">
+                <i class="fe-paperclip"></i>
+            </td>
+            <td class="text-center">
+                <i class="fe-more-vertical- c-p"></i>
+            </td>
+        </tr>
+        </tbody>
+        <tbody *ngIf="orders.length == 0" class="bg-white">
+        <tr *ngIf="loading">
+            <td colspan="13">
+                <div style="position: relative; height: 400px;">
+                    <app-ui-preloader [display]="loading"></app-ui-preloader>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</ngx-simplebar>
+
+
+<ng-template #t let-date let-focused="focused">
+   <span class="custom-day" [class.focused]="focused"
+         [class.range]="isRange(date)"
+         [class.faded]="isHovered(date) || isInside(date)"
+         (mouseenter)="hoveredDate = date"
+         (mouseleave)="hoveredDate = null">
+       {{ date.day }}
+   </span>
+</ng-template>
+
+

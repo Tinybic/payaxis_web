@@ -2,8 +2,8 @@
 import { gql } from 'apollo-angular';
 
 const projectorder_list = gql`
-query projectorder_list($idCompany: Int!, $idProject: Int!) {
-  projectorder_list(idCompany: $idCompany, idProject: $idProject) {
+query projectorder_list($idCompany: Int!, $idProject: Int!, $idCategory: Int) {
+  projectorder_list(idCompany: $idCompany, idProject: $idProject, idCategory:$idCategory) {
     error
     code
     message

@@ -175,7 +175,7 @@
                     <div class="d-flex flex-wrap mt-2-1" *ngIf="budgetList.length > 0 && !isLoading">
                         <div class="card budgetItem" *ngFor="let item of budgetList; let i = index"
                              [ngClass]="{'ms-2-1':i % 5 > 0}">
-                            <div class="card-body p-2-1">
+                            <a class="card-body p-2-1" [routerLink]="['/apps/projects/budget-detail']" [queryParams]="{ id: item.idCategory, name: item.category, pid: project.id, pname: project.projectName}" style="color: inherit;">
                                 <div class="row">
                                     <div class="col-md-6 Subtitle-1 text-start line-20">{{item.category}}</div>
                                     <div class="col-md-6 d-flex flex-row justify-content-end">
@@ -209,7 +209,7 @@
                                         <span [ngClass]="{'text-danger': item.budgetAmount < item.budgetUsed}">{{(item.budgetAmount - item.budgetUsed) | currency}}</span>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 </ng-template>
