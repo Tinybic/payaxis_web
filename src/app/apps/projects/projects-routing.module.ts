@@ -4,6 +4,7 @@ import { ProjectsComponent } from './projects.component';
 import { ProjectsGuidComponent } from "./projects-guid/projects-guid.component";
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { ProjectTeamComponent } from './project-team/project-team.component';
+import { BudgetDetailComponent } from "./budget-detail/budget-detail.component";
 
 const routes: Routes = [{
     path: '',
@@ -15,8 +16,11 @@ const routes: Routes = [{
     path: 'detail/:id',
     component: ProjectDetailComponent
 },{
-    path: 'team/:id',
-    component: ProjectTeamComponent
+  path: 'team/:id',
+  component: ProjectTeamComponent
+},{
+  path: 'budget-detail',
+  component: BudgetDetailComponent
 }];
 
 @NgModule({

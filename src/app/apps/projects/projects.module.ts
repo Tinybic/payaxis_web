@@ -25,6 +25,7 @@ import { DropdowndataModule } from 'src/app/shared/dropdowndata/dropdowndata.mod
 import { TagInputModule } from 'ngx-chips';
 import { ProjectOrdersComponent } from './project-orders/project-orders.component';
 import { SimplebarAngularModule } from "simplebar-angular";
+import { BudgetDetailComponent } from './budget-detail/budget-detail.component';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { SimplebarAngularModule } from "simplebar-angular";
     InfoModalComponent,
     ProjectTeamComponent,
     ProjectOrdersComponent,
+    BudgetDetailComponent,
   ],
   imports: [
     CommonModule,
