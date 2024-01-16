@@ -121,7 +121,7 @@ export type Mutation = {
   /** new companyproject */
   companyproject_new: Projectresult;
   /** pin companyproject */
-  companyproject_pin: Projectresult;
+  companyproject_pin: Projectbooleanresult;
   /** update companyproject budget */
   companyproject_updatebudget: Projectresult;
   /** update companyproject detail */
@@ -495,7 +495,6 @@ export type MutationCompanyproject_PinArgs = {
   id: Scalars['Int']['input'];
   idCompany: Scalars['Int']['input'];
   pinyn: Scalars['Boolean']['input'];
-  revision: Scalars['Int']['input'];
 };
 
 

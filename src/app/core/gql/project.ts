@@ -154,25 +154,12 @@ const companyproject_coloricon = gql`
 `;
 
 const companyproject_pin = gql`
-  mutation companyproject_pin(
-    $idCompany: Int!
-    $id: Int!
-    $revision: Int!
-    $pinyn: Boolean!
-  ) {
-    companyproject_pin(
-      idCompany: $idCompany
-      id: $id
-      revision: $revision
-      pinyn: $pinyn
-    ) {
+  mutation companyproject_pin($idCompany: Int!, $id: Int!, $pinyn: Boolean!) {
+    companyproject_pin(idCompany: $idCompany, id: $id, pinyn: $pinyn) {
       error
       code
       message
-      data {
-        id
-        revision
-      }
+      data
     }
   }
 `;
@@ -391,7 +378,6 @@ const companyproject_date = gql`
       duefilterTotal
     }
   }
-}
 `;
 
 const companyproject_summary = gql`
