@@ -79,7 +79,7 @@ export class CreateGroupComponent implements OnInit {
       let result: any = Object.values(res)[0];
       if(!result.error){
         this.modalRef.close('save success');
-        this.toastrService.info('Save success', '');
+        this.toastrService.info('Group created successfully!', '');
       } else{
         this.toastrService.info(result.message, 'Error');
       }
