@@ -34,7 +34,6 @@
                 />
             </div>
         </div>
-        
         <div class="progress progress-sm mt-3-1"
              [ngClass]="{'bg-red-progressbar': allocatedBudget > project.projectBudget}">
             <div class="progress-bar wow"
@@ -44,6 +43,11 @@
         </div><!-- /.progress .no-rounded -->
         
         
+        <div class="row">
+            <div class="col subtitle-2-500 position-absolute pt-1-1" style="color:#F87171;">
+                <span *ngIf="allocatedBudget > project.projectBudget">The total percentage for all categories cannot exceed 100%.</span> &nbsp;
+            </div>
+        </div>
         <table class="advanced-table no-border mt-5-1">
             <thead>
             <tr>
@@ -59,7 +63,7 @@
             <tbody>
             <tr *ngFor="let item of budgetAllocation; let i = index">
                 <td style="width: 30%;">
-                    <div *ngIf="i!=editingCategory" class="td-text text-start" (click)="setEdtingCategory(i, 'Name')">
+                    <div *ngIf="i!=editingCategory" class="td-text text-start" (click)="setEditingCategory(i, 'Name')">
                         {{item.category}}
                     </div>
                     <div *ngIf="i==editingCategory" class="d-inline-block dropdown" ngbDropdown>
@@ -78,7 +82,7 @@
                     </div>
                 </td>
                 <td style="width: 30%;">
-                    <div *ngIf="i!=editingCategory" class="td-text" (click)="setEdtingCategory(i, 'BP')">
+                    <div *ngIf="i!=editingCategory" class="td-text" (click)="setEditingCategory(i, 'BP')">
                         {{item.budgetPercentage == '' ? '0%' : item.budgetPercentage + '%'}}
                     </div>
                     <div *ngIf="i==editingCategory">
@@ -97,7 +101,7 @@
                     </div>
                 </td>
                 <td style="width: 30%;">
-                    <div *ngIf="i!=editingCategory" class="td-text" (click)="setEdtingCategory(i, 'BA')">
+                    <div *ngIf="i!=editingCategory" class="td-text" (click)="setEditingCategory(i, 'BA')">
                         {{item.budgetAmount == '' ? 0 : item.budgetAmount| currency}}
                     </div>
                     <div *ngIf="i==editingCategory">
@@ -138,7 +142,8 @@
     
     
     <div class="d-grid" style="width: calc(100% - 48px);position: fixed;bottom: 24px;right: 24px;">
-        <button class="btn btn-primary mb-1-1" [disabled]="!(budgetAllocation | checkProjectStatus)"
+        <button class="btn btn-primary mb-1-1"
+                [disabled]="!(budgetAllocation | checkProjectStatus) || allocatedBudget > project.projectBudget"
                 (click)="submitProject()">{{project.id == '' ? 'Create a Project' : 'Save'}}
         </button>
         <button class="btn btn-outline-primary" (click)="closeModal()">
