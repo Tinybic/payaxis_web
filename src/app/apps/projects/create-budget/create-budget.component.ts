@@ -71,7 +71,7 @@ export class CreateBudgetComponent {
     this.budgetAllocation = list;
   }
   
-  setEdtingCategory(i, obj){
+  setEditingCategory(i, obj){
     this.editingCategory = i;
     setTimeout(() => {
       if(obj == 'Name'){
