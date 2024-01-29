@@ -66,6 +66,7 @@
     "ngx-lightbox": "^2.5.2",
     "ngx-mask": "16.2.4",
     "ngx-moment": "^6.0.2",
+    "ngx-plaid-link": "^14.0.0",
     "ngx-quill": "^16.1.2",
     "ngx-sortablejs": "^11.1.0",
     "ngx-toastr": "16.2.0",
