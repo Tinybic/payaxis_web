@@ -8,7 +8,7 @@
             <label for="archiveSwitch" class="form-check-label align-middle subtitle-2-500">Show Archived</label>
         </div>
         <div class="d-inline-block ms-1-1">
-            <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords" (keyup)="filterArchivedRoles()" style="padding: 10px 16px 10px 36px;"/>
+            <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords" (ngModelChange)="filterArchivedRoles()" style="padding: 10px 16px 10px 36px;"/>
         </div>
         <!-- end search-->
         <button class="btn btn-primary ms-2-1 btn-text-12" (click)="newRole()" *ngIf="canEdit"
