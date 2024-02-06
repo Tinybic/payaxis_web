@@ -65,6 +65,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label" i18n>Tax ID/EIN</label>
+                                            <span class="float-end text-typeblack80">Optional</span>
                                             <input class="form-control" type="text" id="taxId" required i18n-placeholder
                                                 placeholder="Tax ID/EIN" [(ngModel)]="company.taxId" />
                                         </div>
@@ -72,6 +73,7 @@
                                     <div class="row mt-2-1">
                                         <div class="col-md-6">
                                             <label class="form-label" i18n>Industry</label>
+                                            <span class="float-end text-typeblack80">Optional</span>
                                             <input id="txtindustry" type="text"
                                                 class="form-control form-select position-relative"
                                                 [ngbTypeahead]="searchIndustry" (selectItem)="setIndustry($event)"
@@ -82,7 +84,7 @@
                                         <div class="col-md-6">
                                             <label class="form-label" i18n>Payment Terms</label>
                                             <div ngbDropdown class="mt-sm-0 mt-2">
-                                                <input class="form-select position-relative" type="text"
+                                                <input class="form-select position-relative" type="text"  readonly="readonly"
                                                     id="paymentTerms" i18n-placeholder placeholder="Payment Terms"
                                                     [(ngModel)]="company.paymentTerms" ngbDropdownToggle />
 
@@ -98,6 +100,7 @@
                                     <div class="row mt-2-1">
                                         <div class="col-md-12">
                                             <label class="form-label" i18n>Business Description</label>
+                                            <span class="float-end text-typeblack80">Optional</span>
                                             <input class="form-control" type="text" id="description" required
                                                 i18n-placeholder
                                                 placeholder="Enter a brief description or summary of the company's products, services, or activities"
@@ -119,13 +122,14 @@
                                     <div class="row mt-2-1">
 
                                         <div class="col-md-9">
-                                            <label class="form-label" i18n>Street Address</label>
+                                            <label class="form-label" i18n>Address Line 1</label>
                                             <input class="form-control" type="text" id="txtAddress" required
                                                 i18n-placeholder placeholder="Street Address"
                                                 [(ngModel)]="company.txtAddress" />
                                         </div>
                                         <div class="col-md-3">
-                                            <label class="form-label" i18n>Apt,suite,etc</label>
+                                            <label class="form-label" i18n>Address Line 2</label>
+                                            <span class="float-end text-typeblack80">Optional</span>
                                             <input class="form-control" type="text" id="firstname" required
                                                 i18n-placeholder placeholder="Apt,suite,etc"
                                                 [(ngModel)]="company.suiteNumber" />
@@ -156,14 +160,14 @@
 
                                     <div class="row mt-2-1">
                                         <div class="col-md-6">
-                                            <label class="form-label" i18n>Website <small
-                                                    class="text-optional">(optional)</small></label>
+                                            <label class="form-label" i18n>Website</label>
+                                            <span class="float-end text-typeblack80">Optional</span>
                                             <input class="form-control" type="text" id="website" i18n-placeholder
                                                 placeholder="Website" [(ngModel)]="company.website" />
                                         </div>
                                         <div class="col-md-6">
-                                            <label class="form-label" i18n>Contact Number <small
-                                                    class="text-optional">(optional)</small></label>
+                                            <label class="form-label" i18n>Contact Number</label>
+                                            <span class="float-end text-typeblack80">Optional</span>
                                             <input class="form-control" type="text" id="contactNumber" i18n-placeholder
                                                 placeholder="Contact Number" [(ngModel)]="company.contactNumber" />
                                         </div>

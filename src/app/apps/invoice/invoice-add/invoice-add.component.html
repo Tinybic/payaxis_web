@@ -560,11 +560,13 @@
 </div>
 
 <div class="row" *ngIf="id == 0">
-    <div class="col-md-12 d-grid">
+    <div class="col-md-6 d-grid">
+        <button type="button" class="btn btn-outline-primary" (click)="closeModal()">Cancel</button>
+    </div>
+    <div class="col-md-6 d-grid">
         <button type="button" class="btn btn-primary" (click)="findVendor()"
-            [disabled]="projectpayment.idVendor == 0 && !(this.newVendor && this.projectpayment.vendorEmail)">Save
-            and Review</button>
-        <button type="button" class="btn btn-outline-primary mt-1-1" (click)="closeModal()">Cancel</button>
+        [disabled]="projectpayment.idVendor == 0 && !(this.newVendor && this.projectpayment.vendorEmail)">Save
+        and Review</button>
     </div>
 </div>
 

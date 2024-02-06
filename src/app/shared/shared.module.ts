@@ -7,11 +7,13 @@ import { UploadAttachmentComponent } from "./upload-attachment/upload-attachment
 import { NgxDropzoneModule } from "ngx-dropzone";
 import { UiModule } from "./ui/ui.module";
 import { NgbProgressbarModule } from "@ng-bootstrap/ng-bootstrap";
+import { SafePipe } from '../core/pipe/safe.pipe';
 
 
 @NgModule({
   declarations: [
     CallbackPipe,
+    SafePipe,
     CheckProjectStatusPipe,
     ConfirmModalComponent,
     UploadAttachmentComponent
@@ -24,6 +26,7 @@ import { NgbProgressbarModule } from "@ng-bootstrap/ng-bootstrap";
   ],
   exports: [
     CallbackPipe,
+    SafePipe,
     CheckProjectStatusPipe,
     ConfirmModalComponent,
     UploadAttachmentComponent

@@ -132,7 +132,7 @@ export class AddOrderComponent {
         this.getVendorList();
         this.loading = false;
 
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 2; i++) {
           this.order.listItems.push({
             paidyn: false,
             description: '',

@@ -12,6 +12,8 @@ import { RecoverPasswordPhoneComponent } from './recover-password-phone/recover-
 import { InvitingRegisterComponent } from './inviting-register/inviting-register.component';
 import { InvitingVendorComponent } from './inviting-vendor/inviting-vendor.component';
 import { JoinCompanyComponent } from './join-company/join-company.component';
+import { TermsComponent } from './terms/terms.component';
+import { PolicyComponent } from './policy/policy.component';
 
 const routes: Routes = [
   {
@@ -61,6 +63,14 @@ const routes: Routes = [
   {
     path: 'join-company',
     component: JoinCompanyComponent
+  },
+  {
+    path: 'terms',
+    component: TermsComponent
+  },
+  {
+    path: 'policy',
+    component: PolicyComponent
   }
 ];
 

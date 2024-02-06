@@ -12,19 +12,19 @@
             </a>
             <div class="dropdown-menu" ngbDropdownMenu>
                 <div ngbDropdownItem>
-                    <div class="form-check">
+                    <div class="form-check" (click)="changeCategoryFilter('All')">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck"
-                            [checked]="categoryFilter=='All'" (change)="changeCategoryFilter('All');">
+                            [checked]="categoryFilter=='All'" >
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             ALL
                         </label>
                     </div>
                 </div>
                 <div ngbDropdownItem *ngFor="let item of costCodeCategoryList">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck"
-                            [checked]="categoryFilter == item.txtName" (change)="changeCategoryFilter(item.txtName);">
-                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                    <div class="form-check" (click) = "changeCategoryFilter(item.txtName)">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck{{item.txtName}}"
+                            [checked]="categoryFilter == item.txtName" >
+                        <label class="form-check-label ms-1-1" for="dropdownCheck{{item.txtName}}">
                             {{item.txtName}}
                         </label>
                     </div>

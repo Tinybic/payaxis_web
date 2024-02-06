@@ -90,6 +90,7 @@ export class VendoraddComponent {
     vendorName: false,
     primaryContact: false,
     email: false,
+    costcode: false
   };
   keywords = '';
   id = 0;
@@ -299,6 +300,7 @@ export class VendoraddComponent {
       primaryContact:
         this.vendor.primaryContact.trim().length == 0 ? true : false,
       email: this.vendor.email.trim().length == 0 ? true : false,
+      costcode: this.vendor.vendorcostcodes.length == 0 ? true : false,
     };
 
     if (
