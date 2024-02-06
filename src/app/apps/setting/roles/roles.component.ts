@@ -142,6 +142,16 @@ export class RolesComponent extends Base {
   newRole(){
     this.roleName = '';
     this.newRoleStatus = true;
+    this.roles.map((item) => {
+      if(item.isEditing){
+        item.isEditing=false;
+        item.txtName = this.initialRoleName;
+      }
+    })
+    setTimeout(() =>{
+      let container = document.querySelector('#simplebar-roles .simplebar-content-wrapper');
+      container.scrollLeft = container.scrollWidth;
+    }, 50)
   }
   
   saveRole(){
@@ -165,6 +175,7 @@ export class RolesComponent extends Base {
       const result = res.companyrole_new;
       if(!result.error){
         this.newRoleStatus = false;
+        this.toastrService.info('New Role created successfully', '');
         this.getRoles();
       } else{
         this.toastrService.info(result.message, '');
@@ -189,9 +200,22 @@ export class RolesComponent extends Base {
         }
       });
     });
+    setTimeout(() =>{
+      let container = document.querySelector('#simplebar-roles .simplebar-content-wrapper');
+      container.scrollLeft = container.scrollWidth;
+    }, 50)
   }
   
   editRoleName(role){
+    this.cancelNewRole();
+    this.roles.map((item) => {
+      item.isEditing=false;
+    })
+    role.isEditing=true;
+    this.initialRoleName=role.txtName;
+  }
+  
+  saveEditRoleName(role) {
     if(role.txtName.trim().length == 0){
       this.toastrService.info('Role name is required.', '');
       return;
@@ -219,6 +243,7 @@ export class RolesComponent extends Base {
       if(!result.error){
         role.isEditing = false;
         role.revision = result.data.revision;
+        this.toastrService.info('Edit Role successfully', '');
       } else{
         this.toastrService.info(result.message, '');
       }
