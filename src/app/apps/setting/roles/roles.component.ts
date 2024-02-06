@@ -102,7 +102,7 @@ export class RolesComponent extends Base {
         return item.active;
       }
     });
-
+    
     this.roles = roles.filter((role) => {
       let values = Object.values(role);
       return values.some((v) =>
