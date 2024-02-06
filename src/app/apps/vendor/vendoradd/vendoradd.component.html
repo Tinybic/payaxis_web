@@ -82,7 +82,13 @@
                                     <div class="dropdown" ngbDropdown>
                                         <input class="form-select" type="text" id="vendorcostcodes" [disabled]="idInvitedCompany>0"
                                             [(ngModel)]="vendorcostcodesText" required i18n-placeholder
+                                            [ngClass]="{'is-invalid':vendorError.costcode}"
                                             placeholder="Cost Code" ngbDropdownToggle />
+                                            <div *ngIf="vendorError.costcode" class="invalid-feedback">
+                                                <div i18n>
+                                                    <i class="fe-alert-triangle invalid-feedback-icon"></i> Please Select Cost Code
+                                                </div>
+                                            </div>
                                         <div style="max-height: 300px; overflow-y: auto;" class="dropdown-menu"
                                             aria-labelledby="vendorcostcodes" ngbDropdownMenu>
                                             <div>

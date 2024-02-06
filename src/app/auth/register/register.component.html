@@ -74,8 +74,8 @@
                 <input type="checkbox" class="form-check-input me-1-1" id="invalidCheck" required
                     formControlName="acceptTerms"
                     [ngClass]="{ 'is-invalid': formSubmitted && formValues['acceptTerms'].invalid }">
-                <label class="form-check-label" for="invalidCheck" i18n>I agree to all the <a
-                        href="javascript: void(0);">Terms</a> and <a href="javascript: void(0);">Privacy
+                <label class="form-check-label" for="invalidCheck" i18n>I agree to all the <a target="_blank"
+                        routerLink="../terms">Terms</a> and <a target="_blank" routerLink="../policy">Privacy
                         policy</a></label>
                 <div *ngIf="formSubmitted && formValues['acceptTerms'].invalid" class="invalid-feedback">
                     <i class="fe-alert-triangle invalid-feedback-icon"></i> You must agree before submitting.

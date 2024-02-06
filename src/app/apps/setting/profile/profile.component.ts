@@ -169,7 +169,19 @@ export class ProfileComponent extends Base implements OnInit, OnDestroy {
   }
 
   saveCompany() {
-    if (this.company.txtName.length > 0) {
+    if (this.company.txtName.length == 0) {
+      this.toastrService.info('Company name required!', '');
+    } else if (this.company.paymentTerms.length == 0) {
+      this.toastrService.info('Payment Terms required!', '');
+    } else if (this.company.txtAddress.length == 0) {
+      this.toastrService.info('Address Line 1 required!', '');
+    } else if (this.company.txtCity.length == 0) {
+      this.toastrService.info('City required!', '');
+    } else if (this.company.txtState.length == 0) {
+      this.toastrService.info('State required!', '');
+    } else if (this.company.txtZipcode.length == 0) {
+      this.toastrService.info('Zip Code required!', '');
+    } else {
       let gql = companyNew;
       if (this.company.id != 0) {
         gql = companyUpate;
@@ -190,9 +202,6 @@ export class ProfileComponent extends Base implements OnInit, OnDestroy {
         }
         this.toastrService.info(result.message, '');
       });
-    }
-    else{
-      this.toastrService.info('Company name required!', '');
     }
   }
 

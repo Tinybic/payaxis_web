@@ -21,6 +21,9 @@ import { RecaptchaModule } from "ng-recaptcha";
 import { InvitingVendorComponent } from './inviting-vendor/inviting-vendor.component';
 import { AvatarModule } from '../shared/avatar/avatar.module';
 import { JoinCompanyComponent } from './join-company/join-company.component';
+import { TermsComponent } from './terms/terms.component';
+import { PolicyComponent } from './policy/policy.component';
+import { SharedModule } from '../shared/shared.module';
 const maskConfig: Partial<IConfig> = {
   validation: false,
 };
@@ -37,7 +40,9 @@ const maskConfig: Partial<IConfig> = {
     RecoverPasswordPhoneComponent,
     InvitingRegisterComponent,
     InvitingVendorComponent,
-    JoinCompanyComponent
+    JoinCompanyComponent,
+    TermsComponent,
+    PolicyComponent
   ],
   imports: [
     CommonModule,
@@ -51,7 +56,8 @@ const maskConfig: Partial<IConfig> = {
     NgxMaskPipe,
     CodeInputModule,
     RecaptchaModule,
-    AvatarModule
+    AvatarModule,
+    SharedModule
   ],
   providers:[
     provideNgxMask()
