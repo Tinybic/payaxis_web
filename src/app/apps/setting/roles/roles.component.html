@@ -17,7 +17,7 @@
         </button>
     </div>
 </div>
-<ngx-simplebar [options]="scrollOptions" class="mt-2-1" style="height: calc(100vh - 260px);">
+<ngx-simplebar id="simplebar-roles" [options]="scrollOptions" class="mt-2-1" style="height: calc(100vh - 260px);">
     <table class="role-table advanced-table no-border" style="width: max-content;min-width: 100%;">
         <thead>
         <tr>
@@ -42,7 +42,7 @@
                                 Duplicate
                             </a>
                             <a *ngIf="role.access > 1" class="subtitle-2-500" href="javascript:void(0);"
-                               (click)="role.isEditing=true;initialRoleName=role.txtName;" style="padding: 12px;"
+                               (click)="editRoleName(role)" style="padding: 12px;"
                                ngbDropdownItem>
                                 <i class="fe-edit-1 me-1-1"></i>
                                 Edit name
@@ -63,7 +63,7 @@
                 <div *ngIf="role.isEditing">
                     <input class="search-text" placeholder="Role Name" [(ngModel)]="role.txtName"
                            style="width: 140px;border-radius: 8px;padding: 4px 8px;border: 1px solid #E1E6EF;outline: none;"/>
-                    <i class="fe-check font-16 ms-1-1" (click)="editRoleName(role)" style="color: #22C55E;"></i>
+                    <i class="fe-check font-16 ms-1-1" (click)="saveEditRoleName(role)" style="color: #22C55E;"></i>
                     <i class="fe-x font-16 ms-1-1" (click)="role.isEditing=false;role.txtName=initialRoleName;"
                        style="color: #F87171;"></i>
                 </div>
