@@ -6609,6 +6609,13 @@ ngx-moment@^6.0.2:
   dependencies:
     tslib "^2.3.0"
 
+ngx-plaid-link@^14.0.0:
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/ngx-plaid-link/-/ngx-plaid-link-14.0.0.tgz#f7ac90ff957dd2427be85b82cc5ae53803e18f1a"
+  integrity sha512-musH7J2kt8dOQznBAaR73bWDzvWCRbYcCz8L0cm5IfhifcGXabWFgPg3TZsSp2Tinuw4XHUPMtB2UxI+LOMCSw==
+  dependencies:
+    tslib "^2.3.0"
+
 ngx-quill@^16.1.2:
   version "16.1.2"
   resolved "https://registry.yarnpkg.com/ngx-quill/-/ngx-quill-16.1.2.tgz#577e8ae969855e41c64e8f605ab0ad37381ea061"
