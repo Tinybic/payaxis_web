@@ -78,7 +78,7 @@ export class CreateGroupComponent implements OnInit {
     this.apolloService.mutate(serviceName, params).then((res) => {
       let result: any = Object.values(res)[0];
       if(!result.error){
-        this.modalRef.close('save success');
+        this.modalRef.close(this.newGroupFormValues['name'].value);
         this.toastrService.info('Group created successfully!', '');
       } else{
         this.toastrService.info(result.message, 'Error');
