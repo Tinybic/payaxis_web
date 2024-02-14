@@ -1349,6 +1349,7 @@ export type QueryVendor_InfoArgs = {
 
 
 export type QueryVendor_ListArgs = {
+  costCode?: InputMaybe<Scalars['String']['input']>;
   idCompany: Scalars['Int']['input'];
 };
 
@@ -1501,6 +1502,7 @@ export type Company_Category = {
 export type Company_Costcode = {
   __typename?: 'company_costcode';
   active: Scalars['Boolean']['output'];
+  assignedvendor: Scalars['Int']['output'];
   category: Scalars['String']['output'];
   costCode: Scalars['String']['output'];
   createdBy: Scalars['Int']['output'];

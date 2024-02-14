@@ -236,4 +236,8 @@ export class CostcodeComponent {
         });
     };
   }
+
+  openVendorList(costcode){
+
+  }
 }

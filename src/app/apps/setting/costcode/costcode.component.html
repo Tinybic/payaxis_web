@@ -101,10 +101,9 @@
                     <th class="sortable"
                         [ngClass]="{'sorting_asc':sortColumn == 'costCode' && direction == 'asc','sorting_desc':sortColumn == 'costCode' && direction == 'desc'}"
                         (click)="onSort('costCode')">Code</th>
-                    <th>&nbsp;</th>
                     <th class="sortable"
-                        [ngClass]="{'sorting_asc':sortColumn == 'Assigned' && direction == 'asc','sorting_desc':sortColumn == 'Assigned' && direction == 'desc'}"
-                        (click)="onSort('Assigned')">Assigned Vendors</th>
+                        [ngClass]="{'sorting_asc':sortColumn == 'assignedvendor' && direction == 'asc','sorting_desc':sortColumn == 'assignedvendor' && direction == 'desc'}"
+                        (click)="onSort('assignedvendor')">Assigned Vendors</th>
                     <th>&nbsp;</th>
                 </tr>
             </thead>
@@ -122,7 +121,9 @@
                     </td>
                     <td> {{item.costCode}}
                     </td>
-                    <td> {{item.costCode}}
+                    <td><span *ngIf="item.assignedvendor == 0">{{item.assignedvendor}}</span>
+                        <span style="text-decoration: underline; color: #2B52DD;" *ngIf="item.assignedvendor > 0"
+                            (click)="openVendorList(item.costCode)">{{item.assignedvendor}}</span>
                     </td>
                     <td class="text-end pe-3">
                         <div *ngIf="!item.active" class="d-inline-block ArchivedTag">
@@ -207,4 +208,18 @@
 </ng-template>
 <ng-template #addcostcode let-modal>
     <app-add-costcode [type]="costcodeButtonText" [data]="modalData" [modalRef]="addmodalref"></app-add-costcode>
+</ng-template>
+<ng-template #vendorList let-modal>
+    <div class="modal-body" style="width: 483px;">
+        <div class="headline">Assigned to [Cost Code Name] Vendors</div>
+    </div>
+    <div class="card">
+        <div class="card-body-p-16">
+            <div>Joe & Son Plumbing Services</div>
+            <div>1234 Main Street, Chicago IL 54667, United States</div>
+        </div>
+    </div>
+    <div class="modal-x" (click)="modal.dismiss()">
+        <i class="fe-x"></i>
+    </div>
 </ng-template>
