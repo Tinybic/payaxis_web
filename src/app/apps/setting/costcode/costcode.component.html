@@ -1,29 +1,28 @@
 <div class="row mt-2-1">
-    <div class="col-md-4">
+    <div class="col-md-4 d-flex">
         <div class="d-inline-block headline">
             <span *ngIf="costcodelist.length == 0">No</span><span
                 *ngIf="costcodelist.length > 0">{{costcodelist.length}}</span> Cost Codes
         </div>
         <div class="dropdown d-inline-block ms-2-1" ngbDropdown #roleDrop="ngbDropdown">
             <a class="dropdown-outline" href="javascript:void(0)" ngbDropdownToggle>
-                Category&nbsp;
-                <b>{{categoryFilter}}</b>
+                <div style="float:left;">Category&nbsp;</div>
+                <div class="category-scroller" style="max-width: 120px;overflow: auto;float: left;"><b>{{categoryFilter.toString()}}</b></div>
                 <i class="fe-chevron-down font-16 ms-1-1"></i>
             </a>
             <div class="dropdown-menu" ngbDropdownMenu>
                 <div ngbDropdownItem>
-                    <div class="form-check" (click)="changeCategoryFilter('All')">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck"
-                            [checked]="categoryFilter=='All'" >
-                        <label class="form-check-label ms-1-1" for="dropdownCheck">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheckAll"
+                            [checked]="categoryFilter.length === costCodeCategoryList.length" (change)="statusChanged('all')">
+                        <label class="form-check-label ms-1-1" for="dropdownCheckAll">
                             ALL
                         </label>
                     </div>
                 </div>
                 <div ngbDropdownItem *ngFor="let item of costCodeCategoryList">
-                    <div class="form-check" (click) = "changeCategoryFilter(item.txtName)">
-                        <input type="checkbox" class="form-check-input" id="dropdownCheck{{item.txtName}}"
-                            [checked]="categoryFilter == item.txtName" >
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="dropdownCheck{{item.txtName}}" [checked]="categoryFilter.includes(item.txtName)" (change)="statusChanged(item)">
                         <label class="form-check-label ms-1-1" for="dropdownCheck{{item.txtName}}">
                             {{item.txtName}}
                         </label>
@@ -34,7 +33,7 @@
     </div>
     <div class="col-md-8 text-end">
         <div class="d-inline-block form-check form-switch line-24  me-2-1" *ngIf="costcodelist.length>0 && !loading">
-            <input type="checkbox" id="customSwitch1" class="form-check-input me-1-1" [(ngModel)]="showArchived" />
+            <input type="checkbox" id="customSwitch1" class="form-check-input me-1-1" [(ngModel)]="showArchived" (change)="setArchived()" />
             <label for="customSwitch1" class="form-check-label align-middle">Show Archived</label>
         </div>
         <div class="d-inline-block">
@@ -43,7 +42,7 @@
         <div class="d-inline-block">
 
             <div ngbDropdown class="d-inline-block  ms-2-1">
-                <button class="btn btn-outline-primary" ngbDropdownToggle><i class="fe-upload me-1-1"></i>Import<i
+                <button class="btn btn-outline-primary btn-h-40" ngbDropdownToggle><i class="fe-upload me-1-1"></i>Import<i
                         class="fe-chevron-down ms-1-1"></i></button>
 
                 <input id="csvupload" type="file" (change)="importCostCodeFromCSV($event)" accept=".csv"
@@ -58,7 +57,7 @@
             </div>
 
             <div ngbDropdown class="d-inline-block  ms-2-1">
-                <button class="btn btn-outline-primary" ngbDropdownToggle><i class="fe-download me-1-1"></i>Export<i
+                <button class="btn btn-outline-primary btn-h-40" ngbDropdownToggle><i class="fe-download me-1-1"></i>Export<i
                         class="fe-chevron-down ms-1-1"></i></button>
 
                 <div ngbDropdownMenu style="width: 255px;">
@@ -71,7 +70,7 @@
                 </div>
             </div>
 
-            <button class="btn btn-primary ms-2-1" style="margin-right: 2px;" (click)="openAddModal('Create')"><i
+            <button class="btn btn-primary ms-2-1 btn-h-40" style="margin-right: 2px;" (click)="openAddModal('Create')"><i
                     class="fe-plus-square me-1-1"></i>New
                 Cost Code</button>
         </div>
