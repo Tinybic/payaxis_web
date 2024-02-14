@@ -14,16 +14,16 @@
                 <div ngbDropdownItem>
                     <div class="form-check" (click)="changeCategoryFilter('All')">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck"
-                            [checked]="categoryFilter=='All'" >
+                            [checked]="categoryFilter=='All'">
                         <label class="form-check-label ms-1-1" for="dropdownCheck">
                             ALL
                         </label>
                     </div>
                 </div>
                 <div ngbDropdownItem *ngFor="let item of costCodeCategoryList">
-                    <div class="form-check" (click) = "changeCategoryFilter(item.txtName)">
+                    <div class="form-check" (click)="changeCategoryFilter(item.txtName)">
                         <input type="checkbox" class="form-check-input" id="dropdownCheck{{item.txtName}}"
-                            [checked]="categoryFilter == item.txtName" >
+                            [checked]="categoryFilter == item.txtName">
                         <label class="form-check-label ms-1-1" for="dropdownCheck{{item.txtName}}">
                             {{item.txtName}}
                         </label>
@@ -102,6 +102,10 @@
                         [ngClass]="{'sorting_asc':sortColumn == 'costCode' && direction == 'asc','sorting_desc':sortColumn == 'costCode' && direction == 'desc'}"
                         (click)="onSort('costCode')">Code</th>
                     <th>&nbsp;</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortColumn == 'Assigned' && direction == 'asc','sorting_desc':sortColumn == 'Assigned' && direction == 'desc'}"
+                        (click)="onSort('Assigned')">Assigned Vendors</th>
+                    <th>&nbsp;</th>
                 </tr>
             </thead>
             <tbody>
@@ -115,6 +119,8 @@
                     </td>
                     <td>
                         {{item.txtNotes}}
+                    </td>
+                    <td> {{item.costCode}}
                     </td>
                     <td> {{item.costCode}}
                     </td>
@@ -198,7 +204,7 @@
             </div>
         </div>
     </div>
-    </ng-template>
-    <ng-template #addcostcode let-modal>
-        <app-add-costcode [type]="costcodeButtonText" [data]="modalData" [modalRef]="addmodalref"></app-add-costcode>
-    </ng-template>
+</ng-template>
+<ng-template #addcostcode let-modal>
+    <app-add-costcode [type]="costcodeButtonText" [data]="modalData" [modalRef]="addmodalref"></app-add-costcode>
+</ng-template>

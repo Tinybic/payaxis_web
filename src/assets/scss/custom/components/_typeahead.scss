@@ -2,9 +2,12 @@
 // typeahead.scss
 //
 
-ngb-typeahead-window.dropdown-menu{
-    &.show{
+ngb-typeahead-window.dropdown-menu {
+    &.show {
         top: auto !important;
         left: auto !important;
+        max-height: 240px;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 }
