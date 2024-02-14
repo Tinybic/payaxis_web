@@ -396,6 +396,7 @@ export class PaymentComponent {
   }
 
   onExit(event: PlaidOnExitArgs) {
+    console.log(event);
     this.toastrService.info('New Payment Method Exit', '');
   }
 }

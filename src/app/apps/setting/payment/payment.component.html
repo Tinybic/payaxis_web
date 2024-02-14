@@ -13,8 +13,7 @@
                         Payment Methods
                     </div>
                     <div class="col-md-6 headline-24 text-end">
-                        <button type="button" class="btn btn-primary" style="padding: 8px 16px;" *ngIf="tokenFetched"
-                            ngxPlaidLink [token]="linkToken" (Success)="onSuccess($event)" (Exit)="onExit($event)">
+                        <button type="button" class="btn btn-primary" style="padding: 8px 16px;" (click)="openAddPaymentModal(-1)">
                             <i class="fe-plus-square me-1-1"></i>Add
                             Method
                         </button>
@@ -27,9 +26,7 @@
                         <div class="Paragraph-2 text-typeblackdeactivated mt-1-1">Get your Method on track in a few
                             clicks</div>
                         <div class="mt-1-1">
-                            <button type="button" class="btn btn-outline-primary" style="padding: 8px 16px;"
-                                *ngIf="tokenFetched" ngxPlaidLink [token]="linkToken" (Success)="onSuccess($event)"
-                                (Exit)="onExit($event)">
+                            <button type="button" class="btn btn-outline-primary" style="padding: 8px 16px;" (click)="openAddPaymentModal(-1)">
                                 <i class="fe-plus-square me-1-1"></i>Add
                                 Method
                             </button>
@@ -51,8 +48,7 @@
                         Payment Methods
                     </div>
                     <div class="col-md-2 headline-24 text-end">
-                        <button type="button" class="btn btn-primary" style="padding: 8px 16px;" *ngIf="tokenFetched"
-                            ngxPlaidLink [token]="linkToken" (Success)="onSuccess($event)" (Exit)="onExit($event)">
+                        <button type="button" class="btn btn-primary" style="padding: 8px 16px;"  (click)="openAddPaymentModal(-1)">
                             <i class="fe-plus-square me-1-1"></i>Add
                             Method
                         </button>
@@ -156,7 +152,11 @@
                     </div>
 
                     <div class=" paymentType subtitle-2-500 ms-2-1">
-                        <img class=" me-2-1" src="/assets/images/card.png" />Credit Card
+                        <button type="button"  *ngIf="tokenFetched" style="border: 0; background-color: transparent;"
+                        ngxPlaidLink [token]="linkToken" (Success)="onSuccess($event)" (Exit)="onExit($event)">
+                        <img class=" me-2-1" src="/assets/images/card.png"  /> Credit Card
+                        </button>
+                        
                     </div>
                 </div>
                 <div class="card mt-2-1">
