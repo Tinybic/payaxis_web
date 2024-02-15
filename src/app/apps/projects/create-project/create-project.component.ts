@@ -16,7 +16,7 @@ import { companygroup_list, companyproject_updatedetail } from "../../../core/gq
   styleUrls: ['./create-project.component.scss']
 })
 export class CreateProjectComponent {
-  @Input() project;
+  @Input() project?;
   @Input() createProjectWithGroup?;
   @Input() modalRef;
   
@@ -129,8 +129,8 @@ export class CreateProjectComponent {
   
   ngOnInit(): void{
     this.idCompany = parseInt(localStorage.getItem('idcompany'));
-    this.getGroupList();
     if(this.project){
+      this.getGroupList();
       this.step = 3;
       this.formStep3Values['editName'].setValue(this.project.projectName);
       this.formStep3Values['editAddress'].setValue(this.project.projectAddress);
@@ -142,22 +142,47 @@ export class CreateProjectComponent {
       this.formStep3Values['editSqft'].setValue(this.project.projectSqft);
     } else{
       if(this.createProjectWithGroup){
+        this.getGroupList();
         this.selectedGroup = {
           idGroup: this.createProjectWithGroup.id,
           txtName: this.createProjectWithGroup.txtName,
           projectCount: 0
         }
+      } else{
+        this.getGroupList('');
       }
     }
   }
   
   
-  getGroupList(){
+  getGroupList(newGroupName?){
     if(this.idCompany != 0){
       this.apolloService.query(companygroup_list, {idCompany: this.idCompany}).then((res) => {
         const result = res.companygroup_list;
         if(!result.error){
           this.groupList = result.data;
+          if(newGroupName == ''){
+            let group = this.groupList.reduce((newlyGroup, curGroup) => {
+              return curGroup.id > newlyGroup.id ? curGroup : newlyGroup;
+            }, { id: -Infinity });
+            this.selectedGroup = {
+              idGroup: group.id,
+              txtName: group.txtName,
+              projectCount: group.projectcount
+            }
+          } else{
+            if(newGroupName){
+              this.groupList.map(group => {
+                if(group.txtName == newGroupName){
+                  this.selectedGroup = {
+                    idGroup: group.id,
+                    txtName: group.txtName,
+                    projectCount: group.projectcount
+                  }
+                }
+              })
+            }
+          }
         }
       });
     }
@@ -197,8 +222,8 @@ export class CreateProjectComponent {
       backdrop: 'static'
     })
     
-    this.newGroupModalRef.result.then((result) => {
-      this.getGroupList();
+    this.newGroupModalRef.result.then((newGroupName) => {
+      this.getGroupList(newGroupName);
     }, (reason) => {
       console.log(reason);
     })
@@ -252,8 +277,8 @@ export class CreateProjectComponent {
       centered: true,
       backdrop: 'static'
     })
-    this.createBudgetModalRef.result.then((result) => {
-      this.modalRef.close();
+    this.createBudgetModalRef.result.then((projectId) => {
+      this.modalRef.close(projectId);
     }, (reason) => {
       this.budgetAllocation = reason.budgetAllocation;
       this.formStep2Values['budget'].setValue(reason.projectBudget);
@@ -276,7 +301,7 @@ export class CreateProjectComponent {
     }
     
     this.apolloService.mutate(companyproject_updatedetail, {
-      idCompany:this.idCompany,
+      idCompany: this.idCompany,
       id: this.project.id,
       revision: this.project.revision,
       projectName: this.formStep3Values['editName'].value,

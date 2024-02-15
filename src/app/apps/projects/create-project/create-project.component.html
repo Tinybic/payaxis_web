@@ -1,5 +1,5 @@
 <div class="modal-body modal-form-control" style="padding: 32px 24px 140px;">
-    <div class="headline-24">{{project == '' ? 'Create a new Project' : 'Edit Project Details'}}</div>
+    <div class="headline-24">{{project===undefined ? 'Create a new Project' : 'Edit Project Details'}}</div>
     
     
     <div class="card mt-2-1 p-2-1">
@@ -70,14 +70,14 @@
                          ngbDropdown>
                         <div class="dropdown-outline c-p search-text" style="width: 100%;background-color: #F8F9FC;"
                              ngbDropdownToggle>
-                            <span [ngClass]="{'op-8': selectedGroup.idGroup == -1}">{{selectedGroup.txtName}}</span>
+                            <div class="text-overflow-ellipsis" [ngClass]="{'op-8': selectedGroup.idGroup == -1}" style="width: calc(100% - 30px);float: left;">{{selectedGroup.txtName}}</div>
                             <i class="fe-chevron-down font-16 ms-1-1 float-end"></i>
                         </div>
                         <div class="dropdown-menu" style="width: 100%;max-height: 360px;overflow-y: auto;"
                              ngbDropdownMenu>
                             <div class="subtitle-2-500 c-p" *ngFor="let group of groupList; let i=index;"
                                  (click)="selectGroupProject(group)" ngbDropdownItem>
-                                <label class="form-check-label ms-1-1 text-overflow-ellipsis" style="max-width: 480px;">
+                                <label class="form-check-label ms-1-1 text-overflow-ellipsis c-p" style="max-width: 480px;">
                                     {{group.txtName}} ({{group.projectcount}})
                                 </label>
                             </div>
@@ -230,14 +230,14 @@
                     <div id="editProjectGroupDropdown" class="d-inline-block dropdown" style="width: 100%;" ngbDropdown>
                         <div class="dropdown-outline c-p search-text" style="width: 100%;background-color: #F8F9FC;"
                              ngbDropdownToggle>
-                            {{selectedGroup.txtName}}
+                            <div class="text-overflow-ellipsis" [ngClass]="{'op-8': selectedGroup.idGroup == -1}" style="width: calc(100% - 30px);float: left;">{{selectedGroup.txtName}}</div>
                             <i class="fe-chevron-down font-16 ms-1-1 float-end"></i>
                         </div>
                         <div class="dropdown-menu" style="width: 100%;max-height: 360px;overflow-y: auto;"
                              ngbDropdownMenu>
                             <div class="subtitle-2-500 c-p" *ngFor="let group of groupList; let i=index;"
                                  (click)="selectGroupProject(group)" ngbDropdownItem>
-                                <label class="form-check-label ms-1-1 text-overflow-ellipsis" style="max-width: 480px;">
+                                <label class="form-check-label ms-1-1 text-overflow-ellipsis c-p" style="max-width: 480px;">
                                     {{group.txtName}} ({{group.projectcount}})
                                 </label>
                             </div>

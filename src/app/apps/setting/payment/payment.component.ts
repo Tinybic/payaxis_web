@@ -17,12 +17,23 @@ import {
 import { matchValidator } from 'src/app/core/helpers/match.validator';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 
+import {
+  PlaidOnEventArgs,
+  PlaidOnExitArgs,
+  PlaidOnSuccessArgs,
+} from 'ngx-plaid-link';
+import { HttpService } from 'src/app/core/service/http.service';
+
 @Component({
   selector: 'app-payment',
   templateUrl: './payment.component.html',
   styleUrls: ['./payment.component.scss'],
 })
 export class PaymentComponent {
+  public tokenFetched: boolean = false;
+  // Fetch this from your backend.
+  public linkToken = '';
+
   @ViewChild('addpayment') addpayment: any;
   @ViewChild('deletepayment') deletepayment: any;
   @ViewChild('cancelpayment') cancelpayment: any;
@@ -53,10 +64,12 @@ export class PaymentComponent {
     private fb: UntypedFormBuilder,
     private modalService: NgbModal,
     private toastrService: ToastrService,
-    private apolloService: ApolloService
+    private apolloService: ApolloService,
+    private httpService: HttpService
   ) {}
 
   ngOnInit(): void {
+    setTimeout(() => this.getLinkToken(), 500);
     this.formValues['email'].setValue(localStorage.getItem('email'));
     this.idcompany = parseInt(localStorage.getItem('idcompany'));
     this.getPaymentList();
@@ -325,5 +338,65 @@ export class PaymentComponent {
           this.formValues['bankName'].setValue(result.data);
         }
       });
+  }
+
+  enableButton() {}
+
+  getLinkToken() {
+    this.httpService
+      .post('create_link_token', { iduser: localStorage.getItem('id') })
+      .then((res) => {
+        this.linkToken = res.data;
+        this.tokenFetched = true;
+      });
+  }
+
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+  }
+
+  async onSuccess(event: PlaidOnSuccessArgs) {
+    console.log(event);
+    for (let i = 0; i < event.metadata.accounts.length; i++) {
+      this.httpService
+        .post('exchange_processor_token', {
+          public_token: event.token,
+          account_id: event.metadata.accounts[i].id,
+        })
+        .then((res) => {
+          if (!res.error) {
+            this.apolloService
+              .mutate(companypayment_new, {
+                idCompany: this.idcompany,
+                account: res.data[0].account,
+                routing: res.data[0].routing,
+                payType: 'PLAID',
+                bankName: res.data[0].name,
+                holderName: '',
+                email: localStorage.getItem('email'),
+                defaultPay: false,
+              })
+              .then((res) => {
+                const result = res.companypayment_new;
+                let message = '';
+                if (!result.error) {
+                  message = 'New Payment Method was created';
+                  this.getPaymentList();
+                  this.addref.close();
+                } else {
+                  message = result.message;
+                }
+                this.toastrService.info(message, '');
+              });
+          }
+        });
+
+        await this.sleep(2000);
+    }
+  }
+
+  onExit(event: PlaidOnExitArgs) {
+    console.log(event);
+    this.toastrService.info('New Payment Method Exit', '');
   }
 }

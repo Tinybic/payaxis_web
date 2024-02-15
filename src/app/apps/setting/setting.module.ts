@@ -15,7 +15,7 @@ import { AddRoleComponent } from './add-role/add-role.component';
 import { SharedModule } from "../../shared/shared.module";
 import { SimplebarAngularModule } from "simplebar-angular";
 import { AddCostcodeComponent } from './add-costcode/add-costcode.component';
-
+import { NgxPlaidLinkModule } from "ngx-plaid-link";
 
 @NgModule({
   declarations: [
@@ -40,7 +40,8 @@ import { AddCostcodeComponent } from './add-costcode/add-costcode.component';
     SharedModule,
     NgxMaskDirective,
     NgxMaskPipe,
-    SimplebarAngularModule
+    SimplebarAngularModule, 
+    NgxPlaidLinkModule
   ],
   providers:[
     provideNgxMask()
