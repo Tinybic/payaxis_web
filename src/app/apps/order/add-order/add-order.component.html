@@ -228,7 +228,12 @@
                                                     <label class="form-label">Invoiced Date</label>
                                                     <input type="date" class="form-control"
                                                         placeholder="Date invoice is attached"
-                                                        [(ngModel)]="order.invoicedDate" />
+                                                        [(ngModel)]="order.invoicedDate" [ngClass]="{'is-invalid':orderError.invoicedDate == 0}" />
+                                                        <div *ngIf="orderError.invoicedDate == 0" class="invalid-feedback"
+                                                            i18n>
+                                                            <i class="fe-alert-triangle invalid-feedback-icon"></i>
+                                                            Invoiced Date required
+                                                        </div>
                                                 </div>
                                             </div>
                                             <div class="row mt-2-1">
@@ -317,7 +322,12 @@
                                                     <label class="form-label" i18n>Invoice Due Date</label>
                                                     <input class="form-control" type="date" id="dueDate"
                                                         [(ngModel)]="order.indvoicedueDate" required i18n-placeholder
-                                                        placeholder="Due date on invoice" />
+                                                        placeholder="Due date on invoice" [ngClass]="{'is-invalid':orderError.indvoicedueDate == 0}" />
+                                                        <div *ngIf="orderError.indvoicedueDate == 0" class="invalid-feedback"
+                                                            i18n>
+                                                            <i class="fe-alert-triangle invalid-feedback-icon"></i>
+                                                            Invoiced Due Date required
+                                                        </div>
                                                 </div>
                                             </div>
                                         </div>

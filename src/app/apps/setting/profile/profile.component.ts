@@ -231,6 +231,10 @@ export class ProfileComponent extends Base implements OnInit, OnDestroy {
     }
   }
 
+  deleteAvatar(){
+    this.company.avatar = "";
+  }
+
   showFileDialog(): void {
     this.fileInput.nativeElement.click();
   }

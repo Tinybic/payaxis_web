@@ -66,7 +66,9 @@ export class AddOrderComponent {
   orderError = {
     costcode: -1,
     idProject: -1,
-    idVendor: -1
+    idVendor: -1,
+    invoicedDate: -1,
+    indvoicedueDate: -1
   };
   submitForm = false;
   keywordsVendor = '';
@@ -240,32 +242,32 @@ export class AddOrderComponent {
         this.getRelatedList();
         this.loading = false;
         
-        if(this.order.listItems.length > 9){
+        //if(this.order.listItems.length > 9){
           this.order.listItems.push({
             paidyn: false,
             description: '',
             unit: '',
-            qty: 0.0,
-            price: 0.0,
-            amount: 0.0,
+            qty: '',
+            price: '',
+            amount: '',
             taxyn: false,
             notes: ''
           });
-        } else{
-          const length = 10 - this.order.listItems.length;
-          for(let i = 0; i < length; i++){
-            this.order.listItems.push({
-              paidyn: false,
-              description: '',
-              unit: '',
-              qty: 0.0,
-              price: 0.0,
-              amount: 0.0,
-              taxyn: false,
-              notes: ''
-            });
-          }
-        }
+        // } else{
+        //   const length = 10 - this.order.listItems.length;
+        //   for(let i = 0; i < length; i++){
+        //     this.order.listItems.push({
+        //       paidyn: false,
+        //       description: '',
+        //       unit: '',
+        //       qty: 0.0,
+        //       price: 0.0,
+        //       amount: 0.0,
+        //       taxyn: false,
+        //       notes: ''
+        //     });
+        //   }
+        // }
       }
     });
   }
@@ -539,7 +541,10 @@ export class AddOrderComponent {
         this.order.nontaxable += item.amount;
       }
     });
-    
+
+    this.order.taxable = parseFloat(this.order.taxable.toString());
+    this.order.nontaxable = parseFloat(this.order.nontaxable.toString());
+
     this.order.tax = (this.order.taxrate * this.order.taxable) / 100;
     this.order.total =
       this.order.taxable + this.order.nontaxable + this.order.tax;
@@ -567,6 +572,20 @@ export class AddOrderComponent {
       this.orderError.idVendor = -1;
     }
     
+    if(this.order.invoicedDate.length == 0){
+      this.orderError.invoicedDate = 0;
+      return;
+    } else{
+      this.orderError.invoicedDate = -1;
+    }
+    
+    if(this.order.indvoicedueDate.length == 0){
+      this.orderError.indvoicedueDate = 0;
+      return;
+    } else{
+      this.orderError.indvoicedueDate = -1;
+    }
+
     let listitemPara = [];
     this.order.listItems.forEach((item) => {
       if(item.description.length > 0){
@@ -586,6 +605,9 @@ export class AddOrderComponent {
       }
     });
     
+    this.order.taxable = parseFloat(this.order.taxable.toString());
+    this.order.total = parseFloat(this.order.total.toString());
+
     if(listitemPara.length == 0){
       this.toastrService.info('At least one item to save', '');
       return;
