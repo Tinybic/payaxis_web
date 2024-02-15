@@ -123,7 +123,7 @@
                     </td>
                     <td><span *ngIf="item.assignedvendor == 0">{{item.assignedvendor}}</span>
                         <span style="text-decoration: underline; color: #2B52DD;" *ngIf="item.assignedvendor > 0"
-                            (click)="openVendorList(item.costCode)">{{item.assignedvendor}}</span>
+                            (click)="openVendorList(item.costCode,item.txtName)">{{item.assignedvendor}}</span>
                     </td>
                     <td class="text-end pe-3">
                         <div *ngIf="!item.active" class="d-inline-block ArchivedTag">
@@ -209,14 +209,28 @@
 <ng-template #addcostcode let-modal>
     <app-add-costcode [type]="costcodeButtonText" [data]="modalData" [modalRef]="addmodalref"></app-add-costcode>
 </ng-template>
-<ng-template #vendorList let-modal>
-    <div class="modal-body" style="width: 483px;">
-        <div class="headline">Assigned to [Cost Code Name] Vendors</div>
-    </div>
-    <div class="card">
-        <div class="card-body-p-16">
-            <div>Joe & Son Plumbing Services</div>
-            <div>1234 Main Street, Chicago IL 54667, United States</div>
+
+<ng-template #vendorListmodal let-modal>
+    <div class="modal-body">
+        <div class="headline">Assigned to {{costcodeName}} Vendors</div>
+
+        <div class="card" *ngFor="let item of vendorlist">
+            <div class="card-body-p-16">
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="Subtitle-1 text-start">{{item.vendorName}}</div>
+                        <div class="subtitle-2-400-12 text-typeblack80" *ngIf="item.txtAddress.length > 0">
+                            {{item.txtAddress}}, {{item.txtCity}} {{item.txtState}} {{item.txtZipcode}}, United States
+                        </div>
+                    </div>
+                    <div class="col-md-2 text-end">
+                        <i class="fe-external-link text-primary"></i>
+                    </div>
+                </div>
+
+
+
+            </div>
         </div>
     </div>
     <div class="modal-x" (click)="modal.dismiss()">

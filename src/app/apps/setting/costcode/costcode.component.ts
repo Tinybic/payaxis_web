@@ -13,6 +13,7 @@ import {
   companycostcode_new,
   companycostcode_update,
 } from 'src/app/core/gql/costcode';
+import { vendor_list } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { GlobalFunctionsService } from 'src/app/core/service/global-functions.service';
 
@@ -24,6 +25,7 @@ import { GlobalFunctionsService } from 'src/app/core/service/global-functions.se
 export class CostcodeComponent {
   @ViewChild('addcostcode') addcostcode: any;
   @ViewChild('deletecostcode') deletecostcode: any;
+  @ViewChild('vendorListmodal') vendorListmodal: any;
   showArchived = true;
   loading = true;
   keywords = '';
@@ -237,7 +239,32 @@ export class CostcodeComponent {
     };
   }
 
-  openVendorList(costcode){
-
+  vendorlist = [];
+  vendorlistmodalref;
+  costcodeName = '';
+  openVendorList(costcode, name) {
+    if (parseInt(localStorage.getItem('idcompany')) != 0) {
+      this.apolloService
+        .query(vendor_list, {
+          idCompany: parseInt(localStorage.getItem('idcompany')),
+          costCode: costcode,
+        })
+        .then((res) => {
+          const result = res.vendor_list;
+          if (!result.error) {
+            this.vendorlist = result.data;
+            this.costcodeName = name;
+            this.vendorlistmodalref = this.modalService.open(
+              this.vendorListmodal,
+              {
+                backdrop: 'static',
+                modalDialogClass: 'modal-right',
+                size: '483',
+              }
+            );
+          }
+          this.loading = false;
+        });
+    }
   }
 }
