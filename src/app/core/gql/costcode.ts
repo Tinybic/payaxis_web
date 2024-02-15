@@ -175,6 +175,7 @@ const companycostcode_list = gql`
         category
         txtNotes
         active
+        assignedvendor
       }
     }
   }

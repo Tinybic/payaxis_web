@@ -124,7 +124,7 @@ export class AddOrderComponent {
         if(idOrder < 0){
           this.order.idProject = -idOrder;
         }
-        this.order.invoicedDate = new Date().toISOString().slice(0, 10);
+        //this.order.invoicedDate = new Date().toISOString().slice(0, 10);
         this.getOrderNumber();
         this.getCostCodeList();
         this.getResonList();
@@ -137,9 +137,9 @@ export class AddOrderComponent {
             paidyn: false,
             description: '',
             unit: '',
-            qty: 0.0,
-            price: 0.0,
-            amount: 0.0,
+            qty: '',
+            price: '',
+            amount: '',
             taxyn: false,
             notes: ''
           });

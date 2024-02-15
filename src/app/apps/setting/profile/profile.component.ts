@@ -130,7 +130,7 @@ export class ProfileComponent extends Base implements OnInit, OnDestroy {
           : this.statesList.filter(
               (v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1
             )
-        ).slice(0, 5)
+        )
       )
     );
   };

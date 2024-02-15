@@ -555,13 +555,13 @@
                                                                         [(ngModel)]="item.unit" />
                                                                 </td>
                                                                 <td>
-                                                                    <input type="text" class="form-control"
-                                                                        [(ngModel)]="item.price"
+                                                                    <input type="text" class="form-control text-end"
+                                                                        [(ngModel)]="item.price" prefix="$"
                                                                         mask="separator.2"
                                                                         (keyup)="getAmout(item)" />
                                                                 </td>
                                                                 <td>
-                                                                    <input type="text" class="form-control"
+                                                                    <input type="text" class="form-control" prefix="$"
                                                                         [(ngModel)]="item.amount" disabled="disabled" />
                                                                 </td>
                                                                 <td>

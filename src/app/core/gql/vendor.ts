@@ -80,8 +80,8 @@ const vendor_update = gql`
 `;
 
 const vendor_list = gql`
-  query vendor_list($idCompany: Int!) {
-    vendor_list(idCompany: $idCompany) {
+query vendor_list($idCompany: Int!, $costCode: String) {
+  vendor_list(idCompany: $idCompany, costCode: $costCode) {
       error
       code
       message
