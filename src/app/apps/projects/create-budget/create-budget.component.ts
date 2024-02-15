@@ -265,7 +265,7 @@ export class CreateBudgetComponent {
     this.apolloService.mutate(serviceName, params).then((res) => {
       let result: any = Object.values(res)[0];
       if(!result.error){
-        this.modalRef.close('save success');
+        this.modalRef.close(result.data.id);
         this.toastrService.info('Save success', '');
       } else{
         this.toastrService.info(result.message, 'Error');

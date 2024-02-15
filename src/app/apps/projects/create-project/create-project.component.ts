@@ -277,8 +277,8 @@ export class CreateProjectComponent {
       centered: true,
       backdrop: 'static'
     })
-    this.createBudgetModalRef.result.then((result) => {
-      this.modalRef.close();
+    this.createBudgetModalRef.result.then((projectId) => {
+      this.modalRef.close(projectId);
     }, (reason) => {
       this.budgetAllocation = reason.budgetAllocation;
       this.formStep2Values['budget'].setValue(reason.projectBudget);
