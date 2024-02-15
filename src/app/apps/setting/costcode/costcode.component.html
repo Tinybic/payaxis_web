@@ -1,5 +1,5 @@
 <div class="row mt-2-1">
-    <div class="col-md-4">
+    <div class="col-xxl-4 col-xl-12">
         <div class="d-inline-block headline">
             <span *ngIf="costcodelist.length == 0">No</span><span
                 *ngIf="costcodelist.length > 0">{{costcodelist.length}}</span> Cost Codes
@@ -32,13 +32,13 @@
             </div>
         </div>
     </div>
-    <div class="col-md-8 text-end">
+    <div class="col-xxl-8 col-xl-12 text-end">
         <div class="d-inline-block form-check form-switch line-24  me-2-1" *ngIf="costcodelist.length>0 && !loading">
             <input type="checkbox" id="customSwitch1" class="form-check-input me-1-1" [(ngModel)]="showArchived" />
             <label for="customSwitch1" class="form-check-label align-middle">Show Archived</label>
         </div>
         <div class="d-inline-block">
-            <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords" />
+            <input class="form-control form-search" type="search" style="width: 180px;" placeholder="Search here" [(ngModel)]="keywords" />
         </div>
         <div class="d-inline-block">
 
