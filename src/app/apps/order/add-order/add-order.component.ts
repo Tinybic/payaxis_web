@@ -609,7 +609,9 @@ export class AddOrderComponent {
     this.order.total = parseFloat(this.order.total.toString());
 
     if(listitemPara.length == 0){
-      this.toastrService.info('At least one item to save', '');
+      this.toastrService.info('At least one item to save', '', {
+        positionClass: 'toast-top-right-order'
+      });
       return;
     }
     
@@ -633,7 +635,9 @@ export class AddOrderComponent {
       } else{
         message = result.message;
       }
-      this.toastrService.info(message, '');
+      this.toastrService.info(message, '', {
+        positionClass: 'toast-top-right-order'
+      });
     });
   }
   

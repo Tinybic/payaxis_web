@@ -61,7 +61,12 @@
                                             <label class="form-label" i18n>Company Name</label>
                                             <input class="form-control" type="text" id="companyName" required
                                                 i18n-placeholder placeholder="Company Name"
-                                                [(ngModel)]="company.txtName" />
+                                                [(ngModel)]="company.txtName"  [ngClass]="{'is-invalid':orderError.txtName == 0}" />
+                                                <div *ngIf="orderError.txtName == 0" class="invalid-feedback"
+                                                    i18n>
+                                                    <i class="fe-alert-triangle invalid-feedback-icon"></i>
+                                                    Company Name required
+                                                </div>
                                         </div>
                                         <div class="col-md-6">
                                             <label class="form-label" i18n>Tax ID/EIN</label>
@@ -86,7 +91,12 @@
                                             <div ngbDropdown class="mt-sm-0 mt-2">
                                                 <input class="form-select position-relative" type="text"  readonly="readonly"
                                                     id="paymentTerms" i18n-placeholder placeholder="Payment Terms"
-                                                    [(ngModel)]="company.paymentTerms" ngbDropdownToggle />
+                                                    [(ngModel)]="company.paymentTerms" ngbDropdownToggle  [ngClass]="{'is-invalid':orderError.paymentTerms == 0}" />
+                                                    <div *ngIf="orderError.paymentTerms == 0" class="invalid-feedback"
+                                                        i18n>
+                                                        <i class="fe-alert-triangle invalid-feedback-icon"></i>
+                                                        Payment Terms required
+                                                    </div>
 
                                                 <div ngbDropdownMenu aria-labelledby="paymentTerms">
                                                     <a href="javascript:void(0)"
@@ -125,7 +135,12 @@
                                             <label class="form-label" i18n>Address Line 1</label>
                                             <input class="form-control" type="text" id="txtAddress" required
                                                 i18n-placeholder placeholder="Street Address"
-                                                [(ngModel)]="company.txtAddress" />
+                                                [(ngModel)]="company.txtAddress"  [ngClass]="{'is-invalid':orderError.txtAddress == 0}" />
+                                                <div *ngIf="orderError.txtAddress == 0" class="invalid-feedback"
+                                                    i18n>
+                                                    <i class="fe-alert-triangle invalid-feedback-icon"></i>
+                                                    Address Line required
+                                                </div>
                                         </div>
                                         <div class="col-md-3">
                                             <label class="form-label" i18n>Address Line 2</label>
@@ -141,20 +156,35 @@
                                         <div class="col-md-4">
                                             <label class="form-label" i18n>City</label>
                                             <input class="form-control" type="text" id="txtCity" required
-                                                i18n-placeholder placeholder="City" [(ngModel)]="company.txtCity" />
+                                                i18n-placeholder placeholder="City" [(ngModel)]="company.txtCity"  [ngClass]="{'is-invalid':orderError.txtCity == 0}" />
+                                                <div *ngIf="orderError.txtCity == 0" class="invalid-feedback"
+                                                    i18n>
+                                                    <i class="fe-alert-triangle invalid-feedback-icon"></i>
+                                                    City required
+                                                </div>
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label" i18n>State</label>
                                             <input id="txtState" type="text" class="form-select position-relative"
                                                 [ngbTypeahead]="searchState"
                                                 (focus)="focus$.next($any($event).target.value)" placeholder="State"
-                                                #instance="ngbTypeahead" [(ngModel)]="company.txtState" />
+                                                #instance="ngbTypeahead" [(ngModel)]="company.txtState"  [ngClass]="{'is-invalid':orderError.txtState == 0}" />
+                                                <div *ngIf="orderError.txtState == 0" class="invalid-feedback"
+                                                    i18n>
+                                                    <i class="fe-alert-triangle invalid-feedback-icon"></i>
+                                                    State required
+                                                </div>
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label" i18n>Zip Code</label>
                                             <input class="form-control" type="text" id="txtZipcode" required
                                                 i18n-placeholder maxlength="6" placeholder="Zip Code"
-                                                [(ngModel)]="company.txtZipcode" />
+                                                [(ngModel)]="company.txtZipcode"  [ngClass]="{'is-invalid':orderError.txtZipcode == 0}" />
+                                                <div *ngIf="orderError.txtZipcode == 0" class="invalid-feedback"
+                                                    i18n>
+                                                    <i class="fe-alert-triangle invalid-feedback-icon"></i>
+                                                    Zip Code required
+                                                </div>
                                         </div>
                                     </div>
 

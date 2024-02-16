@@ -73,6 +73,15 @@ export class ProfileComponent extends Base implements OnInit, OnDestroy {
     suiteNumber: '',
   };
 
+  orderError = {
+    txtName: -1,
+    paymentTerms: -1,
+    txtAddress: -1,
+    txtCity: -1,
+    txtState: -1,
+    txtZipcode: -1,
+  };
+
   constructor(
     private apolloService: ApolloService,
     private toastrService: ToastrService,
@@ -125,12 +134,11 @@ export class ProfileComponent extends Base implements OnInit, OnDestroy {
 
     return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
       map((term) =>
-        (term === ''
+        term === ''
           ? this.statesList
           : this.statesList.filter(
               (v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1
             )
-        )
       )
     );
   };
@@ -169,40 +177,70 @@ export class ProfileComponent extends Base implements OnInit, OnDestroy {
   }
 
   saveCompany() {
-    if (this.company.txtName.length == 0) {
-      this.toastrService.info('Company name required!', '');
-    } else if (this.company.paymentTerms.length == 0) {
-      this.toastrService.info('Payment Terms required!', '');
-    } else if (this.company.txtAddress.length == 0) {
-      this.toastrService.info('Address Line 1 required!', '');
-    } else if (this.company.txtCity.length == 0) {
-      this.toastrService.info('City required!', '');
-    } else if (this.company.txtState.length == 0) {
-      this.toastrService.info('State required!', '');
-    } else if (this.company.txtZipcode.length == 0) {
-      this.toastrService.info('Zip Code required!', '');
+    if (this.company.txtName == '') {
+      this.orderError.txtName = 0;
+      return;
     } else {
-      let gql = companyNew;
-      if (this.company.id != 0) {
-        gql = companyUpate;
-      }
-      this.apolloService.mutate(gql, this.company).then((res) => {
-        let result;
-        if (this.company.id != 0) {
-          result = res.company_update;
-        } else {
-          result = res.company_new;
-        }
-
-        if (!result.error) {
-          this.company.id = result.data.id;
-          this.company.revision = result.data.revision;
-          localStorage.setItem('idcompany', this.company.id.toString());
-          this.eventService.broadcast(EventType.CHANGE_COMPANY, true);
-        }
-        this.toastrService.info(result.message, '');
-      });
+      this.orderError.txtName = -1;
     }
+
+    if (this.company.paymentTerms.length == 0) {
+      this.orderError.paymentTerms = 0;
+      return;
+    } else {
+      this.orderError.paymentTerms = -1;
+    }
+
+    if (this.company.txtAddress.length == 0) {
+      this.orderError.txtAddress = 0;
+      return;
+    } else {
+      this.orderError.txtAddress = -1;
+    }
+
+    if (this.company.txtCity.length == 0) {
+      this.orderError.txtCity = 0;
+      return;
+    } else {
+      this.orderError.txtCity = -1;
+    }
+
+    if (this.company.txtState.length == 0) {
+      this.orderError.txtState = 0;
+      return;
+    } else {
+      this.orderError.txtState = -1;
+    }
+
+    if (this.company.txtZipcode.length == 0) {
+      this.orderError.txtZipcode = 0;
+      return;
+    } else {
+      this.orderError.txtZipcode = -1;
+    }
+
+    let gql = companyNew;
+    if (this.company.id != 0) {
+      gql = companyUpate;
+    }
+    this.apolloService.mutate(gql, this.company).then((res) => {
+      let result;
+      if (this.company.id != 0) {
+        result = res.company_update;
+      } else {
+        result = res.company_new;
+      }
+
+      if (!result.error) {
+        this.company.id = result.data.id;
+        this.company.revision = result.data.revision;
+        localStorage.setItem('idcompany', this.company.id.toString());
+        this.eventService.broadcast(EventType.CHANGE_COMPANY, true);
+      }
+      this.toastrService.info(result.message, '', {
+        positionClass: 'toast-top-right3'
+      });
+    });
   }
 
   ngOnDestroy() {
@@ -231,8 +269,8 @@ export class ProfileComponent extends Base implements OnInit, OnDestroy {
     }
   }
 
-  deleteAvatar(){
-    this.company.avatar = "";
+  deleteAvatar() {
+    this.company.avatar = '';
   }
 
   showFileDialog(): void {

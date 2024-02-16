@@ -358,7 +358,9 @@ export class VendoraddComponent {
         } else {
           message = result.message;
         }
-        this.toastrService.info(message, '');
+        this.toastrService.info(message, '', {
+          positionClass: 'toast-top-right-order'
+        });
       });
     }
   }
