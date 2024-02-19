@@ -362,6 +362,7 @@ export class PaymentComponent {
         .post('exchange_processor_token', {
           public_token: event.token,
           account_id: event.metadata.accounts[i].id,
+          idcompany: this.idcompany
         })
         .then((res) => {
           if (!res.error) {
