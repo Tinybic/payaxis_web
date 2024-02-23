@@ -631,7 +631,7 @@ export class AddOrderComponent {
       let message = '';
       if(!result.error){
         message = 'Save successful';
-        this.router.navigate(['apps/order/detail/' + result.data.id]);
+        this.router.navigate(['apps/order']);
       } else{
         message = result.message;
       }
