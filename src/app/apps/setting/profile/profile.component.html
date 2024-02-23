@@ -80,7 +80,7 @@
                                             <label class="form-label" i18n>Industry</label>
                                             <span class="float-end text-typeblack80">Optional</span>
                                             <input id="txtindustry" type="text"
-                                                class="form-control form-select position-relative"
+                                                class="form-control form-select position-relative  cursor-default" 
                                                 [ngbTypeahead]="searchIndustry" (selectItem)="setIndustry($event)"
                                                 [(ngModel)]="company.industry"
                                                 (focus)="focus1$.next($any($event).target.value)"
@@ -89,7 +89,7 @@
                                         <div class="col-md-6">
                                             <label class="form-label" i18n>Payment Terms</label>
                                             <div ngbDropdown class="mt-sm-0 mt-2">
-                                                <input class="form-select position-relative" type="text"  readonly="readonly"
+                                                <input class="form-select position-relative cursor-default" type="text"  readonly="readonly"
                                                     id="paymentTerms" i18n-placeholder placeholder="Payment Terms"
                                                     [(ngModel)]="company.paymentTerms" ngbDropdownToggle  [ngClass]="{'is-invalid':orderError.paymentTerms == 0}" />
                                                     <div *ngIf="orderError.paymentTerms == 0" class="invalid-feedback"

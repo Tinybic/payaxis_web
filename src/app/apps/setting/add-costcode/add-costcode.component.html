@@ -37,8 +37,8 @@
                             (click)="openCategoryEditModal()"><i class="fe-plus-square"></i> Create New Category
                         </div>
                         <div ngbDropdown class="mt-sm-0 mt-2">
-                            <input class="form-select position-relative" type="text" id="Class" i18n-placeholder
-                                placeholder="Select category" [(ngModel)]="costcode.category"
+                            <input class="form-select position-relative cursor-default" type="text" id="Class" i18n-placeholder
+                                placeholder="Select category" [(ngModel)]="costcode.category" readonly
                                 [ngClass]="{'is-invalid':costcodeError.idCategory}" ngbDropdownToggle />
 
                             <div ngbDropdownMenu aria-labelledby="paymentTerms">
