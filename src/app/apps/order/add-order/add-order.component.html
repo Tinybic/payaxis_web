@@ -213,7 +213,7 @@
                                                     <label class="form-label" i18n>Reason</label>
                                                     <span class="float-end text-typeblack80">Optional</span>
                                                     <div ngbDropdown class="mt-sm-0 mt-2">
-                                                        <input class="form-select position-relative" type="text"
+                                                        <input class="form-select position-relative cursor-default" type="text" readonly
                                                             id="reason" i18n-placeholder placeholder="Reason"
                                                             [(ngModel)]="txtReason" ngbDropdownToggle />
 
@@ -240,7 +240,7 @@
                                                 <div class="col-md-4">
                                                     <label class="form-label" i18n>Payment Terms</label>
                                                     <div ngbDropdown class="mt-sm-0 mt-2">
-                                                        <input class="form-select position-relative" type="text"
+                                                        <input class="form-select position-relative cursor-default" type="text" readonly
                                                             id="paymentTerms" i18n-placeholder
                                                             placeholder="Payment Terms" [(ngModel)]="order.paymentTerms"
                                                             ngbDropdownToggle />
@@ -260,7 +260,7 @@
                                                             class="fe-plus-square me-1-1"></i>Create New Cost
                                                         Code</span>
                                                     <div class="dropdown" ngbDropdown>
-                                                        <input class="form-select" type="text" id="vendorcostcodes" readonly
+                                                        <input class="form-select cursor-default" type="text" id="vendorcostcodes" readonly
                                                             [(ngModel)]="vendorcostcodesText" required i18n-placeholder
                                                             placeholder="Assign Cost Code"
                                                             [ngClass]="{'is-invalid':orderError.costcode == 0}"
