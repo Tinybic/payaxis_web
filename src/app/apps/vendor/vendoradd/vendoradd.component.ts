@@ -247,7 +247,7 @@ export class VendoraddComponent {
           : this.statesList.filter(
               (v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1
             )
-        ).slice(0, 5)
+        )
       )
     );
   };

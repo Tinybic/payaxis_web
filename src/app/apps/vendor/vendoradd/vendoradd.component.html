@@ -80,8 +80,8 @@
                                 <div class="col-md-3">
                                     <label class="form-label" i18n>Cost Code</label>
                                     <div class="dropdown" ngbDropdown>
-                                        <input class="form-select" type="text" id="vendorcostcodes" [disabled]="idInvitedCompany>0"
-                                            [(ngModel)]="vendorcostcodesText" required i18n-placeholder
+                                        <input class="form-select cursor-default" type="text" id="vendorcostcodes" [disabled]="idInvitedCompany>0"
+                                            [(ngModel)]="vendorcostcodesText" required i18n-placeholder readonly
                                             [ngClass]="{'is-invalid':vendorError.costcode}"
                                             placeholder="Cost Code" ngbDropdownToggle />
                                             <div *ngIf="vendorError.costcode" class="invalid-feedback">
