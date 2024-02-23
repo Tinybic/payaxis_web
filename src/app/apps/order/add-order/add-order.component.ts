@@ -527,7 +527,7 @@ export class AddOrderComponent {
   }
   
   getAmout(item){
-    item.amount = item.qty * item.price;
+    item.amount = parseFloat(item.qty) * parseFloat(item.price);
     this.setTotal();
   }
   

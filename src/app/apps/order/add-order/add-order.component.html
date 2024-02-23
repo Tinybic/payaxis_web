@@ -260,7 +260,7 @@
                                                             class="fe-plus-square me-1-1"></i>Create New Cost
                                                         Code</span>
                                                     <div class="dropdown" ngbDropdown>
-                                                        <input class="form-select" type="text" id="vendorcostcodes"
+                                                        <input class="form-select" type="text" id="vendorcostcodes" readonly
                                                             [(ngModel)]="vendorcostcodesText" required i18n-placeholder
                                                             placeholder="Assign Cost Code"
                                                             [ngClass]="{'is-invalid':orderError.costcode == 0}"
@@ -550,14 +550,14 @@
                                                                         [(ngModel)]="item.paidyn" /></td>
                                                                 <td>
                                                                     <input type="text" class="form-control"
-                                                                        placeholder="Description"
+                                                                        placeholder="Description" thousandSeparator=","
                                                                         (change)="AddListItem(i,item)"
                                                                         [(ngModel)]="item.description" />
                                                                 </td>
                                                                 <td>
                                                                     <input type="text" class="form-control"
-                                                                        [(ngModel)]="item.qty"
-                                                                         mask="separator.2"
+                                                                        [(ngModel)]="item.qty" thousandSeparator=","
+                                                                         mask="separator.2" 
                                                                         (keyup)="getAmout(item)" />
                                                                 </td>
                                                                 <td>
@@ -566,12 +566,13 @@
                                                                 </td>
                                                                 <td>
                                                                     <input type="text" class="form-control text-end"
-                                                                        [(ngModel)]="item.price" prefix="$"
-                                                                        mask="separator.2"
+                                                                        [(ngModel)]="item.price" prefix="$" 
+                                                                        mask="separator.2" thousandSeparator="," 
                                                                         (keyup)="getAmout(item)" />
                                                                 </td>
                                                                 <td>
                                                                     <input type="text" class="form-control" prefix="$"
+                                                                    mask="separator.2"
                                                                         [(ngModel)]="item.amount" disabled="disabled" />
                                                                 </td>
                                                                 <td>
