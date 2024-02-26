@@ -99,6 +99,8 @@ export class AddOrderComponent {
     'bg-info'
   ];
   
+  idOrder = 0;
+
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
@@ -116,15 +118,15 @@ export class AddOrderComponent {
     
     this.activatedRoute.params.subscribe((params) => {
       // idOrder 的数值范围 [-idproject, 0 , idOrder]
-      const idOrder = parseInt(params['id']);
-      if(idOrder > 0){
-        this.order.id = idOrder;
+      this.idOrder = parseInt(params['id']);
+      if(this.idOrder > 0){
+        this.order.id = this.idOrder;
         this.getOrderInfo(this.order.id);
       }
-      if(idOrder < 1){
+      if(this.idOrder < 1){
         this.order.id = 0;
-        if(idOrder < 0){
-          this.order.idProject = -idOrder;
+        if(this.idOrder < 0){
+          this.order.idProject = -this.idOrder;
         }
         //this.order.invoicedDate = new Date().toISOString().slice(0, 10);
         this.getOrderNumber();
@@ -148,6 +150,15 @@ export class AddOrderComponent {
         }
       }
     });
+  }
+
+  clickAllOrder(){
+    if(this.idOrder < 0){
+      this.router.navigate(['apps/projects/detail/' + -this.idOrder]);
+    }
+    else{
+      this.router.navigate(['apps/order']);
+    }
   }
   
   getUploadUrl(event){
@@ -631,7 +642,7 @@ export class AddOrderComponent {
       let message = '';
       if(!result.error){
         message = 'Save successful';
-        this.router.navigate(['apps/order']);
+        this.clickAllOrder();
       } else{
         message = result.message;
       }
