@@ -327,6 +327,7 @@ export class ProjectDetailComponent extends Base {
       .mutate(companycategory_new, {
         idCompany: this.project.idCompany,
         txtName: this.categoryName,
+        idProject: this.project.id,
       })
       .then((res) => {
         const result = res.companycategory_new;
@@ -334,6 +335,7 @@ export class ProjectDetailComponent extends Base {
         if (!result.error) {
           message = 'Add category successfully';
           this.getCategoryList();
+          this.getProjectBudgetList(this.project.id);
           this.addCategoryModalRef.close();
         } else {
           message = result.message;
