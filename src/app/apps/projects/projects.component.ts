@@ -103,6 +103,7 @@ export class ProjectsComponent extends Base implements OnInit {
       const intervalID = setInterval(() => {
         if(localStorage.getItem('companyAccess')){
           this.showNewProject = super.setRole('Create Projects');
+          clearInterval(intervalID);
         } else{
           if(cnt > 2){
             clearInterval(intervalID);
