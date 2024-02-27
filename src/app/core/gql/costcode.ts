@@ -26,8 +26,9 @@ const companycategory_new = gql`
   mutation companycategory_new(
     $idCompany: Int!
     $txtName: txtName_String_NotNull_maxLength_128!
+    $idProject: Int
   ) {
-    companycategory_new(idCompany: $idCompany, txtName: $txtName) {
+    companycategory_new(idCompany: $idCompany, txtName: $txtName, idProject: $idProject) {
       error
       code
       message

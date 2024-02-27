@@ -318,6 +318,7 @@ export type MutationCompanycategory_DeactivateArgs = {
 /** structure to handle table sms */
 export type MutationCompanycategory_NewArgs = {
   idCompany: Scalars['Int']['input'];
+  idProject?: InputMaybe<Scalars['Int']['input']>;
   txtName: Scalars['txtName_String_NotNull_maxLength_128']['input'];
 };
 
