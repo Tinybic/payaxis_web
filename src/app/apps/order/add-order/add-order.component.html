@@ -702,7 +702,7 @@
 </ng-template>
 
 <ng-template #addvendor let-modal>
-    <app-vendoradd class="flex-column-1"
+    <app-vendoradd class="flex-column-1" [modalRef]="modalVendorRef" (outId) = "getVendorId($event)"
         style="width: calc(100vw - 216px); padding:32px 32px 0; background-color: #F8F9FC;overflow-y: auto;"
         [idvendor]="0"></app-vendoradd>
 </ng-template>

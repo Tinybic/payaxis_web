@@ -729,7 +729,10 @@ export class AddOrderComponent {
       this.setTotal();
     }
   }
-  
+  getVendorId(event){
+    this.order.idVendor = event;
+    this.setVendor();
+  }
   openDetail(id){
     this.router.navigate(['apps/order/detail/' + id]);
   }
