@@ -522,19 +522,11 @@
                                                             <tr>
                                                                 <th class="row_select"><input class="form-check"
                                                                         type="checkbox" /></th>
-                                                                <th class="sortable"
-                                                                    [ngClass]="{'sorting_asc':sortCloumn == 'vendorName' && direction == 'asc','sorting_desc':sortCloumn == 'vendorName' && direction == 'desc'}"
-                                                                    (click)="onSort('vendorName')" style="width: 50%;">
+                                                                <th style="width: 50%;">
                                                                     Billable</th>
-                                                                <th class="sortable"
-                                                                    [ngClass]="{'sorting_asc':sortCloumn == 'status' && direction == 'asc','sorting_desc':sortCloumn == 'status' && direction == 'desc'}"
-                                                                    (click)="onSort('status')">Qty</th>
-                                                                <th class="sortable"
-                                                                    [ngClass]="{'sorting_asc':sortCloumn == 'approvalAmount' && direction == 'asc','sorting_desc':sortCloumn == 'approvalAmount' && direction == 'desc'}"
-                                                                    (click)="onSort('approvalAmount')">Unit</th>
-                                                                <th class="sortable"
-                                                                    [ngClass]="{'sorting_asc':sortCloumn == 'active' && direction == 'asc','sorting_desc':sortCloumn == 'active' && direction == 'desc'}"
-                                                                    (click)="onSort('active')">Price</th>
+                                                                <th>Qty</th>
+                                                                <th>Unit</th>
+                                                                <th>Price</th>
                                                                 <th>Amount</th>
                                                                 <th>Tax</th>
                                                                 <!-- <th>Notes</th> -->
