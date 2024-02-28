@@ -2,7 +2,11 @@
     <div class="flex-grow-1 d-flex flex-column" style="max-width: 30%;">
         <div class="d-flex align-items-center">
             <i class="fe-chevron-left"></i>
-            <a [routerLink]="['/apps/projects/detail/'+projectId]" class="subtitle-2-500 text-overflow-ellipsis me-1-1 text-blackprimary" style="max-width: 50%; ">{{projectName}}</a> / <div class="subtitle-2-800 text-primary text-overflow-ellipsis ms-1-1" style="max-width: 50%;">{{name}}</div>
+            <a [routerLink]="['/apps/projects/detail/'+projectId]"
+               class="subtitle-2-500 text-overflow-ellipsis me-1-1 text-blackprimary"
+               style="max-width: 50%; ">{{projectName}}</a> /
+            <div class="subtitle-2-800 text-primary text-overflow-ellipsis ms-1-1"
+                 style="max-width: 50%;">{{name}}</div>
         </div>
         <div class="headline-24 text-overflow-ellipsis mt-2-1">{{name}}</div>
     </div>
@@ -19,7 +23,8 @@
                     <div class="subtitle-2-500-16 text-typeblack80">Overdue</div>
                     <div class="d-flex align-items-center subtitle-2-500-24 mt-2-1">
                         {{budgetSummary['overdueTotal'] | currency}}
-                        <div *ngIf="budgetSummary['overdue'] > 0" class="number-rounded ms-1 bg-red">{{budgetSummary['overdue']}}</div>
+                        <div *ngIf="budgetSummary['overdue'] > 0"
+                             class="number-rounded ms-1 bg-red">{{budgetSummary['overdue']}}</div>
                     </div>
                 </div>
             </div>
@@ -63,8 +68,9 @@
         <button class="btn btn-outline-primary ms-1-1 btn-text-12" style="width: 94px;padding: 11px 16px;">Add Bill
         </button>
         <div class="d-inline-block" ngbDropdown>
-            <button class="btn btn-primary ms-2-1" ngbDropdownToggle style="padding: 10px 16px;margin-top: -1px;">New Order<i
-                    class="fe-chevron-down ms-1-1"></i></button>
+            <button class="btn btn-primary ms-2-1" ngbDropdownToggle style="padding: 10px 16px;margin-top: -1px;">New
+                Order<i
+                        class="fe-chevron-down ms-1-1"></i></button>
             <div ngbDropdownMenu style="padding: 4px 8px;">
                 <a class="subtitle-2-500" href="javascript:void(0);" (click)="createNew()" style="padding: 12px 4px;"
                    ngbDropdownItem>
@@ -97,7 +103,9 @@
                 <div class="dropdown-menu" ngbDropdownMenu>
                     <div *ngFor="let status of objectKeys(ordersStatusCount)" ngbDropdownItem>
                         <div class="form-check">
-                            <input id="status_{{status}}" type="checkbox" class="form-check-input" [checked]="statusFilter==status" (change)="statusFilterChange($event, status, 'statusFilter')">
+                            <input id="status_{{status}}" type="checkbox" class="form-check-input"
+                                   [checked]="statusFilter==status"
+                                   (change)="statusFilterChange($event, status, 'statusFilter')">
                             <label class="form-check-label" for="status_{{status}}">
                                 {{status}} ({{ordersStatusCount[status]}})
                             </label>
@@ -169,7 +177,8 @@
         </tr>
         </thead>
         <tbody>
-        <tr class="c-p" *ngFor="let item of orders | callback: filterTable; let i = index" (click)="openDetail(item.id)">
+        <tr class="c-p" *ngFor="let item of orders | callback: filterTable; let i = index"
+            (click)="openDetail(item.id)">
             <td><input class="form-check" type="checkbox"/></td>
             <td>
                 <div class="d-inline-block {{item.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{item.status}}</div>
@@ -198,7 +207,8 @@
             <td>
                 <div class="d-flex flex-row">
                     <div class="me-1-1">
-                        <app-avatar [bgColor]="bgColors[i % 6]" [url]="" [companyName]="item.vendorName" color="text-white" [size]="32"
+                        <app-avatar [bgColor]="bgColors[i % 6]" [url]="" [companyName]="item.vendorName"
+                                    color="text-white" [size]="32"
                                     alt="user-img"></app-avatar>
                     </div>
                     <div class="d-flex flex-column search-text">
@@ -209,7 +219,12 @@
                 </div>
             </td>
             <td class="text-center">
-                <img class="c-p" src="assets/images/status-icons/payBill.png">
+                <button *ngIf="item.status !== 'Paid'" class="btn btn-primary btn-text-12" style="padding: 6px 27px;">
+                    Pay Bill
+                </button>
+                <button *ngIf="item.status === 'Paid'" class="btn btn-outline-primary btn-text-12" style="padding: 7px 12px;">
+                    View Details
+                </button>
             </td>
             <td class="text-center">
                 <i class="fe-paperclip"></i>
