@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, Output,EventEmitter, ViewChild } from '@angular/core';
 import {
   NgbActiveModal,
   NgbModal,
@@ -39,7 +39,7 @@ export class VendoraddComponent {
   @Input() modalRef?: NgbModalRef;
   @Input() params;
   @Input() public idvendor: number;
-
+  @Output() public outId = new EventEmitter<number>();;
   @ViewChild('newVendorListModal') newVendorListModal: any;
   @ViewChild('cancelModal') cancelModal: any;
   @ViewChild('deleteModal') deleteModal: any;
@@ -351,6 +351,7 @@ export class VendoraddComponent {
           this.vendor.id = result.data.id;
           this.vendor.revision = result.data.revision;
           this.vendorTemp = JSON.parse(JSON.stringify(data));
+          this.outId.emit(this.vendor.id);
           //this.modalService.dismissAll();
           if (this.modalRef) {
             this.modalRef.close();
