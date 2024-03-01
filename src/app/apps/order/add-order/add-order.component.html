@@ -664,20 +664,20 @@
     <div class="row padding-16-32">
         <div class="col-md-2">
             <label class="form-label" i18n>Non Taxable</label>
-            <input autofocus class="form-control" disabled="disabled" [(ngModel)]="order.nontaxable"
-                style="background-color: #3F444D; border:1px solid #3C3C42; color: white;" type="text" id="nontaxable"
+            <input autofocus class="form-control" disabled="disabled" [(ngModel)]="order.nontaxable"  prefix="$" mask="separator.2"
+                style="background-color: #3F444D; border:1px solid #3F444D; color: #767676;" type="text" id="nontaxable"
                 required i18n-placeholder />
         </div>
         <div class="col-md-2">
             <label class="form-label" i18n>Taxable</label>
-            <input autofocus class="form-control" disabled="disabled" [(ngModel)]="order.taxable"
-                style="background-color: #3F444D; border:1px solid #3C3C42; color: white" type="text" id="taxable"
+            <input autofocus class="form-control" disabled="disabled" [(ngModel)]="order.taxable"  prefix="$" mask="separator.2"
+                style="background-color: #3F444D; border:1px solid #3F444D; color: #767676" type="text" id="taxable"
                 required i18n-placeholder />
         </div>
         <div class="col-md-2">
             <label class="form-label" i18n>Tax {{order.taxrate}}%</label>
-            <input autofocus class="form-control" disabled="disabled" [(ngModel)]="order.tax"
-                style="background-color: #3F444D; border:1px solid #3C3C42; color: white" type="text" id="tax" required
+            <input autofocus class="form-control" disabled="disabled" [(ngModel)]="order.tax"  prefix="$" mask="separator.2"
+                style="background-color: #3F444D; border:1px solid #3F444D; color: #767676" type="text" id="tax" required
                 i18n-placeholder />
         </div>
         <div class="col-md-6 pt-2-1 d-flex flex-row-reverse text-end">
