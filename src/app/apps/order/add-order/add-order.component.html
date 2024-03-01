@@ -673,14 +673,16 @@
                 i18n-placeholder />
         </div>
         <div class="col-md-6 pt-2-1 d-flex flex-row-reverse text-end">
-            <div class="d-inline-block"><button type="button" class="btn btn-primary ms-1-1"
+            <div class="d-inline-block" *ngIf="order.status == 'Paid'"><button type="button" class="btn btn-primary ms-1-1"
+                style="border:0px; box-shadow: none;">Send Receipt</button></div>
+            <div class="d-inline-block" *ngIf="order.status !== 'Paid'"><button type="button" class="btn btn-primary ms-1-1"
                     style="border:0px; box-shadow: none;">Pay Invoice</button></div>
-            <div class="d-inline-block"><button type="button" class="btn btn-primary ms-1-1"
+            <div class="d-inline-block" *ngIf="order.status != 'Paid'"><button type="button" class="btn btn-primary ms-1-1"
                     style="border:1px solid #ffffff; box-shadow: none;background-color: transparent;">Send
                     Order</button></div>
             <div class="d-inline-block" style="height: 40px;color:#FFFFFFB2;">
                 <span class="btn-text-12">Total Amount Due</span><br />
-                <span class="headline-24" style=" color: white; " id="total">{{order.total | currency}}</span>
+                <span class="headline-24" style=" color:  {{order.status == 'Paid'?'#FFFFFF80':'white'}};" id="total">{{order.total | currency}}</span>
             </div>
         </div>
     </div>
