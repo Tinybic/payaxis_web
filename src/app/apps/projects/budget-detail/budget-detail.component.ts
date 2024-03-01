@@ -119,7 +119,7 @@ export class BudgetDetailComponent {
     if(localStorage.getItem('idcompany')){
       this.apolloService.query(projectorder_list, {
         idCompany: parseInt(localStorage.getItem('idcompany')),
-        idProject: 0
+        idProject: this.projectId
       }).then((res) => {
         const result = res.projectorder_list;
         if(!result.error){
