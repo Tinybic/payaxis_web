@@ -279,20 +279,20 @@
                                                                     [(ngModel)]="keywordsCostCode"
                                                                     (keyup)="costCodeFilter()" />
                                                             </div>
-                                                            <div *ngFor="let item of costCodeList">
+                                                            <div *ngFor="let item of costCodeList let i1=index;">
                                                                 <div style="color: #215EA9; font-weight: 600; margin-bottom: 8px; margin-top: 8px;"
                                                                     *ngIf="item.costcodelist && item.costcodelist.length>0">
                                                                     {{item.txtName}}
                                                                 </div>
                                                                 <div class="mb-1"
-                                                                    *ngFor="let costcode of item.costcodelist">
+                                                                    *ngFor="let costcode of item.costcodelist; let i2=index;">
                                                                     <div>
                                                                         <input type="checkbox" class="form-check-input"
                                                                             [checked]="setCostCodeSelect(costcode.costCode)"
                                                                             (change)="costCodeSelect($event,costcode)"
-                                                                            id="dropdownCheck">
+                                                                            id="dropdownCheck_{{i1}}_{{i2}}">
                                                                         <label class="form-check-label ms-1-1"
-                                                                            for="dropdownCheck">
+                                                                            for="dropdownCheck_{{i1}}_{{i2}}">
                                                                             {{costcode.txtName}}
                                                                         </label>
                                                                     </div>
@@ -522,19 +522,11 @@
                                                             <tr>
                                                                 <th class="row_select"><input class="form-check"
                                                                         type="checkbox" /></th>
-                                                                <th class="sortable"
-                                                                    [ngClass]="{'sorting_asc':sortCloumn == 'vendorName' && direction == 'asc','sorting_desc':sortCloumn == 'vendorName' && direction == 'desc'}"
-                                                                    (click)="onSort('vendorName')" style="width: 50%;">
+                                                                <th style="width: 50%;">
                                                                     Billable</th>
-                                                                <th class="sortable"
-                                                                    [ngClass]="{'sorting_asc':sortCloumn == 'status' && direction == 'asc','sorting_desc':sortCloumn == 'status' && direction == 'desc'}"
-                                                                    (click)="onSort('status')">Qty</th>
-                                                                <th class="sortable"
-                                                                    [ngClass]="{'sorting_asc':sortCloumn == 'approvalAmount' && direction == 'asc','sorting_desc':sortCloumn == 'approvalAmount' && direction == 'desc'}"
-                                                                    (click)="onSort('approvalAmount')">Unit</th>
-                                                                <th class="sortable"
-                                                                    [ngClass]="{'sorting_asc':sortCloumn == 'active' && direction == 'asc','sorting_desc':sortCloumn == 'active' && direction == 'desc'}"
-                                                                    (click)="onSort('active')">Price</th>
+                                                                <th>Qty</th>
+                                                                <th>Unit</th>
+                                                                <th>Price</th>
                                                                 <th>Amount</th>
                                                                 <th>Tax</th>
                                                                 <!-- <th>Notes</th> -->
@@ -557,7 +549,7 @@
                                                                 <td>
                                                                     <input type="text" class="form-control"
                                                                         [(ngModel)]="item.qty" thousandSeparator=","
-                                                                         mask="separator.2" 
+                                                                         mask="separator.2"
                                                                         (keyup)="getAmout(item)" />
                                                                 </td>
                                                                 <td>
@@ -566,8 +558,8 @@
                                                                 </td>
                                                                 <td>
                                                                     <input type="text" class="form-control text-end"
-                                                                        [(ngModel)]="item.price" prefix="$" 
-                                                                        mask="separator.2" thousandSeparator="," 
+                                                                        [(ngModel)]="item.price" prefix="$"
+                                                                        mask="separator.2" thousandSeparator=","
                                                                         (keyup)="getAmout(item)" />
                                                                 </td>
                                                                 <td>

@@ -378,6 +378,11 @@ export class AddOrderComponent {
           this.COSTCODE_LIST = JSON.parse(JSON.stringify(result.data));
         }
         this.setCostCodeName();
+        if(this.costCodeList.length == 1 && this.costCodeList[0].costcodelist.length == 1){
+          this.vendorcostcodesText = this.costCodeList[0].costcodelist[0].txtName;
+          this.order.costCode = this.costCodeList[0].costcodelist[0].costCode;
+          this.setCostCodeSelect(this.costCodeList[0].costcodelist[0]);
+        }
       });
     }
   }
@@ -620,7 +625,7 @@ export class AddOrderComponent {
     this.order.total = parseFloat(this.order.total.toString());
 
     if(listitemPara.length == 0){
-      this.toastrService.info('At least one item to save', '', {
+      this.toastrService.info('At least one list item to save', '', {
         positionClass: 'toast-top-right-order'
       });
       return;
