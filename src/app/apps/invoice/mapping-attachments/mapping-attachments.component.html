@@ -138,8 +138,8 @@
                                 {{invoice.txtState.length > 0 ? invoice.txtState + ',' : ''}}
                             </div>
                         </div>
-                        <div style="padding-top: 4px;">
-                            <img *ngIf="invoice.status.length > 0" src="assets/images/status-icons/{{invoice.status.toLowerCase()}}.png">
+                        <div *ngIf="invoice.status.length > 0" style="padding-top: 4px;">
+                            <div class="d-inline-block {{invoice.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{invoice.status}}</div>
                             <i class="fe-chevron-down"></i>
                         </div>
                     </div>
@@ -165,7 +165,7 @@
                                     </div>
                                 </div>
                                 <div style="padding-top: 4px;">
-                                    <img src="assets/images/status-icons/{{order.status.toLowerCase()}}.png">
+                                    <div class="d-inline-block {{order.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{order.status}}</div>
                                 </div>
                             </div>
                         </div>

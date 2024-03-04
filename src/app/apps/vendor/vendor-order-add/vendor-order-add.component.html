@@ -49,8 +49,7 @@
                     <div class="Subtitle-1 text-start">#{{this.relatedList[relatedIndex].orderNumber}}</div>
                 </div>
                 <div class="col-md-6">
-                    <img
-                        src="/assets/images/status-icons/{{this.relatedList[relatedIndex].status.toLowerCase()}}.png" />
+                    <div class="d-inline-block {{relatedList[relatedIndex].status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{relatedList[relatedIndex].status}}</div>
                 </div>
             </div>
             <div class="row mt-1-1">
@@ -112,8 +111,7 @@
                         ${{item.total}}
                     </div>
                     <div class="col-md-6 text-end">
-                        <img
-                            src="/assets/images/status-icons/{{this.relatedList[relatedIndex].status.toLowerCase()}}.png" />
+                        <div class="d-inline-block {{relatedList[relatedIndex].status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{relatedList[relatedIndex].status}}</div>
                     </div>
                 </div>
             </div>
@@ -135,12 +133,8 @@
             <div class="col-md-6 d-flex align-items-center" style="padding-top: 2px;padding-bottom: 2px;">
                 <span class="headline" style="line-height: 44px;">Order #{{order.orderNumber}}&nbsp;</span>
                 <div *ngIf="!order.status"
-                    class="d-inline-block ms-1-1 DraftTag subtitle-2-600 text-typeblackdeactivated">
-                    Draft
-                </div>
-                <div *ngIf="order.status"
-                    class="d-inline-block ms-1-1 DraftTag subtitle-2-600 text-typeblackdeactivated">
-                    <img src="/assets/images/status-icons/{{order.status.toLowerCase()}}.png" />
+                    class="d-inline-block ms-1-1 {{order.status.toLowerCase()}}Tag subtitle-2-600 text-typeblackdeactivated">
+                    {{order.status.toLowerCase()}}
                 </div>
                 <!-- <div class="d-inline-block ms-1-1 activeTag">
             Active

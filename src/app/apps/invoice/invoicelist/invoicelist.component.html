@@ -23,11 +23,10 @@
             </a>
             <div class="dropdown-menu" ngbDropdownMenu style="padding: 8px 0;">
                 <div ngbDropdownItem *ngFor="let status of objectKeys(this.groupByStatusCount)" (click)="filterVendorList(status)"  style="padding: 8px 16px;border-radius: 0px;">
-                    <div class="form-check text-center c-p">
+                    <div class="form-check text-center d-flex align-items-center c-p">
                         <input type="checkbox" class="form-check-input" id="invoiceDropdownCheck_{{status}}"
                                [checked]="filterList.includes(status)" style="margin-top: 4px;">
-                        <img class="mx-3-1" src="/assets/images/status-icons/{{status}}.png"
-                             style="height: 24px;" />
+                        <div class="d-inline-block {{status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center mx-3-1">{{status}}</div>
                         <label class="text-end subtitle-2-400-12" for="invoiceDropdownCheck_{{status}}">
                             {{this.groupByStatusCount[status].length}}
                         </label>
@@ -85,7 +84,7 @@
                 <td><input class="form-check" type="checkbox" /></td>
                 <td>{{item.invoicedDate | date: 'M/dd/yy'}}</td>
                 <td>
-                    <img src="assets/images/status-icons/{{item.status.toLowerCase()}}.png">
+                    <div class="d-inline-block {{item.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{item.status}}</div>
                 </td>
                 <td>{{item.invoiceNumber}}</td>
                 <td>{{item.vendorName}}</td>
