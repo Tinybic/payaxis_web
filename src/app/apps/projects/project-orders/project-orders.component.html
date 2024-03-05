@@ -112,8 +112,11 @@
                 </div>
             </td>
             <td class="text-center">
-                <button class="btn btn-primary btn-text-12" style="padding: 6px 27px;">
+                <button *ngIf="item.status !== 'Paid'" class="btn btn-primary btn-text-12" style="padding: 6px 27px;">
                     Pay Bill
+                </button>
+                <button *ngIf="item.status === 'Paid'" class="btn btn-outline-primary btn-text-12" style="padding: 7px 12px;">
+                    View Details
                 </button>
             </td>
             <td class="text-center">
