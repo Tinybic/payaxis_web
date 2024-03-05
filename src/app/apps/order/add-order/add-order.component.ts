@@ -378,11 +378,6 @@ export class AddOrderComponent {
           this.COSTCODE_LIST = JSON.parse(JSON.stringify(result.data));
         }
         this.setCostCodeName();
-        if(this.costCodeList.length == 1 && this.costCodeList[0].costcodelist.length == 1){
-          this.vendorcostcodesText = this.costCodeList[0].costcodelist[0].txtName;
-          this.order.costCode = this.costCodeList[0].costcodelist[0].costCode;
-          this.setCostCodeSelect(this.costCodeList[0].costcodelist[0]);
-        }
       });
     }
   }
@@ -452,6 +447,11 @@ export class AddOrderComponent {
     this.vendor = vendor;
     this.order.idVendor = vendor.id;
     this.order.taxrate = vendor.taxrate;
+    
+    if(this.vendor.costcodes.length > 0){
+      this.order.costCode= this.vendor.costcodes[0].costCode;
+      this.setCostCodeName();
+    }
   }
   
   removeVendor(){
