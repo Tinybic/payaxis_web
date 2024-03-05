@@ -39,7 +39,7 @@ export class VendoraddComponent {
   @Input() modalRef?: NgbModalRef;
   @Input() params;
   @Input() public idvendor: number;
-  @Output() public outId = new EventEmitter<number>();;
+  @Output() public outId = new EventEmitter<number>();
   @ViewChild('newVendorListModal') newVendorListModal: any;
   @ViewChild('cancelModal') cancelModal: any;
   @ViewChild('deleteModal') deleteModal: any;

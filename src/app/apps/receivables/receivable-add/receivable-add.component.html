@@ -269,8 +269,9 @@
                     <div *ngIf="order" style="border:1px solid #E1E6EF; border-radius: 8px; padding: 8px 16px;">
                         <div class="row">
                             <div class="col-md-8 Subtitle-1 text-start">
-                                <div>{{order.orderNumber}} <img
-                                        src="assets/images/status-icons/{{order.status.toLowerCase()}}.png" /></div>
+                                <div class="d-flex align-items-center">{{order.orderNumber}}
+                                    <div class="d-inline-block {{order.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{order.status}}</div>
+                                </div>
                                 <div class="subtitle-2-400-12 text-typeblackdeactivated">{{order.projectName}}</div>
 
                             </div>
@@ -298,8 +299,9 @@
                         <div ngbDropdownItem *ngFor="let item of orderList">
                             <div class="row cursor-pointer" (click)="selectOrder(item)">
                                 <div class="col-md-8 Subtitle-1 text-start">
-                                    <div>{{item.orderNumber}} <img
-                                            src="assets/images/status-icons/{{item.status.toLowerCase()}}.png" /></div>
+                                    <div class="d-flex align-items-center">{{item.orderNumber}}
+                                        <div class="d-inline-block {{item.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">{{item.status}}</div>
+                                    </div>
                                     <div class="subtitle-2-400-12 text-typeblackdeactivated">{{item.projectName}}</div>
 
                                 </div>
