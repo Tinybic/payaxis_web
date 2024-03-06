@@ -625,7 +625,7 @@ export class AddOrderComponent {
     this.order.total = parseFloat(this.order.total.toString());
 
     if(listitemPara.length == 0){
-      this.toastrService.info('At least one list item to save', '', {
+      this.toastrService.info('Save failed, at least one item needs to be filled in', '', {
         positionClass: 'toast-top-right-order'
       });
       return;
