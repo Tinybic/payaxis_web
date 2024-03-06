@@ -97,8 +97,6 @@ export class ProjectDetailComponent extends Base {
       const idProject = parseInt(params['id']);
       this.getProjectInfo(idProject);
       this.getProjectBudgetList(idProject);
-      
-      this.getCategoryList();
     });
   }
 
@@ -107,6 +105,7 @@ export class ProjectDetailComponent extends Base {
       const result = res.companyproject_info;
       if (!result.error) {
         this.project = result.data;
+        this.getCategoryList();
         localStorage.setItem('projectName', this.project.projectName);
       }
     });
@@ -284,7 +283,6 @@ export class ProjectDetailComponent extends Base {
       this.isHovered(date)
     );
   }
-  
   
   openAddCategoryModal() {
     this.categoryNameError = false;

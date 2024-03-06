@@ -382,6 +382,27 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12 pt-2-1">
+                            <label class="form-label" i18n>Category List</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="orders-table advanced-table" style="width: 100%">
+                                <thead>
+                                <tr>
+                                    <th>Name</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let category of categoryList">
+                                    <td style="border-left: 1px solid #E1E6EF;border-right: 1px solid #E1E6EF;">{{category.txtName}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
