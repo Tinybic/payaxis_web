@@ -22,8 +22,7 @@
                             <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter project name
                         </div>
                         <div *ngIf="formStep1Values['name'].errors?.['maxlength']" i18n>
-                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Project Name must be exceed 128
-                            letters
+                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Project name is too long. Please use 128 characters or less
                         </div>
                     </div>
                 </div>
@@ -184,8 +183,7 @@
                             <i class="fe-alert-triangle invalid-feedback-icon"></i> Please enter project name
                         </div>
                         <div *ngIf="formStep3Values['editName'].errors?.['maxlength']" i18n>
-                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Project Name must be exceed 128
-                            letters
+                            <i class="fe-alert-triangle invalid-feedback-icon"></i> Project name is too long. Please use 128 characters or less
                         </div>
                     </div>
                 </div>
