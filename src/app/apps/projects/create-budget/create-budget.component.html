@@ -24,7 +24,9 @@
                        type="text"
                        [(ngModel)]="project.projectBudget"
                        (focus)="setCursorPosition($event, '', project.projectBudget,'')"
+                       (blur)="budgetBlur()"
                        (ngModelChange)="budgetChange()"
+                       maxlength="12"
                        prefix="$"
                        mask="separator.2"
                        thousandSeparator=","
@@ -90,13 +92,14 @@
                                class="form-control"
                                type="text"
                                [(ngModel)]="item.budgetPercentage"
-                               mask="separator.5"
+                               mask="separator.3"
                                thousandSeparator=","
                                allowNegativeNumbers="false"
                                i18n-placeholder placeholder="0"
                                (ngModelChange)="budgetPercentageChange(item)"
                                (focus)="setCursorPosition($event, item, item.budgetPercentage, 'budgetPercentage')"
                                [disabled]="project.projectBudget == 0"
+                               maxlength="8"
                         />
                     </div>
                 </td>
@@ -116,6 +119,7 @@
                                i18n-placeholder placeholder="0"
                                (ngModelChange)="budgetAmountChange(item)"
                                (focus)="setCursorPosition($event, item, item.budgetAmount, 'budgetAmount')"
+                               maxlength="10"
                         />
                     </div>
                 </td>
