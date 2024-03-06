@@ -100,7 +100,7 @@ export class CreateBudgetComponent {
       t.scrollLeft = t.scrollWidth;
       t.setSelectionRange(1000, 1000);
     }, 150)
-  
+    
     if(type == ''){
       this.editingCategory = -1;
       this.cleanCategoryList();
@@ -116,6 +116,7 @@ export class CreateBudgetComponent {
     })
     this.budgetAllocation[this.editingCategory].idCategory = category.id;
     this.budgetAllocation[this.editingCategory].category = category.txtName;
+    this.budgetAllocation[this.editingCategory]['anchor'] = 'P';  // P: Percentage; A: Amount
     this.keepBudgetAllocation = JSON.parse(JSON.stringify(this.budgetAllocation));
   }
   
@@ -139,7 +140,8 @@ export class CreateBudgetComponent {
         idCategory: '',
         category: '',
         budgetPercentage: '',
-        budgetAmount: ''
+        budgetAmount: '',
+        anchor: 'P'
       })
       
       this.editingCategory = this.budgetAllocation.length - 1;
@@ -171,31 +173,54 @@ export class CreateBudgetComponent {
     }
   }
   
-  budgetChange(){
-    if([0, ''].includes(this.project.projectBudget)){
-      this.budgetAllocation.map(item => {
-        item.budgetPercentage = 0;
-      })
-      this.progressBarPercentage = 100;
-    } else{
-      this.budgetAllocation = JSON.parse(JSON.stringify(this.keepBudgetAllocation));
-      let allocatedBudgetTotal = 0;
-      this.budgetAllocation.map(item => {
-        item.budgetAmount = this.project.projectBudget * item.budgetPercentage / 100;
-        allocatedBudgetTotal += item.budgetAmount;
-      })
-      this.keepBudgetAllocation = JSON.parse(JSON.stringify(this.budgetAllocation));
-      this.allocatedBudget = allocatedBudgetTotal;
-      if(this.allocatedBudget > this.project.projectBudget){
-        this.progressBarPercentage = this.project.projectBudget / this.allocatedBudget * 100;
-      } else{
-        this.progressBarPercentage = this.allocatedBudget / this.project.projectBudget * 100;
-      }
+  budgetBlur(){
+    if(this.project.projectBudget){
+      this.project.projectBudget = this.project.projectBudget.toFixed(2);
     }
-    
+  }
+  
+  budgetChange(){
+    this.budgetAllocation = JSON.parse(JSON.stringify(this.keepBudgetAllocation));
+    let allocatedBudgetTotal = 0;
+    this.budgetAllocation.map(item => {
+      if([0,
+        ''].includes(this.project.projectBudget)){
+        if(item.anchor == 'P'){
+          item.budgetAmount = 0.00;
+        }
+        if(item.anchor == 'A'){
+          item.budgetPercentage = 0;
+        }
+        allocatedBudgetTotal += item.budgetAmount;
+        this.progressBarPercentage = 100;
+      } else{
+        if(item.anchor == 'P' && item.budgetPercentage && item.budgetPercentage != 0){
+          item.budgetAmount = this.project.projectBudget * item.budgetPercentage / 100;
+        } else{
+          if(item.anchor == 'A' && item.budgetAmount && item.budgetAmount != 0){
+            item.budgetPercentage = item.budgetAmount * 100 / this.project.projectBudget;
+            const arr = item.budgetPercentage.toString().split('.')
+            if(arr.length > 1){
+              if(arr[1].length > 3){
+                item.budgetPercentage = item.budgetPercentage.toFixed(3)
+              }
+            }
+          }
+        }
+        allocatedBudgetTotal += item.budgetAmount;
+      }
+    })
+    this.keepBudgetAllocation = JSON.parse(JSON.stringify(this.budgetAllocation));
+    this.allocatedBudget = allocatedBudgetTotal;
+    if(this.allocatedBudget > this.project.projectBudget){
+      this.progressBarPercentage = this.project.projectBudget / this.allocatedBudget * 100;
+    } else{
+      this.progressBarPercentage = this.allocatedBudget / this.project.projectBudget * 100;
+    }
   }
   
   budgetPercentageChange(budget){
+    budget.anchor = "P";
     if(this.project.projectBudget !== 0 && this.project.projectBudget !== ''){
       budget.budgetAmount = this.project.projectBudget * budget.budgetPercentage / 100;
     }
@@ -203,6 +228,7 @@ export class CreateBudgetComponent {
   }
   
   budgetAmountChange(budget){
+    budget.anchor = "A";
     if(this.project.projectBudget !== 0 && this.project.projectBudget !== ''){
       budget.budgetPercentage = budget.budgetAmount / this.project.projectBudget * 100;
     }
@@ -232,7 +258,7 @@ export class CreateBudgetComponent {
     this.budgetAllocation.map(item => {
       list.push({
         idCategory: item.idCategory,
-        budgetPercentage: item.budgetPercentage ? item.budgetPercentage: 0,
+        budgetPercentage: item.budgetPercentage ? item.budgetPercentage : 0,
         budgetAmount: item.budgetAmount ? item.budgetAmount : 0
       })
     })
