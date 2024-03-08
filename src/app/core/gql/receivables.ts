@@ -9,8 +9,8 @@ const projectpayment_new = gql`
     $idCompany_payment: Int!
     $billNumber: billNumber_String_NotNull_maxLength_25!
     $costCode: String
-    $sentDate: String!
-    $dueDate: String!
+    $sentDate: sentDate_String_NotNull_format_date!
+    $dueDate: dueDate_String_NotNull_format_date!
     $paymentTerms: paymentTerms_String_NotNull_maxLength_50!
     $amount: Float!
     $txtNotes: txtNotes_String_NotNull_maxLength_512!
@@ -312,11 +312,13 @@ const getassociatedcompany_list = gql`
 `;
 
 const projectpayment_pay = gql`
-  mutation projectpayment_pay($idCompany: Int!,
-    $id: Int!,
-    $revision: Int!,
-    $paidDate: String!,
-    $amount: Float!) {
+  mutation projectpayment_pay(
+    $idCompany: Int!
+    $id: Int!
+    $revision: Int!
+    $paidDate: String!
+    $amount: Float!
+  ) {
     projectpayment_pay(
       idCompany: $idCompany
       id: $id
