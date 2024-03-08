@@ -49,5 +49,8 @@ export class ActivityComponent {
         }
       })
     }
+    else{
+      this.loading = false;
+    }
   }
 }

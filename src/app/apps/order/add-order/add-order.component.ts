@@ -362,6 +362,7 @@ export class AddOrderComponent {
       const result = res.vendor_list;
       if(!result.error){
         this.vendorList = result.data;
+        this.vendorList = this.vendorList.filter(item=>item.status == 'Active');
         this.VENDORLIST = JSON.parse(JSON.stringify(this.vendorList));
       }
       this.setVendor();
@@ -729,7 +730,7 @@ export class AddOrderComponent {
   }
   
   listItemDelete(index, item){
-    if(!item.paidyn && this.order.listItems.length > 5){
+    if(!item.paidyn ){
       this.order.listItems.splice(index, 1);
       this.setTotal();
     }
