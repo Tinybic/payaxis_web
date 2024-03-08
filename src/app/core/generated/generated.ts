@@ -22,6 +22,7 @@ export type Scalars = {
   contactNumber_String_NotNull_maxLength_20: { input: any; output: any; }
   costCode_String_NotNull_maxLength_15: { input: any; output: any; }
   description_String_NotNull_maxLength_512: { input: any; output: any; }
+  dueDate_String_NotNull_format_date: { input: any; output: any; }
   email_String_NotNull_maxLength_180_format_email: { input: any; output: any; }
   federalId_String_NotNull_maxLength_25: { input: any; output: any; }
   fileName_String_NotNull_maxLength_128: { input: any; output: any; }
@@ -41,6 +42,7 @@ export type Scalars = {
   projectAddress_String_NotNull_maxLength_255: { input: any; output: any; }
   projectName_String_NotNull_maxLength_128: { input: any; output: any; }
   routing_String_NotNull_maxLength_15: { input: any; output: any; }
+  sentDate_String_NotNull_format_date: { input: any; output: any; }
   suiteNumber_String_NotNull_maxLength_30: { input: any; output: any; }
   taxId_String_NotNull_maxLength_50: { input: any; output: any; }
   txtAddress_String_NotNull_maxLength_80: { input: any; output: any; }
@@ -756,7 +758,7 @@ export type MutationProjectpayment_NewArgs = {
   billNumber: Scalars['billNumber_String_NotNull_maxLength_25']['input'];
   billyn?: InputMaybe<Scalars['Boolean']['input']>;
   costCode?: InputMaybe<Scalars['String']['input']>;
-  dueDate: Scalars['String']['input'];
+  dueDate: Scalars['dueDate_String_NotNull_format_date']['input'];
   idCompany: Scalars['Int']['input'];
   idCompany_payment: Scalars['Int']['input'];
   idInvitedCompany?: InputMaybe<Scalars['Int']['input']>;
@@ -765,7 +767,7 @@ export type MutationProjectpayment_NewArgs = {
   idVendor: Scalars['Int']['input'];
   paymentFiles?: InputMaybe<Array<Paymentfile>>;
   paymentTerms: Scalars['paymentTerms_String_NotNull_maxLength_50']['input'];
-  sentDate: Scalars['String']['input'];
+  sentDate: Scalars['sentDate_String_NotNull_format_date']['input'];
   txtNotes: Scalars['txtNotes_String_NotNull_maxLength_512']['input'];
   vendorEmail?: InputMaybe<Scalars['String']['input']>;
   vendorName?: InputMaybe<Scalars['String']['input']>;

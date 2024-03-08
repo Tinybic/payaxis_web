@@ -833,6 +833,7 @@ export class InvoiceAddComponent {
   save(){
     //this.txtError.idVendor = this.projectpayment.idVendor;
     
+    
     // if (this.txtError.idVendor > 0) {
     if(this.projectpayment.amount > 0){
       this.apolloService.mutate(projectpayment_new, this.projectpayment).then((res) => {
