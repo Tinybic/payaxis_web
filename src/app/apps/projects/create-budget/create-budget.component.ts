@@ -179,6 +179,10 @@ export class CreateBudgetComponent {
     }
   }
   
+  budgetKeydown(e){
+    // if(this.project)
+  }
+  
   budgetChange(){
     this.budgetAllocation = JSON.parse(JSON.stringify(this.keepBudgetAllocation));
     let allocatedBudgetTotal = 0;
@@ -231,6 +235,12 @@ export class CreateBudgetComponent {
     budget.anchor = "A";
     if(this.project.projectBudget !== 0 && this.project.projectBudget !== ''){
       budget.budgetPercentage = budget.budgetAmount / this.project.projectBudget * 100;
+      const arr = budget.budgetPercentage.toString().split('.')
+      if(arr.length > 1){
+        if(arr[1].length > 3){
+          budget.budgetPercentage = budget.budgetPercentage.toFixed(3)
+        }
+      }
     }
     this.calculateBudget();
   }
