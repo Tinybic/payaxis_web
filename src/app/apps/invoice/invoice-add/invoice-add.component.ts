@@ -45,7 +45,8 @@ export class InvoiceAddComponent {
   ORDERLIST = [];
   paymentList = [];
   txtError = {
-    idVendor: 1
+    idVendor: 1,
+    dueDate: 1
   };
   format = 'yyyy-MM-dd';
   locale = 'en-US';
@@ -65,7 +66,7 @@ export class InvoiceAddComponent {
     idOrder1: 0,
     idCompany_payment: 0,
     billNumber: '',
-    sentDate: '',
+    sentDate: formatDate(this.myDate, this.format, this.locale),
     dueDate: '',
     paymentTerms: '',
     amount: 0.0,
@@ -386,6 +387,7 @@ export class InvoiceAddComponent {
       const result = res.vendor_list;
       if(!result.error){
         this.vendorList = result.data;
+        this.vendorList = this.vendorList.filter(item=>item.status == 'Active');
         this.VENDORLIST = JSON.parse(JSON.stringify(this.vendorList));
         this.setVendor();
       }

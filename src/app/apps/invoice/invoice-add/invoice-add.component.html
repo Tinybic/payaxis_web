@@ -201,6 +201,16 @@
                     </div>
                 </div>
                 <div class="col-md-4">
+                    <label class="form-label" i18n>Invoiced Date</label>
+                    <input type="date" class="form-control" placeholder="Add Sent Date"
+                           [(ngModel)]="projectpayment.sentDate"/>
+                    <div class="text-primary subtitle-2-400-12 mt-1-1 text-center cursor-pointer"
+                         (click)="resetValue(5)"
+                         *ngIf="handleData && (handleData.invoicedDate!=projectpayment.sentDate && handleData.invoicedDate.length>0)">
+                        <i class="fe-copy me-1-1"></i>Reset to: {{handleData.invoicedDate}}
+                    </div>
+                </div>
+                <div class="col-md-4">
                     <label class="form-label" i18n>Due Date</label>
                     <input type="date" class="form-control" placeholder="Add Due Date"
                            [(ngModel)]="projectpayment.dueDate"/>
@@ -210,19 +220,7 @@
                         <i class="fe-copy me-1-1"></i>Reset to: {{handleData.indvoicedueDate}}
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <label class="form-label" i18n>Receiving Date</label>
-                    <label class="float-end subtitle-2-400-12 text-typeblack80 line-24">
-                        Optional
-                    </label>
-                    <input type="date" class="form-control" placeholder="Add Sent Date"
-                           [(ngModel)]="projectpayment.sentDate"/>
-                    <div class="text-primary subtitle-2-400-12 mt-1-1 text-center cursor-pointer"
-                         (click)="resetValue(5)"
-                         *ngIf="handleData && (handleData.invoicedDate!=projectpayment.sentDate && handleData.invoicedDate.length>0)">
-                        <i class="fe-copy me-1-1"></i>Reset to: {{handleData.invoicedDate}}
-                    </div>
-                </div>
+                
             </div>
             
             <!-- <div class="row mt-2-1">
@@ -579,7 +577,7 @@
     </div>
     <div class="col-md-6 d-grid">
         <button type="button" class="btn btn-primary" (click)="findVendor()"
-                [disabled]="projectpayment.idVendor == 0 && !(this.newVendor && this.projectpayment.vendorEmail)">Save
+                [disabled]="projectpayment.idVendor == 0 || !(this.projectpayment.dueDate)|| !this.projectpayment.sentDate || !this.projectpayment.billNumber">Save
             and Review
         </button>
     </div>

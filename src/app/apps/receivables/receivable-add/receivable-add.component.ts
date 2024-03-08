@@ -222,6 +222,7 @@ export class ReceivableAddComponent {
         const result = res.vendor_list;
         if (!result.error) {
           this.vendorList = result.data;
+          this.vendorList = this.vendorList.filter(item=>item.status == 'Active');
           this.VENDORLIST = JSON.parse(JSON.stringify(this.vendorList));
           this.setVendor();
         }
