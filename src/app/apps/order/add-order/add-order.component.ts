@@ -730,7 +730,7 @@ export class AddOrderComponent {
   }
   
   listItemDelete(index, item){
-    if(!item.paidyn && this.order.listItems.length > 5){
+    if(!item.paidyn ){
       this.order.listItems.splice(index, 1);
       this.setTotal();
     }
