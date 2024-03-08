@@ -129,7 +129,7 @@
             <div class="col-md-12 d-flex align-items-center">
                 <i class="fe-chevron-left"></i>
                 <span class="bold-500 cursor-pointer" (click)="clickAllOrder()">All Orders &
-                        Bills</span>&nbsp;/&nbsp;<span class="bold-800 text-primary" *ngIf="order.id > 0">Order
+                    Bills</span>&nbsp;/&nbsp;<span class="bold-800 text-primary" *ngIf="order.id > 0">Order
                     #{{order.orderNumber}}</span><span class="bold-800 text-primary" *ngIf="order.id == 0">New
                     Order</span>
             </div>
@@ -153,6 +153,7 @@
             <div class="col-md-6 text-end">
                 <input id="attachmentUpload" type="file" class="d-none" multiple (change)="getUploadUrl($event)" />
                 <button class="btn btn-outline-primary" onclick="document.getElementById('attachmentUpload').click()"
+                *ngIf="this.order.id > 0"
                     [disabled]="isUploading">
                     <i class="fe-upload me-1-1"></i>Upload Attachment
                 </button>
@@ -213,9 +214,10 @@
                                                     <label class="form-label" i18n>Reason</label>
                                                     <span class="float-end text-typeblack80">Optional</span>
                                                     <div ngbDropdown class="mt-sm-0 mt-2">
-                                                        <input class="form-select position-relative cursor-default" type="text" readonly
-                                                            id="reason" i18n-placeholder placeholder="Reason"
-                                                            [(ngModel)]="txtReason" ngbDropdownToggle />
+                                                        <input class="form-select position-relative cursor-default"
+                                                            type="text" readonly id="reason" i18n-placeholder
+                                                            placeholder="Reason" [(ngModel)]="txtReason"
+                                                            ngbDropdownToggle />
 
                                                         <div ngbDropdownMenu aria-labelledby="paymentTerms">
                                                             <a href="javascript:void(0)" *ngFor="let item of reasonList"
@@ -228,20 +230,21 @@
                                                     <label class="form-label">Invoiced Date</label>
                                                     <input type="date" class="form-control"
                                                         placeholder="Date invoice is attached"
-                                                        [(ngModel)]="order.invoicedDate" [ngClass]="{'is-invalid':orderError.invoicedDate == 0}" />
-                                                        <div *ngIf="orderError.invoicedDate == 0" class="invalid-feedback"
-                                                            i18n>
-                                                            <i class="fe-alert-triangle invalid-feedback-icon"></i>
-                                                            Invoiced Date required
-                                                        </div>
+                                                        [(ngModel)]="order.invoicedDate"
+                                                        [ngClass]="{'is-invalid':orderError.invoicedDate == 0}" />
+                                                    <div *ngIf="orderError.invoicedDate == 0" class="invalid-feedback"
+                                                        i18n>
+                                                        <i class="fe-alert-triangle invalid-feedback-icon"></i>
+                                                        Invoiced Date required
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="row mt-2-1">
                                                 <div class="col-md-4">
                                                     <label class="form-label" i18n>Payment Terms</label>
                                                     <div ngbDropdown class="mt-sm-0 mt-2">
-                                                        <input class="form-select position-relative cursor-default" type="text" readonly
-                                                            id="paymentTerms" i18n-placeholder
+                                                        <input class="form-select position-relative cursor-default"
+                                                            type="text" readonly id="paymentTerms" i18n-placeholder
                                                             placeholder="Payment Terms" [(ngModel)]="order.paymentTerms"
                                                             ngbDropdownToggle />
 
@@ -260,7 +263,8 @@
                                                             class="fe-plus-square me-1-1"></i>Create New Cost
                                                         Code</span>
                                                     <div class="dropdown" ngbDropdown>
-                                                        <input class="form-select cursor-default" type="text" id="vendorcostcodes" readonly
+                                                        <input class="form-select cursor-default" type="text"
+                                                            id="vendorcostcodes" readonly
                                                             [(ngModel)]="vendorcostcodesText" required i18n-placeholder
                                                             placeholder="Assign Cost Code"
                                                             [ngClass]="{'is-invalid':orderError.costcode == 0}"
@@ -322,12 +326,13 @@
                                                     <label class="form-label" i18n>Invoice Due Date</label>
                                                     <input class="form-control" type="date" id="dueDate"
                                                         [(ngModel)]="order.indvoicedueDate" required i18n-placeholder
-                                                        placeholder="Due date on invoice" [ngClass]="{'is-invalid':orderError.indvoicedueDate == 0}" />
-                                                        <div *ngIf="orderError.indvoicedueDate == 0" class="invalid-feedback"
-                                                            i18n>
-                                                            <i class="fe-alert-triangle invalid-feedback-icon"></i>
-                                                            Invoiced Due Date required
-                                                        </div>
+                                                        placeholder="Due date on invoice"
+                                                        [ngClass]="{'is-invalid':orderError.indvoicedueDate == 0}" />
+                                                    <div *ngIf="orderError.indvoicedueDate == 0"
+                                                        class="invalid-feedback" i18n>
+                                                        <i class="fe-alert-triangle invalid-feedback-icon"></i>
+                                                        Invoiced Due Date required
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -549,8 +554,7 @@
                                                                 <td>
                                                                     <input type="text" class="form-control"
                                                                         [(ngModel)]="item.qty" thousandSeparator=","
-                                                                         mask="separator.2"
-                                                                        (keyup)="getAmout(item)" />
+                                                                        mask="separator.2" (keyup)="getAmout(item)" />
                                                                 </td>
                                                                 <td>
                                                                     <input type="text" class="form-control"
@@ -564,8 +568,8 @@
                                                                 </td>
                                                                 <td>
                                                                     <input type="text" class="form-control" prefix="$"
-                                                                    mask="separator.2"
-                                                                        [(ngModel)]="item.amount" disabled="disabled" />
+                                                                        mask="separator.2" [(ngModel)]="item.amount"
+                                                                        disabled="disabled" />
                                                                 </td>
                                                                 <td>
                                                                     <input class="form-check" type="checkbox"
@@ -656,33 +660,35 @@
     <div class="row padding-16-32">
         <div class="col-md-2">
             <label class="form-label" i18n>Non Taxable</label>
-            <input autofocus class="form-control" disabled="disabled" [(ngModel)]="order.nontaxable"  prefix="$" mask="separator.2"
-                style="background-color: #3F444D; border:1px solid #3F444D; color: #767676;" type="text" id="nontaxable"
-                required i18n-placeholder />
+            <input autofocus class="form-control" disabled="disabled" [(ngModel)]="order.nontaxable" prefix="$"
+                mask="separator.2" style="background-color: #3F444D; border:1px solid #3F444D; color: #767676;"
+                type="text" id="nontaxable" required i18n-placeholder />
         </div>
         <div class="col-md-2">
             <label class="form-label" i18n>Taxable</label>
-            <input autofocus class="form-control" disabled="disabled" [(ngModel)]="order.taxable"  prefix="$" mask="separator.2"
-                style="background-color: #3F444D; border:1px solid #3F444D; color: #767676" type="text" id="taxable"
-                required i18n-placeholder />
+            <input autofocus class="form-control" disabled="disabled" [(ngModel)]="order.taxable" prefix="$"
+                mask="separator.2" style="background-color: #3F444D; border:1px solid #3F444D; color: #767676"
+                type="text" id="taxable" required i18n-placeholder />
         </div>
         <div class="col-md-2">
             <label class="form-label" i18n>Tax {{order.taxrate}}%</label>
-            <input autofocus class="form-control" disabled="disabled" [(ngModel)]="order.tax"  prefix="$" mask="separator.2"
-                style="background-color: #3F444D; border:1px solid #3F444D; color: #767676" type="text" id="tax" required
-                i18n-placeholder />
+            <input autofocus class="form-control" disabled="disabled" [(ngModel)]="order.tax" prefix="$"
+                mask="separator.2" style="background-color: #3F444D; border:1px solid #3F444D; color: #767676"
+                type="text" id="tax" required i18n-placeholder />
         </div>
         <div class="col-md-6 pt-2-1 d-flex flex-row-reverse text-end">
-            <div class="d-inline-block" *ngIf="order.status == 'Paid'"><button type="button" class="btn btn-primary ms-1-1"
-                style="border:0px; box-shadow: none;">Send Receipt</button></div>
-            <div class="d-inline-block" *ngIf="order.status !== 'Paid'"><button type="button" class="btn btn-primary ms-1-1"
-                    style="border:0px; box-shadow: none;">Pay Invoice</button></div>
-            <div class="d-inline-block" *ngIf="order.status != 'Paid'"><button type="button" class="btn btn-primary ms-1-1"
+            <div class="d-inline-block" *ngIf="order.status == 'Paid'"><button type="button"
+                    class="btn btn-primary ms-1-1" style="border:0px; box-shadow: none;">Send Receipt</button></div>
+            <div class="d-inline-block" *ngIf="order.status !== 'Paid'"><button type="button"
+                    class="btn btn-primary ms-1-1" style="border:0px; box-shadow: none;">Pay Invoice</button></div>
+            <div class="d-inline-block" *ngIf="order.status != 'Paid'"><button type="button"
+                    class="btn btn-primary ms-1-1"
                     style="border:1px solid #ffffff; box-shadow: none;background-color: transparent;">Send
                     Order</button></div>
             <div class="d-inline-block" style="height: 40px;color:#FFFFFFB2;">
                 <span class="btn-text-12">Total Amount Due</span><br />
-                <span class="headline-24" style=" color:  {{order.status == 'Paid'?'#FFFFFF80':'white'}};" id="total">{{order.total | currency}}</span>
+                <span class="headline-24" style=" color:  {{order.status == 'Paid'?'#FFFFFF80':'white'}};"
+                    id="total">{{order.total | currency}}</span>
             </div>
         </div>
     </div>
@@ -696,7 +702,7 @@
 </ng-template>
 
 <ng-template #addvendor let-modal>
-    <app-vendoradd class="flex-column-1" [modalRef]="modalVendorRef" (outId) = "getVendorId($event)"
+    <app-vendoradd class="flex-column-1" [modalRef]="modalVendorRef" (outId)="getVendorId($event)"
         style="width: calc(100vw - 216px); padding:32px 32px 0; background-color: #F8F9FC;overflow-y: auto;"
         [idvendor]="0"></app-vendoradd>
 </ng-template>
