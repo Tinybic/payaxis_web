@@ -138,6 +138,7 @@ export class InvoiceAddComponent {
       this.getVendorList();
       this.getProjectList();
       this.getOrderList();
+      this.getPaymentList();
       this.getAttachment();
     });
   }
