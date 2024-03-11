@@ -175,12 +175,20 @@ export class CreateBudgetComponent {
   
   budgetBlur(){
     if(this.project.projectBudget){
-      this.project.projectBudget = this.project.projectBudget.toFixed(2);
+      this.project.projectBudget = parseFloat(this.project.projectBudget).toFixed(2);
     }
   }
   
-  budgetKeydown(e){
-    // if(this.project)
+  budgetKeydown(e, maxValue){
+    const preValue = e.target.value;
+    setTimeout(() => {
+      if(e.target.value && e.target.value.length > 0){
+        const currentValue = parseFloat(e.target.value.replace(/[$,]/g, ''));
+        if(currentValue > maxValue){
+          e.target.value = preValue;
+        }
+      }
+    }, 0)
   }
   
   budgetChange(){
