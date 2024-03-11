@@ -89,8 +89,10 @@ const companypayment_list = gql`
         defaultPay
         nextCheck
         nextAch
+        verified
         active
         linkedProjects
+        released
       }
     }
   }
@@ -149,6 +151,49 @@ const bankname_routing = gql`
     }
   }
 `;
+
+const companypayment_release = gql`
+  mutation companypayment_release(
+    $idCompany: Int!
+    $id: Int!
+    $revision: Int!
+  ) {
+    companypayment_release(
+      idCompany: $idCompany
+      id: $id
+      revision: $revision
+    ) {
+      error
+      code
+      message
+      data
+    }
+  }
+`;
+
+const companypayment_verify = gql`
+  mutation companypayment_verify(
+    $idCompany: Int!
+    $id: Int!
+    $revision: Int!
+    $amount_1: Float!
+    $amount_2: Float!
+  ) {
+    companypayment_verify(
+      idCompany: $idCompany
+      id: $id
+      revision: $revision
+      amount_1: $amount_1
+      amount_2: $amount_2
+    ) {
+      error
+      code
+      message
+      data
+    }
+  }
+`;
+
 export {
   companypayment_new,
   companypayment_list,
@@ -156,4 +201,6 @@ export {
   companypayment_setdefault,
   companypayment_deactivate,
   bankname_routing,
+  companypayment_release,
+  companypayment_verify,
 };

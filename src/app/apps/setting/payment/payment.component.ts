@@ -11,8 +11,10 @@ import {
   companypayment_deactivate,
   companypayment_list,
   companypayment_new,
+  companypayment_release,
   companypayment_setdefault,
   companypayment_update,
+  companypayment_verify,
 } from 'src/app/core/gql/payment';
 import { matchValidator } from 'src/app/core/helpers/match.validator';
 import { ApolloService } from 'src/app/core/service/apollo.service';
@@ -38,6 +40,7 @@ export class PaymentComponent {
   @ViewChild('deletepayment') deletepayment: any;
   @ViewChild('cancelpayment') cancelpayment: any;
   @ViewChild('defaultpayment') defaultpayment: any;
+  @ViewChild('verifypayment') verifypayment: any;
 
   paymentForm: UntypedFormGroup = this.fb.group({
     account: ['', [Validators.required]],
@@ -132,6 +135,9 @@ export class PaymentComponent {
     defaultPay: false,
     holderName: '',
     email: '',
+    payType: '',
+    verified: false,
+    released: false,
   };
   setFormValue(index) {
     this.formValues['account'].setValue(this.paymentList[index].account);
@@ -150,11 +156,15 @@ export class PaymentComponent {
     this.template.defaultPay = this.paymentList[index].defaultPay;
     this.template.holderName = this.paymentList[index].holderName;
     this.template.email = this.paymentList[index].email;
+    this.template.payType = this.paymentList[index].payType;
+    this.template.verified = this.paymentList[index].verified;
+    this.template.released = this.paymentList[index].released;
   }
 
   defaultPaymentMessage = '';
   defaultPay = false;
   defaultRef;
+
   openDefaultModal(id, revision, defaultPay, account) {
     this.id = id;
     this.revision = revision;
@@ -352,7 +362,7 @@ export class PaymentComponent {
   }
 
   sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms))
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   async onSuccess(event: PlaidOnSuccessArgs) {
@@ -362,7 +372,7 @@ export class PaymentComponent {
         .post('exchange_processor_token', {
           public_token: event.token,
           account_id: event.metadata.accounts[i].id,
-          idcompany: this.idcompany
+          idcompany: this.idcompany,
         })
         .then((res) => {
           if (!res.error) {
@@ -392,12 +402,70 @@ export class PaymentComponent {
           }
         });
 
-        await this.sleep(2000);
+      await this.sleep(2000);
     }
   }
 
   onExit(event: PlaidOnExitArgs) {
     console.log(event);
     this.toastrService.info('New Payment Method Exit', '');
+  }
+
+  amount_1 = '';
+  amount_2 = '';
+  verifyRef;
+  openVerifyDeposits() {
+    this.amount_1 = '';
+    this.amount_1 = '';
+    this.verifyRef = this.modalService.open(this.verifypayment, {
+      size: '530',
+      centered: true,
+    });
+  }
+
+  verifyDeposits() {
+    this.apolloService
+      .mutate(companypayment_verify, {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
+        id: this.id,
+        revision: this.revision,
+        amount_1: parseFloat(this.amount_1),
+        amount_2: parseFloat(this.amount_2),
+      })
+      .then((res) => {
+        const result = res.companypayment_verify;
+        let message = '';
+        if (!result.error) {
+          message = 'Verify Micro-deposits success';
+          this.getPaymentList();
+          this.addref.close();
+        } else {
+          message = result.message;
+        }
+        this.toastrService.info(message, '');
+        this.verifyRef.close();
+      });
+  }
+
+  releasedDeposits() {
+    this.apolloService
+      .mutate(companypayment_release, {
+        idCompany: parseInt(localStorage.getItem('idcompany')),
+        id: this.id,
+        revision: this.revision,
+      })
+      .then((res) => {
+        const result = res.companypayment_release;
+        let message = '';
+        if (!result.error) {
+          message = 'Release Micro-deposits success';
+          this.getPaymentList();
+          this.addref.close();
+        } else {
+          message = result.message;
+        }
+
+        this.toastrService.info(message, '');
+      });
   }
 }
