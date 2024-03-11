@@ -26,14 +26,12 @@
                        (focus)="setCursorPosition($event, '', project.projectBudget,'')"
                        (blur)="budgetBlur()"
                        (ngModelChange)="budgetChange()"
-                       (keydown)="budgetKeydown($event)"
+                       (keydown)="budgetKeydown($event, 10000000)"
                        prefix="$"
                        mask="separator.2"
                        thousandSeparator=","
-                       separatorLimit="1000000"
                        allowNegativeNumbers="false"
                        i18n-placeholder placeholder="0.00"
-                       leadZero="true"
                        style="font-size: 21.33px;line-height: 24px;font-weight: 400;color: #202020;text-align: right;"
                 />
             </div>
@@ -94,15 +92,15 @@
                                class="form-control"
                                type="text"
                                [(ngModel)]="item.budgetPercentage"
+                               (ngModelChange)="budgetPercentageChange(item)"
+                               (focus)="setCursorPosition($event, item, item.budgetPercentage, 'budgetPercentage')"
+                               (keydown)="budgetKeydown($event, 1000)"
                                mask="separator.3"
                                suffix="%"
                                thousandSeparator=","
                                allowNegativeNumbers="false"
                                i18n-placeholder placeholder="0"
-                               (ngModelChange)="budgetPercentageChange(item)"
-                               (focus)="setCursorPosition($event, item, item.budgetPercentage, 'budgetPercentage')"
                                [disabled]="project.projectBudget == 0"
-                               separatorLimit="1000"
                         />
                     </div>
                 </td>
@@ -115,14 +113,14 @@
                                class="form-control"
                                type="text"
                                [(ngModel)]="item.budgetAmount"
+                               (ngModelChange)="budgetAmountChange(item)"
+                               (focus)="setCursorPosition($event, item, item.budgetAmount, 'budgetAmount')"
+                               (keydown)="budgetKeydown($event,1000000)"
                                prefix="$"
                                mask="separator.2"
                                thousandSeparator=","
                                allowNegativeNumbers="false"
                                i18n-placeholder placeholder="0"
-                               (ngModelChange)="budgetAmountChange(item)"
-                               (focus)="setCursorPosition($event, item, item.budgetAmount, 'budgetAmount')"
-                               separatorLimit="100000"
                         />
                     </div>
                 </td>
