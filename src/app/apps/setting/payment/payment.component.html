@@ -269,8 +269,18 @@
 
 
             </div>
-            <div style="height: 97px;">
-                <div class="row">
+            <div style="height: {{buttonText == 'Save'&& template.payType=='ACH' && !template.verified?'157px':'97px'}};">
+                <div class="row" *ngIf="buttonText == 'Save'&& template.payType=='ACH' && !template.verified && !template.released">
+                    <div class="col-md-12 d-grid">
+                        <button class="btn btn-primary" type="button" (click) = "releasedDeposits()" >Release Micro-deposits</button>
+                    </div>
+                </div>
+                <div class="row" *ngIf="buttonText == 'Save'&& template.payType=='ACH' && !template.verified && template.released">
+                    <div class="col-md-12 d-grid">
+                        <button class="btn btn-primary" type="button"  (click) = "openVerifyDeposits()">Verify Micro-deposits</button>
+                    </div>
+                </div>
+                <div class="row mt-1-1">
                     <div class="col-md-12 d-grid">
                         <button class="btn btn-primary" type="submit"
                             [disabled]="formValues['account'].value.length == 0">{{buttonText}}</button>
@@ -315,6 +325,45 @@
         </div>
     </div>
 </ng-template>
+
+
+<ng-template #verifypayment let-modal>
+    <div class="delete-modal-container">
+        <input type="text" style="display: none;" />
+        <div class="row">
+            <div class="col-md-10">
+                <div class="headline-24 text-start">Verify Micro-deposits</div>
+            </div>
+            <div class="col-md-2 text-end text-black">
+                <i class="fe-x cursor-pointer bold-600" (click)="modal.dismiss()"></i>
+            </div>
+        </div>
+        <div class="row mt-2-1">
+            <div class="col-md-12">
+                <label class="form-label" i18n>Amount 1</label>
+                <input class="form-control" type="text" id="bankName" required i18n-placeholder
+                [(ngModel)]="amount_1"  placeholder="Amount 1" prefix="$"
+                mask="separator.2"  />
+                
+            </div>
+        </div>
+        <div class="row mt-2-1">
+            <div class="col-md-12">
+                <label class="form-label" i18n>Amount 2</label>
+                <input class="form-control" type="text" id="bankName" required i18n-placeholder
+                [(ngModel)]="amount_2"  placeholder="Amount 1" prefix="$"
+                mask="separator.2"  />
+                
+            </div>
+        </div>
+        <div class="row mt-2-1">
+            <div class="col-md-12 d-grid">
+                <button class="btn btn-primary" type="button" (click) = "verifyDeposits()" >Verify</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
 
 <ng-template #defaultpayment let-modal>
     <div class="delete-modal-container">

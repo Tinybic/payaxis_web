@@ -108,10 +108,14 @@ export type Mutation = {
   companypayment_deactivate: Paymentbooleanresult;
   /** new companypayment */
   companypayment_new: Paymentresult;
+  /** Release companypayment */
+  companypayment_release: Paymentbooleanresult;
   /** favorite companypayment */
   companypayment_setdefault: Paymentresult;
   /** update companypayment */
   companypayment_update: Paymentresult;
+  /** verify companypayment */
+  companypayment_verify: Paymentbooleanresult;
   /** set color/icon for companyproject */
   companyproject_coloricon: Projectresult;
   /** deactivate companyproject */
@@ -424,6 +428,14 @@ export type MutationCompanypayment_NewArgs = {
 
 
 /** structure to handle table sms */
+export type MutationCompanypayment_ReleaseArgs = {
+  id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
 export type MutationCompanypayment_SetdefaultArgs = {
   defaultPay: Scalars['Boolean']['input'];
   id: Scalars['Int']['input'];
@@ -443,6 +455,16 @@ export type MutationCompanypayment_UpdateArgs = {
   idCompany: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
   routing: Scalars['routing_String_NotNull_maxLength_15']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationCompanypayment_VerifyArgs = {
+  amount_1: Scalars['Float']['input'];
+  amount_2: Scalars['Float']['input'];
+  id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
 };
 
 
@@ -1648,8 +1670,10 @@ export type Companypayment = {
   nextAch: Scalars['Int']['output'];
   nextCheck: Scalars['Int']['output'];
   payType: Scalars['String']['output'];
+  released: Scalars['Boolean']['output'];
   revision: Scalars['Int']['output'];
   routing: Scalars['String']['output'];
+  verified: Scalars['Boolean']['output'];
 };
 
 export type Companypermission = {
