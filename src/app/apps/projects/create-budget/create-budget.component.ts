@@ -276,8 +276,8 @@ export class CreateBudgetComponent {
     this.budgetAllocation.map(item => {
       list.push({
         idCategory: item.idCategory,
-        budgetPercentage: item.budgetPercentage ? item.budgetPercentage : 0,
-        budgetAmount: item.budgetAmount ? item.budgetAmount : 0
+        budgetPercentage: item.budgetPercentage ? parseFloat(item.budgetPercentage) : 0,
+        budgetAmount: item.budgetAmount ? parseFloat(item.budgetAmount) : 0
       })
     })
     
@@ -291,8 +291,8 @@ export class CreateBudgetComponent {
         projectName: this.project.projectName,
         projectAddress: this.project.projectAddress,
         idGroup: this.project.idGroup,
-        projectBudget: this.project.projectBudget ? this.project.projectBudget : 0,
-        projectSqft: this.project.projectSqft ? this.project.projectSqft : 0,
+        projectBudget: this.project.projectBudget ? parseFloat(this.project.projectBudget) : 0,
+        projectSqft: this.project.projectSqft ? parseFloat(this.project.projectSqft) : 0,
         budgetAllocation: list
       }
     } else{
@@ -301,7 +301,7 @@ export class CreateBudgetComponent {
         idCompany: this.idCompany,
         id: this.project.id,
         revision: this.project.revision,
-        projectBudget: this.project.projectBudget,
+        projectBudget: parseFloat(this.project.projectBudget),
         budgetAllocation: list
       }
     }
