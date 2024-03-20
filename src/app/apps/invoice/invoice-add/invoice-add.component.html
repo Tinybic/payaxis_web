@@ -30,7 +30,7 @@
             
             <div class="row mt-2-1">
                 <div class="col-md-12">
-                    <div ngbDropdown>
+                    <div ngbDropdown #vendorDropdown="ngbDropdown">
                         
                         <div *ngIf="vendor" style="border:1px solid #E1E6EF; border-radius: 8px; padding: 8px 16px;">
                             <div class="row">
@@ -73,8 +73,7 @@
                         </div>
                         
                         <input *ngIf="!vendor && !newVendor" class="form-control form-search" type="search"
-                               placeholder="Find Customer" [(ngModel)]="keywordsVendor" (keyup)="vendorFilter()"
-                               [ngClass]="{'is-invalid':txtError.idVendor == 0}" ngbDropdownToggle/>
+                               placeholder="Find Customer" [(ngModel)]="keywordsVendor"  (ngModelChange)="vendorFilter(vendorDropdown)" [ngClass]="{'is-invalid':txtError.idVendor == 0}" ngbDropdownToggle/>
                         <div *ngIf="txtError.idVendor == 0" class="invalid-feedback" i18n>
                             <i class="fe-alert-triangle invalid-feedback-icon"></i>
                             Vendor required

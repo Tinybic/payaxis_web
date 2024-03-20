@@ -230,6 +230,8 @@ export type Mutation = {
   vendorpayment_deactivate: Vendorpaymentbooleanresult;
   /** new vendorpayment */
   vendorpayment_new: Vendorpaymentresult;
+  /** pay vendor payment */
+  vendorpayment_pay: Vendorpaymentbooleanresult;
   /** favorite vendorpayment */
   vendorpayment_setdefault: Vendorpaymentresult;
   /** update vendorpayment */
@@ -809,6 +811,7 @@ export type MutationProjectpayment_PayArgs = {
   amount: Scalars['Float']['input'];
   id: Scalars['Int']['input'];
   idCompany: Scalars['Int']['input'];
+  idVendor_payment?: InputMaybe<Scalars['Int']['input']>;
   paidDate: Scalars['String']['input'];
   revision: Scalars['Int']['input'];
 };
@@ -1048,6 +1051,15 @@ export type MutationVendorpayment_NewArgs = {
 
 
 /** structure to handle table sms */
+export type MutationVendorpayment_PayArgs = {
+  amount: Scalars['Float']['input'];
+  id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
 export type MutationVendorpayment_SetdefaultArgs = {
   defaultPay: Scalars['Boolean']['input'];
   id: Scalars['Int']['input'];
@@ -1272,6 +1284,7 @@ export type QueryProject_MembersArgs = {
 
 export type QueryProjectbill_ListArgs = {
   idCompany: Scalars['Int']['input'];
+  idOrder1?: InputMaybe<Scalars['Int']['input']>;
   idProject: Scalars['Int']['input'];
   idVendor: Scalars['Int']['input'];
 };
