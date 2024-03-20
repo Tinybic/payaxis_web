@@ -316,6 +316,7 @@ const projectpayment_pay = gql`
     $idCompany: Int!
     $id: Int!
     $revision: Int!
+    $idVendor_payment: Int
     $paidDate: String!
     $amount: Float!
   ) {
@@ -323,6 +324,7 @@ const projectpayment_pay = gql`
       idCompany: $idCompany
       id: $id
       revision: $revision
+      idVendor_payment: $idVendor_payment
       paidDate: $paidDate
       amount: $amount
     ) {

@@ -388,7 +388,7 @@ export class InvoiceAddComponent {
       const result = res.vendor_list;
       if(!result.error){
         this.vendorList = result.data;
-        this.vendorList = this.vendorList.filter(item=>item.status == 'Active');
+        this.vendorList = this.vendorList.filter(item => item.status == 'Active');
         this.VENDORLIST = JSON.parse(JSON.stringify(this.vendorList));
         this.setVendor();
       }
@@ -538,11 +538,27 @@ export class InvoiceAddComponent {
     this.projectpayment.idVendor = vendor.id;
   }
   
-  vendorFilter(){
+  vendorFilterFocus(vendorDropdown){
+    if(this.keywordsVendor.length === 0){
+      this.vendorList = JSON.parse(JSON.stringify(this.VENDORLIST));
+    }
+    setTimeout(() => {
+      if(!vendorDropdown.isOpen()){
+        vendorDropdown.open();
+      }
+    }, 500)
+  }
+  
+  vendorFilter(vendorDropdown){
     this.vendorList = JSON.parse(JSON.stringify(this.VENDORLIST));
-    this.vendorList = this.vendorList.filter((item) =>
-      item.vendorName.toLowerCase().includes(this.keywordsVendor.toLowerCase())
-    );
+    if(this.keywordsVendor.length > 0){
+      this.vendorList = this.vendorList.filter((item) =>
+        item.vendorName.toLowerCase().includes(this.keywordsVendor.toLowerCase())
+      );
+    }
+    if(!vendorDropdown.isOpen()){
+      vendorDropdown.open();
+    }
   }
   
   removeVendor(){
@@ -877,7 +893,11 @@ export class InvoiceAddComponent {
   
   openPayingBill(){
     if(this.paymentList.length == 0){
-      this.toastrService.info('No payment method available, please go to company settings and add a new payment method.', 'Warning', { timeOut: 6000, enableHtml: true, toastClass:'max-width-300 text-white'});
+      this.toastrService.info('No payment method available, please go to company settings and add a new payment method.', 'Warning', {
+        timeOut: 6000,
+        enableHtml: true,
+        toastClass: 'max-width-300 text-white'
+      });
     } else{
       this.payingBillModalRef = this.modalService.open(this.payingBillModal, {
         backdrop: 'static',
