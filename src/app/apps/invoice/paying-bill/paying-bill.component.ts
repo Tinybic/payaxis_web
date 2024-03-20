@@ -158,7 +158,7 @@ export class PayingBillComponent {
       idCompany: parseInt(this.payment.idCompany),
       id: parseInt(this.payment.id),
       revision: parseInt(this.payment.revision),
-      idVendor_payment: parseInt(this.payment.idvendor),
+      idVendor_payment: parseInt(this.payment.idVendor),
       paidDate: this.blueDate.year + '-' + this.blueDate.month + '-' + this.blueDate.day,
       amount: this.parseFloat(this.amount.value)
     }
