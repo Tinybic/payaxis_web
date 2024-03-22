@@ -1,0 +1,160 @@
+<div class="row mt-2-1">
+    <div class="col-md-4">
+        <span class="font-20 bold-600">{{invoiceList.length}} Invoices</span>
+        <div class="d-inline-block dropdown ms-1-1" ngbDropdown>
+            <a class="dropdown-outline" href="javascript:void(0)" ngbDropdownToggle>
+                <i class="fe-filter font-16 me-1-1"></i>
+                Status
+                <b>{{statusFilter}}</b>
+                <i class="fe-chevron-down font-16 ms-1-1"></i>
+            </a>
+            <div class="dropdown-menu" ngbDropdownMenu>
+                <div ngbDropdownItem (click)="filterListStatus('All')">
+                    <div class="form-check text-center">
+                        <input type="checkbox" class="form-check-input" id="allDropdownCheck"
+                            [checked]="statusFilter == 'All'">
+                        <label class="form-check-label ms-1-1 bold-600" for="allDropdownCheck">
+                            All
+                        </label>
+                    </div>
+                </div>
+                <div ngbDropdownItem (click)="filterListStatus('Sent')">
+                    <div class="form-check text-center">
+                        <input type="checkbox" class="form-check-input" id="invoiceOpendropdownCheck"
+                            [checked]="statusFilter == 'Sent'">
+                            <div class="d-inline-block sentTag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">Sent</div>
+                    </div>
+                </div>
+                <div ngbDropdownItem (click)="filterListStatus('Due')">
+                    <div class="form-check text-center">
+                        <input type="checkbox" class="form-check-input" id="overDuedropdownCheck"
+                            [checked]="statusFilter == 'Due'">
+                        <div for="overDuedropdownCheck" class="d-inline-block dueTag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">Due</div>
+                    </div>
+                </div>
+                <div ngbDropdownItem (click)="filterListStatus('PastDue')">
+                    <div class="form-check text-center">
+                        <input type="checkbox" class="form-check-input" id="pastDueDropdownCheck"
+                            [checked]="statusFilter == 'PastDue'">
+                        <div for="pastDueDropdownCheck" class="d-inline-block pastdueTag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">Past Due</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8 text-end">
+        <div class="d-inline-block ms-1-1">
+            <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords" />
+        </div>
+        <div class="d-inline-block ms-1-1">
+            <button class="btn btn-primary" (click)="openAddModal()" [disabled]="idOrder == 0">Add Invoice</button>
+        </div>
+        <!-- end search-->
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-md-12">
+        <table class="advanced-table">
+            <thead>
+                <tr>
+                    <th class="row_select"><input class="form-check" type="checkbox" /></th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortColumn == 'sentDate' && direction == 'asc','sorting_desc':sortColumn == 'sentDate' && direction == 'desc'}"
+                        (click)="onSort('sentDate')">Invoiced Date</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortColumn == 'status' && direction == 'asc','sorting_desc':sortColumn == 'status' && direction == 'desc'}"
+                        (click)="onSort('status')">Status</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortColumn == 'billNumber' && direction == 'asc','sorting_desc':sortColumn == 'billNumber' && direction == 'desc'}"
+                        (click)="onSort('billNumber')">Bill #</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortColumn == 'dueDate' && direction == 'asc','sorting_desc':sortColumn == 'dueDate' && direction == 'desc'}"
+                        (click)="onSort('dueDate')">Due Date</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortColumn == 'vendorName' && direction == 'asc','sorting_desc':sortColumn == 'vendorName' && direction == 'desc'}"
+                        (click)="onSort('vendorName')">Vendor</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortColumn == 'senderEmail' && direction == 'asc','sorting_desc':sortColumn == 'senderEmail' && direction == 'desc'}"
+                        (click)="onSort('senderEmail')">Sender</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortColumn == 'projectName' && direction == 'asc','sorting_desc':sortColumn == 'projectName' && direction == 'desc'}"
+                        (click)="onSort('projectName')">Project</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortColumn == 'orderNumber' && direction == 'asc','sorting_desc':sortColumn == 'orderNumber' && direction == 'desc'}"
+                        (click)="onSort('orderNumber')">Order #</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortColumn == 'amount' && direction == 'asc','sorting_desc':sortColumn == 'amount' && direction == 'desc'}"
+                        (click)="onSort('amount')">Amount</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody *ngIf="!loading">
+                <tr class="cursor-pointer" *ngFor="let item of invoiceList | callback:filterTable; let i = index">
+                    <td><input class="form-check" type="checkbox" /></td>
+                    <td>
+                        {{item.sentDate}}
+                    </td>
+                    <td>
+                        <div class="d-inline-block {{item.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{item.status}} <span *ngIf="item.status == 'Paid'">{{item.paidDate | date: 'M/dd/yy'}}</span></div>
+                    </td>
+
+                    <td>{{item.billNumber}}</td>
+                    <td>
+                        {{item.dueDate}}
+                    </td>
+                    <td> {{item.vendorName}}</td>
+                    <td>
+                        <div class="d-flex">
+                            <div>
+                                <app-avatar [bgColor]="'bg-info'"  color="text-white" [url]="item.senderAvatar" [firstName]="item.senderFirstname" [lastName]="item.senderLastname" [size]="32"
+                                alt="user-img" class="ms-2"></app-avatar>
+                            </div>
+                            <div class="ms-1-1">
+                                {{item.senderFirstname}}&nbsp;{{item.senderLastname}}<br/>
+                                <span class="subtitle-2-400-12 text-typeblackdeactivated">{{item.senderEmail}}</span>
+                            </div>
+                        </div>
+                       
+                    </td>
+                    <td> {{item.projectName}}</td>
+                    <td> {{item.orderNumber}} </td>
+                    <td> {{item.amount | currency}}</td>
+                    <td class="text-end">
+                        <button type="button" class="btn btn-primary padding-8-16" id="reviewBill{{item.id}}" (click) ="openEditModal(item.id)">Review Bill</button>
+                        <i class="fe-more-vertical- ms-1-1"></i>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="loading" class="bg-white">
+                <tr>
+                    <td colspan="11">
+                        <div style="position: relative; height: 400px;">
+                            <app-ui-preloader [display]="loading"></app-ui-preloader>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="invoiceList.length==0 && !loading" class="bg-white">
+                <tr *ngIf="!loading && invoiceList.length==0">
+                    <td colspan="11" class="text-center">
+                        <div class="Paragraph-1 text-typeblackdeactivated bold-600  mt-40 ">No Invoices added yet</div>
+
+                        <div class="Paragraph-2 text-typeblackdeactivated mt-1-1">Add Invoice in a few clicks
+                        </div>
+                        <div class="mt-1-1"> <button class="btn btn-primary ms-2-1" [disabled]="idOrder == 0" (click)="openAddModal()"><i
+                                    class="fe-plus-square me-1-1"></i>Add Invoice</button></div>
+
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot style="height: 16px;">
+                <tr>
+                    <td colspan="11">&nbsp;</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<ng-template #addModal>
+    <app-invoice-add class="p-4-1" [modalRef]="addModalRef" [id] = "idInvoice"></app-invoice-add>
+</ng-template>

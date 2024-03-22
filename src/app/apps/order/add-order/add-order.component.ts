@@ -1,4 +1,5 @@
 import { RtlScrollAxisType } from '@angular/cdk/platform';
+import { formatDate } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -36,6 +37,13 @@ export class AddOrderComponent {
   tabs1 = 1;
   reasonList = [];
   paymentTermsList = PAYMENTTERM;
+
+  format = 'yyyy-MM-dd';
+  locale = 'en-US';
+
+  myDate = new Date();
+
+
   order = {
     id: 0,
     revision: 0,
@@ -45,8 +53,8 @@ export class AddOrderComponent {
     orderNumber: 0,
     idReason: 0,
     invoiceNumber: '',
-    invoicedDate: '',
-    indvoicedueDate: '',
+    invoicedDate: formatDate(this.myDate, this.format, this.locale),
+    indvoicedueDate: formatDate(this.myDate, this.format, this.locale),
     paymentTerms: '',
     costCode: '',
     notes: '',
@@ -587,20 +595,6 @@ export class AddOrderComponent {
       return;
     } else{
       this.orderError.idVendor = -1;
-    }
-    
-    if(this.order.invoicedDate.length == 0){
-      this.orderError.invoicedDate = 0;
-      return;
-    } else{
-      this.orderError.invoicedDate = -1;
-    }
-    
-    if(this.order.indvoicedueDate.length == 0){
-      this.orderError.indvoicedueDate = 0;
-      return;
-    } else{
-      this.orderError.indvoicedueDate = -1;
     }
 
     let listitemPara = [];
