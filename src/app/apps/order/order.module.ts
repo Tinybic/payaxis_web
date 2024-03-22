@@ -18,6 +18,8 @@ import { ProjectsModule } from '../projects/projects.module';
 import { MomentModule } from 'ngx-moment';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+import { OrderBillsComponent } from './order-bills/order-bills.component';
+import { InvoiceModule } from '../invoice/invoice.module';
 
 
 
@@ -26,7 +28,8 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
     OrderComponent,
     AddOrderComponent,
     AttachmentsComponent,
-    ActivityComponent
+    ActivityComponent,
+    OrderBillsComponent,
   ],
   imports: [
     CommonModule,
@@ -48,7 +51,8 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
     ProjectsModule,
     NgbTooltipModule,
     MomentModule,
-    HttpClientModule
+    HttpClientModule,
+    InvoiceModule
   ],
   providers:[
     provideNgxMask()
