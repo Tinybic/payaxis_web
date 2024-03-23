@@ -157,6 +157,9 @@
                     [disabled]="isUploading">
                     <i class="fe-upload me-1-1"></i>Upload Attachment
                 </button>
+                <button class="btn btn-outline-primary ms-2-1">
+                    Direct Payment
+                </button>
                 <button class="btn btn-primary ms-2-1" *ngIf="tabs1 == 1" (click)="saveOrder()">Save</button>
                 <div class="d-inline-block dropdown ms-1-1" ngbDropdown>
                     <span ngbDropdownToggle><i class="fe-more-vertical- font-24 cursor-pointer"></i></span>
@@ -204,58 +207,13 @@
                                                 </div>
                                             </div>
                                             <div class="row mt-1-1">
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <label class="form-label" i18n>Order Number</label>
                                                     <input autofocus class="form-control" type="text" id="orderNumber"
                                                         [(ngModel)]="order.orderNumber" required i18n-placeholder
                                                         disabled="disabled" placeholder="Order Number" />
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <label class="form-label" i18n>Reason</label>
-                                                    <span class="float-end text-typeblack80">Optional</span>
-                                                    <div ngbDropdown class="mt-sm-0 mt-2">
-                                                        <input class="form-select position-relative cursor-default"
-                                                            type="text" readonly id="reason" i18n-placeholder
-                                                            placeholder="Reason" [(ngModel)]="txtReason"
-                                                            ngbDropdownToggle />
-
-                                                        <div ngbDropdownMenu aria-labelledby="paymentTerms">
-                                                            <a href="javascript:void(0)" *ngFor="let item of reasonList"
-                                                                (click)="selectReason(item)"
-                                                                ngbDropdownItem>{{item.txtName}}</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label class="form-label">Invoiced Date</label>
-                                                    <input type="date" class="form-control"
-                                                        placeholder="Date invoice is attached"
-                                                        [(ngModel)]="order.invoicedDate"
-                                                        [ngClass]="{'is-invalid':orderError.invoicedDate == 0}" />
-                                                    <div *ngIf="orderError.invoicedDate == 0" class="invalid-feedback"
-                                                        i18n>
-                                                        <i class="fe-alert-triangle invalid-feedback-icon"></i>
-                                                        Invoiced Date required
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row mt-2-1">
-                                                <div class="col-md-4">
-                                                    <label class="form-label" i18n>Payment Terms</label>
-                                                    <div ngbDropdown class="mt-sm-0 mt-2">
-                                                        <input class="form-select position-relative cursor-default"
-                                                            type="text" readonly id="paymentTerms" i18n-placeholder
-                                                            placeholder="Payment Terms" [(ngModel)]="order.paymentTerms"
-                                                            ngbDropdownToggle />
-
-                                                        <div ngbDropdownMenu aria-labelledby="paymentTerms">
-                                                            <a href="javascript:void(0)"
-                                                                *ngFor="let item of paymentTermsList" ngbDropdownItem
-                                                                (click)="dropdownSelect(item.txtName)">{{item.txtName}}</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <label class="form-label" i18n>Cost Code</label>
                                                     <span
                                                         class="float-end btn-text-12 text-primary cursor-pointer line-24"
@@ -306,33 +264,13 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <label class="form-label" i18n>Invoice Number</label>
-                                                    <input class="form-control" type="text" id="invoiceNumber"
-                                                        [(ngModel)]="order.invoiceNumber" required i18n-placeholder
-                                                        placeholder="Invoice Number" />
-                                                </div>
-
                                             </div>
                                             <div class="row mt-2-1">
-                                                <div class="col-md-8">
+                                                <div class="col-md-12">
                                                     <label class="form-label" i18n>Notes & Description</label>
                                                     <span class="float-end text-typeblack80">Optional</span>
-                                                    <input class="form-control" type="text" id="notes"
-                                                        [(ngModel)]="order.notes" required i18n-placeholder
-                                                        placeholder="Notes" />
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label class="form-label" i18n>Invoice Due Date</label>
-                                                    <input class="form-control" type="date" id="dueDate"
-                                                        [(ngModel)]="order.indvoicedueDate" required i18n-placeholder
-                                                        placeholder="Due date on invoice"
-                                                        [ngClass]="{'is-invalid':orderError.indvoicedueDate == 0}" />
-                                                    <div *ngIf="orderError.indvoicedueDate == 0"
-                                                        class="invalid-feedback" i18n>
-                                                        <i class="fe-alert-triangle invalid-feedback-icon"></i>
-                                                        Invoiced Due Date required
-                                                    </div>
+                                                    <textarea class="form-control" type="text" id="notes" style="height: 131px;" placeholder="Notes" [(ngModel)]="order.notes">
+                                                    </textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -534,6 +472,7 @@
                                                                 <th>Price</th>
                                                                 <th>Amount</th>
                                                                 <th>Tax</th>
+                                                                <th>Notes</th>
                                                                 <!-- <th>Notes</th> -->
                                                                 <th *ngIf="order.id > 0" style="width: 110px;">Last
                                                                     updated</th>
@@ -579,6 +518,10 @@
                                                                 <td *ngIf="order.id > 0">
                                                                     <span *ngIf="item.modifiedDate">{{item.modifiedDate
                                                                         | date: 'MM/dd/yy HH:mm:ss' | amTimeAgo}}</span>
+                                                                </td>
+                                                                <td>
+                                                                    <input class="form-control" type="text"
+                                                                        [(ngModel)]="item.notes" />
                                                                 </td>
                                                                 <td>
                                                                     <i class="fe-copy cursor-pointer"
@@ -635,13 +578,21 @@
                     </li>
                     <li [ngbNavItem]="2">
                         <a ngbNavLink>
+                            Bills
+                        </a>
+                        <ng-template ngbNavContent class="d-flex flex-column">
+                            <app-order-bills></app-order-bills>
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="3">
+                        <a ngbNavLink>
                             Attachments
                         </a>
                         <ng-template ngbNavContent class="d-flex flex-column">
                             <app-attachments></app-attachments>
                         </ng-template>
                     </li>
-                    <li [ngbNavItem]="3">
+                    <li [ngbNavItem]="4">
                         <a ngbNavLink>
                             Activity
                         </a>

@@ -51,5 +51,8 @@ import { PayingBillComponent } from './paying-bill/paying-bill.component';
   providers:[
     provideNgxMask()
   ],
+  exports:[
+    InvoiceAddComponent
+  ]
 })
 export class InvoiceModule { }

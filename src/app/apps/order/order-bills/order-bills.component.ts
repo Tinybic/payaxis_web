@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import {
   NgbCalendar,
   NgbDate,
@@ -13,11 +14,11 @@ import { vendor_list } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 
 @Component({
-  selector: 'app-invoice-list',
-  templateUrl: './invoice-list.component.html',
-  styleUrls: ['./invoice-list.component.scss'],
+  selector: 'app-order-bills',
+  templateUrl: './order-bills.component.html',
+  styleUrls: ['./order-bills.component.scss'],
 })
-export class InvoiceListComponent {
+export class OrderBillsComponent {
   @ViewChild('addModal') addModal: any;
 
   addModalRef;
@@ -47,10 +48,14 @@ export class InvoiceListComponent {
     private apolloService: ApolloService,
     private modalService: NgbModal,
     private toastrService: ToastrService,
-    private calendar: NgbCalendar
+    private calendar: NgbCalendar,
+    private activatedRoute: ActivatedRoute
   ) {}
-
+  idOrder = 0;
   ngOnInit(): void {
+    this.activatedRoute.params.subscribe((params) => {
+      this.idOrder = parseInt(params['id']);
+    });
     if (localStorage.getItem('idcompany')) {
       this.getList();
       this.getProjectList();
@@ -257,28 +262,32 @@ export class InvoiceListComponent {
   }
 
   getList() {
-    this.apolloService
-      .query(projectbill_list, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
-        idProject: 0,
-        idVendor: 0,
-        idOrder1: 0
-      })
-      .then((res) => {
-        const result = res.projectbill_list;
-        this.invoiceList = result.data;
+    if (this.idOrder > 0) {
+      this.apolloService
+        .query(projectbill_list, {
+          idCompany: parseInt(localStorage.getItem('idcompany')),
+          idProject: 0,
+          idVendor: 0,
+          idOrder1: this.idOrder,
+        })
+        .then((res) => {
+          const result = res.projectbill_list;
+          this.invoiceList = result.data;
 
-        this.invoiceList.forEach((item) => {
-          if (item.account.length > 4)
-            item.account =
-              'ACH * ' + item.account.substring(item.account.length - 4);
-          else {
-            item.account = 'ACH * ' + item.account;
-          }
+          this.invoiceList.forEach((item) => {
+            if (item.account.length > 4)
+              item.account =
+                'ACH * ' + item.account.substring(item.account.length - 4);
+            else {
+              item.account = 'ACH * ' + item.account;
+            }
+          });
+          this.INVOICELIST = JSON.parse(JSON.stringify(this.invoiceList));
+          this.loading = false;
         });
-        this.INVOICELIST = JSON.parse(JSON.stringify(this.invoiceList));
-        this.loading = false;
-      });
+    } else {
+      this.loading = false;
+    }
   }
 
   openInvoiceModal() {
