@@ -30,6 +30,7 @@ import { VendorInviteComponent } from './vendor-invite/vendor-invite.component';
     SharedModule,
     AvatarModule,
     NgbTooltipModule
-  ]
+  ],
+  exports:[VendorInviteComponent]
 })
 export class VendorModule { }
