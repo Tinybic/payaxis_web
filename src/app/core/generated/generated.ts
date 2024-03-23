@@ -166,6 +166,8 @@ export type Mutation = {
   projectorder_deactivate: Projectorderbooleanresult;
   /** delete projectorder file */
   projectorder_deletefile: Projectorderbooleanresult;
+  /** duplicate project order */
+  projectorder_duplicate: Projectorderresult;
   /** new project order */
   projectorder_new: Projectorderresult;
   /** update project order */
@@ -701,6 +703,14 @@ export type MutationProjectorder_DeletefileArgs = {
 
 
 /** structure to handle table sms */
+export type MutationProjectorder_DuplicateArgs = {
+  id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
 export type MutationProjectorder_NewArgs = {
   costCode: Scalars['costCode_String_NotNull_maxLength_15']['input'];
   idCompany: Scalars['Int']['input'];
@@ -1125,6 +1135,8 @@ export type Query = {
   profile_info: Resprofile;
   /** get project members for project */
   project_members: Projectmemberresult;
+  /** get project vendor */
+  project_vendors: Vendorlist;
   /** get projectpayment list */
   projectbill_list: Projectpaymentlist;
   /** get project budget list */
@@ -1151,6 +1163,8 @@ export type Query = {
   projectorder_related: Projectorderlist;
   /** get projectpayment attachment */
   projectpayment_attachment: Paymentfilelist;
+  /** get projectpayment list */
+  projectpayment_history: Projectpaymentlist;
   /** get projectpayment info */
   projectpayment_info: Projectpaymentinforesult;
   /** get projectpayment list */
@@ -1282,6 +1296,12 @@ export type QueryProject_MembersArgs = {
 };
 
 
+export type QueryProject_VendorsArgs = {
+  idCompany: Scalars['Int']['input'];
+  idProject: Scalars['Int']['input'];
+};
+
+
 export type QueryProjectbill_ListArgs = {
   idCompany: Scalars['Int']['input'];
   idOrder1?: InputMaybe<Scalars['Int']['input']>;
@@ -1336,6 +1356,7 @@ export type QueryProjectorder_ListArgs = {
   idCategory?: InputMaybe<Scalars['Int']['input']>;
   idCompany: Scalars['Int']['input'];
   idProject: Scalars['Int']['input'];
+  idVendor?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -1360,6 +1381,15 @@ export type QueryProjectorder_RelatedArgs = {
 export type QueryProjectpayment_AttachmentArgs = {
   idCompany: Scalars['Int']['input'];
   idPayment: Scalars['Int']['input'];
+};
+
+
+export type QueryProjectpayment_HistoryArgs = {
+  dateFrom: Scalars['String']['input'];
+  dateTo: Scalars['String']['input'];
+  idCompany: Scalars['Int']['input'];
+  idProject: Scalars['Int']['input'];
+  idVendor?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -2603,10 +2633,12 @@ export type Token = {
 export type Vendor_Account = {
   __typename?: 'vendor_account';
   active: Scalars['Boolean']['output'];
+  amountDue?: Maybe<Scalars['Float']['output']>;
   avatar: Scalars['String']['output'];
   costcodes?: Maybe<Array<_Vendor_Costcode>>;
   createdBy: Scalars['Int']['output'];
   createdDate: Scalars['String']['output'];
+  currentDue?: Maybe<Scalars['Float']['output']>;
   discount: Scalars['Float']['output'];
   email: Scalars['String']['output'];
   federalId: Scalars['String']['output'];
@@ -2631,6 +2663,8 @@ export type Vendor_Account = {
   vendorName: Scalars['String']['output'];
   vendorType: Scalars['String']['output'];
   website: Scalars['String']['output'];
+  ytdBills?: Maybe<Scalars['Int']['output']>;
+  ytdPayments?: Maybe<Scalars['Float']['output']>;
 };
 
 /** structure to handle table vendor_contact */

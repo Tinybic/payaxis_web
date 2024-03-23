@@ -226,6 +226,9 @@
                 <a ngbNavLink>
                     Vendors
                 </a>
+                <ng-template ngbNavContent>
+                    <app-project-vendor [idProject]="project.id"></app-project-vendor>
+                </ng-template>
             </li>
             <li [ngbNavItem]="4">
                 <a ngbNavLink>

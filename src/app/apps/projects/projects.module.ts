@@ -26,6 +26,9 @@ import { TagInputModule } from 'ngx-chips';
 import { ProjectOrdersComponent } from './project-orders/project-orders.component';
 import { SimplebarAngularModule } from "simplebar-angular";
 import { BudgetDetailComponent } from './budget-detail/budget-detail.component';
+import { ProjectVendorComponent } from './project-vendor/project-vendor.component';
+import { VendoraddModule } from '../vendor/vendoradd/vendoradd.module';
+import { VendorModule } from '../vendor/vendor.module';
 
 
 @NgModule({
@@ -41,6 +44,7 @@ import { BudgetDetailComponent } from './budget-detail/budget-detail.component';
     ProjectTeamComponent,
     ProjectOrdersComponent,
     BudgetDetailComponent,
+    ProjectVendorComponent,
   ],
   imports: [
     CommonModule,
@@ -60,7 +64,9 @@ import { BudgetDetailComponent } from './budget-detail/budget-detail.component';
     DropdowndataModule,
     TagInputModule,
     SimplebarAngularModule,
-    NgbDatepickerModule
+    NgbDatepickerModule,
+    VendoraddModule,
+    VendorModule
   ],
   providers:[
     provideNgxMask()
