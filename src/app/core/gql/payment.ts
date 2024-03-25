@@ -194,6 +194,68 @@ const companypayment_verify = gql`
   }
 `;
 
+const projectpayment_history = gql`
+  query projectpayment_history(
+    $idCompany: Int!
+    $idProject: Int!
+    $idVendor: Int
+    $dateFrom: String!
+    $dateTo: String!) {
+      projectpayment_history(
+        idCompany: $idCompany
+        idProject: $idProject
+        idVendor: $idVendor
+        dateFrom: $dateFrom
+        dateTo: $dateTo
+      ) {
+        error
+        code
+        message
+        data {
+          id
+          revision
+          createdBy
+          createdDate
+          modifiedBy
+          modifiedDate
+          idCompany
+          idProject
+          projectName
+          idVendor
+          vendorName
+          vendorType
+          primaryContact
+          email
+          phone
+          avatar
+          senderFirstname
+          senderLastname
+          senderAvatar
+          senderEmail
+          idOrder1
+          orderNumber
+          orderDue
+          orderStatus
+          idCompany_payment
+          account
+          payType
+          holderName
+          billNumber
+          costCode
+          costCodeName
+          sentDate
+          dueDate
+          paymentTerms
+          amount
+          txtNotes
+          paidDate
+          status
+          active
+        }
+      }
+  }
+`;
+
 export {
   companypayment_new,
   companypayment_list,
@@ -203,4 +265,5 @@ export {
   bankname_routing,
   companypayment_release,
   companypayment_verify,
+  projectpayment_history
 };

@@ -111,11 +111,12 @@ export class PayingBillComponent {
   
   getDeliveryDateRange(){
     if(this.toDate){
-      if(this.toDate.year == this.fromDate.year){
+      const thisYear = new Date().getFullYear();
+      if(this.toDate.year == thisYear && this.fromDate.year == thisYear){
         if(this.toDate.month == this.fromDate.month){
           return formatDate(this.fromDate.month + '-' + this.fromDate.day, 'MMM d', 'en') + ' - ' + this.toDate.day + ',' + this.fromDate.year;
         } else{
-          return formatDate(this.fromDate.month + '-' + this.fromDate.day, 'MMM d', 'en') + ' - ' + formatDate(this.toDate.month + '-' + this.toDate.day, 'MMM d', 'en') + ', ' + this.fromDate.year;
+          return formatDate(this.fromDate.month + '-' + this.fromDate.day, 'MMM d', 'en') + ' - ' + formatDate(this.toDate.month + '-' + this.toDate.day, 'MMM d', 'en');
         }
       } else{
         return formatDate(this.fromDate.year + '-' + this.fromDate.month + '-' + this.fromDate.day, 'MMM d, y', 'en') + ' - ' + formatDate(this.toDate.year + '-' + this.toDate.month + '-' + this.toDate.day, 'MMM d, y', 'en');
