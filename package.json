@@ -27,6 +27,7 @@
     "@apollo/client": "^3.7.16",
     "@capacitor-community/apple-sign-in": "^5.0.0",
     "@circlon/angular-tree-component": "^11.0.4",
+    "@ctrl/ngx-csv": "^6.0.0",
     "@fullcalendar/angular": "^6.1.8",
     "@fullcalendar/bootstrap": "^6.1.8",
     "@fullcalendar/core": "^6.1.8",

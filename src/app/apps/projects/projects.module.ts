@@ -26,6 +26,9 @@ import { TagInputModule } from 'ngx-chips';
 import { ProjectOrdersComponent } from './project-orders/project-orders.component';
 import { SimplebarAngularModule } from "simplebar-angular";
 import { BudgetDetailComponent } from './budget-detail/budget-detail.component';
+import { PaymentHistoryComponent } from './payment-history/payment-history.component';
+import { MomentModule } from "ngx-moment";
+import { CsvModule } from "@ctrl/ngx-csv";
 
 
 @NgModule({
@@ -41,6 +44,7 @@ import { BudgetDetailComponent } from './budget-detail/budget-detail.component';
     ProjectTeamComponent,
     ProjectOrdersComponent,
     BudgetDetailComponent,
+    PaymentHistoryComponent,
   ],
   imports: [
     CommonModule,
@@ -60,7 +64,9 @@ import { BudgetDetailComponent } from './budget-detail/budget-detail.component';
     DropdowndataModule,
     TagInputModule,
     SimplebarAngularModule,
-    NgbDatepickerModule
+    NgbDatepickerModule,
+    MomentModule,
+    CsvModule,
   ],
   providers:[
     provideNgxMask()
