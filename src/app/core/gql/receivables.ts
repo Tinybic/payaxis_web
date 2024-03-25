@@ -208,11 +208,17 @@ const projectpayment_list = gql`
 `;
 
 const projectbill_list = gql`
-  query projectbill_list($idCompany: Int!, $idProject: Int!, $idVendor: Int!) {
+  query refactored680(
+    $idCompany: Int!
+    $idProject: Int!
+    $idVendor: Int!
+    $idOrder1: Int
+  ) {
     projectbill_list(
       idCompany: $idCompany
       idProject: $idProject
       idVendor: $idVendor
+      idOrder1: $idOrder1
     ) {
       error
       code
@@ -245,7 +251,7 @@ const projectbill_list = gql`
         orderNumber
         orderDue
         orderStatus
-        costcodes {
+        costcodes{
           costCode
           txtName
         }
@@ -254,14 +260,16 @@ const projectbill_list = gql`
         payType
         holderName
         billNumber
+        costCode
+        costCodeName
         sentDate
         dueDate
         paymentTerms
         amount
         txtNotes
+        paidDate
         status
         active
-        paidDate
       }
     }
   }
@@ -316,6 +324,7 @@ const projectpayment_pay = gql`
     $idCompany: Int!
     $id: Int!
     $revision: Int!
+    $idVendor_payment: Int
     $paidDate: String!
     $amount: Float!
   ) {
@@ -323,6 +332,7 @@ const projectpayment_pay = gql`
       idCompany: $idCompany
       id: $id
       revision: $revision
+      idVendor_payment: $idVendor_payment
       paidDate: $paidDate
       amount: $amount
     ) {

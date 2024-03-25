@@ -29,6 +29,9 @@ import { BudgetDetailComponent } from './budget-detail/budget-detail.component';
 import { PaymentHistoryComponent } from './payment-history/payment-history.component';
 import { MomentModule } from "ngx-moment";
 import { CsvModule } from "@ctrl/ngx-csv";
+import { ProjectVendorComponent } from './project-vendor/project-vendor.component';
+import { VendoraddModule } from '../vendor/vendoradd/vendoradd.module';
+import { VendorModule } from '../vendor/vendor.module';
 
 
 @NgModule({
@@ -45,6 +48,7 @@ import { CsvModule } from "@ctrl/ngx-csv";
     ProjectOrdersComponent,
     BudgetDetailComponent,
     PaymentHistoryComponent,
+    ProjectVendorComponent,
   ],
   imports: [
     CommonModule,
@@ -67,6 +71,8 @@ import { CsvModule } from "@ctrl/ngx-csv";
     NgbDatepickerModule,
     MomentModule,
     CsvModule,
+    VendoraddModule,
+    VendorModule
   ],
   providers:[
     provideNgxMask()

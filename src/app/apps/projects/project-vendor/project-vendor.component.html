@@ -1,0 +1,205 @@
+<div class="row mt-3">
+    <div class="col-md-4">
+        <span class="font-20 bold-600">{{vendorlist.length}} Vendors</span>
+
+        <div class="d-inline-block dropdown ms-1-1" ngbDropdown>
+            <a class="dropdown-outline" href="javascript:void(0)" ngbDropdownToggle>
+                Status
+                <b *ngIf="filterList.length>0 && filterList.length < 5">{{filterList.length}} selected</b>
+                <b *ngIf="filterList.length == 0||filterList.length == 5">All</b>
+                <i class="fe-chevron-down font-16 ms-1-1"></i>
+            </a>
+            <div class="dropdown-menu" ngbDropdownMenu>
+                <div ngbDropdownItem (click)="filterVendorList('active')">
+                    <div class="form-check text-center d-flex align-items-center">
+                        <input type="checkbox" class="form-check-input" id="activedropdownCheck"
+                            [checked]="filterList.includes('active')">
+                        <div class="d-inline-block activeTag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">
+                            Active</div>
+                    </div>
+                </div>
+                <div ngbDropdownItem (click)="filterVendorList('invoiceOpen')">
+                    <div class="form-check text-center d-flex align-items-center">
+                        <input type="checkbox" class="form-check-input" id="invoiceOpendropdownCheck"
+                            [checked]="filterList.includes('invoiceOpen')">
+                        <div
+                            class="d-inline-block invoiceopenTag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">
+                            Invoice Open</div>
+                    </div>
+                </div>
+                <div ngbDropdownItem (click)="filterVendorList('overdue')">
+                    <div class="form-check text-center d-flex align-items-center">
+                        <input type="checkbox" class="form-check-input" id="overduedropdownCheck"
+                            [checked]="filterList.includes('overdue')">
+                        <div
+                            class="d-inline-block overdueTag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">
+                            Overdue</div>
+                    </div>
+                </div>
+                <div ngbDropdownItem (click)="filterVendorList('draft')">
+                    <div class="form-check text-center d-flex align-items-center">
+                        <input type="checkbox" class="form-check-input" id="DraftdropdownCheck"
+                            [checked]="filterList.includes('draft')">
+                        <div class="d-inline-block draftTag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">
+                            Draft</div>
+                    </div>
+                </div>
+                <div ngbDropdownItem (click)="filterVendorList('archived')">
+                    <div class="form-check text-center d-flex align-items-center">
+                        <input type="checkbox" class="form-check-input" id="ArchiveddropdownCheck"
+                            [checked]="filterList.includes('archived')">
+                        <div
+                            class="d-inline-block archivedTag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">
+                            Archived</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-8 text-end">
+        <div class="d-inline-block ms-1-1">
+            <input class="form-control form-search" type="search" placeholder="Search here..." [(ngModel)]="keywords" />
+        </div>
+        <div ngbDropdown class="d-inline-block  ms-2-1">
+            <button class="btn btn-link" ngbDropdownToggle><i class="fe-mail me-1-1"></i>Invite<i
+                    class="fe-chevron-down ms-1-1"></i></button>
+
+            <div ngbDropdownMenu style="width: 255px; ">
+                <div class="line-32 bold-600 cursor-pointer" (click)="inviteVendorModal()" ngbDropdownItem>
+                    <i class="fe-mail me-1-1"></i> Send Invite
+                </div>
+                <div class="line-32 bold-600 cursor-pointer" ngbDropdownItem>
+                    <i class="fe-copy me-1-1"></i> Copy link to clipboard
+                </div>
+            </div>
+        </div>
+
+        <div ngbDropdown class="d-inline-block  ms-2-1">
+            <button class="btn btn-outline-primary" ngbDropdownToggle><i class="fe-upload me-1-1"></i>Import<i
+                    class="fe-chevron-down ms-1-1"></i></button>
+
+            <input id="csvupload" type="file" accept=".csv" class="d-none" />
+            <div ngbDropdownMenu style="width: 255px; ">
+                <div class="line-32 bold-600 cursor-pointer" *ngIf="canImport" (click)="importFromQB()" ngbDropdownItem>
+                    Import from
+                    QuickBooks <img class="float-end mt-1" src="/assets/images/icon/qb.png" /></div>
+                <div class="line-32 bold-600 cursor-pointer" ngbDropdownItem>Import from CSV <img class="float-end mt-1"
+                        src="/assets/images/icon/csv.png" /></div>
+            </div>
+        </div>
+        <button class="btn btn-primary ms-2-1" style="margin-right: 2px; margin-top: 2px;" (click)="openAddModal()"
+            *ngIf="canEdit">New Vendor</button>
+    </div>
+</div>
+
+
+<div class="row mt-2-1">
+    <div class="col-md-12">
+        <table class="advanced-table">
+            <thead>
+                <tr>
+                    <th class="row_select"><input class="form-check" type="checkbox" /></th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortColumn == 'vendorName' && direction == 'asc','sorting_desc':sortColumn == 'vendorName' && direction == 'desc'}"
+                        (click)="onSort('vendorName')">Name</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortColumn == 'status' && direction == 'asc','sorting_desc':sortColumn == 'status' && direction == 'desc'}"
+                        (click)="onSort('status')">Status</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortColumn == 'costcodes.txtName' && direction == 'asc','sorting_desc':sortColumn == 'costcodes.txtName' && direction == 'desc'}"
+                        (click)="onSort('costcodes.txtName')">Cost Code</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortColumn == 'ytdBills' && direction == 'asc','sorting_desc':sortColumn == 'ytdBills' && direction == 'desc'}"
+                        (click)="onSort('ytdBills')">YTD Bills</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortColumn == 'currentDue' && direction == 'asc','sorting_desc':sortColumn == 'currentDue' && direction == 'desc'}"
+                        (click)="onSort('currentDue')">Currently Due Bills</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortColumn == 'amountDue' && direction == 'asc','sorting_desc':sortColumn == 'amountDue' && direction == 'desc'}"
+                        (click)="onSort('amountDue')">Amount Due</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortColumn == 'ytdPayments' && direction == 'asc','sorting_desc':sortColumn == 'ytdPayments' && direction == 'desc'}"
+                        (click)="onSort('ytdPayments')">Payments YTD</th>
+                    <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortColumn == 'active' && direction == 'asc','sorting_desc':sortColumn == 'active' && direction == 'desc'}"
+                        (click)="onSort('active')">Action</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="!loading">
+                <tr class="cursor-pointer" *ngFor="let item of vendorlist | callback:filterTable; let i = index"
+                    (click)="openEditModal(item.id)">
+                    <td><input class="form-check" type="checkbox" /></td>
+                    <td>
+                        <div class="d-flex flex-row bold-600 ">
+                            {{item.vendorName}}
+                        </div>
+                    </td>
+                    <td>
+                        <div
+                            class="d-inline-block {{item.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
+                            {{item.status}}</div>
+                    </td>
+                    <td>{{item.costcodes.txtName}}
+                    </td>
+                    <td>{{item.ytdBills}}</td>
+                    <td>{{item.currentDue | currency}}</td>
+                    <td>{{item.amountDue | currency}}</td>
+                    <td>{{item.ytdPayments | currency}}</td>
+                    <td><button class="btn btn-primary btn-text-12"
+                            style="padding: 8px 16px;">
+                            Pay Bill
+                        </button></td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="loading" class="bg-white">
+                <tr>
+                    <td colspan="9">
+                        <div style="position: relative; height: 400px;">
+                            <app-ui-preloader [display]="loading"></app-ui-preloader>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="vendorlist.length==0 && !loading" class="bg-white">
+                <tr *ngIf="!loading && vendorlist.length==0 && canEdit">
+                    <td colspan="9" class="text-center">
+                        <div class="Paragraph-1 text-typeblackdeactivated bold-600  mt-40 ">No Vendors added yet</div>
+                        <div class="Paragraph-2 text-typeblackdeactivated mt-1-1">Create new vendor in a few clicks
+                        </div>
+                        <div class="mt-1-1"> <button class="btn btn-primary ms-2-1" (click)="openAddModal()"><i
+                                    class="fe-plus-square me-1-1"></i>New Vendor</button></div>
+
+                        <div class="Paragraph-2 text-typeblackdeactivated mt-40 ">or import items from the file</div>
+
+                        <div class="d-flex justify-content-around importContain mb-3">
+                            <div class="importDiv" (click)="importFromQB()" *ngIf="canImport">
+                                <img class="mt-2-1" src="/assets/images/icon/qb.png" />
+                                <div class="text-primary bold-600 mt-2-1">Import from QuickBooks</div>
+                            </div>
+                            <div class="importDiv">
+                                <img class="mt-2-1" src="/assets/images/icon/csv.png" />
+                                <div class="text-primary bold-600 mt-2-1">Import from CSV</div>
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot style="height: 16px;">
+                <tr>
+                    <td colspan="9">&nbsp;</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<ng-template #inviteVendor let-modal>
+    <app-vendor-invite [modalRef] = "inviteVendorRef"></app-vendor-invite>
+</ng-template>
+
+<ng-template #addVendor let-modal>
+    <app-vendoradd class="flex-column-1"
+        style="width: calc(100vw - 216px); padding:32px 32px 0; background-color: #F8F9FC;overflow-y: auto;"
+        [modalRef]="modalRef" [idvendor]="idvendor"></app-vendoradd>
+</ng-template>

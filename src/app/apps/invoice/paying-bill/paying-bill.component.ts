@@ -4,6 +4,7 @@ import { ApolloService } from "../../../core/service/apollo.service";
 import { ToastrService } from "ngx-toastr";
 import { formatDate, formatCurrency } from "@angular/common";
 import { projectpayment_pay } from "../../../core/gql/receivables";
+import { vendorpayment_list } from "../../../core/gql/vendor-payment";
 
 @Component({
   selector: 'app-paying-bill',
@@ -34,6 +35,9 @@ export class PayingBillComponent {
   dueDate: NgbDate | null = null;
   blueDate: NgbDate | null = null;
   
+  
+  paymentList = [];
+  
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
@@ -46,6 +50,7 @@ export class PayingBillComponent {
     this.amount.value = parseFloat(this.payment.amount).toFixed(2);
     this.dueDate = NgbDate.from(this.ngbDateFormater.parse(this.payment.dueDate));
     this.onDateSelection(this.currentDate);
+    this.getPaymentList();
   }
   
   getRemainingOrderBalance(){
@@ -126,11 +131,35 @@ export class PayingBillComponent {
       || (date.after(this.fromDate) && date.before(this.toDate)))
   }
   
+  
+  getPaymentList(){
+    this.apolloService.query(vendorpayment_list, {
+      idCompany: parseInt(this.payment.idCompany),
+      idVendor: parseInt(this.payment.idVendor)
+    }).then((res) => {
+      const result = res.vendorpayment_list;
+      if(!result.error){
+        const list = result.data;
+        if(list.length > 0){
+          list.map((item) => {
+            if(item.defaultPay){
+              this.paymentList.push(item);
+            }
+          })
+          if(this.paymentList.length == 0){
+            this.paymentList.push(list[0]);
+          }
+        }
+      }
+    });
+  }
+  
   savePayingBill(){
     let params = {
       idCompany: parseInt(this.payment.idCompany),
       id: parseInt(this.payment.id),
       revision: parseInt(this.payment.revision),
+      idVendor_payment: parseInt(this.payment.idVendor),
       paidDate: this.blueDate.year + '-' + this.blueDate.month + '-' + this.blueDate.day,
       amount: this.parseFloat(this.amount.value)
     }

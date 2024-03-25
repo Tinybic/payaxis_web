@@ -141,13 +141,16 @@
                         </div>
                     </div>
                     <hr class="mt-2-1 mb-1-1" style="border-top: 1px solid #E1E6EF;">
+                    <div *ngIf="paymentList.length == 0" class="font-16 text-warning">
+                        <i class="fe-alert-circle font-24"></i>
+                        No payment method available, please go to Vendors and add a payment method for the vendor.</div>
                     <div class="d-flex flex-row justify-content-between mb-1-1">
                         <div class="search-text" style="color: #4B5563;">Vendor default payment method</div>
-                        <div class="Subtitle-2 text-end font-12">Check</div>
+                        <div class="Subtitle-2 text-end font-12">{{paymentList.length > 0 ? paymentList[0].payType : '****'}}</div>
                     </div>
                     <div class="d-flex flex-row justify-content-between mb-1-1">
                         <div class="search-text" style="color: #4B5563;">Payment method</div>
-                        <div class="Subtitle-2 text-end font-12">Check from Chase 4556</div>
+                        <div class="Subtitle-2 text-end font-12">{{paymentList.length > 0 ? paymentList[0].payType + 'from' + paymentList[0].account : '****'}}</div>
                     </div>
                     <div class="d-flex flex-row justify-content-between mb-1-1">
                         <div class="search-text" style="color: #4B5563;">Estimate payment delivery</div>
@@ -197,7 +200,7 @@
     </div>
     
     <div class="d-grid" style="width: calc(100% - 48px);position: fixed;bottom: 24px;right: 24px;z-index: 10;">
-        <button class="btn mb-1-1 {{ step === 3 ? 'btn-success' : 'btn-primary'}}" (click)="nextStep('continue')"
+        <button class="btn mb-1-1 {{ step === 3 ? 'btn-success' : 'btn-primary'}}" (click)="nextStep('continue')" [disabled]="step === 3 && paymentList.length == 0"
                 style="height: 44px;border: none;">
             {{btnOK}}
         </button>
