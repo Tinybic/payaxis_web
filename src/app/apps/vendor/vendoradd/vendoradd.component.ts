@@ -300,13 +300,13 @@ export class VendoraddComponent {
       primaryContact:
         this.vendor.primaryContact.trim().length == 0 ? true : false,
       email: this.vendor.email.trim().length == 0 ? true : false,
-      costcode: this.vendor.vendorcostcodes.length == 0 ? true : false,
+      costcode: false,
     };
 
     if (
       !this.vendorError.vendorName &&
       !this.vendorError.primaryContact &&
-      !this.vendorError.email
+      !this.vendorError.email 
     ) {
       let gql = vendor_new;
       let data = {};
