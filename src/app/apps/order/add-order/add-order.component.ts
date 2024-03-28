@@ -22,6 +22,7 @@ import { vendor_list } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { EventService } from 'src/app/core/service/event.service';
 import { HttpService } from 'src/app/core/service/http.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-add-order',
@@ -42,6 +43,7 @@ export class AddOrderComponent {
   locale = 'en-US';
 
   myDate = new Date();
+  nextDate = moment(this.myDate).add(1,'month').toDate()
 
 
   order = {
@@ -54,7 +56,7 @@ export class AddOrderComponent {
     idReason: 0,
     invoiceNumber: '',
     invoicedDate: formatDate(this.myDate, this.format, this.locale),
-    indvoicedueDate: formatDate(this.myDate, this.format, this.locale),
+    indvoicedueDate: formatDate(this.nextDate, this.format, this.locale),
     paymentTerms: '',
     costCode: '',
     notes: '',
