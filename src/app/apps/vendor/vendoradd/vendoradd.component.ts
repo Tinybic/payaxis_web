@@ -1,4 +1,10 @@
-import { Component, Input, Output,EventEmitter, ViewChild } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+} from '@angular/core';
 import {
   NgbActiveModal,
   NgbModal,
@@ -46,6 +52,7 @@ export class VendoraddComponent {
   @ViewChild('inviteVendor') inviteVendor: any;
   @ViewChild('archiveModal') archiveModal: any;
   @ViewChild('instance', { static: true }) instance!: NgbTypeahead;
+  @ViewChild('enteremailModal') enteremailModal: any;
 
   tabs1 = 1;
   vendor = {
@@ -67,6 +74,7 @@ export class VendoraddComponent {
     idInvitedCompany: 0,
     vendorcostcodes: [],
     vendorfiles: [],
+    idCompanylist: [],
   };
 
   idInvitedCompany = 0;
@@ -90,7 +98,7 @@ export class VendoraddComponent {
     vendorName: false,
     primaryContact: false,
     email: false,
-    costcode: false
+    costcode: false,
   };
   keywords = '';
   id = 0;
@@ -113,6 +121,13 @@ export class VendoraddComponent {
   ) {}
 
   ngOnInit(): void {
+    this.vendor.email = '';
+    if (this.idvendor == 0) {
+      setTimeout(() => {
+        // this.modalRef.close();
+        this.openEnterEmailModal();
+      }, 100);
+    }
     this.statesList = STATES;
     this.getCostCodeList();
     this.getVendorInfo();
@@ -145,6 +160,7 @@ export class VendoraddComponent {
               idInvitedCompany: result.data.vendor.idInvitedCompany,
               vendorcostcodes: [],
               vendorfiles: result.data.vendorfiles,
+              idCompanylist: [],
             };
 
             this.idInvitedCompany = result.data.vendor.idInvitedCompany;
@@ -242,12 +258,11 @@ export class VendoraddComponent {
 
     return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
       map((term) =>
-        (term === ''
+        term === ''
           ? this.statesList
           : this.statesList.filter(
               (v) => v.toLowerCase().indexOf(term.toLowerCase()) > -1
             )
-        )
       )
     );
   };
@@ -295,18 +310,19 @@ export class VendoraddComponent {
     try {
       this.cancelRef.close();
     } catch {}
-    this.vendorError = {
-      vendorName: this.vendor.vendorName.trim().length == 0 ? true : false,
-      primaryContact:
-        this.vendor.primaryContact.trim().length == 0 ? true : false,
-      email: this.vendor.email.trim().length == 0 ? true : false,
-      costcode: false,
-    };
-
+    if (this.vendor.idCompanylist.length == 0) {
+      this.vendorError = {
+        vendorName: this.vendor.vendorName.trim().length == 0 ? true : false,
+        primaryContact:
+          this.vendor.primaryContact.trim().length == 0 ? true : false,
+        email: this.vendor.email.trim().length == 0 ? true : false,
+        costcode: false,
+      };
+    }
     if (
       !this.vendorError.vendorName &&
       !this.vendorError.primaryContact &&
-      !this.vendorError.email 
+      !this.vendorError.email
     ) {
       let gql = vendor_new;
       let data = {};
@@ -360,7 +376,7 @@ export class VendoraddComponent {
           message = result.message;
         }
         this.toastrService.info(message, '', {
-          positionClass: 'toast-top-right-order'
+          positionClass: 'toast-top-right-order',
         });
       });
     }
@@ -505,6 +521,7 @@ export class VendoraddComponent {
 
   createVendorList = [];
   findVendorList() {
+    this.emailRef.close();
     this.apolloService
       .query(getassociatedcompany_list, {
         idCompany: parseInt(localStorage.getItem('idcompany')),
@@ -514,10 +531,18 @@ export class VendoraddComponent {
         const result = res.getassociatedcompany_list;
         if (!result.error) {
           this.createVendorList = result.data;
-          if (this.createVendorList.length > 0) {
-            this.openNewVendorModal();
+          if (result.code == 0) {
+            if (this.createVendorList.length > 1) {
+              this.openNewVendorModal();
+            } else if (this.createVendorList.length == 1) {
+              this.emailRef.close();
+              this.CreateNewVendor();
+            } else {
+              this.emailRef.close();
+            }
           } else {
-            this.save();
+            this.toastrService.info(result.message, '');
+            this.modalRef.close();
           }
         }
       });
@@ -538,8 +563,19 @@ export class VendoraddComponent {
 
   newVendorShow = false;
   CreateNewVendor() {
-    this.newVendorRef.close();
+    if (this.newVendorRef) this.newVendorRef.close();
+
+    let idCompanylist = [];
+    if (this.createVendorList.length > 1) {
+      this.createVendorList.forEach((item) => {
+        if (item.selected) idCompanylist.push(item.idInvitedCompany);
+      });
+    } else {
+      idCompanylist.push(this.createVendorList[0].idInvitedCompany);
+    }
+    this.vendor.idCompanylist = idCompanylist;
     this.save();
+
     // this.createVendorList.forEach((item) => {
     //   if (this.vendor.idInvitedCompany == item.idInvitedCompany) {
     //     this.vendor.vendorName = item.companyName;
@@ -548,5 +584,30 @@ export class VendoraddComponent {
     //   }
     // });
     // this.newVendorRef.close();
+  }
+
+  emailRef;
+  openEnterEmailModal() {
+    this.emailRef = this.modalService.open(this.enteremailModal, {
+      backdrop: 'static',
+      size: '443',
+      centered: true,
+    });
+  }
+
+  selectFlag = false;
+
+  selectAll() {
+    if (!this.selectFlag) {
+      this.createVendorList.forEach((item) => (item.selected = true));
+      this.selectFlag = true;
+    } else {
+      this.createVendorList.forEach((item) => (item.selected = false));
+      this.selectFlag = false;
+    }
+  }
+
+  closeAll(){
+    this.modalService.dismissAll();
   }
 }

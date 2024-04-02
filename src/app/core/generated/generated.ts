@@ -948,6 +948,7 @@ export type MutationVendor_InviteArgs = {
 export type MutationVendor_NewArgs = {
   email: Scalars['email_String_NotNull_maxLength_180_format_email']['input'];
   idCompany: Scalars['Int']['input'];
+  idCompanylist?: InputMaybe<Array<Scalars['Int']['input']>>;
   idInvitedCompany?: InputMaybe<Scalars['Int']['input']>;
   phone: Scalars['phone_String_NotNull_maxLength_20']['input'];
   primaryContact: Scalars['primaryContact_String_NotNull_maxLength_50']['input'];
@@ -1169,6 +1170,8 @@ export type Query = {
   projectpayment_info: Projectpaymentinforesult;
   /** get projectpayment list */
   projectpayment_list: Projectpaymentlist;
+  /** get receivable list */
+  receivable_list: Projectorderlist;
   /** query to retrieve an existing row */
   test1_find: Test1;
   /** query to retrieve all existing rows */
@@ -1403,6 +1406,11 @@ export type QueryProjectpayment_ListArgs = {
   idCompany: Scalars['Int']['input'];
   idProject: Scalars['Int']['input'];
   idVendor: Scalars['Int']['input'];
+};
+
+
+export type QueryReceivable_ListArgs = {
+  idCompany: Scalars['Int']['input'];
 };
 
 
