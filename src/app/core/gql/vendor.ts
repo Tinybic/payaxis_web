@@ -1,7 +1,7 @@
 import { gql } from 'apollo-angular';
 
 const vendor_new = gql`
-  mutation refactored594(
+  mutation vendor_new(
     $idCompany: Int!
     $vendorName: vendorName_String_NotNull_maxLength_128!
     $vendorType: vendorType_String_NotNull_maxLength_50!
@@ -15,6 +15,7 @@ const vendor_new = gql`
     $txtState: txtState_String_NotNull_maxLength_80!
     $txtZipcode: txtZipcode_String_NotNull_maxLength_10!
     $idInvitedCompany: Int
+    $idCompanylist: [Int!]
     $vendorcostcodes: [vendorcostcode!]
     $vendorfiles: [vendorfile!]
   ) {
@@ -32,6 +33,7 @@ const vendor_new = gql`
       txtState: $txtState
       txtZipcode: $txtZipcode
       idInvitedCompany: $idInvitedCompany
+      idCompanylist: $idCompanylist
       vendorcostcodes: $vendorcostcodes
       vendorfiles: $vendorfiles
     ) {
