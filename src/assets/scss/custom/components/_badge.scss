@@ -68,7 +68,7 @@ $value in $theme-colors {
     width: 128px;
 }
 
-.overdueTag, .pastdueTag, .invoiceoverdueTag, .errorTag, .rejectedTag {
+.overdueTag, .pastdueTag, .invoiceoverdueTag, .errorTag, .rejectedTag, .declinedTag {
     background-color: #F87171;
     border-radius: 8px;
     color: #ffffff !important;

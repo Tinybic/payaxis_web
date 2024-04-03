@@ -632,7 +632,7 @@
                     class="btn btn-primary ms-1-1" style="border:0px; box-shadow: none;">Send Receipt</button></div>
             <div class="d-inline-block" *ngIf="order.status !== 'Paid'"><button type="button"
                     class="btn btn-primary ms-1-1" style="border:0px; box-shadow: none;">Pay Invoice</button></div>
-            <div class="d-inline-block" *ngIf="order.status != 'Paid'"><button type="button"
+            <div class="d-inline-block" *ngIf="order.status == 'Declined' || order.status == 'Draft'"><button type="button"
                     class="btn btn-primary ms-1-1"
                     style="border:1px solid #ffffff; box-shadow: none;background-color: transparent;" (click) = "projectorderSend()">Send
                     Order</button></div>
