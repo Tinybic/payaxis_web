@@ -1,8 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgbCalendar, NgbDate, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { companypayment_list } from 'src/app/core/gql/payment';
-import { projectpayment_list } from 'src/app/core/gql/receivables';
+import { projectpayment_list, receivable_list } from 'src/app/core/gql/receivables';
 import { vendor_list } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 
@@ -39,7 +40,8 @@ export class ReceivableListComponent {
     private apolloService: ApolloService,
     private modalService: NgbModal,
     private toastrService: ToastrService,
-    private calendar: NgbCalendar
+    private calendar: NgbCalendar,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -253,23 +255,12 @@ export class ReceivableListComponent {
 
   getList() {
     this.apolloService
-      .query(projectpayment_list, {
+      .query(receivable_list, {
         idCompany: parseInt(localStorage.getItem('idcompany')),
-        idProject: 0,
-        idVendor: 0,
       })
       .then((res) => {
-        const result = res.projectpayment_list;
+        const result = res.receivable_list;
         this.paymentRequestList = result.data;
-
-        this.paymentRequestList.forEach((item) => {
-          if (item.account.length > 4)
-            item.account =
-              'ACH * ' + item.account.substring(item.account.length - 4);
-          else {
-            item.account = 'ACH * ' + item.account;
-          }
-        });
         this.PAYMENTREQUESTLIST = JSON.parse(
           JSON.stringify(this.paymentRequestList)
         );
@@ -295,6 +286,10 @@ export class ReceivableListComponent {
         this.getList();
       }
     );
+  }
+
+  openDetail(id) {
+    this.router.navigate(['apps/receivables/detail/' + id]);
   }
 
   openAddModal() {

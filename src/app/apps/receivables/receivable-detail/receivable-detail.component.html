@@ -1,0 +1,517 @@
+<div class="d-flex position-fixed addOrderContain" style="margin-top: -32px; margin-left: -24px;">
+    <div style="width: 320px;  height: 100vh; background-color: #ffffff; padding: 16px; padding-top: 32px; padding-bottom: 110px; "
+        *ngIf="showRelated">
+
+        <div class="row">
+            <div class="col-md-8 headline line-32">Related Orders</div>
+            <div class="col-md-4 text-end text-primary line-32" ngbDropdown ngbDropdownToggle>
+                <i class="fe-filter cursor-pointer"></i>
+                <div ngbDropdownMenu aria-labelledby="paymentTerms">
+                    <div ngbDropdownItem (click)="FilterRelatedList(1)">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" style="margin-top: 7px;" id="sameProject"
+                                [(ngModel)]="sameProject">
+                            <label class="form-check-label ms-1-1" for="dropdownCheck">
+                                Same Project
+                            </label>
+                        </div>
+                    </div>
+                    <div ngbDropdownItem (click)="FilterRelatedList(2)">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" style="margin-top: 7px;" id="sameVendor"
+                                [(ngModel)]="sameVendor">
+                            <label class="form-check-label ms-1-1 " for="dropdownCheck">
+                                Same Vendor
+                            </label>
+                        </div>
+                    </div>
+                    <div ngbDropdownItem (click)="FilterRelatedList(3)">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" style="margin-top: 7px;" id="paidyn"
+                                [(ngModel)]="paidyn">
+                            <label class="form-check-label ms-1-1" for="dropdownCheck">
+                                Show paid
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2-1">
+            <div class="col-md-12">
+                <input class="form-control form-search" type="search" placeholder="Search here..."
+                    [(ngModel)]="keywordsRelated" (keyup)="relatedFilter()" />
+            </div>
+        </div>
+        <ng-template #tipContent>
+            <div class="row">
+                <div class="col-md-6 text-start">
+                    <div class="subtitle-2-500-12-14 text-white85">Order #</div>
+                    <div class="Subtitle-1 text-start">#{{this.relatedList[relatedIndex].orderNumber}}</div>
+                </div>
+                <div class="col-md-6">
+                    <div
+                        class="d-inline-block {{this.relatedList[relatedIndex].status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
+                        {{this.relatedList[relatedIndex].status}}</div>
+                </div>
+            </div>
+            <div class="row mt-1-1">
+                <div class="col-md-4 text-start">
+                    Project
+                </div>
+                <div class="col-md-8 btn-text-12 text-end">
+                    {{this.relatedList[relatedIndex].projectName}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 text-start">
+                    Vendor
+                </div>
+                <div class="col-md-8 btn-text-12 text-end">
+                    {{this.relatedList[relatedIndex].vendorName}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 text-start">
+                    Cost Code
+                </div>
+                <div class="col-md-8 btn-text-12 text-end">
+                    {{this.relatedList[relatedIndex].costCodeName}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 text-start">
+                    Due date
+                </div>
+                <div class="col-md-8 btn-text-12 text-end">
+                    {{this.relatedList[relatedIndex].indvoicedueDate}}
+                </div>
+            </div>
+            <hr style="margin: 8px 0;" />
+            <div class="row">
+                <div class="col-md-6 text-start">
+                    Total Amount due
+                </div>
+                <div class="col-md-6 Subtitle-1 text-end">
+                    ${{this.relatedList[relatedIndex].total}}
+                </div>
+            </div>
+        </ng-template>
+
+        <div style="height: calc(100vh - 240px); overflow-y: auto;">
+            <div *ngFor="let item of this.relatedList; let i = index" class="relateItem mt-2-1" placement="top"
+                [ngbTooltip]="tipContent" (mouseenter)="relatedIndex = i; t.open()" (mouseleave)="t.close()"
+                tooltipClass="my-tooltipClass" [autoClose]="true" triggers="manual" #t="ngbTooltip"
+                (click)="openDetail(item.id)">
+                <div class="Subtitle-1 text-start">
+                    #{{item.orderNumber}}
+                </div>
+                <div class="subtitle-2-400-12 text-typeblackdeactivated">
+                    {{item.projectName}}
+                </div>
+                <div class="row mt-1-1">
+                    <div class="col-md-6 Subtitle-1 text-start">
+                        ${{item.total}}
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <div
+                            class="d-inline-block {{this.relatedList[relatedIndex].status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
+                            {{this.relatedList[relatedIndex].status}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div
+        style="flex: 1; padding-left: {{showRelated?16:32}}px; padding-top: 32px; padding-right: {{showRelated?16:32}}px; height: calc(100vh - 75px); overflow-y: scroll;">
+        <div class="row">
+            <input type="text" style="display: none;" />
+            <div class="col-md-12 d-flex align-items-center">
+                <i class="fe-chevron-left"></i>
+                <span class="bold-500 cursor-pointer" (click)="clickAllOrder()">All Orders &
+                    Bills</span>&nbsp;/&nbsp;<span class="bold-800 text-primary" *ngIf="order.id > 0">Order
+                    #{{order.orderNumber}}</span><span class="bold-800 text-primary" *ngIf="order.id == 0">New
+                    Order</span>
+            </div>
+
+        </div>
+        <div class="row mt-1-1">
+            <div class="col-md-6 d-flex align-items-center" style="padding-top: 2px;padding-bottom: 2px;">
+                <span class="headline" style="line-height: 44px;">Order #{{order.orderNumber}}&nbsp;</span>
+                <div *ngIf="!order.status"
+                    class="d-inline-block ms-1-1 DraftTag subtitle-2-600 text-typeblackdeactivated">
+                    Draft
+                </div>
+                <div *ngIf="order.status"
+                    class="d-inline-block {{order.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
+                    {{order.status}}</div>
+
+                <!-- <div class="d-inline-block ms-1-1 activeTag">
+            Active
+        </div> -->
+            </div>
+            <div class="col-md-6 text-end">
+                <!-- <input id="attachmentUpload" type="file" class="d-none" multiple (change)="getUploadUrl($event)" />
+                <button class="btn btn-outline-primary" onclick="document.getElementById('attachmentUpload').click()"
+                *ngIf="this.order.id > 0"
+                    [disabled]="isUploading">
+                    <i class="fe-upload me-1-1"></i>Upload Attachment
+                </button>
+                <button class="btn btn-outline-primary ms-2-1">
+                    Direct Payment
+                </button>
+                <button class="btn btn-primary ms-2-1" *ngIf="tabs1 == 1" (click)="saveOrder()">Save</button>
+                <div class="d-inline-block dropdown ms-1-1" ngbDropdown>
+                    <span ngbDropdownToggle><i class="fe-more-vertical- font-24 cursor-pointer"></i></span>
+                    <div class="dropdown-menu" ngbDropdownMenu>
+                        <div class="cursor-pointer" ngbDropdownItem>
+                            Duplicate Order
+                        </div>
+                        <div class="cursor-pointer" ngbDropdownItem>
+                            Print
+                        </div>
+                        <div class="cursor-pointer" ngbDropdownItem>
+                            Email
+                        </div>
+                        <div class="cursor-pointer" ngbDropdownItem>
+                            Back Charge
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <div class="row mt-1-1 flex-1">
+            <div class="col flex-column-1">
+                <ul ngbNav #nav2="ngbNav" [(activeId)]="tabs1" class="nav-pills navtab-bg ">
+                    <li [ngbNavItem]="1">
+                        <a ngbNavLink>
+                            Details
+                        </a>
+                        <ng-template ngbNavContent>
+                            <div class="row mt-2-1">
+                                <div class="col-md-7">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6 headline">
+                                                    Details
+                                                </div>
+                                                <div class="col-md-6 text-end">
+                                                    <div class="d-inline-block form-check form-switch subtitle-2-500"
+                                                        *ngIf="order.id > 0">
+                                                        <input type="checkbox" id="customSwitch1"
+                                                            class="form-check-input me-1-1" [(ngModel)]="showRelated" />
+                                                        <label for="customSwitch1"
+                                                            class="form-check-label align-middle">Show Related</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-1-1">
+                                                <div class="col-md-6">
+                                                    <label class="form-label" i18n>Order Number</label>
+                                                    <input autofocus class="form-control" type="text" id="orderNumber"
+                                                        [(ngModel)]="order.orderNumber" required i18n-placeholder
+                                                        disabled="disabled" placeholder="Order Number" />
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label" i18n>Cost Code</label>
+                                                   
+                                                    <div class="dropdown" ngbDropdown>
+                                                        <input class="form-select cursor-default" type="text"
+                                                            id="vendorcostcodes" readonly
+                                                            [(ngModel)]="vendorcostcodesText" required i18n-placeholder
+                                                            placeholder="Assign Cost Code"
+                                                            [ngClass]="{'is-invalid':orderError.costcode == 0}"
+                                                            ngbDropdownToggle />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2-1">
+                                                <div class="col-md-12">
+                                                    <label class="form-label" i18n>Notes & Description</label>
+                                                    <span class="float-end text-typeblack80">Optional</span>
+                                                    <textarea class="form-control" type="text" id="notes" style="height: 131px;" placeholder="Notes" [(ngModel)]="order.notes">
+                                                    </textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="card" style="height: 166px;">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-md-6 headline">
+                                                            Project
+                                                        </div>
+                                                        <div
+                                                            class="col-md-6 btn-text-12 text-primary text-end cursor-pointer line-40">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row  mt-2-1">
+                                                        <div class="col-md-12">
+                                                            <div>
+                                                                <div *ngIf="project"
+                                                                    style="border:1px solid #E1E6EF; border-radius: 8px; padding: 8px 16px;">
+                                                                    <div class="row cursor-pointer">
+                                                                        <div
+                                                                            class="col-md-12 Subtitle-1 text-start line-32">
+                                                                            {{project.projectName}}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card mt-2-1" style="height: 166px;">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-md-6 headline">
+                                                            Vendor
+                                                        </div>
+                                                        <div
+                                                            class="col-md-6 btn-text-12 text-primary text-end cursor-pointer line-40">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-2-1">
+                                                        <div class="col-md-12">
+                                                            <div ngbDropdown>
+
+                                                                <div *ngIf="vendor"
+                                                                    style="border:1px solid #E1E6EF; border-radius: 8px; padding: 8px 16px;">
+                                                                    <div class="row">
+                                                                        <div class="col-md-8 Subtitle-1 text-start">
+                                                                            <div>{{vendor.vendorName}}</div>
+                                                                            <div class="subtitle-2-400-12 text-typeblack80"
+                                                                                *ngIf="vendor.txtAddress && vendor.txtCity">
+                                                                                {{vendor.txtAddress}},
+                                                                                {{vendor.txtCity}},
+                                                                                {{vendor.txtState}},
+                                                                                {{vendor.txtZipcode}}</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <!-- <div class="row">
+                                                <div class="col-md-6 headline">
+                                                    List Items
+                                                </div>
+                                                <div class="col-md-6 text-end">
+                                                    <div class="d-inline-block">
+                                                        <input class="form-control form-search" type="search"
+                                                            placeholder="Search here..."
+                                                            [(ngModel)]="keywordsListItem" />
+                                                    </div>
+                                                    <button class="btn btn-outline-primary padding-8-16 ms-2-1"
+                                                        (click)="AddListItem()" style="margin-top: -4px;"><i
+                                                            class="fe-plus-square me-1-1"></i>Add
+                                                        Item</button>
+                                                </div>
+                                            </div> -->
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <table class="advanced-table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="row_select"><input class="form-check"
+                                                                        type="checkbox" /></th>
+                                                                <th style="width: 50%;">
+                                                                    Billable</th>
+                                                                <th>Qty</th>
+                                                                <th>Unit</th>
+                                                                <th>Price</th>
+                                                                <th>Amount</th>
+                                                                <th>Tax</th>
+                                                                <th>Notes</th>
+                                                                <!-- <th>Notes</th> -->
+                                                                <th *ngIf="order.id > 0" style="width: 110px;">Last
+                                                                    updated</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody *ngIf="!loading">
+                                                            <tr class="cursor-pointer"
+                                                                *ngFor="let item of order.listItems; let i = index">
+                                                                <td><input class="form-check" type="checkbox"
+                                                                        [(ngModel)]="item.paidyn" /></td>
+                                                                <td>
+                                                                    <input type="text" class="form-control"
+                                                                        placeholder="Description" thousandSeparator=","
+                                                                        (change)="AddListItem(i,item)"
+                                                                        [(ngModel)]="item.description" />
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" class="form-control"
+                                                                        [(ngModel)]="item.qty" thousandSeparator=","
+                                                                        mask="separator.2" (keyup)="getAmout(item)" />
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" class="form-control"
+                                                                        [(ngModel)]="item.unit" />
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" class="form-control text-end"
+                                                                        [(ngModel)]="item.price" prefix="$"
+                                                                        mask="separator.2" thousandSeparator=","
+                                                                        (keyup)="getAmout(item)" />
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" class="form-control" prefix="$"
+                                                                        mask="separator.2" [(ngModel)]="item.amount"
+                                                                        disabled="disabled" />
+                                                                </td>
+                                                                <td>
+                                                                    <input class="form-check" type="checkbox"
+                                                                        (change)="setTotal()"
+                                                                        [(ngModel)]="item.taxyn" />
+                                                                </td>
+                                                                <td *ngIf="order.id > 0">
+                                                                    <span *ngIf="item.modifiedDate">{{item.modifiedDate
+                                                                        | date: 'MM/dd/yy HH:mm:ss' | amTimeAgo}}</span>
+                                                                </td>
+                                                                <td>
+                                                                    <input class="form-control" type="text"
+                                                                        [(ngModel)]="item.notes" />
+                                                                </td>
+                                                                <td>
+                                                                    <!-- <i class="fe-copy cursor-pointer"
+                                                                        (click)="listItemCopy(item,i)"></i>
+                                                                    <i class="fe-trash-2 ms-1-1 cursor-pointer"
+                                                                        (click)="listItemDelete(i,item)"></i> -->
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tbody *ngIf="loading" class="bg-white">
+                                                            <tr>
+                                                                <td colspan="9">
+                                                                    <div style="position: relative; height: 150px;">
+                                                                        <app-ui-preloader
+                                                                            [display]="loading"></app-ui-preloader>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tbody *ngIf="order.listItems.length==0 && !loading"
+                                                            class="bg-white">
+                                                            <tr *ngIf="!loading && order.listItems.length==0">
+                                                                <td colspan="9" class="text-center">
+                                                                    <div
+                                                                        class="text-typeblackdeactivated headline-24-400 mt-40">
+                                                                        No List Items Added Yet</div>
+
+                                                                    <!-- <div class="mt-2-1"> <button (click)="AddListItem()"
+                                                                            class="btn btn-primary ms-2-1 mb-3"><i
+                                                                                class="fe-plus-square me-1-1"></i>Add
+                                                                            List
+                                                                            Item</button></div> -->
+
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tfoot style="height: 16px;">
+                                                            <tr>
+                                                                <td colspan="6">&nbsp;</td>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="2">
+                        <a ngbNavLink>
+                            Bills
+                        </a>
+                        <ng-template ngbNavContent class="d-flex flex-column">
+                            
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="3">
+                        <a ngbNavLink>
+                            Attachments
+                        </a>
+                        <ng-template ngbNavContent class="d-flex flex-column">
+                            
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="4">
+                        <a ngbNavLink>
+                            Activity
+                        </a>
+                        <ng-template ngbNavContent class="d-flex flex-column">
+                            
+                        </ng-template>
+                    </li>
+                </ul>
+
+                <div [ngbNavOutlet]="nav2" class="mb-0 b-0 pt-0 flex-column-1"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="orderDetailBottom" *ngIf="tabs1 == 1">
+    <div class="row padding-16-32">
+        <div class="col-md-2">
+            <label class="form-label" i18n>Non Taxable</label>
+            <input autofocus class="form-control" disabled="disabled" [(ngModel)]="order.nontaxable" prefix="$"
+                mask="separator.2" style="background-color: #3F444D; border:1px solid #3F444D; color: #767676;"
+                type="text" id="nontaxable" required i18n-placeholder />
+        </div>
+        <div class="col-md-2">
+            <label class="form-label" i18n>Taxable</label>
+            <input autofocus class="form-control" disabled="disabled" [(ngModel)]="order.taxable" prefix="$"
+                mask="separator.2" style="background-color: #3F444D; border:1px solid #3F444D; color: #767676"
+                type="text" id="taxable" required i18n-placeholder />
+        </div>
+        <div class="col-md-2">
+            <label class="form-label" i18n>Tax {{order.taxrate}}%</label>
+            <input autofocus class="form-control" disabled="disabled" [(ngModel)]="order.tax" prefix="$"
+                mask="separator.2" style="background-color: #3F444D; border:1px solid #3F444D; color: #767676"
+                type="text" id="tax" required i18n-placeholder />
+        </div>
+        <div class="col-md-6 pt-2-1 d-flex flex-row-reverse text-end">
+            <div class="d-inline-block" *ngIf="order.status == 'Pending'">
+                <button type="button"
+                    class="btn btn-success ms-1-1"
+                    style="border:1px solid #ffffff; box-shadow: none;" (click) = "Accept()">Accept</button>
+                <button type="button"
+                    class="btn btn-danger ms-1-1"
+                    style="border:1px solid #ffffff; box-shadow: none;" (click) = "Decline()">Decline</button>
+                </div>
+            <div class="d-inline-block" style="height: 40px;color:#FFFFFFB2;">
+                <span class="btn-text-12">Total Amount Due</span><br />
+                <span class="headline-24" style=" color:  {{order.status == 'Paid'?'#FFFFFF80':'white'}};"
+                    id="total">{{order.total | currency}}</span>
+            </div>
+        </div>
+    </div>
+</div>

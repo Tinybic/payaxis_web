@@ -111,6 +111,12 @@ const projectorder_info = gql`
           paidAmount
           status
           active
+          projectName
+          vendorName
+          txtAddress
+          txtCity
+          txtState
+          costCodeName
         }
         listItems {
           id

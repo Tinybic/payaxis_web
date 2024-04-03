@@ -9,14 +9,18 @@ import { FormsModule } from '@angular/forms';
 import {
   NgbDatepickerModule,
   NgbDropdownModule,
+  NgbNavModule,
+  NgbTooltipModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { UiModule } from 'src/app/shared/ui/ui.module';
 import { AvatarModule } from 'src/app/shared/avatar/avatar.module';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { ReceivableDetailComponent } from './receivable-detail/receivable-detail.component';
+import { MomentModule } from 'ngx-moment';
 
 @NgModule({
-  declarations: [ReceivableListComponent, ReceivableAddComponent],
+  declarations: [ReceivableListComponent, ReceivableAddComponent, ReceivableDetailComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -28,6 +32,9 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
     SharedModule,
     AvatarModule,
     NgxMaskDirective,
+    NgbTooltipModule,
+    MomentModule,
+    NgbNavModule
   ],
   providers: [provideNgxMask()],
 })
