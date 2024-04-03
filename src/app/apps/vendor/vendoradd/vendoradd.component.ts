@@ -126,10 +126,10 @@ export class VendoraddComponent {
 
   ngOnInit(): void {
     this.vendor.email = '';
-    
-    this.element = document.getElementsByClassName('modal-right')[0];
-    this.element.style.opacity = 0;
+
     if (this.idvendor == 0) {
+      this.element = document.getElementsByClassName('modal-right')[0];
+      this.element.style.opacity = 0;
       setTimeout(() => {
         this.openEnterEmailModal();
       }, 100);
@@ -614,7 +614,7 @@ export class VendoraddComponent {
     }
   }
 
-  closeAll(){
+  closeAll() {
     this.modalService.dismissAll();
   }
 }
