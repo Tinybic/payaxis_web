@@ -420,7 +420,7 @@
                                                                             </div>
                                                                             <div class="col-md-4 text-end">
                                                                                 <div class="vendorCostcode subtitle-2-600"
-                                                                                    *ngIf="item.costcodes.length > 0">
+                                                                                    *ngIf="item.costcodes">
                                                                                     <span
                                                                                         *ngFor="let costcode of item.costcodes">{{costcode.txtName}}</span>
                                                                                 </div>
@@ -634,7 +634,7 @@
                     class="btn btn-primary ms-1-1" style="border:0px; box-shadow: none;">Pay Invoice</button></div>
             <div class="d-inline-block" *ngIf="order.status != 'Paid'"><button type="button"
                     class="btn btn-primary ms-1-1"
-                    style="border:1px solid #ffffff; box-shadow: none;background-color: transparent;">Send
+                    style="border:1px solid #ffffff; box-shadow: none;background-color: transparent;" (click) = "projectorderSend()">Send
                     Order</button></div>
             <div class="d-inline-block" style="height: 40px;color:#FFFFFFB2;">
                 <span class="btn-text-12">Total Amount Due</span><br />

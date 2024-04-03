@@ -162,14 +162,20 @@ export type Mutation = {
   projectmember_edit: Projectinvitememberresult;
   /** invite project member */
   projectmember_invite: Projectinvitememberresult;
+  /** accept project order */
+  projectorder_accept: Projectorderresult;
   /** deactivate project order */
   projectorder_deactivate: Projectorderbooleanresult;
+  /** decline project order */
+  projectorder_decline: Projectorderresult;
   /** delete projectorder file */
   projectorder_deletefile: Projectorderbooleanresult;
   /** duplicate project order */
   projectorder_duplicate: Projectorderresult;
   /** new project order */
   projectorder_new: Projectorderresult;
+  /** send project order */
+  projectorder_send: Projectorderresult;
   /** update project order */
   projectorder_update: Projectorderresult;
   /** upload projectorder file */
@@ -687,7 +693,23 @@ export type MutationProjectmember_InviteArgs = {
 
 
 /** structure to handle table sms */
+export type MutationProjectorder_AcceptArgs = {
+  id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
 export type MutationProjectorder_DeactivateArgs = {
+  id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationProjectorder_DeclineArgs = {
   id: Scalars['Int']['input'];
   idCompany: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
@@ -729,6 +751,15 @@ export type MutationProjectorder_NewArgs = {
   taxable: Scalars['Float']['input'];
   taxrate: Scalars['Float']['input'];
   total: Scalars['Float']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationProjectorder_SendArgs = {
+  id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
+  idVendor: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
 };
 
 

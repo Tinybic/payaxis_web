@@ -235,6 +235,30 @@ const projectorder_related = gql`
   }
 `;
 
+const projectorder_send = gql`
+  mutation projectorder_send(
+    $idCompany: Int!
+    $idVendor: Int!
+    $id: Int!
+    $revision: Int!
+  ) {
+    projectorder_send(
+      idCompany: $idCompany
+      idVendor: $idVendor
+      id: $id
+      revision: $revision
+    ) {
+      error
+      code
+      message
+      data {
+        id
+        revision
+      }
+    }
+  }
+`;
+
 export {
   projectorder_newnumber,
   projectorder_reasonlist,
@@ -242,4 +266,5 @@ export {
   projectorder_info,
   projectorder_update,
   projectorder_related,
+  projectorder_send,
 };
