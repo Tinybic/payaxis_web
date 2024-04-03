@@ -4,6 +4,7 @@ import {
   Output,
   EventEmitter,
   ViewChild,
+  Renderer2,
 } from '@angular/core';
 import {
   NgbActiveModal,
@@ -45,6 +46,7 @@ export class VendoraddComponent {
   @Input() modalRef?: NgbModalRef;
   @Input() params;
   @Input() public idvendor: number;
+  @Input() iview: any;
   @Output() public outId = new EventEmitter<number>();
   @ViewChild('newVendorListModal') newVendorListModal: any;
   @ViewChild('cancelModal') cancelModal: any;
@@ -53,6 +55,7 @@ export class VendoraddComponent {
   @ViewChild('archiveModal') archiveModal: any;
   @ViewChild('instance', { static: true }) instance!: NgbTypeahead;
   @ViewChild('enteremailModal') enteremailModal: any;
+  @ViewChild('contengModal') contengModal: any;
 
   tabs1 = 1;
   vendor = {
@@ -103,7 +106,7 @@ export class VendoraddComponent {
   keywords = '';
   id = 0;
   revision = 0;
-
+  element;
   costCodeList = [];
   COSTCODE_LIST = [];
   fileList = [];
@@ -117,14 +120,17 @@ export class VendoraddComponent {
     private modalService: NgbModal,
     private activeModal: NgbActiveModal,
     private toastrService: ToastrService,
-    private httpService: HttpService
+    private httpService: HttpService,
+    private renderer: Renderer2
   ) {}
 
   ngOnInit(): void {
     this.vendor.email = '';
+    
+    this.element = document.getElementsByClassName('modal-right')[0];
+    this.element.style.opacity = 0;
     if (this.idvendor == 0) {
       setTimeout(() => {
-        // this.modalRef.close();
         this.openEnterEmailModal();
       }, 100);
     }
@@ -539,6 +545,7 @@ export class VendoraddComponent {
               this.CreateNewVendor();
             } else {
               this.emailRef.close();
+              this.element.style.opacity = 1;
             }
           } else {
             this.toastrService.info(result.message, '');
