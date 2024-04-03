@@ -251,7 +251,7 @@ const projectbill_list = gql`
         orderNumber
         orderDue
         orderStatus
-        costcodes{
+        costcodes {
           costCode
           txtName
         }
@@ -346,6 +346,79 @@ const projectpayment_pay = gql`
     }
   }
 `;
+const receivable_list = gql`
+  query receivable_list($idCompany: Int!) {
+    receivable_list(idCompany: $idCompany) {
+      error
+      code
+      message
+      data {
+        id
+        revision
+        createdBy
+        createdDate
+        modifiedBy
+        modifiedDate
+        idCompany
+        idProject
+        projectName
+        idVendor
+        vendorName
+        vendorType
+        orderNumber
+        txtAddress
+        txtCity
+        txtState
+        idReason
+        invoiceNumber
+        invoicedDate
+        indvoicedueDate
+        paymentTerms
+        costCode
+        costCodeName
+        notes
+        nontaxable
+        taxable
+        taxrate
+        tax
+        total
+        paidAmount
+        remainingAmount
+        status
+        active
+      }
+    }
+  }
+`;
+
+const projectorder_accept = gql`
+mutation projectorder_accept($idCompany: Int!, $id: Int!, $revision: Int!) {
+  projectorder_accept(idCompany: $idCompany, id: $id, revision: $revision) {
+    error
+    code
+    message
+    data {
+      id
+      revision
+    }
+  }
+}
+`;
+
+const projectorder_decline = gql`
+mutation projectorder_decline($idCompany: Int!, $id: Int!, $revision: Int!) {
+  projectorder_decline(idCompany: $idCompany, id: $id, revision: $revision) {
+    error
+    code
+    message
+    data {
+      id
+      revision
+    }
+  }
+}
+
+`;
 
 export {
   projectpayment_new,
@@ -356,4 +429,7 @@ export {
   projectpayment_attachment,
   projectpayment_pay,
   projectpayment_update,
+  receivable_list,
+  projectorder_accept,
+  projectorder_decline
 };

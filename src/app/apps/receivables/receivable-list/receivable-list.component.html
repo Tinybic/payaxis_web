@@ -203,9 +203,8 @@
                     <td> {{item.sentDate}}</td>
                     <td> {{item.amount | currency}}</td>
                     <td class="text-end">
-                        <button type="button" class="btn btn-primary padding-8-16">Remind</button>
                         <button type="button" class="btn btn-outline-primary padding-8-16 ms-1-1"
-                            (click)="openEditModal(item.id)">View Details</button>
+                            (click)="openDetail(item.id)">View Details</button>
                     </td>
                 </tr>
             </tbody>
