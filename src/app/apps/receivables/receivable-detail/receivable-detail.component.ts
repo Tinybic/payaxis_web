@@ -729,7 +729,7 @@ export class ReceivableDetailComponent {
     if (this.order.id > 0) {
       this.apolloService
         .mutate(projectorder_decline, {
-          idCompany: this.order.idCompany,
+          idCompany: parseInt(localStorage.getItem('idcompany')),
           id: this.order.id,
           revision: this.order.revision,
         })
@@ -737,6 +737,7 @@ export class ReceivableDetailComponent {
           let result = res.projectorder_decline;
           let message = '';
           if (!result.error) {
+            message = 'Success'
             this.router.navigate(['apps/receivables']);
           } else {
             message = result.message;
@@ -752,7 +753,7 @@ export class ReceivableDetailComponent {
     if (this.order.id > 0) {
       this.apolloService
         .mutate(projectorder_accept, {
-          idCompany: this.order.idCompany,
+          idCompany: parseInt(localStorage.getItem('idcompany')),
           id: this.order.id,
           revision: this.order.revision,
         })
@@ -760,6 +761,7 @@ export class ReceivableDetailComponent {
           let result = res.projectorder_accept;
           let message = '';
           if (!result.error) {
+            message = 'Success'
             this.router.navigate(['apps/receivables']);
           } else {
             message = result.message;
