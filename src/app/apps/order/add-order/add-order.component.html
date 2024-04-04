@@ -160,7 +160,7 @@
                 <button class="btn btn-outline-primary ms-2-1">
                     Direct Payment
                 </button>
-                <button class="btn btn-primary ms-2-1" *ngIf="tabs1 == 1" (click)="saveOrder()">Save</button>
+                <button class="btn btn-primary ms-2-1" *ngIf="tabs1 == 1" (click)="saveOrder();">Save</button>
                 <div class="d-inline-block dropdown ms-1-1" ngbDropdown>
                     <span ngbDropdownToggle><i class="fe-more-vertical- font-24 cursor-pointer"></i></span>
                     <div class="dropdown-menu" ngbDropdownMenu>
@@ -632,7 +632,7 @@
                     class="btn btn-primary ms-1-1" style="border:0px; box-shadow: none;">Send Receipt</button></div>
             <div class="d-inline-block" *ngIf="order.status !== 'Paid'"><button type="button"
                     class="btn btn-primary ms-1-1" style="border:0px; box-shadow: none;">Pay Invoice</button></div>
-            <div class="d-inline-block" *ngIf="order.status == 'Declined' || order.status == 'Draft'"><button type="button"
+            <div class="d-inline-block" *ngIf="order.status !== 'Paid'"><button type="button"
                     class="btn btn-primary ms-1-1"
                     style="border:1px solid #ffffff; box-shadow: none;background-color: transparent;" (click) = "projectorderSend()">Send
                     Order</button></div>
