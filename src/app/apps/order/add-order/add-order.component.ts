@@ -605,84 +605,95 @@ export class AddOrderComponent {
       this.order.taxable + this.order.nontaxable + this.order.tax;
   }
 
-  saveOrder() {
-    if (this.order.costCode == '') {
-      this.orderError.costcode = 0;
-      return;
-    } else {
-      this.orderError.costcode = -1;
-    }
-
-    if (this.order.idProject == 0) {
-      this.orderError.idProject = 0;
-      return;
-    } else {
-      this.orderError.idProject = -1;
-    }
-
-    if (this.order.idVendor == 0) {
-      this.orderError.idVendor = 0;
-      return;
-    } else {
-      this.orderError.idVendor = -1;
-    }
-
-    let listitemPara = [];
-    this.order.listItems.forEach((item) => {
-      if (item.description.length > 0) {
-        item.price = parseFloat(item.price);
-        item.qty = parseFloat(item.qty);
-        item.amount = parseFloat(item.amount);
-        listitemPara.push({
-          amount: item.amount,
-          description: item.description,
-          qty: item.qty,
-          notes: item.notes,
-          paidyn: item.paidyn,
-          unit: item.unit,
-          taxyn: item.taxyn,
-          price: item.price,
-        });
+  save() {
+    return new Promise((resolve, reject) => {
+      if (this.order.costCode == '') {
+        this.orderError.costcode = 0;
+        return;
+      } else {
+        this.orderError.costcode = -1;
       }
-    });
 
-    this.order.taxable = parseFloat(this.order.taxable.toString());
-    this.order.total = parseFloat(this.order.total.toString());
+      if (this.order.idProject == 0) {
+        this.orderError.idProject = 0;
+        return;
+      } else {
+        this.orderError.idProject = -1;
+      }
 
-    if (listitemPara.length == 0) {
-      this.toastrService.info(
-        'Save failed, at least one item needs to be filled in',
-        '',
-        {
-          positionClass: 'toast-top-right-order',
+      if (this.order.idVendor == 0) {
+        this.orderError.idVendor = 0;
+        return;
+      } else {
+        this.orderError.idVendor = -1;
+      }
+
+      let listitemPara = [];
+      this.order.listItems.forEach((item) => {
+        if (item.description.length > 0) {
+          item.price = parseFloat(item.price);
+          item.qty = parseFloat(item.qty);
+          item.amount = parseFloat(item.amount);
+          listitemPara.push({
+            amount: item.amount,
+            description: item.description,
+            qty: item.qty,
+            notes: item.notes,
+            paidyn: item.paidyn,
+            unit: item.unit,
+            taxyn: item.taxyn,
+            price: item.price,
+          });
         }
-      );
-      return;
-    }
-
-    this.order.listItems = listitemPara;
-    let gql = projectorder_new;
-    if (this.order.id > 0) {
-      gql = projectorder_update;
-    }
-
-    this.apolloService.mutate(gql, this.order).then((res) => {
-      let result;
-      if (this.order.id > 0) {
-        result = res.projectorder_update;
-      } else {
-        result = res.projectorder_new;
-      }
-      let message = '';
-      if (!result.error) {
-        message = 'Save successful';
-        this.clickAllOrder();
-      } else {
-        message = result.message;
-      }
-      this.toastrService.info(message, '', {
-        positionClass: 'toast-top-right-order',
       });
+
+      this.order.taxable = parseFloat(this.order.taxable.toString());
+      this.order.total = parseFloat(this.order.total.toString());
+
+      if (listitemPara.length == 0) {
+        this.toastrService.info(
+          'Save failed, at least one item needs to be filled in',
+          '',
+          {
+            positionClass: 'toast-top-right-order',
+          }
+        );
+        return;
+      }
+
+      this.order.listItems = listitemPara;
+      let gql = projectorder_new;
+      if (this.order.id > 0) {
+        gql = projectorder_update;
+      }
+
+      this.apolloService.mutate(gql, this.order).then((res) => {
+        let result;
+        if (this.order.id > 0) {
+          result = res.projectorder_update;
+        } else {
+          result = res.projectorder_new;
+        }
+        let message = '';
+        if (!result.error) {
+          message = 'Save successful';
+          this.order.id = result.data.id;
+          this.order.revision = result.data.revision;
+          resolve('success');
+        } else {
+          message = result.message;
+          reject('error');
+        }
+        this.toastrService.info(message, '', {
+          positionClass: 'toast-top-right-order',
+        });
+      });
+    });
+  }
+
+  saveOrder() {
+    this.save().then((res) => {
+      if (res == 'success') this.clickAllOrder();
     });
   }
 
@@ -771,7 +782,7 @@ export class AddOrderComponent {
     this.router.navigate(['apps/order/detail/' + id]);
   }
 
-  projectorderSend() {
+  send() {
     if (this.order.id > 0) {
       this.apolloService
         .mutate(projectorder_send, {
@@ -785,6 +796,7 @@ export class AddOrderComponent {
           let message = '';
           if (!result.error) {
             message = 'Send successful';
+            this.clickAllOrder();
           } else {
             message = result.message;
           }
@@ -792,6 +804,16 @@ export class AddOrderComponent {
             positionClass: 'toast-top-right-order',
           });
         });
+    }
+  }
+
+  projectorderSend() {
+    if (this.order.id == 0) {
+      this.save().then((res) => {
+        if (res == 'success') this.send();
+      });
+    } else {
+      this.send();
     }
   }
 }

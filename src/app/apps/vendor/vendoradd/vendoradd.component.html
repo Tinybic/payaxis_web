@@ -65,8 +65,7 @@
                                     <label class="form-label" i18n>Type</label>
 
                                     <div ngbDropdown class="mt-sm-0 mt-2">
-                                        <input class="form-control" type="text" id="vendorType"
-                                            [disabled]="idInvitedCompany>0" [(ngModel)]="vendor.vendorType" required
+                                        <input class="form-control" type="text" id="vendorType" [(ngModel)]="vendor.vendorType" required
                                             i18n-placeholder placeholder="Type" ngbDropdownToggle />
 
                                         <div ngbDropdownMenu aria-labelledby="vendorType">
@@ -83,8 +82,7 @@
                                 <div class="col-md-3">
                                     <label class="form-label" i18n>Cost Code</label>
                                     <div class="dropdown" ngbDropdown>
-                                        <input class="form-select cursor-default" type="text" id="vendorcostcodes"
-                                            [disabled]="idInvitedCompany>0" [(ngModel)]="vendorcostcodesText" required
+                                        <input class="form-select cursor-default" type="text" id="vendorcostcodes" [(ngModel)]="vendorcostcodesText" required
                                             i18n-placeholder readonly [ngClass]="{'is-invalid':vendorError.costcode}"
                                             placeholder="Cost Code" ngbDropdownToggle />
                                         <div *ngIf="vendorError.costcode" class="invalid-feedback">
