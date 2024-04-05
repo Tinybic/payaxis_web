@@ -480,7 +480,7 @@ export class AddOrderComponent {
     this.order.idVendor = vendor.id;
     this.order.taxrate = vendor.taxrate;
 
-    if (this.vendor.costcodes.length > 0) {
+    if (this.vendor.costcodes && this.vendor.costcodes.length > 0) {
       this.order.costCode = this.vendor.costcodes[0].costCode;
       this.setCostCodeName();
     }
