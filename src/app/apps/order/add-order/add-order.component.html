@@ -379,7 +379,7 @@
                                                                         </div>
                                                                         <div class="col-md-4 text-end">
                                                                             <div class="vendorCostcode subtitle-2-600 d-inline-block"
-                                                                                *ngIf="vendor.costcodes.length > 0">
+                                                                                *ngIf="vendor.costcodes && vendor.costcodes.lenght > 0">
                                                                                 <span
                                                                                     *ngFor="let costcode of vendor.costcodes">{{costcode.txtName}}</span>
                                                                             </div>
@@ -420,7 +420,7 @@
                                                                             </div>
                                                                             <div class="col-md-4 text-end">
                                                                                 <div class="vendorCostcode subtitle-2-600"
-                                                                                    *ngIf="item.costcodes">
+                                                                                    *ngIf="item.costcodes && item.costcodes.length > 0">
                                                                                     <span
                                                                                         *ngFor="let costcode of item.costcodes">{{costcode.txtName}}</span>
                                                                                 </div>
