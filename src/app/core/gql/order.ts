@@ -264,6 +264,27 @@ const projectorder_send = gql`
     }
   }
 `;
+const projectorder_duplicate = gql`
+  mutation projectorder_duplicate(
+    $idCompany: Int!
+    $id: Int!
+    $revision: Int!
+  ) {
+    projectorder_duplicate(
+      idCompany: $idCompany
+      id: $id
+      revision: $revision
+    ) {
+      error
+      code
+      message
+      data {
+        id
+        revision
+      }
+    }
+  }
+`;
 
 export {
   projectorder_newnumber,
@@ -273,4 +294,5 @@ export {
   projectorder_update,
   projectorder_related,
   projectorder_send,
+  projectorder_duplicate,
 };

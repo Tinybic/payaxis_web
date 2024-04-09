@@ -208,7 +208,7 @@ const projectpayment_list = gql`
 `;
 
 const projectbill_list = gql`
-  query refactored680(
+  query projectbill_list(
     $idCompany: Int!
     $idProject: Int!
     $idVendor: Int!

@@ -164,7 +164,7 @@
                 <div class="d-inline-block dropdown ms-1-1" ngbDropdown>
                     <span ngbDropdownToggle><i class="fe-more-vertical- font-24 cursor-pointer"></i></span>
                     <div class="dropdown-menu" ngbDropdownMenu>
-                        <div class="cursor-pointer" ngbDropdownItem>
+                        <div class="cursor-pointer" (click) = "duplicateOrder()" ngbDropdownItem>
                             Duplicate Order
                         </div>
                         <div class="cursor-pointer" ngbDropdownItem>
@@ -515,13 +515,14 @@
                                                                         (change)="setTotal()"
                                                                         [(ngModel)]="item.taxyn" />
                                                                 </td>
-                                                                <td *ngIf="order.id > 0">
-                                                                    <span *ngIf="item.modifiedDate">{{item.modifiedDate
-                                                                        | date: 'MM/dd/yy HH:mm:ss' | amTimeAgo}}</span>
-                                                                </td>
+                                                                
                                                                 <td>
                                                                     <input class="form-control" type="text"
                                                                         [(ngModel)]="item.notes" />
+                                                                </td>
+                                                                <td *ngIf="order.id > 0">
+                                                                    <span *ngIf="item.modifiedDate">{{item.modifiedDate
+                                                                        | date: 'MM/dd/yy HH:mm:ss' | amTimeAgo}}</span>
                                                                 </td>
                                                                 <td>
                                                                     <i class="fe-copy cursor-pointer"

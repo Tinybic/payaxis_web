@@ -9,6 +9,7 @@ import { PAYMENTTERM } from 'src/app/core/constants/payment';
 import { categorycostcode_list } from 'src/app/core/gql/costcode';
 import { getNewFileName, get_file_url } from 'src/app/core/gql/file';
 import {
+  projectorder_duplicate,
   projectorder_info,
   projectorder_new,
   projectorder_newnumber,
@@ -814,6 +815,31 @@ export class AddOrderComponent {
       });
     } else {
       this.send();
+    }
+  }
+
+  duplicateOrder(){
+    if (this.order.id > 0) {
+      this.apolloService
+        .mutate(projectorder_duplicate, {
+          idCompany: this.order.idCompany,
+          idVendor: this.order.idVendor,
+          id: this.order.id,
+          revision: this.order.revision,
+        })
+        .then((res) => {
+          let result = res.projectorder_duplicate;
+          let message = '';
+          if (!result.error) {
+            message = 'Duplicate successful';
+            this.router.navigate(['apps/order/detail/'+result.data.id])
+          } else {
+            message = result.message;
+          }
+          this.toastrService.info(message, '', {
+            positionClass: 'toast-top-right-order',
+          });
+        });
     }
   }
 }
