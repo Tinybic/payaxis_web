@@ -38,12 +38,12 @@ $value in $theme-colors {
     }
 }
 
-.draftTag, .voidedTag {
+.openTag, .draftTag, .voidedTag {
     color: #60A5FA !important;
     width: 128px;
 }
 
-.activeTag, .paidTag, .approvedTag {
+.acceptedTag, .activeTag, .paidTag, .approvedTag {
     background-color: #86EFAC;
     border-radius: 8px;
     border: 1px solid #22C55E;
@@ -60,7 +60,7 @@ $value in $theme-colors {
     width: 128px;
 }
 
-.newTag, .invoiceopenTag, .dueTag {
+.partialTag, .newTag, .invoiceopenTag, .dueTag {
     background-color: #FFED8E;
     border-radius: 8px;
     border: 1px solid #EAC608;
@@ -81,12 +81,6 @@ $value in $theme-colors {
     background-color: #BFDBFE;
     border-radius: 8px;
     padding: 0px 8px;
-    width: 128px;
-}
-
-
-.openTag{
-    color: #60A5FA !important;
     width: 128px;
 }
 

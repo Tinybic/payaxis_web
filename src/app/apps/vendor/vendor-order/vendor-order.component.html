@@ -1,7 +1,7 @@
 <div class="row mt-2-1">
     <div class="col-md-6">
         <div class="d-inline-block  text-black font-20 bold-600 line-40">
-            {{orders.length}} Orders
+            {{orders.length == 0 ? "No" : orders.length + tab==3 ? " Outbound":" Inbound"}} Orders
         </div>
         <div class="d-inline-block dropdown ms-1-1" ngbDropdown>
             <a class="dropdown-outline" href="javascript:void(0)" ngbDropdownToggle>
@@ -10,36 +10,13 @@
                 <b *ngIf="filterList.length == 0||filterList.length == 5">All</b>
                 <i class="fe-chevron-down font-16 ms-1-1"></i>
             </a>
-            <div class="dropdown-menu" ngbDropdownMenu>
-                <div ngbDropdownItem (click) = "filterVendorList('active')">
-                    <div class="form-check text-center d-flex align-items-center">
-                        <input type="checkbox" class="form-check-input" id="activedropdownCheck" [checked]="filterList.includes('active')">
+            <div class="dropdown-menu" ngbDropdownMenu style="padding: 8px 4px;">
+                <div ngbDropdownItem *ngFor="let status of objectKeys(ordersStatusCount)" style="padding-top: 0;padding-bottom: 0;">
+                    <div class="form-check text-center d-flex align-items-center" style="padding-top: 6px;padding-bottom: 6px;">
+                        <input type="checkbox" class="form-check-input cursor-pointer" id="{{status}}DropdownCheck" [checked]="filterList.includes(status)" (change)="filterVendorList(status)">
                         
-                        <div for="activedropdownCheck" class="d-inline-block activeTag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">Active</div>
-                    </div>
-                </div>
-                <div ngbDropdownItem (click) = "filterVendorList('invoiceOpen')">
-                    <div class="form-check text-center d-flex align-items-center">
-                        <input type="checkbox" class="form-check-input" id="invoiceOpendropdownCheck" [checked]="filterList.includes('invoiceOpen')">
-                        <div for="invoiceOpendropdownCheck" class="d-inline-block invoiceopenTag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">invoiceOpen</div>
-                    </div>
-                </div>
-                <div ngbDropdownItem (click) = "filterVendorList('overdue')">
-                    <div class="form-check text-center d-flex align-items-center">
-                        <input type="checkbox" class="form-check-input" id="overduedropdownCheck" [checked]="filterList.includes('overdue')">
-                        <div for="overduedropdownCheck" class="d-inline-block invoiceoverdueTag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">invoiceOverdue</div>
-                    </div>
-                </div>
-                <div ngbDropdownItem (click) = "filterVendorList('draft')">
-                    <div class="form-check text-center d-flex align-items-center">
-                        <input type="checkbox" class="form-check-input" id="DraftdropdownCheck" [checked]="filterList.includes('draft')">
-                        <div for="DraftdropdownCheck" class="d-inline-block draftTag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">Draft</div>
-                    </div>
-                </div>
-                <div ngbDropdownItem (click) = "filterVendorList('archived')">
-                    <div class="form-check text-center d-flex align-items-center">
-                        <input type="checkbox" class="form-check-input" id="ArchiveddropdownCheck" [checked]="filterList.includes('archived')">
-                        <div for="ArchiveddropdownCheck" class="d-inline-block archivedTag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">Archived</div>
+                        <label for="{{status}}DropdownCheck" class="d-inline-block {{status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center ms-2-1 me-2-1">{{status}}</label>
+                        <span class="subtitle-2-400-12 text-typeblack80">{{ordersStatusCount[status]}}</span>
                     </div>
                 </div>
             </div>
@@ -47,9 +24,9 @@
     </div>
     <div class="col-md-6 text-end ">
         <div class="d-inline-block ms-1-1">
-            <input class="form-control form-search" type="search" placeholder="Search here..." [(ngModel)]="keywords" />
+            <input class="form-control form-search" type="search" placeholder="Search here..." [(ngModel)]="keywords" style="padding-top: 10px;padding-bottom: 10px;"/>
         </div>
-        <button class="btn btn-outline-primary ms-2-1" [disabled]="params.idvendor == 0" (click)="AddOrder(0)"><i
+        <button class="btn btn-outline-primary ms-2-1" [disabled]="params.idvendor == 0" (click)="AddOrder(0)" style="padding-top: 10px;padding-bottom: 10px;"><i
                 class="fe-plus-square me-1-1"></i>New Order</button>
     </div>
 </div>
@@ -72,9 +49,7 @@
                         [ngClass]="{'sorting_asc':sortColumn == 'order' && direction == 'asc','sorting_desc':sortColumn == 'order' && direction == 'desc'}"
                         (click)="onSort('order')">Status
                     </th>
-                    <th class="sortable"
-                        [ngClass]="{'sorting_asc':sortColumn == 'vendor' && direction == 'asc','sorting_desc':sortColumn == 'vendor' && direction == 'desc'}"
-                        (click)="onSort('vendor')">Cost Code
+                    <th>Cost Code
                     </th>
                     <th class="sortable"
                         [ngClass]="{'sorting_asc':sortColumn == 'invoice' && direction == 'asc','sorting_desc':sortColumn == 'invoice' && direction == 'desc'}"
@@ -88,10 +63,7 @@
                         [ngClass]="{'sorting_asc':sortColumn == 'amount' && direction == 'asc','sorting_desc':sortColumn == 'amount' && direction == 'desc'}"
                         (click)="onSort('amount')">Amount
                     </th>
-                    <th class="sortable"
-                        [ngClass]="{'sorting_asc':sortColumn == 'project' && direction == 'asc','sorting_desc':sortColumn == 'project' && direction == 'desc'}"
-                        (click)="onSort('project')">Notes
-                    </th>
+                    <th>Notes</th>
                 </tr>
             </thead>
             <tbody>
@@ -139,9 +111,10 @@
                             </div>
                             <div class="Paragraph-2 text-typeblackdeactivated mt-1-1">Create new order in a few clicks
                             </div>
-                            <div class="mt-1-1"> <button class="btn btn-primary ms-2-1" (click)="AddOrder(0)"
-                                    [disabled]="params.idvendor == 0"><i class="fe-plus-square me-1-1"></i>New
-                                    Order</button></div>
+                            <div class="mt-1-1">
+                                <button class="btn btn-outline-primary ms-2-1" [disabled]="params.idvendor == 0" (click)="AddOrder(0)" style="padding-top: 10px;padding-bottom: 10px;"><i
+                                        class="fe-plus-square me-1-1"></i>New Order</button>
+                            </div>
                         </div>
                     </td>
                 </tr>
