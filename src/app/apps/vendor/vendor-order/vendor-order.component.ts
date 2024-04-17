@@ -1,8 +1,7 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
 import { projectorder_related } from 'src/app/core/gql/order';
+import { receivable_list } from 'src/app/core/gql/receivables';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 
 @Component({
@@ -20,13 +19,22 @@ export class VendorOrderComponent {
   loading = true;
   keywords = '';
   bgColors = [];
+  ordersStatusCount = {
+    Draft: 0,
+    Pending: 0,
+    Accepted: 0,
+    Paid: 0,
+    Partial: 0,
+    Declined: 0,
+    Voided: 0,
+  };
+  objectKeys = Object.keys;
   @Input() params;
+  @Input() tab;
 
   constructor(
     private apolloService: ApolloService,
-    private modalService: NgbModal,
-    private toastrService: ToastrService,
-    private router: Router
+    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -36,20 +44,39 @@ export class VendorOrderComponent {
       this.loading = false;
     }
   }
+  
+  
+  getStatusCount() {
+    let ordersStatusCount = {
+      Draft: 0,
+      Pending: 0,
+      Accepted: 0,
+      Paid: 0,
+      Partial: 0,
+      Declined: 0,
+      Voided: 0,
+    };
+    this.ORDERS.map((order) => {
+      ordersStatusCount[order.status]++;
+    });
+    
+    this.ordersStatusCount = ordersStatusCount;
+  }
 
   getVendorOrderList() {
     this.apolloService
-      .query(projectorder_related, {
+      .query(this.tab == 3 ? projectorder_related : receivable_list, {
         idCompany: parseInt(localStorage.getItem('idcompany')),
         idProject: 0,
         idVendor: this.params.idvendor,
         paidyn: false,
       })
       .then((res) => {
-        const result = res.projectorder_related;
+        const result = this.tab == 3 ? res.projectorder_related : res.receivable_list;
         if (!result.error) {
           this.orders = result.data;
           this.ORDERS = JSON.parse(JSON.stringify(result.data));
+          this.getStatusCount();
         }
         this.loading = false;
       });
@@ -97,7 +124,6 @@ export class VendorOrderComponent {
 
   filterList = [];
   filterVendorList(item) {
-    console.log(item)
     if (!this.filterList.includes(item)) {
       this.filterList.push(item);
     } else {

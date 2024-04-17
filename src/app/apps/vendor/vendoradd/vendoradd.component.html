@@ -263,13 +263,21 @@
             </li>
             <li [ngbNavItem]="3">
                 <a ngbNavLink>
-                    Orders
+                    Sent Orders
                 </a>
                 <ng-template ngbNavContent class="d-flex flex-column">
-                    <app-vendor-order [params]={idvendor} class="flex-column-1"></app-vendor-order>
+                    <app-vendor-order [params]={idvendor} [tab]="3" class="flex-column-1"></app-vendor-order>
                 </ng-template>
             </li>
             <li [ngbNavItem]="4">
+                <a ngbNavLink>
+                    Received Orders
+                </a>
+                <ng-template ngbNavContent class="d-flex flex-column">
+                    <app-vendor-order [params]={idvendor} [tab]="4" class="flex-column-1"></app-vendor-order>
+                </ng-template>
+            </li>
+            <li [ngbNavItem]="5">
                 <a ngbNavLink>
                     Payment
                 </a>
