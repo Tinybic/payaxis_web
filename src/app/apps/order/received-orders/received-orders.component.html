@@ -160,8 +160,8 @@
                 </div>
             </td>
             <td class="text-center">
-                <button *ngIf="item.status !== 'Paid'" class="btn btn-primary btn-text-12" style="padding: 6px 27px;">
-                    Pay Bill
+                <button *ngIf="item.status == 'Active'" class="btn btn-primary btn-text-12" style="padding: 6px 27px;" (click) = "openAddModal(item,$event)">
+                    Payment Request
                 </button>
                 <button *ngIf="item.status === 'Paid'" class="btn btn-outline-primary btn-text-12" style="padding: 7px 12px;">
                     View Details
@@ -186,3 +186,7 @@
         </tbody>
     </table>
 </ngx-simplebar>
+
+<ng-template #addModal>
+    <app-receivable-add class="p-4-1" [modalRef]="addModalRef" [id]="0" [orderInfo]="selectOrder"></app-receivable-add>
+</ng-template>

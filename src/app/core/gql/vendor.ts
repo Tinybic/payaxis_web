@@ -125,6 +125,7 @@ const vendor_list = gql`
         status
         active
         avatar
+        idInvitedCompany
         costcodes {
           costCode
           txtName

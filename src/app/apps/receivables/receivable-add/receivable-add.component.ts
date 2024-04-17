@@ -13,6 +13,7 @@ import {
   projectpayment_info,
   projectpayment_new,
   projectpayment_update,
+  receivable_list,
 } from 'src/app/core/gql/receivables';
 import { vendor_list } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
@@ -26,6 +27,7 @@ import { HttpService } from 'src/app/core/service/http.service';
 export class ReceivableAddComponent {
   @Input() modalRef: any;
   @Input() id: number = 0;
+  @Input() orderInfo: any;
   @ViewChild('deleteModal') deleteModal: any;
   @ViewChild('amount') inputAmout: ElementRef;
   paymentTermsList = VENDOR_PAYMENTTERM;
@@ -84,6 +86,13 @@ export class ReceivableAddComponent {
     if (this.id > 0) {
       this.getDetail();
     } else {
+      if (this.orderInfo) {
+        this.projectpayment.idVendor = this.orderInfo.idCompany;
+        this.projectpayment.idOrder1 = this.orderInfo.id;
+        this.projectpayment.idProject = this.orderInfo.idProject;
+        this.projectpayment.billNumber = this.orderInfo.orderNumber;
+      }
+
       this.getVendorList();
       this.getProjectList();
       this.getOrderList();
@@ -201,7 +210,11 @@ export class ReceivableAddComponent {
   }
 
   setProject() {
-    if (this.projectpayment.idProject > 0) {
+    if (this.orderInfo) {
+      this.project = {
+        projectName: this.orderInfo.projectName,
+      };
+    } else if (this.projectpayment.idProject > 0) {
       this.projectGroupList.forEach((item) => {
         item.forEach((project) => {
           if (this.projectpayment.idProject == project.id) {
@@ -222,7 +235,9 @@ export class ReceivableAddComponent {
         const result = res.vendor_list;
         if (!result.error) {
           this.vendorList = result.data;
-          this.vendorList = this.vendorList.filter(item=>item.status == 'Active');
+          this.vendorList = this.vendorList.filter(
+            (item) => item.status == 'Active'
+          );
           this.VENDORLIST = JSON.parse(JSON.stringify(this.vendorList));
           this.setVendor();
         }
@@ -232,7 +247,10 @@ export class ReceivableAddComponent {
   setVendor() {
     if (this.projectpayment.idVendor > 0) {
       this.vendorList.forEach((item) => {
-        if (item.id == this.projectpayment.idVendor) {
+        if (
+          item.id == this.projectpayment.idVendor ||
+          item.idInvitedCompany == this.projectpayment.idVendor
+        ) {
           this.selectVendor(item);
           return;
         }
@@ -242,12 +260,12 @@ export class ReceivableAddComponent {
 
   getOrderList() {
     this.apolloService
-      .query(projectorder_list, {
+      .query(receivable_list, {
         idCompany: parseInt(localStorage.getItem('idcompany')),
         idProject: 0,
       })
       .then((res) => {
-        const result = res.projectorder_list;
+        const result = res.receivable_list;
         if (!result.error) {
           this.orderList = result.data;
           this.ORDERLIST = JSON.parse(JSON.stringify(result.data));

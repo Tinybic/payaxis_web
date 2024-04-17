@@ -19,7 +19,7 @@
                 Customer
             </div>
 
-            <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" *ngIf="vendor"
+            <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" *ngIf="vendor && !this.orderInfo"
                 (click)="removeVendor()">
                 Edit Customer
             </div>
@@ -204,7 +204,7 @@
             <div class="col-md-6 subtitle-2-400-12 text-end text-typeblack80" *ngIf="!project">
                 Optional
             </div>
-            <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" *ngIf="project"
+            <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" *ngIf="project && !this.orderInfo"
                 (click)="removeProject()">
                 Edit Project
             </div>
@@ -257,7 +257,7 @@
             <div class="col-md-6 subtitle-2-400-12 text-end text-typeblack80" *ngIf="!order">
                 Optional
             </div>
-            <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" *ngIf="order" (click)="removOrder()">
+            <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" *ngIf="order && !this.orderInfo" (click)="removOrder()">
                 Edit Order
             </div>
         </div>
