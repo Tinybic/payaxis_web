@@ -22,6 +22,7 @@ import { OrderBillsComponent } from './order-bills/order-bills.component';
 import { InvoiceModule } from '../invoice/invoice.module';
 import { ReceivedOrdersComponent } from './received-orders/received-orders.component';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
+import { ReceivablesModule } from '../receivables/receivables.module';
 
 
 
@@ -56,7 +57,8 @@ import { OrderDetailComponent } from './order-detail/order-detail.component';
     NgbTooltipModule,
     MomentModule,
     HttpClientModule,
-    InvoiceModule
+    InvoiceModule,
+    ReceivablesModule
   ],
   providers:[
     provideNgxMask()

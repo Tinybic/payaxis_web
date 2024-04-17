@@ -37,5 +37,8 @@ import { MomentModule } from 'ngx-moment';
     NgbNavModule
   ],
   providers: [provideNgxMask()],
+  exports:[
+    ReceivableAddComponent
+  ]
 })
 export class ReceivablesModule {}

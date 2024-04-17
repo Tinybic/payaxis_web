@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ApolloService } from '../../../core/service/apollo.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
@@ -18,9 +18,9 @@ import { receivable_list } from 'src/app/core/gql/receivables';
   styleUrls: ['./received-orders.component.scss']
 })
 export class ReceivedOrdersComponent extends Base {
+  @ViewChild('addModal') addModal: any;
   statusFilter: string = 'All';
   roleFilter = 'Approval';
-
   orders = [];
   currentOrderId: number = 0;
   uploadUrl = '';
@@ -62,7 +62,8 @@ export class ReceivedOrdersComponent extends Base {
   constructor(
     private apolloService: ApolloService,
     private router: Router,
-    private globalFuns: GlobalFunctionsService
+    private globalFuns: GlobalFunctionsService,
+    private modalService: NgbModal,
   ) {
     super();
   }
@@ -234,6 +235,29 @@ export class ReceivedOrdersComponent extends Base {
 
   openDetail(id) {
     this.router.navigate(['apps/order/info/' + id]);
+  }
+
+  selectOrder;
+  addModalRef;
+
+  openAddModal(order,event) {
+    this.selectOrder =  order;
+    this.addModalRef = this.modalService.open(this.addModal, {
+      backdrop: 'static',
+      modalDialogClass: 'modal-right',
+      size: '640',
+    });
+    this.addModalRef.result.then(
+      (res) => {
+        this.addModalRef = null;
+        this.getOrders();
+      },
+      (dismiss) => {
+        this.addModalRef = null;
+        this.getOrders();
+      }
+    );
+    event.stopPropagation();
   }
 }
 
