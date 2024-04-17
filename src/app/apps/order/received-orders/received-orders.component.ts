@@ -1,23 +1,23 @@
 import { Component } from '@angular/core';
-import { ApolloService } from '../../core/service/apollo.service';
+import { ApolloService } from '../../../core/service/apollo.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { projectorder_list } from '../../core/gql/orders';
+import { projectorder_list } from '../../../core/gql/orders';
 import { SweetAlertOptions } from 'sweetalert2';
 import { Base } from 'src/app/core/base';
-import { ActivatedRoute, Router } from '@angular/router';
-import { HttpService } from '../../core/service/http.service';
-import { company_roles } from '../../core/gql/company';
-import { GlobalFunctionsService } from '../../core/service/global-functions.service';
+import { Router } from '@angular/router';
+import { HttpService } from '../../../core/service/http.service';
+import { company_roles } from '../../../core/gql/company';
+import { GlobalFunctionsService } from '../../../core/service/global-functions.service';
 import { companyproject_list } from 'src/app/core/gql/project';
-import { projectorder_duplicate } from 'src/app/core/gql/order';
+import { receivable_list } from 'src/app/core/gql/receivables';
 
 @Component({
-  selector: 'app-order',
-  templateUrl: './order.component.html',
-  styleUrls: ['./order.component.scss'],
+  selector: 'app-received-orders',
+  templateUrl: './received-orders.component.html',
+  styleUrls: ['./received-orders.component.scss']
 })
-export class OrderComponent extends Base {
+export class ReceivedOrdersComponent extends Base {
   statusFilter: string = 'All';
   roleFilter = 'Approval';
 
@@ -62,25 +62,19 @@ export class OrderComponent extends Base {
   constructor(
     private apolloService: ApolloService,
     private router: Router,
-    private globalFuns: GlobalFunctionsService,
-    private activatedRoute: ActivatedRoute,
-    private toastrService:ToastrService
+    private globalFuns: GlobalFunctionsService
   ) {
     super();
   }
 
   ngOnInit(): void {
-    const tab = this.activatedRoute.snapshot.queryParams['tab'];
     this.canEdit = super.setRole('Manage company users');
-    if (tab) {
-      this.tabs1 = 2;
-    }
-
     if (localStorage.getItem('idcompany')) {
       this.getOrders();
       this.getRoles();
       this.getProjects();
-    } else {
+    }
+    else{
       this.loading = false;
     }
   }
@@ -88,12 +82,12 @@ export class OrderComponent extends Base {
   getOrders() {
     if (localStorage.getItem('idcompany')) {
       this.apolloService
-        .query(projectorder_list, {
+        .query(receivable_list, {
           idCompany: parseInt(localStorage.getItem('idcompany')),
-          idProject: 0,
+          idProject: 0
         })
         .then((res) => {
-          const result = res.projectorder_list;
+          const result = res.receivable_list;
           if (!result.error) {
             this.orders = result.data;
             this.InitialOrders = JSON.parse(JSON.stringify(result.data));
@@ -239,31 +233,7 @@ export class OrderComponent extends Base {
   };
 
   openDetail(id) {
-    this.router.navigate(['apps/order/detail/' + id]);
-  }
-
-  duplicateOrder(id,idVendor,revision){
-    if (id > 0) {
-      this.apolloService
-        .mutate(projectorder_duplicate, {
-          idCompany: parseInt(localStorage.getItem('idcompany')),
-          idVendor: idVendor,
-          id: id,
-          revision: revision,
-        })
-        .then((res) => {
-          let result = res.projectorder_duplicate;
-          let message = '';
-          if (!result.error) {
-            message = 'Duplicate successful';
-            this.router.navigate(['apps/order/detail/'+result.data.id])
-          } else {
-            message = result.message;
-          }
-          this.toastrService.info(message, '', {
-            positionClass: 'toast-top-right-order',
-          });
-        });
-    }
+    this.router.navigate(['apps/order/info/' + id]);
   }
 }
+

@@ -255,11 +255,13 @@ export class ReceivableListComponent {
 
   getList() {
     this.apolloService
-      .query(receivable_list, {
+      .query(projectpayment_list, {
         idCompany: parseInt(localStorage.getItem('idcompany')),
+        idProject :0,
+        idVendor:0
       })
       .then((res) => {
-        const result = res.receivable_list;
+        const result = res.projectpayment_list;
         this.paymentRequestList = result.data;
         this.PAYMENTREQUESTLIST = JSON.parse(
           JSON.stringify(this.paymentRequestList)

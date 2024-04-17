@@ -15,16 +15,16 @@
         <div class="card-body padding-16">
             <div class="row">
                 <div class="col-md-6 subtitle-400-12-32-up">
-                    VENDOR
+                    Contact
                 </div>
                 <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer"
                      *ngIf="vendor || (newVendor && newVendorShow)" (click)="removeVendor()">
-                    Edit Vendor
+                    Edit Contact
                 </div>
                 <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer"
                      *ngIf="newVendor && !newVendorShow "
                      (click)="showVendor()">
-                    Select Vendor
+                    Select Contact
                 </div>
             </div>
             
@@ -76,15 +76,15 @@
                                placeholder="Find Customer" [(ngModel)]="keywordsVendor"  (ngModelChange)="vendorFilter(vendorDropdown)" [ngClass]="{'is-invalid':txtError.idVendor == 0}" ngbDropdownToggle/>
                         <div *ngIf="txtError.idVendor == 0" class="invalid-feedback" i18n>
                             <i class="fe-alert-triangle invalid-feedback-icon"></i>
-                            Vendor required
+                            Contact required
                         </div>
                         <div class="row" *ngIf="newVendor && !newVendorShow">
                             <div class="col-md-6">
-                                <label class="form-label" i18n>New Vendor name</label>
+                                <label class="form-label" i18n>New Contact name</label>
                                 <input type="text" class="form-control" placeholder="New Vendor name"
                                        [(ngModel)]="projectpayment.vendorName"/>
                                 <div class="mt-1-1" *ngIf="this.createVendorList.length == 0 && false">
-                                    <i class="fe-alert-triangle me-1-1" style="color: #EAC608;"></i>Vendor will be
+                                    <i class="fe-alert-triangle me-1-1" style="color: #EAC608;"></i>Contact will be
                                     created
                                     as Draft
                                 </div>
@@ -112,7 +112,7 @@
                             <div ngbDropdownItem class="cursor-pointer" (click)="createVendor()">
                                 <div class="row">
                                     <div class="col-md-8 Subtitle-1 text-start">
-                                        New Vendor
+                                        New Contact
                                     </div>
                                 </div>
                             </div>
