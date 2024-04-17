@@ -83,8 +83,8 @@ const projectorder_new = gql`
 `;
 
 const projectorder_info = gql`
-  query projectorder_info($idCompany: Int!, $id: Int!) {
-    projectorder_info(idCompany: $idCompany, id: $id) {
+  query projectorder_info($idCompany: Int!, $id: Int!, $received: Boolean) {
+    projectorder_info(idCompany: $idCompany, id: $id, received: $received) {
       error
       code
       message

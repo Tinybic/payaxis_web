@@ -9,7 +9,6 @@ import { PAYMENTTERM } from 'src/app/core/constants/payment';
 import { categorycostcode_list } from 'src/app/core/gql/costcode';
 import { getNewFileName, get_file_url } from 'src/app/core/gql/file';
 import {
-  projectorder_duplicate,
   projectorder_info,
   projectorder_new,
   projectorder_newnumber,
@@ -25,13 +24,15 @@ import { ApolloService } from 'src/app/core/service/apollo.service';
 import { EventService } from 'src/app/core/service/event.service';
 import { HttpService } from 'src/app/core/service/http.service';
 import * as moment from 'moment';
+import { projectorder_accept, projectorder_decline } from 'src/app/core/gql/receivables';
+
 
 @Component({
-  selector: 'app-add-order',
-  templateUrl: './add-order.component.html',
-  styleUrls: ['./add-order.component.scss'],
+  selector: 'app-order-detail',
+  templateUrl: './order-detail.component.html',
+  styleUrls: ['./order-detail.component.scss']
 })
-export class AddOrderComponent {
+export class OrderDetailComponent {
   @ViewChild('listitem', { static: true }) listitem: ElementRef;
   @ViewChild('addcostcode') addcostcode: any;
   @ViewChild('addvendor') addvendor: any;
@@ -134,32 +135,6 @@ export class AddOrderComponent {
         this.order.id = this.idOrder;
         this.getOrderInfo(this.order.id);
       }
-      if (this.idOrder < 1) {
-        this.order.id = 0;
-        if (this.idOrder < 0) {
-          this.order.idProject = -this.idOrder;
-        }
-        //this.order.invoicedDate = new Date().toISOString().slice(0, 10);
-        this.getOrderNumber();
-        this.getCostCodeList();
-        this.getResonList();
-        this.getProjectList();
-        this.getVendorList();
-        this.loading = false;
-
-        for (let i = 0; i < 2; i++) {
-          this.order.listItems.push({
-            paidyn: false,
-            description: '',
-            unit: '',
-            qty: '',
-            price: '',
-            amount: '',
-            taxyn: false,
-            notes: '',
-          });
-        }
-      }
     });
   }
 
@@ -167,7 +142,7 @@ export class AddOrderComponent {
     if (this.idOrder < 0) {
       this.router.navigate(['apps/projects/detail/' + -this.idOrder]);
     } else {
-      this.router.navigate(['apps/order']);
+      this.router.navigateByUrl('apps/order?tab=2');
     }
   }
 
@@ -238,7 +213,7 @@ export class AddOrderComponent {
       .query(projectorder_info, {
         idCompany: this.order.idCompany,
         id: id,
-        received:false
+        received:true
       })
       .then((res) => {
         const result = res.projectorder_info;
@@ -265,39 +240,17 @@ export class AddOrderComponent {
             status: result.data.projectOrder.status,
             listItems: result.data.listItems,
           };
-          this.getCostCodeList();
-          this.getResonList();
-          this.getProjectList();
-          this.getVendorList();
-          this.getRelatedList();
+          this.project = {
+            projectName : result.data.projectOrder.projectName
+          }
+          this.vendor = {
+            vendorName: result.data.projectOrder.vendorName,
+            txtAddress: result.data.projectOrder.txtAddress,
+            txtCity: result.data.projectOrder.txtCity,
+            txtState: result.data.projectOrder.txtState
+          }
+          this.vendorcostcodesText = result.data.projectOrder.costCodeName
           this.loading = false;
-
-          //if(this.order.listItems.length > 9){
-          this.order.listItems.push({
-            paidyn: false,
-            description: '',
-            unit: '',
-            qty: '',
-            price: '',
-            amount: '',
-            taxyn: false,
-            notes: '',
-          });
-          // } else{
-          //   const length = 10 - this.order.listItems.length;
-          //   for(let i = 0; i < length; i++){
-          //     this.order.listItems.push({
-          //       paidyn: false,
-          //       description: '',
-          //       unit: '',
-          //       qty: 0.0,
-          //       price: 0.0,
-          //       amount: 0.0,
-          //       taxyn: false,
-          //       notes: ''
-          //     });
-          //   }
-          // }
         }
       });
   }
@@ -482,7 +435,7 @@ export class AddOrderComponent {
     this.order.idVendor = vendor.id;
     this.order.taxrate = vendor.taxrate;
 
-    if (this.vendor.costcodes && this.vendor.costcodes.length > 0) {
+    if (this.vendor.costcodes.length > 0) {
       this.order.costCode = this.vendor.costcodes[0].costCode;
       this.setCostCodeName();
     }
@@ -607,95 +560,84 @@ export class AddOrderComponent {
       this.order.taxable + this.order.nontaxable + this.order.tax;
   }
 
-  save() {
-    return new Promise((resolve, reject) => {
-      if (this.order.costCode == '') {
-        this.orderError.costcode = 0;
-        return;
-      } else {
-        this.orderError.costcode = -1;
-      }
-
-      if (this.order.idProject == 0) {
-        this.orderError.idProject = 0;
-        return;
-      } else {
-        this.orderError.idProject = -1;
-      }
-
-      if (this.order.idVendor == 0) {
-        this.orderError.idVendor = 0;
-        return;
-      } else {
-        this.orderError.idVendor = -1;
-      }
-
-      let listitemPara = [];
-      this.order.listItems.forEach((item) => {
-        if (item.description.length > 0) {
-          item.price = parseFloat(item.price);
-          item.qty = parseFloat(item.qty);
-          item.amount = parseFloat(item.amount);
-          listitemPara.push({
-            amount: item.amount,
-            description: item.description,
-            qty: item.qty,
-            notes: item.notes,
-            paidyn: item.paidyn,
-            unit: item.unit,
-            taxyn: item.taxyn,
-            price: item.price,
-          });
-        }
-      });
-
-      this.order.taxable = parseFloat(this.order.taxable.toString());
-      this.order.total = parseFloat(this.order.total.toString());
-
-      if (listitemPara.length == 0) {
-        this.toastrService.info(
-          'Save failed, at least one item needs to be filled in',
-          '',
-          {
-            positionClass: 'toast-top-right-order',
-          }
-        );
-        return;
-      }
-
-      this.order.listItems = listitemPara;
-      let gql = projectorder_new;
-      if (this.order.id > 0) {
-        gql = projectorder_update;
-      }
-
-      this.apolloService.mutate(gql, this.order).then((res) => {
-        let result;
-        if (this.order.id > 0) {
-          result = res.projectorder_update;
-        } else {
-          result = res.projectorder_new;
-        }
-        let message = '';
-        if (!result.error) {
-          message = 'Save successful';
-          this.order.id = result.data.id;
-          this.order.revision = result.data.revision;
-          resolve('success');
-        } else {
-          message = result.message;
-          reject('error');
-        }
-        this.toastrService.info(message, '', {
-          positionClass: 'toast-top-right-order',
-        });
-      });
-    });
-  }
-
   saveOrder() {
-    this.save().then((res) => {
-      if (res == 'success') this.clickAllOrder();
+    if (this.order.costCode == '') {
+      this.orderError.costcode = 0;
+      return;
+    } else {
+      this.orderError.costcode = -1;
+    }
+
+    if (this.order.idProject == 0) {
+      this.orderError.idProject = 0;
+      return;
+    } else {
+      this.orderError.idProject = -1;
+    }
+
+    if (this.order.idVendor == 0) {
+      this.orderError.idVendor = 0;
+      return;
+    } else {
+      this.orderError.idVendor = -1;
+    }
+
+    let listitemPara = [];
+    this.order.listItems.forEach((item) => {
+      if (item.description.length > 0) {
+        item.price = parseFloat(item.price);
+        item.qty = parseFloat(item.qty);
+        item.amount = parseFloat(item.amount);
+        listitemPara.push({
+          amount: item.amount,
+          description: item.description,
+          qty: item.qty,
+          notes: item.notes,
+          paidyn: item.paidyn,
+          unit: item.unit,
+          taxyn: item.taxyn,
+          price: item.price,
+        });
+      }
+    });
+
+    this.order.taxable = parseFloat(this.order.taxable.toString());
+    this.order.total = parseFloat(this.order.total.toString());
+
+    if (listitemPara.length == 0) {
+      this.toastrService.info(
+        'Save failed, at least one item needs to be filled in',
+        '',
+        {
+          positionClass: 'toast-top-right-order',
+        }
+      );
+      return;
+    }
+
+    this.order.listItems = listitemPara;
+    let gql = projectorder_new;
+    if (this.order.id > 0) {
+      gql = projectorder_update;
+    }
+
+    this.apolloService.mutate(gql, this.order).then((res) => {
+      let result;
+      if (this.order.id > 0) {
+        result = res.projectorder_update;
+      } else {
+        result = res.projectorder_new;
+      }
+      let message = '';
+      if (!result.error) {
+        message = 'Save successful';
+        this.clickAllOrder();
+      } else {
+        message = result.message;
+      }
+      this.toastrService.info(message, '', {
+        positionClass: 'toast-top-right-order',
+      });
     });
   }
 
@@ -784,20 +726,19 @@ export class AddOrderComponent {
     this.router.navigate(['apps/order/detail/' + id]);
   }
 
-  send() {
+  Decline() {
     if (this.order.id > 0) {
       this.apolloService
-        .mutate(projectorder_send, {
-          idCompany: this.order.idCompany,
-          idVendor: this.order.idVendor,
+        .mutate(projectorder_decline, {
+          idCompany: parseInt(localStorage.getItem('idcompany')),
           id: this.order.id,
           revision: this.order.revision,
         })
         .then((res) => {
-          let result = res.projectorder_send;
+          let result = res.projectorder_decline;
           let message = '';
           if (!result.error) {
-            message = 'Send successful';
+            message = 'Success'
             this.clickAllOrder();
           } else {
             message = result.message;
@@ -809,31 +750,20 @@ export class AddOrderComponent {
     }
   }
 
-  projectorderSend() {
-    if (this.order.id == 0) {
-      this.save().then((res) => {
-        if (res == 'success') this.send();
-      });
-    } else {
-      this.send();
-    }
-  }
-
-  duplicateOrder(){
+  Accept() {
     if (this.order.id > 0) {
       this.apolloService
-        .mutate(projectorder_duplicate, {
-          idCompany: this.order.idCompany,
-          idVendor: this.order.idVendor,
+        .mutate(projectorder_accept, {
+          idCompany: parseInt(localStorage.getItem('idcompany')),
           id: this.order.id,
           revision: this.order.revision,
         })
         .then((res) => {
-          let result = res.projectorder_duplicate;
+          let result = res.projectorder_accept;
           let message = '';
           if (!result.error) {
-            message = 'Duplicate successful';
-            this.router.navigate(['apps/order/detail/'+result.data.id])
+            message = 'Success'
+            this.clickAllOrder();
           } else {
             message = result.message;
           }
@@ -844,3 +774,4 @@ export class AddOrderComponent {
     }
   }
 }
+

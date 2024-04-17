@@ -36,7 +36,7 @@ const MENU_ITEMS: MenuItem[] = [
   },
   {
     key: 'vendor',
-    label: 'Vendors',
+    label: 'Contacts',
     isTitle: false,
     icon: 'fe-briefcase',
     collapsed: true,

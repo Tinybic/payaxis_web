@@ -151,7 +151,7 @@
         </div> -->
             </div>
             <div class="col-md-6 text-end">
-                <input id="attachmentUpload" type="file" class="d-none" multiple (change)="getUploadUrl($event)" />
+                <!-- <input id="attachmentUpload" type="file" class="d-none" multiple (change)="getUploadUrl($event)" />
                 <button class="btn btn-outline-primary" onclick="document.getElementById('attachmentUpload').click()"
                 *ngIf="this.order.id > 0"
                     [disabled]="isUploading">
@@ -160,11 +160,11 @@
                 <button class="btn btn-outline-primary ms-2-1">
                     Direct Payment
                 </button>
-                <button class="btn btn-primary ms-2-1" *ngIf="tabs1 == 1" (click)="saveOrder();">Save</button>
+                <button class="btn btn-primary ms-2-1" *ngIf="tabs1 == 1" (click)="saveOrder()">Save</button>
                 <div class="d-inline-block dropdown ms-1-1" ngbDropdown>
                     <span ngbDropdownToggle><i class="fe-more-vertical- font-24 cursor-pointer"></i></span>
                     <div class="dropdown-menu" ngbDropdownMenu>
-                        <div class="cursor-pointer" (click) = "duplicateOrder()" ngbDropdownItem>
+                        <div class="cursor-pointer" ngbDropdownItem>
                             Duplicate Order
                         </div>
                         <div class="cursor-pointer" ngbDropdownItem>
@@ -177,7 +177,7 @@
                             Back Charge
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="row mt-1-1 flex-1">
@@ -215,11 +215,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="form-label" i18n>Cost Code</label>
-                                                    <span
-                                                        class="float-end btn-text-12 text-primary cursor-pointer line-24"
-                                                        (click)="openAddCostCodeModal('Create')"><i
-                                                            class="fe-plus-square me-1-1"></i>Create New Cost
-                                                        Code</span>
+                                                   
                                                     <div class="dropdown" ngbDropdown>
                                                         <input class="form-select cursor-default" type="text"
                                                             id="vendorcostcodes" readonly
@@ -227,41 +223,6 @@
                                                             placeholder="Assign Cost Code"
                                                             [ngClass]="{'is-invalid':orderError.costcode == 0}"
                                                             ngbDropdownToggle />
-                                                        <div *ngIf="orderError.costcode == 0" class="invalid-feedback"
-                                                            i18n>
-                                                            <i class="fe-alert-triangle invalid-feedback-icon"></i>
-                                                            Cost Code required
-                                                        </div>
-                                                        <div style="max-height: 300px; overflow-y: auto;"
-                                                            class="dropdown-menu" aria-labelledby="vendorcostcodes"
-                                                            ngbDropdownMenu>
-                                                            <div>
-                                                                <input auto-complete="off" type="search"
-                                                                    class="form-control form-search"
-                                                                    [(ngModel)]="keywordsCostCode"
-                                                                    (keyup)="costCodeFilter()" />
-                                                            </div>
-                                                            <div *ngFor="let item of costCodeList let i1=index;">
-                                                                <div style="color: #215EA9; font-weight: 600; margin-bottom: 8px; margin-top: 8px;"
-                                                                    *ngIf="item.costcodelist && item.costcodelist.length>0">
-                                                                    {{item.txtName}}
-                                                                </div>
-                                                                <div class="mb-1"
-                                                                    *ngFor="let costcode of item.costcodelist; let i2=index;">
-                                                                    <div>
-                                                                        <input type="checkbox" class="form-check-input"
-                                                                            [checked]="setCostCodeSelect(costcode.costCode)"
-                                                                            (change)="costCodeSelect($event,costcode)"
-                                                                            id="dropdownCheck_{{i1}}_{{i2}}">
-                                                                        <label class="form-check-label ms-1-1"
-                                                                            for="dropdownCheck_{{i1}}_{{i2}}">
-                                                                            {{costcode.txtName}}
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -287,53 +248,17 @@
                                                         </div>
                                                         <div
                                                             class="col-md-6 btn-text-12 text-primary text-end cursor-pointer line-40">
-                                                            <span *ngIf="!project" (click)="openAddProjectModal()"><i
-                                                                    class="fe-plus-square me-1-1"></i>Create
-                                                                New Project</span>
-                                                            <span *ngIf="project" (click)="removeProject()"><i
-                                                                    class="fe-edit me-1-1"></i>Edit Project</span>
                                                         </div>
                                                     </div>
                                                     <div class="row  mt-2-1">
                                                         <div class="col-md-12">
-                                                            <div ngbDropdown>
+                                                            <div>
                                                                 <div *ngIf="project"
                                                                     style="border:1px solid #E1E6EF; border-radius: 8px; padding: 8px 16px;">
                                                                     <div class="row cursor-pointer">
                                                                         <div
                                                                             class="col-md-12 Subtitle-1 text-start line-32">
                                                                             {{project.projectName}}
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <input *ngIf="!project" class="form-control form-search"
-                                                                    type="search" placeholder="Find Project"
-                                                                    [(ngModel)]="keywordsProject"
-                                                                    (keyup)="projectFilter()"
-                                                                    [ngClass]="{'is-invalid':orderError.idProject == 0}"
-                                                                    ngbDropdownToggle />
-                                                                <div *ngIf="orderError.idProject == 0"
-                                                                    class="invalid-feedback" i18n>
-                                                                    <i
-                                                                        class="fe-alert-triangle invalid-feedback-icon"></i>
-                                                                    Project required
-                                                                </div>
-                                                                <div class="padding-16"
-                                                                    style="background-color: #F8F9FC; border:1px solid #E1E6EF;  margin-top: -44px; width: 100%; max-height: 404px; overflow-x: hidden; overflow-y: scroll;"
-                                                                    ngbDropdownMenu>
-                                                                    <div *ngFor="let item of projectGroupList">
-                                                                        <div class="subtitle-2-400-14 bold-600 mb-1-1"
-                                                                            style="color: #215EA9;">
-                                                                            {{item[0].groupName}}</div>
-                                                                        <div ngbDropdownItem
-                                                                            *ngFor="let project of item">
-                                                                            <div class="row cursor-pointer"
-                                                                                (click)="selectProject(project)">
-                                                                                <div
-                                                                                    class="col-md-12 Subtitle-1 text-start line-32">
-                                                                                    {{project.projectName}}
-                                                                                </div>
-                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -354,11 +279,6 @@
                                                         </div>
                                                         <div
                                                             class="col-md-6 btn-text-12 text-primary text-end cursor-pointer line-40">
-                                                            <span *ngIf="!vendor" (click)="openAddVenodrModal()"><i
-                                                                    class="fe-plus-square me-1-1"></i>Create
-                                                                New Contact</span>
-                                                            <span *ngIf="vendor" (click)="removeVendor()"><i
-                                                                    class="fe-edit me-1-1"></i>Edit Contact</span>
                                                         </div>
                                                     </div>
                                                     <div class="row mt-2-1">
@@ -376,55 +296,6 @@
                                                                                 {{vendor.txtCity}},
                                                                                 {{vendor.txtState}},
                                                                                 {{vendor.txtZipcode}}</div>
-                                                                        </div>
-                                                                        <div class="col-md-4 text-end">
-                                                                            <div class="vendorCostcode subtitle-2-600 d-inline-block"
-                                                                                *ngIf="vendor.costcodes && vendor.costcodes.lenght > 0">
-                                                                                <span
-                                                                                    *ngFor="let costcode of vendor.costcodes">{{costcode.txtName}}</span>
-                                                                            </div>
-                                                                            <div class="d-inline-block ms-1-1"><i
-                                                                                    class="fe-external-link text-primary"></i>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <input *ngIf="!vendor" class="form-control form-search"
-                                                                    type="search" placeholder="Find Vendor"
-                                                                    [(ngModel)]="keywordsVendor"
-                                                                    (keyup)="vendorFilter()"
-                                                                    [ngClass]="{'is-invalid':orderError.idVendor == 0}"
-                                                                    ngbDropdownToggle />
-                                                                <div *ngIf="orderError.idVendor == 0"
-                                                                    class="invalid-feedback" i18n>
-                                                                    <i
-                                                                        class="fe-alert-triangle invalid-feedback-icon"></i>
-                                                                        Contact required
-                                                                </div>
-                                                                <div class="padding-16"
-                                                                    style="border:1px solid #E1E6EF;background-color: #F8F9FC;  margin-top: -44px; width: 100%; max-height: 362px; overflow-x: hidden; overflow-y: scroll;"
-                                                                    ngbDropdownMenu>
-                                                                    <div ngbDropdownItem
-                                                                        *ngFor="let item of vendorList">
-                                                                        <div class="row cursor-pointer"
-                                                                            (click)="selectVendor(item)">
-                                                                            <div class="col-md-8 Subtitle-1 text-start">
-                                                                                <div>{{item.vendorName}}</div>
-                                                                                <div class="subtitle-2-400-12 text-typeblack80"
-                                                                                    *ngIf="item.txtAddress && item.txtCity">
-                                                                                    {{item.txtAddress}},
-                                                                                    {{item.txtCity}},
-                                                                                    {{item.txtState}},
-                                                                                    {{item.txtZipcode}}</div>
-                                                                            </div>
-                                                                            <div class="col-md-4 text-end">
-                                                                                <div class="vendorCostcode subtitle-2-600"
-                                                                                    *ngIf="item.costcodes && item.costcodes.length > 0">
-                                                                                    <span
-                                                                                        *ngFor="let costcode of item.costcodes">{{costcode.txtName}}</span>
-                                                                                </div>
-                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -515,20 +386,19 @@
                                                                         (change)="setTotal()"
                                                                         [(ngModel)]="item.taxyn" />
                                                                 </td>
-                                                                
-                                                                <td>
-                                                                    <input class="form-control" type="text"
-                                                                        [(ngModel)]="item.notes" />
-                                                                </td>
                                                                 <td *ngIf="order.id > 0">
                                                                     <span *ngIf="item.modifiedDate">{{item.modifiedDate
                                                                         | date: 'MM/dd/yy HH:mm:ss' | amTimeAgo}}</span>
                                                                 </td>
                                                                 <td>
-                                                                    <i class="fe-copy cursor-pointer"
+                                                                    <input class="form-control" type="text"
+                                                                        [(ngModel)]="item.notes" />
+                                                                </td>
+                                                                <td>
+                                                                    <!-- <i class="fe-copy cursor-pointer"
                                                                         (click)="listItemCopy(item,i)"></i>
                                                                     <i class="fe-trash-2 ms-1-1 cursor-pointer"
-                                                                        (click)="listItemDelete(i,item)"></i>
+                                                                        (click)="listItemDelete(i,item)"></i> -->
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -582,7 +452,7 @@
                             Bills
                         </a>
                         <ng-template ngbNavContent class="d-flex flex-column">
-                            <app-order-bills></app-order-bills>
+                            
                         </ng-template>
                     </li>
                     <li [ngbNavItem]="3">
@@ -590,7 +460,7 @@
                             Attachments
                         </a>
                         <ng-template ngbNavContent class="d-flex flex-column">
-                            <app-attachments></app-attachments>
+                            
                         </ng-template>
                     </li>
                     <li [ngbNavItem]="4">
@@ -598,7 +468,7 @@
                             Activity
                         </a>
                         <ng-template ngbNavContent class="d-flex flex-column">
-                            <app-activity></app-activity>
+                            
                         </ng-template>
                     </li>
                 </ul>
@@ -629,14 +499,14 @@
                 type="text" id="tax" required i18n-placeholder />
         </div>
         <div class="col-md-6 pt-2-1 d-flex flex-row-reverse text-end">
-            <div class="d-inline-block" *ngIf="order.status == 'Paid'"><button type="button"
-                    class="btn btn-primary ms-1-1" style="border:0px; box-shadow: none;">Send Receipt</button></div>
-            <div class="d-inline-block" *ngIf="order.status !== 'Paid'"><button type="button"
-                    class="btn btn-primary ms-1-1" style="border:0px; box-shadow: none;">Pay Invoice</button></div>
-            <div class="d-inline-block" *ngIf="order.status !== 'Paid'"><button type="button"
-                    class="btn btn-primary ms-1-1"
-                    style="border:1px solid #ffffff; box-shadow: none;background-color: transparent;" (click) = "projectorderSend()">Send
-                    Order</button></div>
+            <div class="d-inline-block" *ngIf="order.status == 'Pending'">
+                <button type="button"
+                    class="btn btn-success ms-1-1"
+                    style="border:1px solid #ffffff; box-shadow: none;" (click) = "Accept()">Accept</button>
+                <button type="button"
+                    class="btn btn-danger ms-1-1"
+                    style="border:1px solid #ffffff; box-shadow: none;" (click) = "Decline()">Decline</button>
+                </div>
             <div class="d-inline-block" style="height: 40px;color:#FFFFFFB2;">
                 <span class="btn-text-12">Total Amount Due</span><br />
                 <span class="headline-24" style=" color:  {{order.status == 'Paid'?'#FFFFFF80':'white'}};"
@@ -645,16 +515,3 @@
         </div>
     </div>
 </div>
-<ng-template #addcostcode let-modal>
-    <app-add-costcode [type]="costcodeButtonText" [data]="modalData" [modalRef]="addmodalref"></app-add-costcode>
-</ng-template>
-
-<ng-template #addproject let-modal>
-    <app-create-project [modalRef]="addProjectmodalRef" style="height: 100%;overflow-y: auto;"></app-create-project>
-</ng-template>
-
-<ng-template #addvendor let-modal>
-    <app-vendoradd class="flex-column-1" [modalRef]="modalVendorRef" (outId)="getVendorId($event)"
-        style="width: calc(100vw - 216px); padding:32px 32px 0; background-color: #F8F9FC;overflow-y: auto;"
-        [idvendor]="0"></app-vendoradd>
-</ng-template>

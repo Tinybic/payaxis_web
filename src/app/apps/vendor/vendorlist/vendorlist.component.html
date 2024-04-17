@@ -1,6 +1,6 @@
 <div class="row">
     <h5 class="col-md-3 bold-700 text-black">
-        Vendors
+        Contacts
     </h5>
     <div class="col-md-9 text-end">
 
@@ -45,13 +45,13 @@
                         class="float-end mt-1" src="/assets/images/icon/csv.png" /></div>
             </div>
         </div>
-        <button class="btn btn-primary ms-2-1" style="margin-right: 2px; margin-top: 2px;" (click)="openAddModal()" *ngIf="canEdit">New Vendor</button>
+        <button class="btn btn-primary ms-2-1" style="margin-right: 2px; margin-top: 2px;" (click)="openAddModal()" *ngIf="canEdit">New Contact</button>
     </div>
 </div>
 
 <div class="row mt-2-1">
     <div class="col-md-8">
-        <span class="font-20 bold-600">{{vendorlist.length}} Vendors</span>
+        <span class="font-20 bold-600">{{vendorlist.length}} Contacts</span>
 
         <div class="d-inline-block dropdown ms-1-1" ngbDropdown>
             <a class="dropdown-outline" href="javascript:void(0)" ngbDropdownToggle>
@@ -153,11 +153,11 @@
             <tbody *ngIf="vendorlist.length==0 && !loading" class="bg-white">
                 <tr *ngIf="!loading && vendorlist.length==0 && canEdit">
                     <td colspan="6" class="text-center">
-                        <div class="Paragraph-1 text-typeblackdeactivated bold-600  mt-40 ">No Vendors added yet</div>
-                        <div class="Paragraph-2 text-typeblackdeactivated mt-1-1">Create new vendor in a few clicks
+                        <div class="Paragraph-1 text-typeblackdeactivated bold-600  mt-40 ">No Contacts added yet</div>
+                        <div class="Paragraph-2 text-typeblackdeactivated mt-1-1">Create new contact in a few clicks
                         </div>
                         <div class="mt-1-1"> <button class="btn btn-primary ms-2-1" (click)="openAddModal()"><i
-                                    class="fe-plus-square me-1-1"></i>New Vendor</button></div>
+                                    class="fe-plus-square me-1-1"></i>New Contact</button></div>
 
                         <div class="Paragraph-2 text-typeblackdeactivated mt-40 ">or import items from the file</div>
 
