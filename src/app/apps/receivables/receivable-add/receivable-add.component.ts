@@ -91,6 +91,7 @@ export class ReceivableAddComponent {
         this.projectpayment.idOrder1 = this.orderInfo.id;
         this.projectpayment.idProject = this.orderInfo.idProject;
         this.projectpayment.billNumber = this.orderInfo.orderNumber;
+        this.projectpayment.amount = this.orderInfo.remainingAmount;
       }
 
       this.getVendorList();
