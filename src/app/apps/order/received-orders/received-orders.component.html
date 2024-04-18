@@ -160,10 +160,10 @@
                 </div>
             </td>
             <td class="text-center">
-                <button *ngIf="item.status == 'Active'" class="btn btn-primary btn-text-12" style="padding: 6px 27px;" (click) = "openAddModal(item,$event)">
+                <button *ngIf="item.status == 'Accepted'" class="btn btn-primary btn-text-12" style="padding: 6px 27px;" (click) = "openAddModal(item,$event)">
                     Payment Request
                 </button>
-                <button *ngIf="item.status === 'Paid'" class="btn btn-outline-primary btn-text-12" style="padding: 7px 12px;">
+                <button *ngIf="item.status != 'Accepted'" class="btn btn-outline-primary btn-text-12" style="padding: 7px 12px;">
                     View Details
                 </button>
             </td>
