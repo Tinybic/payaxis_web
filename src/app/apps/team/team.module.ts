@@ -10,8 +10,9 @@ import { DropdowndataModule } from 'src/app/shared/dropdowndata/dropdowndata.mod
 import { TagInputModule } from 'ngx-chips'; // this is needed
 import { UiModule } from 'src/app/shared/ui/ui.module';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { TeamDetailComponent } from './team-detail/team-detail.component';
 @NgModule({
-  declarations: [TeamlistComponent],
+  declarations: [TeamlistComponent, TeamDetailComponent],
   imports: [
     CommonModule,
     TagInputModule,
