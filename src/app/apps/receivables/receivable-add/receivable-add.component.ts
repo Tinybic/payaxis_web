@@ -253,6 +253,7 @@ export class ReceivableAddComponent {
           item.idInvitedCompany == this.projectpayment.idVendor
         ) {
           this.selectVendor(item);
+          
           return;
         }
       });
@@ -411,6 +412,12 @@ export class ReceivableAddComponent {
       }
     }
     this.projectpayment.idVendor = vendor.id;
+    this.orderList = JSON.parse(JSON.stringify(this.ORDERLIST));
+    this.orderList = this.orderList.filter(
+      (item2) =>
+        item2.idCompany == vendor.idInvitedCompany
+    );
+
   }
   vendorFilter() {
     this.vendorList = JSON.parse(JSON.stringify(this.VENDORLIST));
