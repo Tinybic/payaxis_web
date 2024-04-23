@@ -80,7 +80,7 @@
                                             <label class="form-label" i18n>Industry</label>
                                             <span class="float-end text-typeblack80">Optional</span>
                                             <input id="txtindustry" type="text"
-                                                class="form-control form-select position-relative  cursor-default" 
+                                                class="form-control form-select position-relative  cursor-default"
                                                 [ngbTypeahead]="searchIndustry" (selectItem)="setIndustry($event)"
                                                 [(ngModel)]="company.industry"
                                                 (focus)="focus1$.next($any($event).target.value)"
@@ -207,6 +207,11 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row mt-2-1 d-none">
+                        <div class="col-md-12">
+                            <button class="btn btn-primary ms-2-1 btn-h-40" style="margin-right: 2px;" (click)="openUserSignatureModal()">Signature</button>
+                        </div>
+                    </div>
                 </ng-template>
             </li>
             <li [ngbNavItem]="2" [disabled]="company.id==0">
@@ -237,3 +242,7 @@
     </div>
     <div [ngbNavOutlet]="nav" class="mb-0 b-0 pt-0"></div>
 </div>
+
+<ng-template #userSignatureModal>
+    <app-user-signature [modalRef]="userSignatureModalRef"></app-user-signature>
+</ng-template>

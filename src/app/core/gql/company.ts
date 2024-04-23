@@ -199,6 +199,16 @@ const company_member_join = gql`
   }
 `;
 
+const signature_new = gql`
+mutation signature_new($idUser: Int!, $imageUrl: imageUrl_String_NotNull_maxLength_512!, $imageBase64: String!) {
+  signature_new(idUser: $idUser, imageUrl: $imageUrl, imageBase64: $imageBase64) {
+    error
+    code
+    message
+    data
+  }
+}`
+
 export {
   companyNew,
   companyUpate,
@@ -207,4 +217,5 @@ export {
   company_roles,
   company_invitedmember_deactivate,
   company_member_join,
+  signature_new,
 };

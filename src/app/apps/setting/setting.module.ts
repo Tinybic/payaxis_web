@@ -16,6 +16,8 @@ import { SharedModule } from "../../shared/shared.module";
 import { SimplebarAngularModule } from "simplebar-angular";
 import { AddCostcodeComponent } from './add-costcode/add-costcode.component';
 import { NgxPlaidLinkModule } from "ngx-plaid-link";
+import { UserSignatureComponent } from './user-signature/user-signature.component';
+import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,7 @@ import { NgxPlaidLinkModule } from "ngx-plaid-link";
     RolesComponent,
     AddRoleComponent,
     AddCostcodeComponent,
+    UserSignatureComponent,
   ],
   imports: [
     CommonModule,
@@ -40,8 +43,9 @@ import { NgxPlaidLinkModule } from "ngx-plaid-link";
     SharedModule,
     NgxMaskDirective,
     NgxMaskPipe,
-    SimplebarAngularModule, 
-    NgxPlaidLinkModule
+    SimplebarAngularModule,
+    NgxPlaidLinkModule,
+    AngularSignaturePadModule
   ],
   providers:[
     provideNgxMask()

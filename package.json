@@ -14,6 +14,7 @@
   "dependencies": {
     "@abacritt/angularx-social-login": "2.0.0",
     "@agm/core": "^3.0.0-beta.0",
+    "@almothafar/angular-signature-pad": "^5.0.1",
     "@angular-slider/ngx-slider": "^2.0.4",
     "@angular/animations": "^15.2.9",
     "@angular/cdk": "^13.2.3",

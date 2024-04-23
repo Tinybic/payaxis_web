@@ -29,6 +29,8 @@ import { EventService } from 'src/app/core/service/event.service';
 import { EventType } from 'src/app/core/constants/events';
 import { HttpService } from 'src/app/core/service/http.service';
 import { Base } from 'src/app/core/base';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -36,8 +38,8 @@ import { Base } from 'src/app/core/base';
 })
 export class ProfileComponent extends Base implements OnInit, OnDestroy {
   @ViewChild('instance', { static: true }) instance!: NgbTypeahead;
-  @ViewChild('fileInput', { static: false })
-  fileInput: ElementRef<HTMLInputElement>;
+  @ViewChild('fileInput', { static: false }) fileInput: ElementRef<HTMLInputElement>;
+  @ViewChild('userSignatureModal') userSignatureModal: NgbModalRef;
 
   tabs: number = 1;
   formatter = (result: string) => result.toUpperCase();
@@ -81,12 +83,15 @@ export class ProfileComponent extends Base implements OnInit, OnDestroy {
     txtState: -1,
     txtZipcode: -1,
   };
+  
+  userSignatureModalRef: NgbModalRef;
 
   constructor(
     private apolloService: ApolloService,
     private toastrService: ToastrService,
     private eventService: EventService,
-    private httpService: HttpService
+    private httpService: HttpService,
+    private modalService: NgbModal,
   ) {
     super();
   }
@@ -276,4 +281,23 @@ export class ProfileComponent extends Base implements OnInit, OnDestroy {
   showFileDialog(): void {
     this.fileInput.nativeElement.click();
   }
+  
+  openUserSignatureModal(): void {
+    this.userSignatureModalRef = this.modalService.open(this.userSignatureModal,{
+      centered: true,
+      backdrop: 'static',
+      size: '530',
+    });
+    
+    this.userSignatureModalRef.result.then(
+      (res) => {
+        console.log('OK');
+      },
+      (dismiss) => {
+        console.log('dismiss');
+      }
+    );
+  }
+  
+  
 }
