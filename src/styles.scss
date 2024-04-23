@@ -494,3 +494,10 @@ input[type='date']::-webkit-calendar-picker-indicator {
     line-height: 44px !important;
   }
 }
+
+div[name='user-signature'] {
+  .signature-pad-canvas{
+    border-radius: 8px;
+    border: 1px solid #E1E6EF !important;
+  }
+}

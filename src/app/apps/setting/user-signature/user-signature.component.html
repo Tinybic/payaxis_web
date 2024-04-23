@@ -1,0 +1,25 @@
+<div class="modal-body" name="user-signature" ngbAutoFocus style="padding: 16px 24px;background-color: #fff;">
+    <div class="headline-24 container">
+        Draw your signature
+        <div style="float: right;">
+            <i class="fe-x text-end cursor-pointer" (click)="modalRef.dismiss()"></i>
+        </div>
+    </div>
+    <div class="row mt-3-1">
+        <div class="col-md-12 position-relative">
+            <div *ngIf="showTip" class="search-text" style="position: absolute; top: 10px;left: 22px;pointer-events: none;">Draw or upload your signature | Type your signature</div>
+            <signature-pad #signature [options]="signaturePadOptions" (drawStart)="drawStart($event)" style="background-color: #F8F9FC;"></signature-pad>
+            
+            
+            <button class="btn btn-primary btn-h-40" (click)="saveSignature()" style="position:absolute; bottom: 12px;right: 22px;padding: 8px 16px;">Save Signature</button>
+        </div>
+    </div>
+    <div class="row mt-2-1">
+        <div class="col-md-12">
+            <div class="subtitle-2-600 text-primary cursor-pointer" style="padding: 8px 12px;background-color: #F8F9FC;color:#2B52DD;border-radius: 8px;">
+                <div onclick="document.getElementById('signatureUpload').click();" style="">Upload signature</div>
+            </div>
+            <input id="signatureUpload" type="file" accept="image/*" class="d-none" (change)="onSelected($event)"/>
+        </div>
+    </div>
+</div>

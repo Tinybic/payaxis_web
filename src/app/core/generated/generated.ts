@@ -29,6 +29,7 @@ export type Scalars = {
   fileType_String_NotNull_maxLength_15: { input: any; output: any; }
   fileUrl_String_NotNull_maxLength_512: { input: any; output: any; }
   holderName_String_NotNull_maxLength_128: { input: any; output: any; }
+  imageUrl_String_NotNull_maxLength_512: { input: any; output: any; }
   industry_String_NotNull_maxLength_50: { input: any; output: any; }
   invoiceNumber_String_NotNull_maxLength_25: { input: any; output: any; }
   mobile_String_NotNull_pattern_093093094: { input: any; output: any; }
@@ -202,6 +203,8 @@ export type Mutation = {
   quickbooks_downloadvendors: ResponseQuickbooks;
   /** upload quickbooks vendors */
   quickbooks_uploadvendors: ResponseQuickbooks;
+  /** new signature */
+  signature_new: Combooleanresult;
   /** to send sms code */
   sms_send: Response;
   /** to verify the code */
@@ -910,6 +913,14 @@ export type MutationQuickbooks_UploadvendorsArgs = {
 
 
 /** structure to handle table sms */
+export type MutationSignature_NewArgs = {
+  idUser: Scalars['Int']['input'];
+  imageBase64: Scalars['String']['input'];
+  imageUrl: Scalars['imageUrl_String_NotNull_maxLength_512']['input'];
+};
+
+
+/** structure to handle table sms */
 export type MutationSms_SendArgs = {
   mobile: Scalars['String']['input'];
 };
@@ -1383,6 +1394,7 @@ export type QueryProjectorder_AttachmentArgs = {
 export type QueryProjectorder_InfoArgs = {
   id: Scalars['Int']['input'];
   idCompany: Scalars['Int']['input'];
+  received?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
@@ -1442,6 +1454,7 @@ export type QueryProjectpayment_ListArgs = {
 
 export type QueryReceivable_ListArgs = {
   idCompany: Scalars['Int']['input'];
+  idInvitedCompany?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
