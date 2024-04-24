@@ -48,6 +48,7 @@ export class ReceivableAddComponent {
   myDate = new Date();
 
   projectpayment = {
+    id:0,
     idCompany: 0,
     idProject: 0,
     idVendor: 0,
@@ -130,6 +131,7 @@ export class ReceivableAddComponent {
             vendorEmail: result.data.primaryContact,
             status: result.data.status,
             revision: result.data.revision,
+            id:this.id
           };
         }
         this.getVendorList();
@@ -253,7 +255,7 @@ export class ReceivableAddComponent {
           item.idInvitedCompany == this.projectpayment.idVendor
         ) {
           this.selectVendor(item);
-          
+
           return;
         }
       });
@@ -414,10 +416,8 @@ export class ReceivableAddComponent {
     this.projectpayment.idVendor = vendor.id;
     this.orderList = JSON.parse(JSON.stringify(this.ORDERLIST));
     this.orderList = this.orderList.filter(
-      (item2) =>
-        item2.idCompany == vendor.idInvitedCompany
+      (item2) => item2.idCompany == vendor.idInvitedCompany
     );
-
   }
   vendorFilter() {
     this.vendorList = JSON.parse(JSON.stringify(this.VENDORLIST));
@@ -546,27 +546,31 @@ export class ReceivableAddComponent {
   }
 
   save() {
-    this.txtError.idVendor = this.projectpayment.idVendor;
+    if (this.id > 0) {
+      this.update();
+    } else {
+      this.txtError.idVendor = this.projectpayment.idVendor;
 
-    if (this.txtError.idVendor > 0) {
-      if (this.projectpayment.amount > 0) {
-        this.apolloService
-          .mutate(projectpayment_new, this.projectpayment)
-          .then((res) => {
-            console.log(res);
-            const result = res.projectpayment_new;
-            if (!result.error) {
-              this.toastrService.info(
-                'New Request has been sent to' + this.vendor.vendorName,
-                ''
-              );
-              this.modalRef.close();
-            } else {
-              this.toastrService.info(result.message, '');
-            }
-          });
-      } else {
-        this.toastrService.info('Please enter amount', '');
+      if (this.txtError.idVendor > 0) {
+        if (this.projectpayment.amount > 0) {
+          this.apolloService
+            .mutate(projectpayment_new, this.projectpayment)
+            .then((res) => {
+              console.log(res);
+              const result = res.projectpayment_new;
+              if (!result.error) {
+                this.toastrService.info(
+                  'New Request has been sent to' + this.vendor.vendorName,
+                  ''
+                );
+                this.modalRef.close();
+              } else {
+                this.toastrService.info(result.message, '');
+              }
+            });
+        } else {
+          this.toastrService.info('Please enter amount', '');
+        }
       }
     }
   }
