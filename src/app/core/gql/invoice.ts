@@ -1,7 +1,15 @@
 import { gql } from 'apollo-angular';
 const projectinvoice_list = gql`
-  query projectinvoice_list($idCompany: Int!, $idProject: Int!, $idVendor: Int!) {
-    projectinvoice_list(idCompany: $idCompany, idProject: $idProject, idVendor: $idVendor) {
+  query projectinvoice_list(
+    $idCompany: Int!
+    $idProject: Int!
+    $idVendor: Int!
+  ) {
+    projectinvoice_list(
+      idCompany: $idCompany
+      idProject: $idProject
+      idVendor: $idVendor
+    ) {
       error
       code
       message
@@ -55,9 +63,10 @@ const projectinvoice_deactivate = gql`
 `;
 
 const projectinvoice_mapping = gql`
-mutation projectinvoice_mapping(
-  $idCompany: Int!,
-  $fileUrl: fileUrl_String_NotNull_maxLength_512!) {
+  mutation projectinvoice_mapping(
+    $idCompany: Int!
+    $fileUrl: fileUrl_String_NotNull_maxLength_512!
+  ) {
     projectinvoice_mapping(idCompany: $idCompany, fileUrl: $fileUrl) {
       error
       code
@@ -81,20 +90,22 @@ mutation projectinvoice_mapping(
         status
       }
     }
-}`
+  }
+`;
 
 const projectinvoice_new = gql`
   mutation projectinvoice_new(
-    $idCompany: Int!,
-    $idProject: Int!,
-    $idVendor: Int!,
-    $idOrder1: Int!,
-    $invoiceNumber: invoiceNumber_String_NotNull_maxLength_25!,
-    $invoicedDate: String!,
-    $indvoicedueDate: String!,
-    $costCode: costCode_String_NotNull_maxLength_15!,
-    $amount: Float!,
-    $invoiceFiles: [invoicefile!]) {
+    $idCompany: Int!
+    $idProject: Int!
+    $idVendor: Int!
+    $idOrder1: Int!
+    $invoiceNumber: invoiceNumber_String_NotNull_maxLength_25!
+    $invoicedDate: String!
+    $indvoicedueDate: String!
+    $costCode: costCode_String_NotNull_maxLength_15!
+    $amount: Float!
+    $invoiceFiles: [invoicefile!]
+  ) {
     projectinvoice_new(
       idCompany: $idCompany
       idProject: $idProject
@@ -116,21 +127,22 @@ const projectinvoice_new = gql`
       }
     }
   }
-`
+`;
 
 const projectinvoice_update = gql`
   mutation projectinvoice_update(
-    $idCompany: Int!,
-    $id: Int!,
-    $revision: Int!,
-    $idProject: Int!,
-    $idVendor: Int!,
-    $idOrder1: Int!,
-    $invoiceNumber: invoiceNumber_String_NotNull_maxLength_25!,
-    $invoicedDate: String!,
-    $indvoicedueDate: String!,
-    $costCode: costCode_String_NotNull_maxLength_15!,
-    $amount: Float!) {
+    $idCompany: Int!
+    $id: Int!
+    $revision: Int!
+    $idProject: Int!
+    $idVendor: Int!
+    $idOrder1: Int!
+    $invoiceNumber: invoiceNumber_String_NotNull_maxLength_25!
+    $invoicedDate: String!
+    $indvoicedueDate: String!
+    $costCode: costCode_String_NotNull_maxLength_15!
+    $amount: Float!
+  ) {
     projectinvoice_update(
       idCompany: $idCompany
       id: $id
@@ -150,16 +162,17 @@ const projectinvoice_update = gql`
       data {
         id
         revision
-        }
       }
     }
-`
+  }
+`;
 
 const projectinvoice_uploadfiles = gql`
   mutation projectinvoice_uploadfiles(
-  $idCompany: Int!,
-  $idInvoice: Int!,
-  $invoiceFiles: [invoicefile!]) {
+    $idCompany: Int!
+    $idInvoice: Int!
+    $invoiceFiles: [invoicefile!]
+  ) {
     projectinvoice_uploadfiles(
       idCompany: $idCompany
       idInvoice: $idInvoice
@@ -171,25 +184,26 @@ const projectinvoice_uploadfiles = gql`
       data
     }
   }
-`
+`;
 
 const projectinvoice_deletefile = gql`
   mutation projectinvoice_deletefile(
-    $idCompany: Int!,
-    $idProjectinvoice_file: Int!,
-    $revision: Int!) {
-      projectinvoice_deletefile(
-        idCompany: $idCompany
-        idProjectinvoice_file: $idProjectinvoice_file
-        revision: $revision
-      ) {
-        error
-        code
-        message
-        data
-      }
+    $idCompany: Int!
+    $idProjectinvoice_file: Int!
+    $revision: Int!
+  ) {
+    projectinvoice_deletefile(
+      idCompany: $idCompany
+      idProjectinvoice_file: $idProjectinvoice_file
+      revision: $revision
+    ) {
+      error
+      code
+      message
+      data
     }
-`
+  }
+`;
 
 const projectinvoice_attachment = gql`
   query projectinvoice_attachment($idCompany: Int!, $idInvoice: Int!) {
@@ -216,7 +230,20 @@ const projectinvoice_attachment = gql`
       }
     }
   }
-`
+`;
+const projectpayment_reject = gql`
+  mutation projectpayment_reject($idCompany: Int!, $id: Int!, $revision: Int!) {
+    projectpayment_reject(idCompany: $idCompany, id: $id, revision: $revision) {
+      error
+      code
+      message
+      data {
+        id
+        revision
+      }
+    }
+  }
+`;
 
 export {
   projectinvoice_list,
@@ -226,5 +253,6 @@ export {
   projectinvoice_update,
   projectinvoice_uploadfiles,
   projectinvoice_deletefile,
-  projectinvoice_attachment
+  projectinvoice_attachment,
+  projectpayment_reject,
 };
