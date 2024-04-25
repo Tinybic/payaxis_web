@@ -18,6 +18,7 @@ import { AddCostcodeComponent } from './add-costcode/add-costcode.component';
 import { NgxPlaidLinkModule } from "ngx-plaid-link";
 import { UserSignatureComponent } from './user-signature/user-signature.component';
 import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
+import { MyprofileComponent } from './myprofile/myprofile.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
     AddRoleComponent,
     AddCostcodeComponent,
     UserSignatureComponent,
+    MyprofileComponent,
   ],
   imports: [
     CommonModule,
