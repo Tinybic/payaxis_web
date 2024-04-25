@@ -28,10 +28,12 @@ export type Scalars = {
   fileName_String_NotNull_maxLength_128: { input: any; output: any; }
   fileType_String_NotNull_maxLength_15: { input: any; output: any; }
   fileUrl_String_NotNull_maxLength_512: { input: any; output: any; }
+  firstName_String_NotNull_minLength_1_maxLength_50: { input: any; output: any; }
   holderName_String_NotNull_maxLength_128: { input: any; output: any; }
   imageUrl_String_NotNull_maxLength_512: { input: any; output: any; }
   industry_String_NotNull_maxLength_50: { input: any; output: any; }
   invoiceNumber_String_NotNull_maxLength_25: { input: any; output: any; }
+  lastName_String_NotNull_minLength_1_maxLength_50: { input: any; output: any; }
   mobile_String_NotNull_pattern_093093094: { input: any; output: any; }
   notes_String_NotNull_maxLength_250: { input: any; output: any; }
   notes_String_NotNull_maxLength_255: { input: any; output: any; }
@@ -145,6 +147,10 @@ export type Mutation = {
   profile_2fa?: Maybe<Scalars['Boolean']['output']>;
   /** to activate the user profile */
   profile_activate: Response;
+  /** update avatar */
+  profile_avatar: Profileresult;
+  /** update profile */
+  profile_update: Profileresult;
   /** deactivate project invoice */
   projectinvoice_deactivate: Projectinvoicebooleanresult;
   /** delete projectinvoice file */
@@ -606,6 +612,24 @@ export type MutationProfile_ActivateArgs = {
   revision: Scalars['Int']['input'];
   twofa: Scalars['Boolean']['input'];
   verificationCode: Scalars['String']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationProfile_AvatarArgs = {
+  avatar: Scalars['avatar_String_NotNull_maxLength_512']['input'];
+  idUser: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationProfile_UpdateArgs = {
+  firstName: Scalars['firstName_String_NotNull_minLength_1_maxLength_50']['input'];
+  idUser: Scalars['Int']['input'];
+  lastName: Scalars['lastName_String_NotNull_minLength_1_maxLength_50']['input'];
+  mobile: Scalars['String']['input'];
+  revision: Scalars['Int']['input'];
 };
 
 
@@ -2081,6 +2105,20 @@ export type Profile = {
   socialMediaToken: Scalars['String']['output'];
   twofa: Scalars['Boolean']['output'];
   welcomeyn: Scalars['Boolean']['output'];
+};
+
+export type Profileidrevision = {
+  __typename?: 'profileidrevision';
+  id: Scalars['Int']['output'];
+  revision: Scalars['Int']['output'];
+};
+
+export type Profileresult = {
+  __typename?: 'profileresult';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Profileidrevision>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
 };
 
 /** structure to handle table project_invoice */
