@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, AfterViewInit } from '@angular/core';
 import { NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { SignaturePadComponent } from '@almothafar/angular-signature-pad';
 import { ApolloService } from 'src/app/core/service/apollo.service';
@@ -19,6 +19,7 @@ export class UserSignatureComponent {
   @ViewChild('signature')
   public signaturePad: SignaturePadComponent;
   showTip = true;
+  isLoading = false;
   
   constructor(
     private apolloService: ApolloService,
@@ -34,7 +35,7 @@ export class UserSignatureComponent {
     backgroundColor: 'rgba(0,0,0,0)'
   };
   
-  ngAfterViewInit(){
+  AfterViewInit(){
     // this.signaturePad is now available
     this.signaturePad.set('minWidth', 5); // set szimek/signature_pad options at runtime
     this.signaturePad.clear(); // invoke functions from szimek/signature_pad API
@@ -55,15 +56,22 @@ export class UserSignatureComponent {
     return new Blob([intArray], {type: 'image/png'});
   }
   
-  getUploadUrl(){
-    const fileName = localStorage.getItem('id') + '_' + moment().valueOf() + '.png';
+  getUploadUrl(file){
+    const fileName = localStorage.getItem('id') + '_' + moment().valueOf() + '.png'
     this.apolloService.query(get_file_url, {
       fileName: fileName,
-      folder: 'files'
+      folder: 'avataruser'
     }).then((res) => {
       if(!res.get_file_url.error){
-        this.handleUploadFile(this.base64ToBlob(), res.get_file_url.data);
+        this.handleUploadFile(file, res.get_file_url.data);
+      }else{
+        this.isLoading=false;
+        console.log(res)
       }
+    }).catch((err) => {
+      this.isLoading=false;
+      this.toastrService.info(err, '');
+      console.log('get_file_url error');
     })
   }
   
@@ -71,16 +79,8 @@ export class UserSignatureComponent {
   onSelected(event){
     const file = event.target.files[0];
     if(file){
-      const fileName = getNewFileName(file.name);
-      file.filename = fileName;
-      this.apolloService.query(get_file_url, {
-        fileName: fileName,
-        folder: 'avatarcompany'
-      }).then((res) => {
-        if(!res.get_file_url.error){
-          this.handleUploadFile(file, res.get_file_url.data);
-        }
-      });
+      this.isLoading=true;
+      this.getUploadUrl(file);
     }
   }
   
@@ -90,7 +90,7 @@ export class UserSignatureComponent {
         let base64 = this.signaturePad.toDataURL().split(',');
         this.apolloService.mutate(signature_new, {
           idUser: parseInt(localStorage.getItem('id')),
-          imageUrl: uploadUrl,
+          imageUrl: uploadUrl.split('?')[0],
           imageBase64: base64[1]
         }).then((res) => {
           const result = res.signature_new;
@@ -107,13 +107,18 @@ export class UserSignatureComponent {
         })
     }).catch((err) => {
       this.toastrService.info(err, '')
+    }).finally(() => {
+      setTimeout(() =>{
+        this.isLoading=false;
+      }, 500);
     })
   }
   
   
   saveSignature(){
     if(!this.signaturePad.isEmpty()){
-      this.getUploadUrl();
+      this.isLoading = true;
+      this.getUploadUrl(this.base64ToBlob());
     }
   }
   

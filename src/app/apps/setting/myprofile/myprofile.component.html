@@ -47,12 +47,12 @@
                 <div class="row mt-2-1">
                     <div class="col-md-6">
                         <label class="form-label" i18n>Email</label>
-                        <input id="txtindustry" type="text" class="form-control" readonly [(ngModel)]="profile.email"
+                        <input id="email" type="text" class="form-control" readonly [(ngModel)]="profile.email"
                             placeholder="Enter Email" />
                     </div>
                     <div class="col-md-6">
                         <label class="form-label" i18n>Contact Number</label>
-                        <input id="txtindustry" type="text" class="form-control" [(ngModel)]="profile.mobile" mask="(000) 000-0000"
+                        <input id="mobile" type="text" class="form-control" [(ngModel)]="profile.mobile" mask="(000) 000-0000"
                             placeholder="Enter Contact Number" />
                     </div>
                 </div>
@@ -60,16 +60,28 @@
         </div>
     </div>
     <div class="col-md-6">
-        <div class="card">
-            <div class="card-body p-2-1">
-                <div class="row" style="height: 56px;">
-                    <div class="col-md-6 headline">
-                        Signature
-                    </div>
+        <div class="card" style="height: 251px;">
+            <div class="card-body" style="padding: 16px 24px;">
+                <div class="headline-24">Signature</div>
+                <div *ngIf="profile.idUser !== 0 && profile.signatureUrl == ''" class="d-flex flex-column align-items-center text-optional mt-2-1">
+                    <div class="Subtitle-1 mt-1-1">No Signatures added yet</div>
+                    <div class="subtitle-2-400-12 mt-1-1">Create new signature in a few clicks</div>
+                    <button class="btn btn-primary btn-height-40 mt-1-1" (click)="openUserSignatureModal()">
+                        <i class="fe-plus-square me-1-1"></i>
+                        New Signature
+                    </button>
                 </div>
-                <div class="row mt-2-1">
+                <div *ngIf="profile.signatureUrl.length > 0" class="mt-1-1 text-center" style="height: 130px;border: 1px solid #E1E6EF;background-color: #F8F9FC;border-radius: 8px;">
+                    <img src="{{profile.signatureUrl}}" style="max-width: 100%;max-height: 100%;"/>
                 </div>
+                
+                <button *ngIf="profile.signatureUrl.length > 0" class="btn btn-outline-primary mt-2-1" (click)="openUserSignatureModal()" style="padding: 8px 16px;float: right;">Replace Signature</button>
             </div>
         </div>
     </div>
 </div>
+
+
+<ng-template #userSignatureModal>
+    <app-user-signature [modalRef]="userSignatureModalRef"></app-user-signature>
+</ng-template>

@@ -51,6 +51,7 @@ const profile_info = gql`
         memberyn
         welcomeyn
         email
+        signatureUrl
       }
     }
   }

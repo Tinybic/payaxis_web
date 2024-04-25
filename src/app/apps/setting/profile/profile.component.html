@@ -207,11 +207,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-2-1 d-none">
-                        <div class="col-md-12">
-                            <button class="btn btn-primary ms-2-1 btn-h-40" style="margin-right: 2px;" (click)="openUserSignatureModal()">Signature</button>
-                        </div>
-                    </div>
                 </ng-template>
             </li>
             <li [ngbNavItem]="2" [disabled]="company.id==0">
@@ -243,6 +238,3 @@
     <div [ngbNavOutlet]="nav" class="mb-0 b-0 pt-0"></div>
 </div>
 
-<ng-template #userSignatureModal>
-    <app-user-signature [modalRef]="userSignatureModalRef"></app-user-signature>
-</ng-template>

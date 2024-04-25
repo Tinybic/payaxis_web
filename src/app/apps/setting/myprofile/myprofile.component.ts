@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { getNewFileName, get_file_url } from 'src/app/core/gql/file';
 import { profile_avatar, profile_info, profile_update } from 'src/app/core/gql/user';
@@ -14,6 +14,7 @@ import { HttpService } from 'src/app/core/service/http.service';
 export class MyprofileComponent {
   @ViewChild('fileInput', { static: false })
   fileInput: ElementRef<HTMLInputElement>;
+  @ViewChild('userSignatureModal') userSignatureModal: NgbModalRef;
 
   profile = {
     idUser: 0,
@@ -23,6 +24,7 @@ export class MyprofileComponent {
     mobile: '',
     avatar: '',
     revision: 0,
+    signatureUrl: '',
   };
 
 
@@ -33,6 +35,9 @@ export class MyprofileComponent {
     lastName: 1,
     phone: 1,
   };
+  
+  
+  userSignatureModalRef: NgbModalRef;
 
   constructor(
     private apolloService: ApolloService,
@@ -61,6 +66,7 @@ export class MyprofileComponent {
             avatar: result.data.avatar,
             idUser: result.data.id,
             revision: result.data.revision,
+            signatureUrl: result.data.signatureUrl,
           };
           this.avatarName = this.profile.firstName + ' ' + this.profile.lastName;
         }
@@ -122,6 +128,24 @@ export class MyprofileComponent {
       }
       this.toastrService.info(result.message,'');
     });
+  }
+  
+  
+  openUserSignatureModal(): void {
+    this.userSignatureModalRef = this.modalService.open(this.userSignatureModal,{
+      centered: true,
+      backdrop: 'static',
+      size: '530',
+    });
+    
+    this.userSignatureModalRef.result.then(
+      (res) => {
+        this.getProfile();
+      },
+      (dismiss) => {
+        console.log('dismiss');
+      }
+    );
   }
 
 

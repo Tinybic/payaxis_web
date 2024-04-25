@@ -2101,6 +2101,7 @@ export type Profile = {
   memberyn: Scalars['Boolean']['output'];
   mobile: Scalars['String']['output'];
   revision: Scalars['Int']['output'];
+  signatureUrl: Scalars['String']['output'];
   socialMedia: Scalars['Int']['output'];
   socialMediaToken: Scalars['String']['output'];
   twofa: Scalars['Boolean']['output'];
