@@ -39,7 +39,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 export class ProfileComponent extends Base implements OnInit, OnDestroy {
   @ViewChild('instance', { static: true }) instance!: NgbTypeahead;
   @ViewChild('fileInput', { static: false }) fileInput: ElementRef<HTMLInputElement>;
-  @ViewChild('userSignatureModal') userSignatureModal: NgbModalRef;
+
 
   tabs: number = 1;
   formatter = (result: string) => result.toUpperCase();
@@ -83,8 +83,6 @@ export class ProfileComponent extends Base implements OnInit, OnDestroy {
     txtState: -1,
     txtZipcode: -1,
   };
-  
-  userSignatureModalRef: NgbModalRef;
 
   constructor(
     private apolloService: ApolloService,
@@ -282,22 +280,6 @@ export class ProfileComponent extends Base implements OnInit, OnDestroy {
     this.fileInput.nativeElement.click();
   }
   
-  openUserSignatureModal(): void {
-    this.userSignatureModalRef = this.modalService.open(this.userSignatureModal,{
-      centered: true,
-      backdrop: 'static',
-      size: '530',
-    });
-    
-    this.userSignatureModalRef.result.then(
-      (res) => {
-        console.log('OK');
-      },
-      (dismiss) => {
-        console.log('dismiss');
-      }
-    );
-  }
   
   
 }

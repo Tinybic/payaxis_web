@@ -23,3 +23,8 @@
         </div>
     </div>
 </div>
+
+
+<div *ngIf="isLoading">
+    <app-ui-preloader [display]="isLoading"></app-ui-preloader>
+</div>
