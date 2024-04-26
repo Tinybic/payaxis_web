@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { JoyrideService } from 'ngx-joyride';
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { Router } from "@angular/router";
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 
 @Component({
@@ -15,11 +16,12 @@ export class ProjectsGuidComponent {
     constructor(
         private readonly joyrideService: JoyrideService,
         private modalService: NgbModal,
-        private router: Router
+        private router: Router,
+        private localStorage: LocalStorageService
     ){ }
     
     ngOnInit(): void{
-        if(localStorage.getItem('welcomeyn') == 'false'){
+        if(this.localStorage.getItem('welcomeyn') == 'false'){
             this.router.navigate(['apps/projects']);
         }
         
@@ -114,7 +116,7 @@ export class ProjectsGuidComponent {
     
     getStarted(){
         this.modalService.dismissAll();
-        localStorage.setItem('welcomeyn', 'false')
+        this.localStorage.setItem('welcomeyn', 'false')
         this.router.navigate(['apps/projects']);
     }
 }

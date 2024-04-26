@@ -5,6 +5,7 @@ import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { companycategory_list } from "../../../core/gql/costcode";
 import { companyproject_new, companyproject_updatebudget } from "../../../core/gql/project";
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 
 @Component({
@@ -22,7 +23,8 @@ export class CreateBudgetComponent {
     private fb: UntypedFormBuilder,
     private apolloService: ApolloService,
     private modalService: NgbModal,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private localStorage: LocalStorageService
   ){}
   
   error: string = '';
@@ -42,7 +44,7 @@ export class CreateBudgetComponent {
   
   
   getCategoryList(){
-    this.idCompany = parseInt(localStorage.getItem('idcompany'));
+    this.idCompany = parseInt(this.localStorage.getItem('idcompany'));
     if(this.idCompany != 0){
       this.apolloService.query(companycategory_list, {idCompany: this.idCompany}).then((res) => {
         const result = res.companycategory_list;

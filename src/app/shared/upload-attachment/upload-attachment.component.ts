@@ -10,6 +10,7 @@ import { HttpClient, HttpEventType, HttpHeaders } from "@angular/common/http";
 import { GlobalFunctionsService } from "../../core/service/global-functions.service";
 import { FILE_TYPE } from "../../core/constants/common";
 import { projectinvoice_mapping } from "../../core/gql/invoice";
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-upload-attachment',
@@ -44,7 +45,8 @@ export class UploadAttachmentComponent {
     private toastrService: ToastrService,
     private sanitizer: DomSanitizer,
     private http: HttpClient,
-    public globalService: GlobalFunctionsService
+    public globalService: GlobalFunctionsService,
+    private localStorage: LocalStorageService
   ){}
   
   ngOnInit(): void{
@@ -198,7 +200,7 @@ export class UploadAttachmentComponent {
     if(this.idVendor){
       service = vendorinsurance_upload;
       params = {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         idVendor: parseInt(this.idVendor),
         insuranceFiles: attachmentFilesTemp
       }
@@ -207,7 +209,7 @@ export class UploadAttachmentComponent {
     if(this.idOrder1){
       service = projectorder_uploadfiles;
       params = {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         idOrder1: parseInt(this.idOrder1),
         orderFiles: attachmentFilesTemp
       }
@@ -216,7 +218,7 @@ export class UploadAttachmentComponent {
     if(this.isInvoice){
       service = projectinvoice_mapping;
       params = {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         fileUrl: attachmentFilesTemp[0].fileUrl
       }
     }

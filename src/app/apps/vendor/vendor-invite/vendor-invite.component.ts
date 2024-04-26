@@ -6,6 +6,7 @@ import { Observable, of, filter } from 'rxjs';
 import { company_members } from 'src/app/core/gql/team';
 import { vendor_invite } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-vendor-invite',
@@ -19,17 +20,18 @@ export class VendorInviteComponent {
   that;
   constructor(
     private apolloService: ApolloService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private localStorage: LocalStorageService
   ) {}
 
   ngOnInit() {
     this.getCompanyMembers();
   }
   getCompanyMembers() {
-    if (localStorage.getItem('idcompany')) {
+    if (this.localStorage.getItem('idcompany')) {
       this.apolloService
         .query(company_members, {
-          idCompany: parseInt(localStorage.getItem('idcompany')),
+          idCompany: parseInt(this.localStorage.getItem('idcompany')),
         })
         .then((res) => {
           const result = res.company_members;
@@ -86,7 +88,7 @@ export class VendorInviteComponent {
     });
 
     const data = {
-      idCompany: parseInt(localStorage.getItem('idcompany')),
+      idCompany: parseInt(this.localStorage.getItem('idcompany')),
       inviteVendors: inviteVendors,
     };
 

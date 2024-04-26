@@ -14,6 +14,7 @@ import { HttpService } from 'src/app/core/service/http.service';
 // types
 import { PasswordValidator } from 'src/app/core/helpers/password.validator';
 import { ToastrService } from 'ngx-toastr';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-auth-register',
@@ -73,7 +74,8 @@ export class RegisterComponent implements OnInit {
     private httpService: HttpService,
     private activatedRoute: ActivatedRoute,
     private modalService: NgbModal,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private localStorage: LocalStorageService
   ) {}
 
   ngOnInit(): void {
@@ -236,11 +238,11 @@ export class RegisterComponent implements OnInit {
   infoModalRef;
   askToJoin(id) {
     if (this.companyListRef) this.companyListRef.close();
-    localStorage.setItem('join', id);
+    this.localStorage.setItem('join', id);
     if (id == 0) {
       this.router.navigate(['auth/info']);
-      localStorage.setItem('email', this.formValues['email'].value);
-      localStorage.setItem('password', this.formValues['password'].value);
+      this.localStorage.setItem('email', this.formValues['email'].value);
+      this.localStorage.setItem('password', this.formValues['password'].value);
       this.modalService.dismissAll();
     } else {
       this.infoModalRef = this.modalService.open(this.infoModal, {
@@ -259,14 +261,14 @@ export class RegisterComponent implements OnInit {
       centered: true,
     });
 
-    if (localStorage.getItem('join').length > 0) {
+    if (this.localStorage.getItem('join').length > 0) {
       this.httpService
         .post('signup', {
           email: this.formValues['email'].value,
           password: this.formValues['password'].value,
           firstname: this.firstName,
           lastname: this.lastName,
-          idcompany: parseInt(localStorage.getItem('join')),
+          idcompany: parseInt(this.localStorage.getItem('join')),
           companyname: ' ',
         })
         .then((res) => {

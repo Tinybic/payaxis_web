@@ -5,6 +5,7 @@ import { ToastrService } from "ngx-toastr";
 import { vendorcontact_list, vendor_contact_deactivate } from 'src/app/core/gql/vendor-contacts';
 import { Vendor_Contact } from 'src/app/core/generated/generated';
 import { GlobalFunctionsService } from 'src/app/core/service/global-functions.service';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 
 @Component({
@@ -39,7 +40,8 @@ export class VendorContactsComponent {
     private modalService: NgbModal,
     public activeModal: NgbActiveModal,
     private toastrService: ToastrService,
-    private globalFuns: GlobalFunctionsService
+    private globalFuns: GlobalFunctionsService,
+    private localStorage: LocalStorageService
   ){}
   
   ngOnInit(): void{
@@ -94,7 +96,7 @@ export class VendorContactsComponent {
   
   deleteVendorContact(i){
     this.apolloService.mutate(vendor_contact_deactivate, {
-      idCompany: parseInt(localStorage.getItem('idcompany')),
+      idCompany: parseInt(this.localStorage.getItem('idcompany')),
       idVendor_contact: this.vendorContacts[i].id,
       revision: this.vendorContacts[i].revision
     }).then((res) => {

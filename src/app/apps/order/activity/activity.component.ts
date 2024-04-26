@@ -3,6 +3,7 @@ import { ApolloService } from '../../../core/service/apollo.service';
 import { ToastrService } from 'ngx-toastr';
 import { projectorder_activity } from '../../../core/gql/orders';
 import { ActivatedRoute } from "@angular/router";
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 
 @Component({
@@ -27,6 +28,7 @@ export class ActivityComponent {
   constructor(
     private apolloService: ApolloService,
     private activatedRoute: ActivatedRoute,
+    private localStorage: LocalStorageService
   ){}
   
   ngOnInit():void{
@@ -37,9 +39,9 @@ export class ActivityComponent {
   }
   
   getActivity(){
-    if(localStorage.getItem('idcompany') && this.orderId){
+    if(this.localStorage.getItem('idcompany') && this.orderId){
       this.apolloService.query(projectorder_activity, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         idOrder1: this.orderId
       }).then((res) => {
         const result = res.projectorder_activity;

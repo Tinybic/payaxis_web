@@ -1,10 +1,17 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { EventType } from 'src/app/core/constants/events';
 import { getNewFileName, get_file_url } from 'src/app/core/gql/file';
-import { profile_avatar, profile_info, profile_update } from 'src/app/core/gql/user';
+import {
+  profile_avatar,
+  profile_info,
+  profile_update,
+} from 'src/app/core/gql/user';
 import { ApolloService } from 'src/app/core/service/apollo.service';
+import { EventService } from 'src/app/core/service/event.service';
 import { HttpService } from 'src/app/core/service/http.service';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-myprofile',
@@ -27,7 +34,6 @@ export class MyprofileComponent {
     signatureUrl: '',
   };
 
-
   avatarName = '';
 
   errorInfo = {
@@ -35,15 +41,16 @@ export class MyprofileComponent {
     lastName: 1,
     phone: 1,
   };
-  
-  
+
   userSignatureModalRef: NgbModalRef;
 
   constructor(
     private apolloService: ApolloService,
     private toastrService: ToastrService,
     private modalService: NgbModal,
-    private httpService: HttpService
+    private httpService: HttpService,
+    private localStorage: LocalStorageService,
+    private eventService: EventService
   ) {}
 
   ngOnInit(): void {
@@ -53,7 +60,7 @@ export class MyprofileComponent {
   getProfile() {
     this.apolloService
       .query(profile_info, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
       })
       .then((res) => {
         const result = res.profile_info;
@@ -68,10 +75,11 @@ export class MyprofileComponent {
             revision: result.data.revision,
             signatureUrl: result.data.signatureUrl,
           };
-          this.avatarName = this.profile.firstName + ' ' + this.profile.lastName;
+          this.avatarName =
+            this.profile.firstName + ' ' + this.profile.lastName;
         }
       });
-    }
+  }
 
   showFileDialog(): void {
     this.fileInput.nativeElement.click();
@@ -101,8 +109,10 @@ export class MyprofileComponent {
                   let result = res.profile_avatar;
                   if (!result.error) {
                     this.profile.revision = result.data.revision;
+                    this.localStorage.setItem('avatar', this.profile.avatar);
+                    this.eventService.broadcast(EventType.AVATAR_CHANGE, true);
                   }
-                  this.toastrService.info(result.message,'');
+                  this.toastrService.info(result.message, '');
                 });
             });
           }
@@ -119,25 +129,28 @@ export class MyprofileComponent {
       this.errorInfo.lastName = 1;
       return;
     }
-    this.apolloService
-    .mutate(profile_update, this.profile)
-    .then((res) => {
+    this.apolloService.mutate(profile_update, this.profile).then((res) => {
       let result = res.profile_update;
       if (!result.error) {
         this.profile.revision = result.data.revision;
+        this.localStorage.setItem('firstName', this.profile.firstName);
+        this.localStorage.setItem('lastName', this.profile.lastName);
+        this.eventService.broadcast(EventType.AVATAR_CHANGE, true);
       }
-      this.toastrService.info(result.message,'');
+      this.toastrService.info(result.message, '');
     });
   }
-  
-  
+
   openUserSignatureModal(): void {
-    this.userSignatureModalRef = this.modalService.open(this.userSignatureModal,{
-      centered: true,
-      backdrop: 'static',
-      size: '530',
-    });
-    
+    this.userSignatureModalRef = this.modalService.open(
+      this.userSignatureModal,
+      {
+        centered: true,
+        backdrop: 'static',
+        size: '530',
+      }
+    );
+
     this.userSignatureModalRef.result.then(
       (res) => {
         this.getProfile();
@@ -147,6 +160,4 @@ export class MyprofileComponent {
       }
     );
   }
-
-
 }

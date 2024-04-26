@@ -30,6 +30,7 @@ import { EventType } from 'src/app/core/constants/events';
 import { HttpService } from 'src/app/core/service/http.service';
 import { Base } from 'src/app/core/base';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-profile',
@@ -90,6 +91,7 @@ export class ProfileComponent extends Base implements OnInit, OnDestroy {
     private eventService: EventService,
     private httpService: HttpService,
     private modalService: NgbModal,
+    private localStorage: LocalStorageService
   ) {
     super();
   }
@@ -99,9 +101,9 @@ export class ProfileComponent extends Base implements OnInit, OnDestroy {
     this.statesList = STATES;
     let gql = company_info;
     let data = {};
-    if (localStorage.getItem('idcompany')) {
+    if (this.localStorage.getItem('idcompany')) {
       this.canEdit = super.setRole('Edit Company details');
-      data = { id: parseInt(localStorage.getItem('idcompany')) };
+      data = { id: parseInt(this.localStorage.getItem('idcompany')) };
     } else {
       this.canEdit = true;
       data = { id: 0 };
@@ -237,7 +239,7 @@ export class ProfileComponent extends Base implements OnInit, OnDestroy {
       if (!result.error) {
         this.company.id = result.data.id;
         this.company.revision = result.data.revision;
-        localStorage.setItem('idcompany', this.company.id.toString());
+        this.localStorage.setItem('idcompany', this.company.id.toString());
         this.eventService.broadcast(EventType.CHANGE_COMPANY, true);
       }
       this.toastrService.info(result.message, '', {

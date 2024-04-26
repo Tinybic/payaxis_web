@@ -12,6 +12,7 @@ import { companyproject_list } from 'src/app/core/gql/project';
 import { projectbill_list } from 'src/app/core/gql/receivables';
 import { vendor_list } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-order-bills',
@@ -49,14 +50,15 @@ export class OrderBillsComponent {
     private modalService: NgbModal,
     private toastrService: ToastrService,
     private calendar: NgbCalendar,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private localStorage: LocalStorageService
   ) {}
   idOrder = 0;
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((params) => {
       this.idOrder = parseInt(params['id']);
     });
-    if (localStorage.getItem('idcompany')) {
+    if (this.localStorage.getItem('idcompany')) {
       this.getList();
       this.getProjectList();
       this.getVendorList();
@@ -72,7 +74,7 @@ export class OrderBillsComponent {
   getProjectList() {
     this.apolloService
       .query(companyproject_list, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
       })
       .then((res) => {
         const result = res.companyproject_list;
@@ -175,7 +177,7 @@ export class OrderBillsComponent {
   getVendorList() {
     this.apolloService
       .query(vendor_list, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
       })
       .then((res) => {
         const result = res.vendor_list;
@@ -265,7 +267,7 @@ export class OrderBillsComponent {
     if (this.idOrder > 0) {
       this.apolloService
         .query(projectbill_list, {
-          idCompany: parseInt(localStorage.getItem('idcompany')),
+          idCompany: parseInt(this.localStorage.getItem('idcompany')),
           idProject: 0,
           idVendor: 0,
           idOrder1: this.idOrder,

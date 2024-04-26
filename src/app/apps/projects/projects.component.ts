@@ -23,6 +23,7 @@ import { ApolloService } from '../../core/service/apollo.service';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { Base } from 'src/app/core/base';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-projects',
@@ -90,18 +91,19 @@ export class ProjectsComponent extends Base implements OnInit {
     private eventService: EventService,
     private apolloService: ApolloService,
     private toastrService: ToastrService,
-    private globalService: GlobalFunctionsService
+    private globalService: GlobalFunctionsService,
+    private localStorage: LocalStorageService
   ){
     super();
   }
   
   ngOnInit(): void{
-    if(localStorage.getItem('companyAccess')){
+    if(this.localStorage.getItem('companyAccess')){
       this.showNewProject = super.setRole('Create Projects');
     } else{
       let cnt = 0;
       const intervalID = setInterval(() => {
-        if(localStorage.getItem('companyAccess')){
+        if(this.localStorage.getItem('companyAccess')){
           this.showNewProject = super.setRole('Create Projects');
           clearInterval(intervalID);
         } else{
@@ -126,9 +128,9 @@ export class ProjectsComponent extends Base implements OnInit {
         }
       ]
     });
-    if(localStorage.getItem('welcomeyn') === 'true'){
+    if(this.localStorage.getItem('welcomeyn') === 'true'){
       this.isLoading = false;
-      if(localStorage.getItem('memberyn') === 'true'){
+      if(this.localStorage.getItem('memberyn') === 'true'){
         setTimeout(() => {
           this.modalService.open(this.joinUsModal, {
             backdrop: 'static',
@@ -146,8 +148,8 @@ export class ProjectsComponent extends Base implements OnInit {
         }, 30);
       }
     } else{
-      if(localStorage.getItem('idcompany')){
-        this.idCompany = parseInt(localStorage.getItem('idcompany'));
+      if(this.localStorage.getItem('idcompany')){
+        this.idCompany = parseInt(this.localStorage.getItem('idcompany'));
         this.getProjectList();
         this.getCompanyGroupList('all');
       } else{
@@ -312,7 +314,7 @@ export class ProjectsComponent extends Base implements OnInit {
       btnConfirm: 'Delete Group',
       serviceName: companygroup_deactivate,
       params: {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         idCompany_group: group.id,
         revision: group.revision
       }
@@ -495,7 +497,7 @@ export class ProjectsComponent extends Base implements OnInit {
   
   goto(){
     this.modalService.dismissAll();
-    localStorage.setItem('welcomeyn', 'false');
+    this.localStorage.setItem('welcomeyn', 'false');
     this.router.navigate(['apps/setting']);
   }
 }

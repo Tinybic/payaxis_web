@@ -16,6 +16,7 @@ import {
 import { vendor_list } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { GlobalFunctionsService } from 'src/app/core/service/global-functions.service';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-costcode',
@@ -57,22 +58,23 @@ export class CostcodeComponent {
     private apolloService: ApolloService,
     private modalService: NgbModal,
     private toastrService: ToastrService,
-    private globalFuns: GlobalFunctionsService
+    private globalFuns: GlobalFunctionsService,
+    private localStorage: LocalStorageService
   ){}
   
   ngOnInit(): void{
     this.getCostCodeCategoryList();
     this.getCostCodeList();
-    if(localStorage.getItem('costcode_archived')){
-      this.showArchived = localStorage.getItem('costcode_archived') == 'true';
+    if(this.localStorage.getItem('costcode_archived')){
+      this.showArchived = this.localStorage.getItem('costcode_archived') == 'true';
     }
-    if(localStorage.getItem('costcode-categoryFilter')){
-      this.categoryFilter = JSON.parse(localStorage.getItem('costcode-categoryFilter'));
+    if(this.localStorage.getItem('costcode-categoryFilter')){
+      this.categoryFilter = JSON.parse(this.localStorage.getItem('costcode-categoryFilter'));
     }
   }
   
   getCostCodeCategoryList(){
-    this.costcode.idCompany = parseInt(localStorage.getItem('idcompany'));
+    this.costcode.idCompany = parseInt(this.localStorage.getItem('idcompany'));
     if(this.costcode.idCompany != 0){
       this.apolloService.query(companycategory_list, {idCompany: this.costcode.idCompany}).then((res) => {
         const result = res.companycategory_list;
@@ -84,7 +86,7 @@ export class CostcodeComponent {
   }
   
   getCostCodeList(){
-    this.costcode.idCompany = parseInt(localStorage.getItem('idcompany'));
+    this.costcode.idCompany = parseInt(this.localStorage.getItem('idcompany'));
     if(this.costcode.idCompany != 0){
       this.apolloService.query(companycostcode_list, {idCompany: this.costcode.idCompany}).then((res) => {
         const result = res.companycostcode_list;
@@ -133,11 +135,11 @@ export class CostcodeComponent {
       }
     }
     
-    localStorage.setItem('costcode-categoryFilter', JSON.stringify(this.categoryFilter));
+    this.localStorage.setItem('costcode-categoryFilter', JSON.stringify(this.categoryFilter));
   }
   
   setArchived(){
-    localStorage.setItem('costcode_archived', this.showArchived ? "true" : "false");
+    this.localStorage.setItem('costcode_archived', this.showArchived ? "true" : "false");
   }
   
   filterTable = (costcode: any) => {
@@ -264,10 +266,10 @@ export class CostcodeComponent {
   vendorlistmodalref;
   costcodeName = '';
   openVendorList(costcode, name) {
-    if (parseInt(localStorage.getItem('idcompany')) != 0) {
+    if (parseInt(this.localStorage.getItem('idcompany')) != 0) {
       this.apolloService
         .query(vendor_list, {
-          idCompany: parseInt(localStorage.getItem('idcompany')),
+          idCompany: parseInt(this.localStorage.getItem('idcompany')),
           costCode: costcode,
         })
         .then((res) => {

@@ -12,6 +12,7 @@ import {
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { EventService } from 'src/app/core/service/event.service';
 import { companycategory_list, companycategory_new } from "../../../core/gql/costcode";
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-project-detail',
@@ -75,7 +76,8 @@ export class ProjectDetailComponent extends Base {
     private toastrService: ToastrService,
     private activatedRoute: ActivatedRoute,
     private eventService: EventService,
-    private calendar: NgbCalendar
+    private calendar: NgbCalendar,
+    private localStorage: LocalStorageService
   ) {super()}
 
   canEdit = false;
@@ -106,7 +108,7 @@ export class ProjectDetailComponent extends Base {
       if (!result.error) {
         this.project = result.data;
         this.getCategoryList();
-        localStorage.setItem('projectName', this.project.projectName);
+        this.localStorage.setItem('projectName', this.project.projectName);
       }
     });
   }

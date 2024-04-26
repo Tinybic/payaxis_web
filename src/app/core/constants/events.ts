@@ -17,7 +17,8 @@ export enum EventType {
     CHANGE_PAGE_TITLE = "changePageTitle",
     CHANGE_COMPANY = "changeCompany",
     PROJECT_DEDAIL_INVITE = "projectDetailInviteMembers",
-    REFRESH_ATTACHMENTS = 'refreshAttachments'
+    REFRESH_ATTACHMENTS = 'refreshAttachments',
+    AVATAR_CHANGE = 'avatarChange'
 }
 
 // payload type

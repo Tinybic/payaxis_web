@@ -22,6 +22,7 @@ import { ToastrService } from 'ngx-toastr';
 import { EventService } from 'src/app/core/service/event.service';
 import { EventType } from 'src/app/core/constants/events';
 import { HttpService } from 'src/app/core/service/http.service';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 @Component({
   selector: 'app-company',
   templateUrl: './company.component.html',
@@ -71,7 +72,8 @@ export class CompanyComponent {
     private apolloService: ApolloService,
     private toastrService: ToastrService,
     private eventService: EventService,
-    private httpService: HttpService
+    private httpService: HttpService,
+    private localStorage: LocalStorageService
   ) {}
 
   ngOnInit(): void {
@@ -79,8 +81,8 @@ export class CompanyComponent {
 
     let gql = company_info;
     let data = {};
-    if (localStorage.getItem('idcompany')) {
-      data = { id: parseInt(localStorage.getItem('idcompany')) };
+    if (this.localStorage.getItem('idcompany')) {
+      data = { id: parseInt(this.localStorage.getItem('idcompany')) };
     } else {
       data = { id: 0 };
     }
@@ -101,7 +103,7 @@ export class CompanyComponent {
       }
     });
     
-    this.welcomeyn = localStorage.getItem('welcomeyn');
+    this.welcomeyn = this.localStorage.getItem('welcomeyn');
   }
 
   searchState: OperatorFunction<string, readonly string[]> = (
@@ -176,7 +178,7 @@ export class CompanyComponent {
 
       if (!result.error) {
         this.company.id = result.data.id;
-        localStorage.setItem('idcompany', this.company.id.toString());
+        this.localStorage.setItem('idcompany', this.company.id.toString());
         this.eventService.broadcast(EventType.CHANGE_COMPANY, true);
       }
       this.toastrService.info(result.message, '');

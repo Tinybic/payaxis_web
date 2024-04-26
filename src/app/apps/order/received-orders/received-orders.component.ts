@@ -11,6 +11,7 @@ import { company_roles } from '../../../core/gql/company';
 import { GlobalFunctionsService } from '../../../core/service/global-functions.service';
 import { companyproject_list } from 'src/app/core/gql/project';
 import { receivable_list } from 'src/app/core/gql/receivables';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-received-orders',
@@ -64,13 +65,14 @@ export class ReceivedOrdersComponent extends Base {
     private router: Router,
     private globalFuns: GlobalFunctionsService,
     private modalService: NgbModal,
+    private localStorage: LocalStorageService
   ) {
     super();
   }
 
   ngOnInit(): void {
     this.canEdit = super.setRole('Manage company users');
-    if (localStorage.getItem('idcompany')) {
+    if (this.localStorage.getItem('idcompany')) {
       this.getOrders();
       this.getRoles();
       this.getProjects();
@@ -81,10 +83,10 @@ export class ReceivedOrdersComponent extends Base {
   }
 
   getOrders() {
-    if (localStorage.getItem('idcompany')) {
+    if (this.localStorage.getItem('idcompany')) {
       this.apolloService
         .query(receivable_list, {
-          idCompany: parseInt(localStorage.getItem('idcompany')),
+          idCompany: parseInt(this.localStorage.getItem('idcompany')),
           idProject: 0
         })
         .then((res) => {
@@ -102,7 +104,7 @@ export class ReceivedOrdersComponent extends Base {
   getRoles() {
     this.apolloService
       .query(company_roles, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
       })
       .then((res) => {
         const result = res.company_roles;
@@ -124,7 +126,7 @@ export class ReceivedOrdersComponent extends Base {
   getProjects() {
     this.apolloService
       .query(companyproject_list, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
       })
       .then((res) => {
         const result = res.companyproject_list;

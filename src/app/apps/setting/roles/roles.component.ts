@@ -15,6 +15,7 @@ import {
   permissionrole_update
 } from '../../../core/gql/roles';
 import { Base } from 'src/app/core/base';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-roles',
@@ -67,19 +68,20 @@ export class RolesComponent extends Base {
     private modalService: NgbModal,
     public activeModal: NgbActiveModal,
     private toastrService: ToastrService,
-    private globalFuns: GlobalFunctionsService
+    private globalFuns: GlobalFunctionsService,
+    private localStorage: LocalStorageService
   ){
     super();
   }
   
   ngOnInit(): void{
     this.canEdit = super.setRole('Edit User roles');
-    if(localStorage.getItem('idcompany')){
-      this.idCompany = parseInt(localStorage.getItem('idcompany'));
+    if(this.localStorage.getItem('idcompany')){
+      this.idCompany = parseInt(this.localStorage.getItem('idcompany'));
       this.getRoles();
     }
-    if(localStorage.getItem('roles_archived')){
-      this.showArchived = localStorage.getItem('roles_archived') == 'true';
+    if(this.localStorage.getItem('roles_archived')){
+      this.showArchived = this.localStorage.getItem('roles_archived') == 'true';
     }
   }
   
@@ -98,7 +100,7 @@ export class RolesComponent extends Base {
   };
   
   filterArchivedRoles(){
-    localStorage.setItem('roles_archived', this.showArchived ? "true" : "false");
+    this.localStorage.setItem('roles_archived', this.showArchived ? "true" : "false");
     let roles = this.initialRoles.filter((item) => {
       if(this.showArchived){
         return this.showArchived;
@@ -233,7 +235,7 @@ export class RolesComponent extends Base {
     });
     
     this.apolloService.mutate(companyrole_update, {
-      idCompany: parseInt(localStorage.getItem('idcompany')),
+      idCompany: parseInt(this.localStorage.getItem('idcompany')),
       id: role.id,
       revision: role.revision,
       txtName: role.txtName,
@@ -269,7 +271,7 @@ export class RolesComponent extends Base {
       btnConfirm: 'Confirm',
       btnSide: 'end',
       params: {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         id: role.id,
         revision: role.revision,
         active: !role.active

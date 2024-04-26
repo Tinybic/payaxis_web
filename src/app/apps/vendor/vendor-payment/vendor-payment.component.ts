@@ -21,6 +21,7 @@ import { IMG_TYPE } from "../../../core/constants/common";
 import { vendorinsurance_delete } from "../../../core/gql/vendor-payment";
 import { GlobalFunctionsService } from "../../../core/service/global-functions.service";
 import { VENDOR_PAYMENTTERM } from 'src/app/core/constants/vendor_payment';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-vendor-payment',
@@ -87,12 +88,13 @@ export class VendorPaymentComponent {
     private modalService: NgbModal,
     private toastrService: ToastrService,
     private apolloService: ApolloService,
-    public globalService: GlobalFunctionsService
+    public globalService: GlobalFunctionsService,
+    private localStorage: LocalStorageService
   ) {}
 
   ngOnInit(): void {
     this.formValues['email'].setValue(this.params.vendorAdditional.email);
-    this.idcompany = parseInt(localStorage.getItem('idcompany'));
+    this.idcompany = parseInt(this.localStorage.getItem('idcompany'));
     this.formValues1['payto'].setValue(this.params.vendorAdditional.payto);
     this.formValues1['federalId'].setValue(this.params.vendorAdditional.federalId);
     this.formValues1['discount'].setValue(this.params.vendorAdditional.discount);
@@ -219,7 +221,7 @@ export class VendorPaymentComponent {
   SetDefault() {
     this.apolloService
       .mutate(vendorpayment_setdefault, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         id: this.id,
         revision: this.revision,
         defaultPay: this.defaultPay,
@@ -316,7 +318,7 @@ export class VendorPaymentComponent {
   deletePaymentItem() {
     this.apolloService
       .mutate(vendorpayment_deactivate, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         id: this.id,
         revision: this.revision,
       })
@@ -378,7 +380,7 @@ export class VendorPaymentComponent {
   getBankName() {
     this.apolloService
       .query(bankname_routing, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         routing: this.formValues['routing'].value,
       })
       .then((res) => {
@@ -397,7 +399,7 @@ export class VendorPaymentComponent {
   updateVendorAdditional() {
     this.apolloService
       .mutate(vendoradditional_update, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         id: this.params.vendorAdditional.id,
         revision: this.params.vendorAdditional.revision,
         payto: this.formValues1['payto'].value,
@@ -439,7 +441,7 @@ export class VendorPaymentComponent {
       btnConfirm: 'Confirm',
       btnSide: 'end',
       params: {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         idVendor_insurance: attachment.id,
         revision: attachment.revision
       },

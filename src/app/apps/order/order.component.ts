@@ -11,6 +11,7 @@ import { company_roles } from '../../core/gql/company';
 import { GlobalFunctionsService } from '../../core/service/global-functions.service';
 import { companyproject_list } from 'src/app/core/gql/project';
 import { projectorder_duplicate } from 'src/app/core/gql/order';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-order',
@@ -64,7 +65,8 @@ export class OrderComponent extends Base {
     private router: Router,
     private globalFuns: GlobalFunctionsService,
     private activatedRoute: ActivatedRoute,
-    private toastrService:ToastrService
+    private toastrService:ToastrService,
+    private localStorage: LocalStorageService
   ) {
     super();
   }
@@ -76,7 +78,7 @@ export class OrderComponent extends Base {
       this.tabs1 = 2;
     }
 
-    if (localStorage.getItem('idcompany')) {
+    if (this.localStorage.getItem('idcompany')) {
       this.getOrders();
       this.getRoles();
       this.getProjects();
@@ -86,10 +88,10 @@ export class OrderComponent extends Base {
   }
 
   getOrders() {
-    if (localStorage.getItem('idcompany')) {
+    if (this.localStorage.getItem('idcompany')) {
       this.apolloService
         .query(projectorder_list, {
-          idCompany: parseInt(localStorage.getItem('idcompany')),
+          idCompany: parseInt(this.localStorage.getItem('idcompany')),
           idProject: 0,
         })
         .then((res) => {
@@ -107,7 +109,7 @@ export class OrderComponent extends Base {
   getRoles() {
     this.apolloService
       .query(company_roles, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
       })
       .then((res) => {
         const result = res.company_roles;
@@ -129,7 +131,7 @@ export class OrderComponent extends Base {
   getProjects() {
     this.apolloService
       .query(companyproject_list, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
       })
       .then((res) => {
         const result = res.companyproject_list;
@@ -246,7 +248,7 @@ export class OrderComponent extends Base {
     if (id > 0) {
       this.apolloService
         .mutate(projectorder_duplicate, {
-          idCompany: parseInt(localStorage.getItem('idcompany')),
+          idCompany: parseInt(this.localStorage.getItem('idcompany')),
           idVendor: idVendor,
           id: id,
           revision: revision,

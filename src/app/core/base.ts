@@ -1,6 +1,13 @@
-export class Base {
+import { LocalStorageService } from "./service/local-storage.service";
+
+export class Base extends LocalStorageService {
+  constructor(
+  ) {
+    super()
+  }
+
   setRole(name) {
-    const accessList = JSON.parse(localStorage.getItem('companyAccess'));
+    const accessList = JSON.parse(super.getItem('companyAccess'));
     if (accessList) {
       var access = accessList.filter((item) => item.permissionName == name);
       if (access.length > 0) {

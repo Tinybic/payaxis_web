@@ -9,6 +9,7 @@ import { HttpClient } from "@angular/common/http";
 import { projectorder_list } from "../../../core/gql/orders";
 import { projectinvoice_new, projectinvoice_update, projectinvoice_deletefile, projectinvoice_attachment } from "../../../core/gql/invoice";
 import { ToastrService } from "ngx-toastr";
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-mapping-attachments',
@@ -65,11 +66,12 @@ export class MappingAttachmentsComponent {
     private modalService: NgbModal,
     public globalService: GlobalFunctionsService,
     private http: HttpClient,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private localStorage: LocalStorageService
   ){}
   
   ngOnInit(){
-    this.idCompany = parseInt(localStorage.getItem('idcompany'));
+    this.idCompany = parseInt(this.localStorage.getItem('idcompany'));
     if(this.initialInvoice.id > 0){
       this.invoice = {...this.initialInvoice};
       this.getInvoiceAttachment();

@@ -18,6 +18,7 @@ import {
 import { vendor_list } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { HttpService } from 'src/app/core/service/http.service';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-receivable-add',
@@ -79,11 +80,12 @@ export class ReceivableAddComponent {
     private apolloService: ApolloService,
     private modalService: NgbModal,
     private toastrService: ToastrService,
-    private httpService: HttpService
+    private httpService: HttpService,
+    private localStorage: LocalStorageService
   ) {}
 
   ngOnInit(): void {
-    this.projectpayment.idCompany = parseInt(localStorage.getItem('idcompany'));
+    this.projectpayment.idCompany = parseInt(this.localStorage.getItem('idcompany'));
     if (this.id > 0) {
       this.getDetail();
     } else {
@@ -105,7 +107,7 @@ export class ReceivableAddComponent {
   getDetail() {
     this.apolloService
       .query(projectpayment_info, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         id: this.id,
       })
       .then((res) => {
@@ -144,7 +146,7 @@ export class ReceivableAddComponent {
   getAttachment() {
     this.apolloService
       .query(projectpayment_attachment, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         idPayment: this.id,
       })
       .then((res) => {
@@ -197,7 +199,7 @@ export class ReceivableAddComponent {
   getProjectList() {
     this.apolloService
       .query(companyproject_list, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
       })
       .then((res) => {
         const result = res.companyproject_list;
@@ -232,7 +234,7 @@ export class ReceivableAddComponent {
   getVendorList() {
     this.apolloService
       .query(vendor_list, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
       })
       .then((res) => {
         const result = res.vendor_list;
@@ -265,7 +267,7 @@ export class ReceivableAddComponent {
   getOrderList() {
     this.apolloService
       .query(receivable_list, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         idProject: 0,
       })
       .then((res) => {
@@ -300,7 +302,7 @@ export class ReceivableAddComponent {
   getPaymentList() {
     this.apolloService
       .query(companypayment_list, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
       })
       .then((res) => {
         const result = res.companypayment_list;

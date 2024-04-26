@@ -23,6 +23,7 @@ import { vendor_list } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { EventService } from 'src/app/core/service/event.service';
 import { HttpService } from 'src/app/core/service/http.service';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-vendor-order-add',
@@ -115,11 +116,12 @@ export class VendorOrderAddComponent {
     private toastrService: ToastrService,
     private httpService: HttpService,
     private router: Router,
-    private eventService: EventService
+    private eventService: EventService,
+    private localStorage: LocalStorageService
   ) {}
 
   ngOnInit(): void {
-    this.order.idCompany = parseInt(localStorage.getItem('idcompany'));
+    this.order.idCompany = parseInt(this.localStorage.getItem('idcompany'));
     this.paymentTermsList = PAYMENTTERM;
     this.order.id = parseInt(this.idorder);
     this.order.idVendor = this.idvendor;
@@ -193,7 +195,7 @@ export class VendorOrderAddComponent {
   attachmentUploadFile() {
     this.apolloService
       .mutate(projectorder_uploadfiles, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         idOrder1: this.order.id,
         orderFiles: this.attachmentFilesTemp,
       })
@@ -375,7 +377,7 @@ export class VendorOrderAddComponent {
   }
 
   getCostCodeList() {
-    this.order.idCompany = parseInt(localStorage.getItem('idcompany'));
+    this.order.idCompany = parseInt(this.localStorage.getItem('idcompany'));
     if (this.order.idCompany != 0) {
       this.apolloService
         .query(categorycostcode_list, { idCompany: this.order.idCompany })

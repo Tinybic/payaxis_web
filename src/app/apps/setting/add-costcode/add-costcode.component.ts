@@ -11,6 +11,7 @@ import {
 } from 'src/app/core/gql/costcode';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { GlobalFunctionsService } from 'src/app/core/service/global-functions.service';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-add-costcode',
@@ -52,7 +53,8 @@ export class AddCostcodeComponent {
     private apolloService: ApolloService,
     private modalService: NgbModal,
     private toastrService: ToastrService,
-    private globalFuns: GlobalFunctionsService
+    private globalFuns: GlobalFunctionsService,
+    private localStorage: LocalStorageService
   ) {}
 
   ngOnInit(): void {
@@ -85,7 +87,7 @@ export class AddCostcodeComponent {
   }
 
   getCostCodeCategoryList() {
-    this.costcode.idCompany = parseInt(localStorage.getItem('idcompany'));
+    this.costcode.idCompany = parseInt(this.localStorage.getItem('idcompany'));
     if (this.costcode.idCompany != 0) {
       this.apolloService
         .query(companycategory_list, { idCompany: this.costcode.idCompany })
