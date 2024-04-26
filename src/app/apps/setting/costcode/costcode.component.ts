@@ -1,17 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import {
-  companycategory_deactivate,
   companycategory_list,
-  companycategory_new,
-  companycategory_update,
   companycostcode_activate,
   companycostcode_deactivate,
   companycostcode_importcsv,
   companycostcode_list,
-  companycostcode_new,
-  companycostcode_update
 } from 'src/app/core/gql/costcode';
 import { vendor_list } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
@@ -27,6 +22,10 @@ export class CostcodeComponent {
   @ViewChild('addcostcode') addcostcode: any;
   @ViewChild('deletecostcode') deletecostcode: any;
   @ViewChild('vendorListmodal') vendorListmodal: any;
+  
+  @ViewChild('categoryListModal') categoryListModal: NgbModalRef;
+  categoryListModalRef: NgbModalRef;
+  
   showArchived = true;
   loading = true;
   keywords = '';
@@ -49,8 +48,6 @@ export class CostcodeComponent {
     idCategory: false
   };
   costCodeCategoryList = [];
-  costCodeCateGoryNewList = [];
-  isEditingCategoryName = '';
   categoryFilter: string[] = [];
   
   
@@ -96,12 +93,6 @@ export class CostcodeComponent {
         this.loading = false;
       });
     }
-  }
-  
-  SetClass(event){
-    this.costcode.category = event.txtName;
-    this.costcode.idCategory = event.id;
-    this.costcodeError.idCategory = false;
   }
   
   onSort(column){
@@ -152,9 +143,6 @@ export class CostcodeComponent {
     );
   };
   
-  openCategoryEditModal(){
-    this.openAddModal('Category');
-  }
   
   addmodalref;
   costcodeButtonText = '';
@@ -182,6 +170,22 @@ export class CostcodeComponent {
         this.getCostCodeList();
       }
     );
+  }
+  
+  
+  openCategoryListModal() {
+    this.categoryListModalRef = this.modalService.open(this.categoryListModal, {
+      modalDialogClass: 'modal-right',
+      size: '530',
+      centered: true,
+    });
+    this.categoryListModalRef.result.then((result) => {
+      if(result){
+        this.getCostCodeCategoryList();
+      }
+    }, (reason)=>{
+      console.log(reason);
+    })
   }
   
   deleteConfirmRef;

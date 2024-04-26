@@ -88,8 +88,7 @@
                         Category
                     </th>
                     <th>
-                        <span class="text-info ms-1-1" (click)="openCategoryEditModal()"><i class="fe-edit-1"></i> Edit
-                            Categories</span>
+                        <span class="text-info ms-1-1" (click)="openCategoryListModal()"><i class="fe-edit-1"></i> Edit Categories</span>
                     </th>
                     <th class="sortable"
                         [ngClass]="{'sorting_asc':sortColumn == 'txtName' && direction == 'asc','sorting_desc':sortColumn == 'txtName' && direction == 'desc'}"
@@ -235,4 +234,9 @@
     <div class="modal-x" (click)="modal.dismiss()">
         <i class="fe-x"></i>
     </div>
+</ng-template>
+
+
+<ng-template #categoryListModal let-modal>
+    <app-category-list [modal]="categoryListModalRef"></app-category-list>
 </ng-template>

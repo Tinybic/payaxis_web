@@ -7,17 +7,17 @@ import { EventType } from 'src/app/core/constants/events';
 import {
   companyproject_info,
   projectbudget_list,
-  companyproject_date,
+  companyproject_date
 } from 'src/app/core/gql/project';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { EventService } from 'src/app/core/service/event.service';
-import { companycategory_list, companycategory_new } from "../../../core/gql/costcode";
+import { companycategory_list } from "../../../core/gql/costcode";
 import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-project-detail',
   templateUrl: './project-detail.component.html',
-  styleUrls: ['./project-detail.component.scss'],
+  styleUrls: ['./project-detail.component.scss']
 })
 export class ProjectDetailComponent extends Base {
   @ViewChild('editProjectModal') editProjectModal: NgbModalRef;
@@ -25,7 +25,7 @@ export class ProjectDetailComponent extends Base {
   @ViewChild('addCategoryModal') addCategoryModal: any;
   tabs = 1;
   keywords = '';
-
+  
   project = {
     id: 0,
     revision: 0,
@@ -51,24 +51,24 @@ export class ProjectDetailComponent extends Base {
     duefilterTotal: 0.0,
     status: '',
     active: false,
-    canDelete: false,
+    canDelete: false
   };
-
+  
   budgetList = [];
   isLoading = true;
   categoryName = '';
   categoryNameError = false;
-  categoryList =[];
+  categoryList = [];
   
   selectedDateRange: string = 'Pick Dates';
   hoveredDate: NgbDate | null = null;
   fromDate!: NgbDate;
   toDate: NgbDate | null = null;
-
+  
   editProjectModalRef: NgbModalRef;
   editBudgetModalRef: NgbModalRef;
   addCategoryModalRef: NgbModalRef;
-
+  
   constructor(
     private modalService: NgbModal,
     private router: Router,
@@ -78,11 +78,12 @@ export class ProjectDetailComponent extends Base {
     private eventService: EventService,
     private calendar: NgbCalendar,
     private localStorage: LocalStorageService
-  ) {super()}
-
+  ){super()}
+  
   canEdit = false;
   canInviteMember = false;
-  ngOnInit(): void {
+  
+  ngOnInit(): void{
     this.canEdit = super.setRole('Edit Projects');
     this.canInviteMember = super.setRole('Manage project users');
     this.fromDate = this.calendar.getToday();
@@ -101,48 +102,48 @@ export class ProjectDetailComponent extends Base {
       this.getProjectBudgetList(idProject);
     });
   }
-
-  getProjectInfo(id) {
-    this.apolloService.query(companyproject_info, { id: id }).then((res) => {
+  
+  getProjectInfo(id){
+    this.apolloService.query(companyproject_info, {id: id}).then((res) => {
       const result = res.companyproject_info;
-      if (!result.error) {
+      if(!result.error){
         this.project = result.data;
-        this.getCategoryList();
         this.localStorage.setItem('projectName', this.project.projectName);
       }
     });
   }
-
-  getProjectBudgetList(id) {
-    this.apolloService
-      .query(projectbudget_list, { idProject: id })
-      .then((res) => {
-        const result = res.projectbudget_list;
-        if (!result.error) {
-          this.budgetList = result.data;
-        }
-        this.isLoading = false;
-      });
+  
+  getProjectBudgetList(id){
+    this.apolloService.query(projectbudget_list, {idProject: id}).then((res) => {
+      const result = res.projectbudget_list;
+      if(!result.error){
+        this.budgetList = result.data;
+      }
+      this.isLoading = false;
+    });
   }
   
-  getDueDateFilter(fromDate, toDate) {
-    this.apolloService
-    .query(companyproject_date, { idProject: this.project.id, dateFrom: fromDate, dateTo: toDate })
-    .then((res) => {
+  getDueDateFilter(fromDate, toDate){
+    this.apolloService.query(companyproject_date, {
+      idProject: this.project.id,
+      dateFrom: fromDate,
+      dateTo: toDate
+    }).then((res) => {
       const result = res.companyproject_date;
-      if (!result.error) {
+      if(!result.error){
         this.project.duefilter = result.data.duefilter;
         this.project.duefilterTotal = result.data.duefilterTotal;
       }
       this.isLoading = false;
     });
   }
-  editProjectDetails() {
+  
+  editProjectDetails(){
     this.editProjectModalRef = this.modalService.open(this.editProjectModal, {
       modalDialogClass: 'modal-right',
       size: '640',
       centered: true,
-      backdrop: 'static',
+      backdrop: 'static'
     });
     this.editProjectModalRef.result.then(
       (result) => {
@@ -165,15 +166,15 @@ export class ProjectDetailComponent extends Base {
     if(budget.duefilter > 0){
       return 'bg-blue';
     }
-    return  'bg-white';
+    return 'bg-white';
   }
-
-  editProjectBudget() {
+  
+  editProjectBudget(){
     this.editBudgetModalRef = this.modalService.open(this.editBudgetModal, {
       modalDialogClass: 'modal-right',
       size: '640',
       centered: true,
-      backdrop: 'static',
+      backdrop: 'static'
     });
     this.editBudgetModalRef.result.then(
       (result) => {
@@ -185,21 +186,20 @@ export class ProjectDetailComponent extends Base {
       }
     );
   }
-
-  inviteMembers() {
+  
+  inviteMembers(){
     this.eventService.broadcast(EventType.PROJECT_DEDAIL_INVITE, true);
   }
   
   createNew(){
     if(this.tabs < 3){
-      this.router.navigate(['apps/order/detail/-'+ this.project.id])
+      this.router.navigate(['apps/order/detail/-' + this.project.id])
     }
   }
   
   
-  
-  dueDateFilterList() {
-    if (this.selectedDateRange != 'Due date') {
+  dueDateFilterList(){
+    if(this.selectedDateRange != 'Due date'){
       const startDate =
         this.fromDate.year +
         '-' +
@@ -218,20 +218,20 @@ export class ProjectDetailComponent extends Base {
   }
   
   getShortMonth(month: number){
-      const date = new Date(1980, month, 0);
-      return date.toLocaleDateString('en-US',{
-        month: 'short'
-      })
+    const date = new Date(1980, month, 0);
+    return date.toLocaleDateString('en-US', {
+      month: 'short'
+    })
   }
   
-  onDateSelection(date: NgbDate) {
-    if (!this.fromDate && !this.toDate) {
+  onDateSelection(date: NgbDate){
+    if(!this.fromDate && !this.toDate){
       this.fromDate = date;
       this.selectedDateRange =
         this.getShortMonth(this.fromDate.month) +
         ' ' +
         this.fromDate.day;
-    } else if (this.fromDate && !this.toDate && date.after(this.fromDate)) {
+    } else if(this.fromDate && !this.toDate && date.after(this.fromDate)){
       this.toDate = date;
       this.selectedDateRange =
         this.getShortMonth(this.fromDate.month) +
@@ -242,12 +242,12 @@ export class ProjectDetailComponent extends Base {
         ' ' +
         this.toDate.day;
       this.dueDateFilterList();
-    } else {
+    } else{
       this.toDate = null;
       this.fromDate = date;
       this.selectedDateRange = 'Due date';
-      this.project.duefilter=0;
-      this.project.duefilterTotal=0;
+      this.project.duefilter = 0;
+      this.project.duefilterTotal = 0;
     }
   }
   
@@ -255,7 +255,7 @@ export class ProjectDetailComponent extends Base {
    * returns true/false based on whether date is hovered or not
    * @param date date
    */
-  isHovered(date: NgbDate) {
+  isHovered(date: NgbDate){
     return (
       this.fromDate &&
       !this.toDate &&
@@ -269,7 +269,7 @@ export class ProjectDetailComponent extends Base {
    * returns true if date is inside selected range
    * @param date date
    */
-  isInside(date: NgbDate) {
+  isInside(date: NgbDate){
     return this.toDate && date.after(this.fromDate) && date.before(this.toDate);
   }
   
@@ -277,7 +277,7 @@ export class ProjectDetailComponent extends Base {
    * returns true if date is in range
    * @param date date
    */
-  isRange(date: NgbDate) {
+  isRange(date: NgbDate){
     return (
       date.equals(this.fromDate) ||
       (this.toDate && date.equals(this.toDate)) ||
@@ -286,64 +286,17 @@ export class ProjectDetailComponent extends Base {
     );
   }
   
-  openAddCategoryModal() {
-    this.categoryNameError = false;
+  openAddCategoryModal(){
     this.addCategoryModalRef = this.modalService.open(this.addCategoryModal, {
       modalDialogClass: 'modal-right',
       size: '530',
-      centered: true,
+      centered: true
     });
-    this.categoryName = '';
+    this.addCategoryModalRef.result.then((result) => {
+      this.getProjectBudgetList(this.project.id);
+    }, (reason) => {
+      console.log(reason);
+    })
   }
   
-  getCategoryList() {
-    if (this.project.idCompany != 0) {
-      this.apolloService
-      .query(companycategory_list, { idCompany: this.project.idCompany })
-      .then((res) => {
-        const result = res.companycategory_list;
-        if (!result.error) {
-          this.categoryList = result.data;
-        }
-      });
-    }
-  }
-  
-  checkCategoryExist(name) {
-    for (let i = 0; i < this.categoryList.length; i++) {
-      if (this.categoryList[i].txtName == name) {
-        return false;
-      }
-    }
-    return true;
-  }
-  
-  createCategory() {
-    if (
-      this.categoryName.toLocaleLowerCase() != 'others' &&
-      this.checkCategoryExist(this.categoryName)
-    ) {
-      this.apolloService
-      .mutate(companycategory_new, {
-        idCompany: this.project.idCompany,
-        txtName: this.categoryName,
-        idProject: this.project.id,
-      })
-      .then((res) => {
-        const result = res.companycategory_new;
-        let message = '';
-        if (!result.error) {
-          message = 'Add category successfully';
-          this.getCategoryList();
-          this.getProjectBudgetList(this.project.id);
-          this.addCategoryModalRef.close();
-        } else {
-          message = result.message;
-        }
-        this.toastrService.info(message, '');
-      });
-    } else {
-      this.categoryNameError = true;
-    }
-  }
 }

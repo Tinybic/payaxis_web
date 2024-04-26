@@ -32,6 +32,7 @@ import { CsvModule } from "@ctrl/ngx-csv";
 import { ProjectVendorComponent } from './project-vendor/project-vendor.component';
 import { VendoraddModule } from '../vendor/vendoradd/vendoradd.module';
 import { VendorModule } from '../vendor/vendor.module';
+import { SettingModule } from "../setting/setting.module";
 
 
 @NgModule({
@@ -72,7 +73,8 @@ import { VendorModule } from '../vendor/vendor.module';
     MomentModule,
     CsvModule,
     VendoraddModule,
-    VendorModule
+    VendorModule,
+    SettingModule
   ],
   providers:[
     provideNgxMask()
