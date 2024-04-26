@@ -23,6 +23,7 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { EventService } from 'src/app/core/service/event.service';
 import { EventType } from 'src/app/core/constants/events';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 @Component({
   selector: 'app-project-team',
   templateUrl: './project-team.component.html',
@@ -75,7 +76,8 @@ export class ProjectTeamComponent {
     private modalService: NgbModal,
     private toastrService: ToastrService,
     private activatedRoute: ActivatedRoute,
-    private eventService: EventService
+    private eventService: EventService,
+    private localStorage: LocalStorageService
   ) {
     this.eventService.on(EventType.PROJECT_DEDAIL_INVITE).subscribe(() => {
       this.inviteMembers();
@@ -122,7 +124,7 @@ export class ProjectTeamComponent {
     });
 
     const data = {
-      idCompany: parseInt(localStorage.getItem('idcompany')),
+      idCompany: parseInt(this.localStorage.getItem('idcompany')),
       idProject: this.idProject,
       companymembers: members,
     };
@@ -177,13 +179,13 @@ export class ProjectTeamComponent {
   }
 
   getRoles() {
-    this.idUser = localStorage.getItem('id');
-    this.idUserOwner = localStorage.getItem('idUserOwner');
-    this.projectName = localStorage.getItem('projectName');
+    this.idUser = this.localStorage.getItem('id');
+    this.idUserOwner = this.localStorage.getItem('idUserOwner');
+    this.projectName = this.localStorage.getItem('projectName');
 
     this.apolloService
       .query(company_roles, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
       })
       .then((res) => {
         const result = res.company_roles;
@@ -209,7 +211,7 @@ export class ProjectTeamComponent {
       const idProject = parseInt(params['id']);
       this.apolloService
         .query(project_members, {
-          idCompany: parseInt(localStorage.getItem('idcompany')),
+          idCompany: parseInt(this.localStorage.getItem('idcompany')),
           idProject: idProject,
         })
         .then((res) => {
@@ -233,10 +235,10 @@ export class ProjectTeamComponent {
   }
 
   getCompanyMembers() {
-    if (localStorage.getItem('idcompany')) {
+    if (this.localStorage.getItem('idcompany')) {
       this.apolloService
         .query(company_members, {
-          idCompany: parseInt(localStorage.getItem('idcompany')),
+          idCompany: parseInt(this.localStorage.getItem('idcompany')),
         })
         .then((res) => {
           const result = res.company_members;
@@ -277,7 +279,7 @@ export class ProjectTeamComponent {
   deactiveMembers() {
     this.apolloService
       .mutate(projectmember_deactivate, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         id: this.members[this.deleteIndex].id,
         revision: this.members[this.deleteIndex].revision,
       })
@@ -411,7 +413,7 @@ export class ProjectTeamComponent {
     });
 
     const data = {
-      idCompany: parseInt(localStorage.getItem('idcompany')),
+      idCompany: parseInt(this.localStorage.getItem('idcompany')),
       idProject: this.idProject,
       inviteMembers: inviteMembers,
     };

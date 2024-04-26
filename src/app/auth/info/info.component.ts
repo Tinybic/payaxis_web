@@ -18,6 +18,7 @@ import {
 } from 'src/app/core/gql/user';
 import { ToastrService } from 'ngx-toastr';
 import { HttpService } from 'src/app/core/service/http.service';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 @Component({
   selector: 'app-auth-info',
   templateUrl: './info.component.html',
@@ -49,11 +50,12 @@ export class InfoComponent implements OnInit {
     private apolloService: ApolloService,
     private modalService: NgbModal,
     private toastr: ToastrService,
-    private httpService: HttpService
+    private httpService: HttpService,
+    private localStorage: LocalStorageService
   ) {}
 
   ngOnInit(): void {
-    this.companyFlag = localStorage.getItem('join') == '0' ? true : false;
+    this.companyFlag = this.localStorage.getItem('join') == '0' ? true : false;
     if (!this.companyFlag) {
       this.toastr.info(
         `
@@ -92,13 +94,13 @@ export class InfoComponent implements OnInit {
     this.apolloService.query(profile_info, {}).then((res) => {
       if (!res.profile_info.error) {
         const result = res.profile_info.data;
-        localStorage.setItem('email', result.email);
-        localStorage.setItem('firstName', result.firstName);
-        localStorage.setItem('lastName', result.lastName);
-        localStorage.setItem('memberyn', result.memberyn.toString());
-        localStorage.setItem('id', result.id.toString());
-        localStorage.setItem('avatar', result.avatar);
-        localStorage.setItem('welcomeyn', result.welcomeyn.toString());
+        this.localStorage.setItem('email', result.email);
+        this.localStorage.setItem('firstName', result.firstName);
+        this.localStorage.setItem('lastName', result.lastName);
+        this.localStorage.setItem('memberyn', result.memberyn.toString());
+        this.localStorage.setItem('id', result.id.toString());
+        this.localStorage.setItem('avatar', result.avatar);
+        this.localStorage.setItem('welcomeyn', result.welcomeyn.toString());
         this.router.navigate(['apps/projects']);
       } else {
         // this.toastr.info(
@@ -143,11 +145,11 @@ export class InfoComponent implements OnInit {
       if (this.formValues['companyName'].value.length > 0) {
         this.httpService
           .post('signup', {
-            email: localStorage.getItem('email'),
-            password: localStorage.getItem('password'),
+            email: this.localStorage.getItem('email'),
+            password: this.localStorage.getItem('password'),
             firstname: this.formValues['firstname'].value,
             lastname: this.formValues['lastname'].value,
-            idcompany: parseInt(localStorage.getItem('id')),
+            idcompany: parseInt(this.localStorage.getItem('id')),
             companyname: this.formValues['companyName'].value,
           })
           .then((res) => {

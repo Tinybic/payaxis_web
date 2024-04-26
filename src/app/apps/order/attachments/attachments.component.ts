@@ -9,6 +9,7 @@ import { EventService } from "../../../core/service/event.service";
 import { EventType } from "../../../core/constants/events";
 import { GlobalFunctionsService } from "../../../core/service/global-functions.service";
 import { HttpClient } from '@angular/common/http';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-attachments',
@@ -43,6 +44,7 @@ export class AttachmentsComponent {
     private eventService: EventService,
     public globalService: GlobalFunctionsService,
     private http: HttpClient,
+    private localStorage: LocalStorageService
   ){
     this.eventService.on(EventType.REFRESH_ATTACHMENTS).subscribe((appEvent) => {
       this.isUploadingAttachment = appEvent.payload == true;
@@ -60,9 +62,9 @@ export class AttachmentsComponent {
   }
   
   getAttachments(){
-    if(localStorage.getItem('idcompany')){
+    if(this.localStorage.getItem('idcompany')){
       this.apolloService.query(projectorder_attachment, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         idOrder1: this.orderId
       }).then((res) => {
         const result = res.projectorder_attachment;
@@ -100,7 +102,7 @@ export class AttachmentsComponent {
       btnConfirm: 'Confirm',
       btnSide: 'between',
       params: {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         idProjectorder_file: attachment.id,
         revision: attachment.revision
       },

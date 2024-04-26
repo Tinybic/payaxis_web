@@ -8,6 +8,7 @@ import { ToastrService } from "ngx-toastr";
 import { ApolloService } from "../../../core/service/apollo.service";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { companygroup_list, companyproject_updatedetail } from "../../../core/gql/project";
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 
 @Component({
@@ -28,7 +29,8 @@ export class CreateProjectComponent {
     private fb: UntypedFormBuilder,
     private apolloService: ApolloService,
     private modalService: NgbModal,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private localStorage: LocalStorageService
   ){}
   
   
@@ -128,7 +130,7 @@ export class CreateProjectComponent {
   })
   
   ngOnInit(): void{
-    this.idCompany = parseInt(localStorage.getItem('idcompany'));
+    this.idCompany = parseInt(this.localStorage.getItem('idcompany'));
     if(this.project){
       this.getGroupList();
       this.step = 3;

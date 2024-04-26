@@ -4,6 +4,7 @@ import { ApolloService } from "../../../core/service/apollo.service";
 import { projectpayment_history } from "../../../core/gql/payment";
 import { ActivatedRoute } from "@angular/router";
 import { formatDate, formatCurrency } from "@angular/common";
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-payment-history',
@@ -46,10 +47,11 @@ export class PaymentHistoryComponent {
     private apolloService: ApolloService,
     private calendar: NgbCalendar,
     private activatedRoute: ActivatedRoute,
+    private localStorage: LocalStorageService
   ) {}
   
   ngOnInit(): void {
-    if (localStorage.getItem('idcompany')) {
+    if (this.localStorage.getItem('idcompany')) {
       this.toDate = this.calendar.getToday();
       this.fromDate = this.calendar.getNext(this.calendar.getToday(), 'm', -1);
       this.selectedDateRange = this.getDateRange();
@@ -228,7 +230,7 @@ export class PaymentHistoryComponent {
       ('0' + this.toDate.day).slice(-2);
     this.apolloService
     .query(projectpayment_history, {
-      idCompany: parseInt(localStorage.getItem('idcompany')),
+      idCompany: parseInt(this.localStorage.getItem('idcompany')),
       idProject: this.idProject,
       idVendor: 0,
       dateFrom: dateFrom,

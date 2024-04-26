@@ -6,6 +6,7 @@ import { companypayment_list } from 'src/app/core/gql/payment';
 import { projectpayment_list, receivable_list } from 'src/app/core/gql/receivables';
 import { vendor_list } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-receivable-list',
@@ -41,11 +42,12 @@ export class ReceivableListComponent {
     private modalService: NgbModal,
     private toastrService: ToastrService,
     private calendar: NgbCalendar,
-    private router: Router
+    private router: Router,
+    private localStorage: LocalStorageService
   ) {}
 
   ngOnInit(): void {
-    if (localStorage.getItem('idcompany')) {
+    if (this.localStorage.getItem('idcompany')) {
       this.getList();
       this.getVendorList();
       this.getPaymentList();
@@ -61,7 +63,7 @@ export class ReceivableListComponent {
   getVendorList() {
     this.apolloService
       .query(vendor_list, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
       })
       .then((res) => {
         const result = res.vendor_list;
@@ -166,7 +168,7 @@ export class ReceivableListComponent {
   getPaymentList() {
     this.apolloService
       .query(companypayment_list, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
       })
       .then((res) => {
         const result = res.companypayment_list;
@@ -256,7 +258,7 @@ export class ReceivableListComponent {
   getList() {
     this.apolloService
       .query(projectpayment_list, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         idProject :0,
         idVendor:0
       })

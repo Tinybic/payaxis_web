@@ -7,6 +7,7 @@ import {
 import { ApolloService } from "../../../core/service/apollo.service";
 import { ToastrService } from "ngx-toastr";
 import { vendorcontact_info, vendorcontact_new, vendorcontact_update } from 'src/app/core/gql/vendor-contacts'
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-add-vendor-contact',
@@ -20,7 +21,8 @@ export class AddVendorContactComponent {
   constructor(
     private fb: UntypedFormBuilder,
     private apolloService: ApolloService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private localStorage: LocalStorageService
   ){}
   
   
@@ -91,7 +93,7 @@ export class AddVendorContactComponent {
   onSubmit(){
     if(this.addVendorContactForm.valid){
       this.apolloService.mutate(this.idcontact > 0 ? vendorcontact_update : vendorcontact_new, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         idVendor: this.idvendor,
         id: this.idcontact,
         revision: this.revision,

@@ -31,6 +31,7 @@ import {
 } from '../config/layout.model';
 import { ToastrService } from 'ngx-toastr';
 import { GlobalFunctionsService } from 'src/app/core/service/global-functions.service';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-left-sidebar',
@@ -44,9 +45,9 @@ export class LeftSidebarComponent implements OnInit {
   leftSidebarClass = 'sidebar-enable';
   activeMenuItems: string[] = [];
   menuItems: MenuItem[] = [];
-  userAvatar: string = localStorage.getItem('avatar');
-  firstName: string = localStorage.getItem('firstName');
-  lastName: string = localStorage.getItem('lastName');
+  userAvatar: string = this.localStorage.getItem('avatar');
+  firstName: string = this.localStorage.getItem('firstName');
+  lastName: string = this.localStorage.getItem('lastName');
   companyList = [];
 
   constructor(
@@ -54,7 +55,8 @@ export class LeftSidebarComponent implements OnInit {
     private eventService: EventService,
     private apolloService: ApolloService,
     private toastrService: ToastrService,
-    private globalService: GlobalFunctionsService
+    private globalService: GlobalFunctionsService,
+    private localStorage: LocalStorageService
   ) {
     router.events.forEach((event) => {
       if (event instanceof NavigationEnd) {
@@ -65,33 +67,44 @@ export class LeftSidebarComponent implements OnInit {
     this.eventService.on(EventType.CHANGE_COMPANY).subscribe(() => {
       this.getCompanyList();
     });
+
+    this.eventService.on(EventType.AVATAR_CHANGE).subscribe(() => {
+      this.getUserInfo();
+    });
   }
 
+  getUserInfo(){
+    this.userAvatar = this.localStorage.getItem('avatar');
+    this.firstName = this.localStorage.getItem('firstName');
+    this.lastName = this.localStorage.getItem('lastName');
+  }
+
+
   getCompanyList() {
+
     if (localStorage.getItem('token')) {
       this.apolloService.query(company_list, {}).then((res) => {
         if (!res.company_list.error) {
           this.companyList = res.company_list.data;
-
           if (this.companyList.length == 0) {
             this.router.navigate(['apps/setting']);
           } else {
             if (
               this.companyList.length > 0 &&
-              (localStorage.getItem('idcompany') == '0' ||
-                localStorage.getItem('idcompany') == null ||
-                localStorage.getItem('idUserOwner') == null)
+              (this.localStorage.getItem('idcompany') == '0' ||
+                this.localStorage.getItem('idcompany') == null ||
+                this.localStorage.getItem('idUserOwner') == null)
             ) {
-              localStorage.setItem(
+              this.localStorage.setItem(
                 'idcompany',
                 this.companyList[0].id.toString()
               );
-              localStorage.setItem('companyName', this.companyList[0].txtName);
-              localStorage.setItem(
+              this.localStorage.setItem('companyName', this.companyList[0].txtName);
+              this.localStorage.setItem(
                 'idUserOwner',
                 this.companyList[0].idUserOwner
               );
-              localStorage.setItem(
+              this.localStorage.setItem(
                 'companyAccess',
                 JSON.stringify(this.companyList[0].companyAccess)
               );
@@ -102,17 +115,17 @@ export class LeftSidebarComponent implements OnInit {
               for (let i = 0; i < this.companyList.length; i++) {
                 if (
                   this.companyList[i].id.toString() ==
-                  localStorage.getItem('idcompany')
+                  this.localStorage.getItem('idcompany')
                 ) {
-                  localStorage.setItem(
+                  this.localStorage.setItem(
                     'companyName',
                     this.companyList[i].txtName
                   );
-                  localStorage.setItem(
+                  this.localStorage.setItem(
                     'idUserOwner',
                     this.companyList[i].idUserOwner
                   );
-                  localStorage.setItem(
+                  this.localStorage.setItem(
                     'companyAccess',
                     JSON.stringify(this.companyList[i].companyAccess)
                   );
@@ -132,13 +145,13 @@ export class LeftSidebarComponent implements OnInit {
   }
 
   selectCompanyName(id, name, idUserOwner, companyAccess) {
-    const cIdCompany = localStorage.getItem('idcompany');
-    localStorage.setItem('idcompany', id);
-    localStorage.setItem('companyName', name);
-    localStorage.setItem('idUserOwner', idUserOwner);
-    localStorage.setItem('companyAccess', JSON.stringify(companyAccess));
+    const cIdCompany = this.localStorage.getItem('idcompany');
+    this.localStorage.setItem('idcompany', id);
+    this.localStorage.setItem('companyName', name);
+    this.localStorage.setItem('idUserOwner', idUserOwner);
+    this.localStorage.setItem('companyAccess', JSON.stringify(companyAccess));
     this.globalService.setCompanyID(parseInt(id));
-    if (cIdCompany != localStorage.getItem('idcompany'))
+    if (cIdCompany != this.localStorage.getItem('idcompany'))
       this.toastrService.info('Switch to Company ' + name, 'Successful');
     this.router.navigate(['apps/projects']).then(() => {
       this.router.navigate(['apps/setting']);
@@ -268,7 +281,7 @@ export class LeftSidebarComponent implements OnInit {
   }
 
   newCompany() {
-    localStorage.setItem('idcompany', '0');
+    this.localStorage.setItem('idcompany', '0');
     this.router.navigate(['apps/projects']).then(() => {
       this.router.navigate(['apps/setting']);
     });

@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { companyproject_coloricon } from 'src/app/core/gql/project';
 import { ApolloService } from 'src/app/core/service/apollo.service';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-set-color',
@@ -17,7 +18,8 @@ export class SetColorComponent {
 
   constructor(
     private toastrService: ToastrService,
-    private apolloService: ApolloService
+    private apolloService: ApolloService,
+    private localStorage: LocalStorageService
   ) {}
   
 
@@ -28,7 +30,7 @@ export class SetColorComponent {
   save() {
     this.apolloService
       .mutate(companyproject_coloricon, {
-        idCompany:parseInt(localStorage.getItem('idcompany')),
+        idCompany:parseInt(this.localStorage.getItem('idcompany')),
         id: this.id,
         revision: this.revision,
         color: this.selectColor,

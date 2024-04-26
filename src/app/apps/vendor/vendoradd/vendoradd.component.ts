@@ -36,6 +36,7 @@ import { STATES } from 'src/app/pages/forms/forms-advanced/data';
 import { getNewFileName, get_file_url } from 'src/app/core/gql/file';
 import { HttpService } from 'src/app/core/service/http.service';
 import { getassociatedcompany_list } from 'src/app/core/gql/receivables';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-vendoradd',
@@ -121,7 +122,8 @@ export class VendoraddComponent {
     private activeModal: NgbActiveModal,
     private toastrService: ToastrService,
     private httpService: HttpService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private localStorage: LocalStorageService
   ) {}
 
   ngOnInit(): void {
@@ -191,7 +193,7 @@ export class VendoraddComponent {
   }
 
   getCostCodeList() {
-    this.vendor.idCompany = parseInt(localStorage.getItem('idcompany'));
+    this.vendor.idCompany = parseInt(this.localStorage.getItem('idcompany'));
     if (this.vendor.idCompany != 0) {
       this.apolloService
         .query(categorycostcode_list, { idCompany: this.vendor.idCompany })
@@ -530,7 +532,7 @@ export class VendoraddComponent {
     this.emailRef.close();
     this.apolloService
       .query(getassociatedcompany_list, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         vendorEmail: this.vendor.email,
       })
       .then((res) => {

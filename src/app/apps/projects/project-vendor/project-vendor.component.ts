@@ -10,6 +10,7 @@ import {
   vendor_list,
 } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-project-vendor',
@@ -34,14 +35,15 @@ export class ProjectVendorComponent extends Base {
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private localStorage: LocalStorageService
   ) {
     super();
   }
 
   ngOnInit(): void {
     this.canEdit = super.setRole('Edit Vendors');
-    if (localStorage.getItem('idcompany')) {
+    if (this.localStorage.getItem('idcompany')) {
       this.canImport = super.setRole('Sync with accounting software');
       this.getVendorList();
     } else {
@@ -50,10 +52,10 @@ export class ProjectVendorComponent extends Base {
   }
 
   getVendorList() {
-    if (parseInt(localStorage.getItem('idcompany')) != 0) {
+    if (parseInt(this.localStorage.getItem('idcompany')) != 0) {
       this.apolloService
         .query(project_vendors, {
-          idCompany: parseInt(localStorage.getItem('idcompany')),
+          idCompany: parseInt(this.localStorage.getItem('idcompany')),
           idProject: this.idProject,
         })
         .then((res) => {
@@ -137,7 +139,7 @@ export class ProjectVendorComponent extends Base {
     this.loading = true;
     this.apolloService
       .mutate(quickbooks_downloadvendors, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         realmid: realmid,
         redirectUri: redirectUri,
         url: url,

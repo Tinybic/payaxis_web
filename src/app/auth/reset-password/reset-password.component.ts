@@ -8,6 +8,7 @@ import { PasswordValidator } from 'src/app/core/helpers/password.validator';
 import { HttpService } from 'src/app/core/service/http.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
@@ -31,7 +32,8 @@ export class ResetPasswordComponent implements OnInit {
     private router: Router,
     private httpService: HttpService,
     private activatedRoute: ActivatedRoute,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private localStorage: LocalStorageService
   ) {}
 
   ngOnInit(): void {}

@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { projectorder_related } from 'src/app/core/gql/order';
 import { receivable_list } from 'src/app/core/gql/receivables';
 import { ApolloService } from 'src/app/core/service/apollo.service';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-vendor-order',
@@ -34,7 +35,8 @@ export class VendorOrderComponent {
 
   constructor(
     private apolloService: ApolloService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private localStorage: LocalStorageService
   ) {}
 
   ngOnInit(): void {
@@ -66,7 +68,7 @@ export class VendorOrderComponent {
   getVendorOrderList() {
     this.apolloService
       .query(this.tab == 3 ? projectorder_related : receivable_list, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         idProject: 0,
         idVendor: this.params.idvendor,
         paidyn: false,

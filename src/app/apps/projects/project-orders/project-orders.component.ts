@@ -7,6 +7,7 @@ import { Router } from "@angular/router";
 import { GlobalFunctionsService } from "../../../core/service/global-functions.service";
 import { Base } from 'src/app/core/base';
 import { projectorder_list } from "../../../core/gql/orders";
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-project-orders',
@@ -51,7 +52,8 @@ export class ProjectOrdersComponent extends Base {
     private toastrService: ToastrService,
     private httpService: HttpService,
     private router: Router,
-    private globalFuns: GlobalFunctionsService
+    private globalFuns: GlobalFunctionsService,
+    private localStorage: LocalStorageService
   ){
     super();
   }
@@ -64,9 +66,9 @@ export class ProjectOrdersComponent extends Base {
   
   
   getOrders(){
-    if(localStorage.getItem('idcompany') && this.idProject){
+    if(this.localStorage.getItem('idcompany') && this.idProject){
       this.apolloService.query(projectorder_list, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         idProject: this.idProject
       }).then((res) => {
         const result = res.projectorder_list;

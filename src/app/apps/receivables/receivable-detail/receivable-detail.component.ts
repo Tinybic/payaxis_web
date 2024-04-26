@@ -25,6 +25,7 @@ import { EventService } from 'src/app/core/service/event.service';
 import { HttpService } from 'src/app/core/service/http.service';
 import * as moment from 'moment';
 import { projectorder_accept, projectorder_decline } from 'src/app/core/gql/receivables';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-receivable-detail',
@@ -119,11 +120,12 @@ export class ReceivableDetailComponent {
     private httpService: HttpService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private eventService: EventService
+    private eventService: EventService,
+    private localStorage: LocalStorageService
   ) {}
 
   ngOnInit(): void {
-    this.order.idCompany = parseInt(localStorage.getItem('idcompany'));
+    this.order.idCompany = parseInt(this.localStorage.getItem('idcompany'));
 
     this.paymentTermsList = PAYMENTTERM;
 
@@ -189,7 +191,7 @@ export class ReceivableDetailComponent {
   attachmentUploadFile() {
     this.apolloService
       .mutate(projectorder_uploadfiles, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         idOrder1: this.order.id,
         orderFiles: this.attachmentFilesTemp,
       })
@@ -353,7 +355,7 @@ export class ReceivableDetailComponent {
   }
 
   getCostCodeList() {
-    this.order.idCompany = parseInt(localStorage.getItem('idcompany'));
+    this.order.idCompany = parseInt(this.localStorage.getItem('idcompany'));
     if (this.order.idCompany != 0) {
       this.apolloService
         .query(categorycostcode_list, { idCompany: this.order.idCompany })
@@ -729,7 +731,7 @@ export class ReceivableDetailComponent {
     if (this.order.id > 0) {
       this.apolloService
         .mutate(projectorder_decline, {
-          idCompany: parseInt(localStorage.getItem('idcompany')),
+          idCompany: parseInt(this.localStorage.getItem('idcompany')),
           id: this.order.id,
           revision: this.order.revision,
         })
@@ -753,7 +755,7 @@ export class ReceivableDetailComponent {
     if (this.order.id > 0) {
       this.apolloService
         .mutate(projectorder_accept, {
-          idCompany: parseInt(localStorage.getItem('idcompany')),
+          idCompany: parseInt(this.localStorage.getItem('idcompany')),
           id: this.order.id,
           revision: this.order.revision,
         })

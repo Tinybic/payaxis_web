@@ -6,6 +6,7 @@ import { EventService } from "../../../core/service/event.service";
 import { ApolloService } from "../../../core/service/apollo.service";
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-create-group',
@@ -25,11 +26,12 @@ export class CreateGroupComponent implements OnInit {
     private eventService: EventService,
     private apolloService: ApolloService,
     private fb: UntypedFormBuilder,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private localStorage: LocalStorageService
   ){ }
   
   ngOnInit() {
-    this.idCompany = parseInt(localStorage.getItem('idcompany'));
+    this.idCompany = parseInt(this.localStorage.getItem('idcompany'));
     if(this.group != ''){
       this.newGroupFormValues['name'].setValue(this.group.txtName);
     }
@@ -69,7 +71,7 @@ export class CreateGroupComponent implements OnInit {
     }else {
       serviceName = companygroup_update;
       params = {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         id: this.group.id,
         revision: this.group.revision,
         txtName: this.newGroupFormValues['name'].value

@@ -14,6 +14,7 @@ import { interval, take } from 'rxjs';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { companyNew, company_member_join } from 'src/app/core/gql/company';
 import { ToastrService } from 'ngx-toastr';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-auth-login',
@@ -51,11 +52,17 @@ export class LoginComponent implements OnInit {
     private fb: UntypedFormBuilder,
     private modalService: NgbModal,
     private apolloService: ApolloService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private localStorage: LocalStorageService
   ) {}
 
   ngOnInit(): void {
-    localStorage.clear();
+
+    if(localStorage.getItem('token')){
+      this.router.navigate(['apps/projects']);
+    }
+
+    //this.localStorage.clear();
     // get return url from route parameters or default to '/'
     const company = decodeURIComponent(
       this.activatedRoute.snapshot.queryParams['company']
@@ -172,13 +179,13 @@ export class LoginComponent implements OnInit {
     this.apolloService.query(profile_info, {}).then((res) => {
       if (!res.profile_info.error) {
         const result = res.profile_info.data;
-        localStorage.setItem('email', this.formValues['email'].value);
-        localStorage.setItem('firstName', result.firstName);
-        localStorage.setItem('lastName', result.lastName);
-        localStorage.setItem('memberyn', result.memberyn.toString());
-        localStorage.setItem('id', result.id.toString());
-        localStorage.setItem('avatar', result.avatar);
-        localStorage.setItem('welcomeyn', result.welcomeyn.toString());
+        this.localStorage.setItem('email', this.formValues['email'].value);
+        this.localStorage.setItem('firstName', result.firstName);
+        this.localStorage.setItem('lastName', result.lastName);
+        this.localStorage.setItem('memberyn', result.memberyn.toString());
+        this.localStorage.setItem('id', result.id.toString());
+        this.localStorage.setItem('avatar', result.avatar);
+        this.localStorage.setItem('welcomeyn', result.welcomeyn.toString());
         this.router.navigate(['apps/projects']);
       }
       this.loading = false;

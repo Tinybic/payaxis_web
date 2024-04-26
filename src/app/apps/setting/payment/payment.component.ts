@@ -25,6 +25,7 @@ import {
   PlaidOnSuccessArgs,
 } from 'ngx-plaid-link';
 import { HttpService } from 'src/app/core/service/http.service';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-payment',
@@ -68,13 +69,14 @@ export class PaymentComponent {
     private modalService: NgbModal,
     private toastrService: ToastrService,
     private apolloService: ApolloService,
-    private httpService: HttpService
+    private httpService: HttpService,
+    private localStorage: LocalStorageService
   ) {}
 
   ngOnInit(): void {
     setTimeout(() => this.getLinkToken(), 500);
-    this.formValues['email'].setValue(localStorage.getItem('email'));
-    this.idcompany = parseInt(localStorage.getItem('idcompany'));
+    this.formValues['email'].setValue(this.localStorage.getItem('email'));
+    this.idcompany = parseInt(this.localStorage.getItem('idcompany'));
     this.getPaymentList();
   }
 
@@ -105,7 +107,7 @@ export class PaymentComponent {
       this.clearFormValue();
       this.buttonText = 'Create';
       this.titleText = 'New Payment Method';
-      this.formValues['email'].setValue(localStorage.getItem('email'));
+      this.formValues['email'].setValue(this.localStorage.getItem('email'));
     } else {
       this.setFormValue(index);
       this.titleText = 'Edit ACH Payment Method';
@@ -184,7 +186,7 @@ export class PaymentComponent {
   SetDefault() {
     this.apolloService
       .mutate(companypayment_setdefault, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         id: this.id,
         revision: this.revision,
         defaultPay: this.defaultPay,
@@ -280,7 +282,7 @@ export class PaymentComponent {
   deletePaymentItem() {
     this.apolloService
       .mutate(companypayment_deactivate, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         id: this.id,
         revision: this.revision,
       })
@@ -339,7 +341,7 @@ export class PaymentComponent {
   getBankName() {
     this.apolloService
       .query(bankname_routing, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         routing: this.formValues['routing'].value,
       })
       .then((res) => {
@@ -354,7 +356,7 @@ export class PaymentComponent {
 
   getLinkToken() {
     this.httpService
-      .post('create_link_token', { iduser: localStorage.getItem('id') })
+      .post('create_link_token', { iduser: this.localStorage.getItem('id') })
       .then((res) => {
         this.linkToken = res.data;
         this.tokenFetched = true;
@@ -384,7 +386,7 @@ export class PaymentComponent {
                 payType: 'PLAID',
                 bankName: res.data[0].name,
                 holderName: '',
-                email: localStorage.getItem('email'),
+                email: this.localStorage.getItem('email'),
                 defaultPay: false,
               })
               .then((res) => {
@@ -426,7 +428,7 @@ export class PaymentComponent {
   verifyDeposits() {
     this.apolloService
       .mutate(companypayment_verify, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         id: this.id,
         revision: this.revision,
         amount_1: parseFloat(this.amount_1),
@@ -450,7 +452,7 @@ export class PaymentComponent {
   releasedDeposits() {
     this.apolloService
       .mutate(companypayment_release, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         id: this.id,
         revision: this.revision,
       })

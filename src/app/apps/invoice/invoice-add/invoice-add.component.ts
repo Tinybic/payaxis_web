@@ -23,6 +23,7 @@ import {
 import { vendor_list } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { HttpService } from 'src/app/core/service/http.service';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-invoice-add',
@@ -92,11 +93,12 @@ export class InvoiceAddComponent {
     private modalService: NgbModal,
     private toastrService: ToastrService,
     private http: HttpClient,
-    private httpService: HttpService
+    private httpService: HttpService,
+    private localStorage: LocalStorageService
   ) {}
 
   ngOnInit(): void {
-    this.projectpayment.idCompany = parseInt(localStorage.getItem('idcompany'));
+    this.projectpayment.idCompany = parseInt(this.localStorage.getItem('idcompany'));
 
     if (this.id > 0) {
       this.getInvoiceInfo();
@@ -112,7 +114,7 @@ export class InvoiceAddComponent {
   getInvoiceInfo() {
     this.apolloService
       .query(projectpayment_info, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         id: this.id,
       })
       .then((res) => {
@@ -152,7 +154,7 @@ export class InvoiceAddComponent {
   getAttachment() {
     this.apolloService
       .query(projectpayment_attachment, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         idPayment: this.id,
       })
       .then((res) => {
@@ -233,7 +235,7 @@ export class InvoiceAddComponent {
 
       this.apolloService
         .query(getassociatedcompany_list, {
-          idCompany: parseInt(localStorage.getItem('idcompany')),
+          idCompany: parseInt(this.localStorage.getItem('idcompany')),
           vendorEmail: this.projectpayment.vendorEmail,
         })
         .then((res) => {
@@ -321,7 +323,7 @@ export class InvoiceAddComponent {
   getProjectList() {
     this.apolloService
       .query(companyproject_list, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
       })
       .then((res) => {
         const result = res.companyproject_list;
@@ -352,7 +354,7 @@ export class InvoiceAddComponent {
   getCostCodeList() {
     this.apolloService
       .query(categorycostcode_list, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
       })
       .then((res) => {
         const result = res.categorycostcode_list;
@@ -397,7 +399,7 @@ export class InvoiceAddComponent {
   getVendorList() {
     this.apolloService
       .query(vendor_list, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
       })
       .then((res) => {
         const result = res.vendor_list;
@@ -415,7 +417,7 @@ export class InvoiceAddComponent {
   getOrderList() {
     this.apolloService
       .query(projectorder_list, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         idProject: 0,
       })
       .then((res) => {
@@ -437,7 +439,7 @@ export class InvoiceAddComponent {
   getPaymentList() {
     this.apolloService
       .query(companypayment_list, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
       })
       .then((res) => {
         const result = res.companypayment_list;
@@ -728,7 +730,6 @@ export class InvoiceAddComponent {
               fileType: file.type,
               fileUrl: uploadUrl.split('?')[0],
             });
-            console.log(this.projectpayment.paymentFiles);
             if (this.projectpayment.paymentFiles.length == 1) this.mapping();
           }
           if (res.type === HttpEventType.UploadProgress) {
@@ -789,7 +790,7 @@ export class InvoiceAddComponent {
     this.mappingFlag = true;
     this.apolloService
       .mutate(projectinvoice_mapping, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         fileUrl: this.file.fileUrl,
       })
       .then((res) => {

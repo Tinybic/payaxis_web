@@ -19,6 +19,7 @@ import {
 import { FormControl } from '@angular/forms';
 import { Base } from 'src/app/core/base';
 import { companyproject_list } from '../../../core/gql/project';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 @Component({
   selector: 'app-teamlist',
   templateUrl: './teamlist.component.html',
@@ -70,7 +71,8 @@ export class TeamlistComponent extends Base {
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private localStorage: LocalStorageService
   ) {
     super();
   }
@@ -115,7 +117,7 @@ export class TeamlistComponent extends Base {
     });
 
     const data = {
-      idCompany: parseInt(localStorage.getItem('idcompany')),
+      idCompany: parseInt(this.localStorage.getItem('idcompany')),
       companymembers: members,
     };
     this.apolloService.mutate(company_member_edit, data).then((res) => {
@@ -167,14 +169,14 @@ export class TeamlistComponent extends Base {
 
   ngOnInit(): void {
     this.canEdit = super.setRole('Manage company users');
-    if (localStorage.getItem('idcompany')) {
-      this.idUser = localStorage.getItem('id');
-      this.idUserOwner = localStorage.getItem('idUserOwner');
-      this.companyName = localStorage.getItem('companyName');
+    if (this.localStorage.getItem('idcompany')) {
+      this.idUser = this.localStorage.getItem('id');
+      this.idUserOwner = this.localStorage.getItem('idUserOwner');
+      this.companyName = this.localStorage.getItem('companyName');
 
       this.apolloService
         .query(company_roles, {
-          idCompany: parseInt(localStorage.getItem('idcompany')),
+          idCompany: parseInt(this.localStorage.getItem('idcompany')),
         })
         .then((res) => {
           const result = res.company_roles;
@@ -201,7 +203,7 @@ export class TeamlistComponent extends Base {
   getProjects() {
     this.apolloService
       .query(companyproject_list, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
       })
       .then((res) => {
         const result = res.companyproject_list;
@@ -218,10 +220,10 @@ export class TeamlistComponent extends Base {
   }
 
   getCompanyMembers() {
-    if (localStorage.getItem('idcompany')) {
+    if (this.localStorage.getItem('idcompany')) {
       this.apolloService
         .query(company_members, {
-          idCompany: parseInt(localStorage.getItem('idcompany')),
+          idCompany: parseInt(this.localStorage.getItem('idcompany')),
         })
         .then((res) => {
           const result = res.company_members;
@@ -264,7 +266,7 @@ export class TeamlistComponent extends Base {
     }
     this.apolloService
       .mutate(gql, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         id: this.members[this.deleteIndex].id,
         revision: this.members[this.deleteIndex].revision,
       })
@@ -368,7 +370,7 @@ export class TeamlistComponent extends Base {
     });
     this.apolloService
       .query(companymember_emails, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         emaillist: data,
       })
       .then((res) => {
@@ -413,7 +415,7 @@ export class TeamlistComponent extends Base {
     });
 
     const data = {
-      idCompany: parseInt(localStorage.getItem('idcompany')),
+      idCompany: parseInt(this.localStorage.getItem('idcompany')),
       inviteMembers: inviteMembers,
     };
 

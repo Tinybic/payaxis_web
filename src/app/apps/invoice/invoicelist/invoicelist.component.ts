@@ -7,6 +7,7 @@ import {
   projectinvoice_list,
 } from 'src/app/core/gql/invoice';
 import { ApolloService } from 'src/app/core/service/apollo.service';
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-invoicelist',
@@ -35,7 +36,8 @@ export class InvoicelistComponent extends Base {
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private localStorage: LocalStorageService
   ) {
     super();
   }
@@ -45,10 +47,10 @@ export class InvoicelistComponent extends Base {
   }
 
   getInvoiceList() {
-    if (parseInt(localStorage.getItem('idcompany')) != 0) {
+    if (parseInt(this.localStorage.getItem('idcompany')) != 0) {
       this.apolloService
         .query(projectinvoice_list, {
-          idCompany: parseInt(localStorage.getItem('idcompany')),
+          idCompany: parseInt(this.localStorage.getItem('idcompany')),
           idProject: 0,
           idVendor: 0,
         })
@@ -124,7 +126,7 @@ export class InvoicelistComponent extends Base {
   invoiceArchive(id, revision) {
     this.apolloService
       .mutate(projectinvoice_deactivate, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         id: id,
         revision: revision,
       })

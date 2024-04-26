@@ -6,6 +6,7 @@ import { ApolloService } from "../../../core/service/apollo.service";
 import { projectorder_list } from "../../../core/gql/orders";
 import { Projectsummaryall } from "../../../core/generated/generated";
 import { GlobalFunctionsService } from "../../../core/service/global-functions.service";
+import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 
 @Component({
   selector: 'app-budget-detail',
@@ -62,7 +63,8 @@ export class BudgetDetailComponent {
     private activatedRoute: ActivatedRoute,
     private apolloService: ApolloService,
     private calendar: NgbCalendar,
-    private globalFuns: GlobalFunctionsService
+    private globalFuns: GlobalFunctionsService,
+    private localStorage: LocalStorageService
   ){}
   
   ngOnInit(){
@@ -116,9 +118,9 @@ export class BudgetDetailComponent {
   }
   
   getOrders(){
-    if(localStorage.getItem('idcompany')){
+    if(this.localStorage.getItem('idcompany')){
       this.apolloService.query(projectorder_list, {
-        idCompany: parseInt(localStorage.getItem('idcompany')),
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
         idProject: this.projectId
       }).then((res) => {
         const result = res.projectorder_list;
