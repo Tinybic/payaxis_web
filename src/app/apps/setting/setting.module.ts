@@ -19,6 +19,8 @@ import { NgxPlaidLinkModule } from "ngx-plaid-link";
 import { UserSignatureComponent } from './user-signature/user-signature.component';
 import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
 import { MyprofileComponent } from './myprofile/myprofile.component';
+import { AddCategoryComponent } from './add-category/add-category.component';
+import { CategoryListComponent } from './category-list/category-list.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,8 @@ import { MyprofileComponent } from './myprofile/myprofile.component';
     AddCostcodeComponent,
     UserSignatureComponent,
     MyprofileComponent,
+    AddCategoryComponent,
+    CategoryListComponent,
   ],
   imports: [
     CommonModule,
@@ -54,6 +58,7 @@ import { MyprofileComponent } from './myprofile/myprofile.component';
   ],
   exports: [
     AddCostcodeComponent,
+    AddCategoryComponent
   ]
 })
 export class SettingModule { }

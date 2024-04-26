@@ -1,0 +1,41 @@
+<input type="text" style="display: none;" />
+<div class="modal-body" style="width: 483px;display: flex; flex-direction: column;">
+    <div style="flex: 1;">
+        <div class="row mb-2-1">
+            <div class="col-md-6 headline">Edit Categories</div>
+            <div class="col-md-6 text-end">
+                <button class="btn btn-outline-primary ms-2-1 btn-height-40" (click)="openAddCategoryModal()"><i
+                        class="fe-plus-square me-1-1"></i>Add New Category</button>
+            </div>
+        </div>
+        <div class="row mt-1-1 item" *ngFor="let item of categoryList; let i = index">
+            <div class="col-md-10" *ngIf="!item.edit" (click)="modifyCostCodeCategory(i)">
+                <span class="bold-600 px-1-1">{{item.txtName}}</span> {{item.costcodecount}}
+            </div>
+            <div class="col-md-10" *ngIf="item.edit">
+                <input class="form-control" type="text" required i18n-placeholder
+                       placeholder="Enter Name" [(ngModel)]="item.editingName" style="padding: 10px 16px;"/>
+            </div>
+            <div class="col-md-2 text-end">
+                <i *ngIf="!item.edit && item.txtName != 'Others'" class="fe-trash-2 cursor-pointer text-primary"
+                   (click)="deleteCategory(i,item.txtName,item.costcodecount)"></i>
+                <i *ngIf="item.edit" class="fe-check text-success line-40 cursor-pointer"
+                   (click)="updateCostCodeCategory(i)"></i>
+                &nbsp;&nbsp;
+                <i *ngIf="item.edit" class="fe-x text-danger line-40 cursor-pointer"
+                   (click)="cancelCategory(i)"></i>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-x" (click)="modal.close(categoryChanged)">
+    <i class="fe-x"></i>
+</div>
+
+<ng-template #addCategoryModal let-modal>
+    <app-add-category [modal]="addCategoryModalRef"></app-add-category>
+</ng-template>
+
+<ng-template #deleteCategoryModal let-modal>
+    <app-confirm-modal [modalRef]="deleteCategoryModalRef" [title]="deleteConfirmObj.title" [message]="deleteConfirmObj.message" [btnConfirm]="deleteConfirmObj.btnConfirm" [serviceName]="deleteConfirmObj.serviceName" [params]="deleteConfirmObj.params" [btnSide]="deleteConfirmObj.btnSide"></app-confirm-modal>
+</ng-template>
