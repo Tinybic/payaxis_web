@@ -24,6 +24,7 @@ import { vendor_list } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { HttpService } from 'src/app/core/service/http.service';
 import { LocalStorageService } from 'src/app/core/service/local-storage.service';
+import { FileSaverService } from 'ngx-filesaver';
 
 @Component({
   selector: 'app-invoice-add',
@@ -94,7 +95,8 @@ export class InvoiceAddComponent {
     private toastrService: ToastrService,
     private http: HttpClient,
     private httpService: HttpService,
-    private localStorage: LocalStorageService
+    private localStorage: LocalStorageService,
+    private fileSaverService: FileSaverService,
   ) {}
 
   ngOnInit(): void {
@@ -978,5 +980,15 @@ export class InvoiceAddComponent {
           this.toastrService.info(result.message, '');
         }
       });
+  }
+
+
+  downloadFile(url,name){
+    this.http.get(url, {
+      observe: 'response',
+      responseType: 'blob',
+    }).subscribe(res => {
+      this.fileSaverService.save((<any>res).body, name);
+    });
   }
 }
