@@ -64,7 +64,7 @@
                         </div>
                     </div>
 
-                    <input *ngIf="!vendor" class="form-control form-search" type="search" placeholder="Find Customer"
+                    <input *ngIf="!vendor" class="form-control form-search" type="search" placeholder="Find Contact"
                         [(ngModel)]="keywordsVendor" (keyup)="vendorFilter()"
                         [ngClass]="{'is-invalid':txtError.idVendor == 0}" ngbDropdownToggle />
                     <div *ngIf="txtError.idVendor == 0" class="invalid-feedback" i18n>
