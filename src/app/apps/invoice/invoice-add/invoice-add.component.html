@@ -495,8 +495,8 @@
                         mapped file
                     </div>
                     <div class="col-md-6 text-end">
-                        <a href="{{file.fileUrl}}" target="_blank" class="btn btn-outline-primary padding-8-16">
-                            <i class="fe-download me-1-1"></i> Download</a>
+                        <div (click)="downloadFile(file.fileUrl,file.fileName)"  class="btn btn-outline-primary padding-8-16">
+                            <i class="fe-download me-1-1"></i> Download</div>
                     </div>
                 </div>
                 <div class="row">
