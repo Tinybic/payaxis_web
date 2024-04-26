@@ -48,7 +48,7 @@ export class AddCostcodeComponent {
 
   addmodalref;
   costcodeButtonText='Create';
-  
+  codeEdit = false;
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
@@ -83,6 +83,20 @@ export class AddCostcodeComponent {
       this.costcodetemp.revision = this.data.revision;
       this.costcodetemp.txtNotes = this.data.txtNotes;
       this.costcodetemp.costCode = this.data.costCode;
+
+      this.codeEdit = true;
+    }
+    else{
+      this.costcode = {
+        id: 0,
+        costCode: '',
+        txtName: '',
+        txtNotes: '',
+        category: '',
+        idCompany: 0,
+        idCategory: 0,
+        revision: 0,
+      };
     }
   }
 

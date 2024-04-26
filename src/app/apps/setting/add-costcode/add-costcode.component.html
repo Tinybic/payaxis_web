@@ -20,7 +20,7 @@
                 <div class="row mt-2-1">
                     <div class="col-md-12">
                         <label class="form-label" i18n>Code</label>
-                        <input class="form-control" type="text" id="costCode" required i18n-placeholder
+                        <input class="form-control" type="text" id="costCode" required i18n-placeholder [readonly] = "codeEdit"
                             placeholder="ID Cost Code number" [(ngModel)]="costcode.costCode"
                             [ngClass]="{'is-invalid':costcodeError.costCode && costcode.costCode.length == 0}" />
                         <div *ngIf="costcodeError.costCode && costcode.costCode.length == 0" class="invalid-feedback"

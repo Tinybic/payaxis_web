@@ -164,6 +164,9 @@ export class CostcodeComponent {
     else{
       this.costcodeButtonText = 'Create';
     }
+    if(text == 'Create'){
+      this.modalData = null;
+    }
     this.addmodalref = this.modalService.open(this.addcostcode, {
       backdrop: 'static',
       modalDialogClass: 'modal-right',
