@@ -45,7 +45,7 @@
                                 </div>
                                 <div class="col-md-4 text-end">
                                     <div class="vendorCostcode subtitle-2-600 d-inline-block"
-                                         *ngIf="vendor.costcodes.length > 0">
+                                         *ngIf="vendor.costcodes && vendor.costcodes.length > 0">
                                         <span *ngFor="let costcode of vendor.costcodes">{{costcode.txtName}}</span>
                                     </div>
                                     <div class="d-inline-block ms-1-1"><i class="fe-external-link text-primary"></i>
@@ -73,7 +73,7 @@
                         </div>
                         
                         <input *ngIf="!vendor && !newVendor" class="form-control form-search" type="search"
-                               placeholder="Find Customer" [(ngModel)]="keywordsVendor"  (ngModelChange)="vendorFilter(vendorDropdown)" [ngClass]="{'is-invalid':txtError.idVendor == 0}" ngbDropdownToggle/>
+                               placeholder="Find Contact" [(ngModel)]="keywordsVendor"  (ngModelChange)="vendorFilter(vendorDropdown)" [ngClass]="{'is-invalid':txtError.idVendor == 0}" ngbDropdownToggle/>
                         <div *ngIf="txtError.idVendor == 0" class="invalid-feedback" i18n>
                             <i class="fe-alert-triangle invalid-feedback-icon"></i>
                             Contact required
@@ -132,7 +132,7 @@
                                             {{item.txtZipcode}}</div>
                                     </div>
                                     <div class="col-md-4 text-end">
-                                        <div class="vendorCostcode subtitle-2-600" *ngIf="item.costcodes.length > 0">
+                                        <div class="vendorCostcode subtitle-2-600" *ngIf="item.costcodes && item.costcodes.length > 0">
                                             <span *ngFor="let costcode of item.costcodes">{{costcode.txtName}}</span>
                                         </div>
                                     </div>

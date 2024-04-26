@@ -16,12 +16,12 @@
     <div class="card-body padding-16">
         <div class="row">
             <div class="col-md-6 subtitle-400-12-32-up">
-                Customer
+                Contact
             </div>
 
             <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" *ngIf="vendor && !this.orderInfo"
                 (click)="removeVendor()">
-                Edit Customer
+                Edit Contact
             </div>
         </div>
 
@@ -42,7 +42,7 @@
                             </div>
                             <div class="col-md-4 text-end">
                                 <div class="vendorCostcode subtitle-2-600 d-inline-block"
-                                    *ngIf="vendor.costcodes.length > 0">
+                                    *ngIf="vendor.costcodes && vendor.costcodes.length > 0">
                                     <span *ngFor="let costcode of vendor.costcodes">{{costcode.txtName}}</span>
                                 </div>
                                 <div class="d-inline-block ms-1-1"><i class="fe-external-link text-primary"></i>
@@ -64,7 +64,7 @@
                         </div>
                     </div>
 
-                    <input *ngIf="!vendor" class="form-control form-search" type="search" placeholder="Find Customer"
+                    <input *ngIf="!vendor" class="form-control form-search" type="search" placeholder="Find Contact"
                         [(ngModel)]="keywordsVendor" (keyup)="vendorFilter()"
                         [ngClass]="{'is-invalid':txtError.idVendor == 0}" ngbDropdownToggle />
                     <div *ngIf="txtError.idVendor == 0" class="invalid-feedback" i18n>
@@ -87,7 +87,7 @@
                                         {{item.txtZipcode}}</div>
                                 </div>
                                 <div class="col-md-4 text-end">
-                                    <div class="vendorCostcode subtitle-2-600" *ngIf="item.costcodes.length > 0">
+                                    <div class="vendorCostcode subtitle-2-600" *ngIf="item.costcodes && item.costcodes.length > 0">
                                         <span *ngFor="let costcode of item.costcodes">{{costcode.txtName}}</span>
                                     </div>
                                 </div>

@@ -196,7 +196,8 @@ export class InvoiceAddComponent {
   setVendor() {
     if (this.projectpayment.idVendor > 0) {
       this.vendorList.forEach((item) => {
-        if (item.id == this.projectpayment.idVendor) {
+        if (item.id == this.projectpayment.idVendor ||
+          item.idInvitedCompany == this.projectpayment.idCompany) {
           this.selectVendor(item);
           return;
         }
