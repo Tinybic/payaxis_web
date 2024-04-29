@@ -190,7 +190,9 @@ export class PayingBillComponent {
         this.savePayingBill();
       }
     } else{
-      if(this.step < 4){
+      if(this.step == 1){
+        this.modalRef.dismiss('cancel');
+      }else if(this.step < 4){
         this.step--;
       }
     }
