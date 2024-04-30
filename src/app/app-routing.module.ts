@@ -11,7 +11,7 @@ import { MaintenanceComponent } from './pages/extra-pages/maintenance/maintenanc
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'auth/login',
+    redirectTo: 'apps/projects',
     pathMatch: 'full'
   },
   {
