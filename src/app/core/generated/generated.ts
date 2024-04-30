@@ -879,7 +879,7 @@ export type MutationProjectpayment_PayArgs = {
   amount: Scalars['Float']['input'];
   id: Scalars['Int']['input'];
   idCompany: Scalars['Int']['input'];
-  idVendor_payment?: InputMaybe<Scalars['Int']['input']>;
+  idVendor?: InputMaybe<Scalars['Int']['input']>;
   paidDate: Scalars['String']['input'];
   revision: Scalars['Int']['input'];
 };

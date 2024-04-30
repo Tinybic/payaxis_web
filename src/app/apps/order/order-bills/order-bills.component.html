@@ -2,7 +2,7 @@
     <div class="col-md-4">
         <span class="font-20 bold-600">{{invoiceList.length}} Invoices</span>
         <div class="d-inline-block dropdown ms-1-1" ngbDropdown>
-            <a class="dropdown-outline" href="javascript:void(0)" ngbDropdownToggle>
+            <a class="dropdown-outline-40" href="javascript:void(0)" ngbDropdownToggle>
                 <i class="fe-filter font-16 me-1-1"></i>
                 Status
                 <b>{{statusFilter}}</b>
@@ -42,19 +42,19 @@
             </div>
         </div>
     </div>
-    <div class="col-md-8 text-end">
+    <div class="col-md-8 flex-row-end-center">
         <div class="d-inline-block ms-1-1">
-            <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords" />
+            <input class="form-control form-search input-height-40" type="search" placeholder="Search here" [(ngModel)]="keywords" />
         </div>
         <div class="d-inline-block ms-1-1">
-            <button class="btn btn-primary" (click)="openAddModal()" [disabled]="idOrder == 0">Add Invoice</button>
+            <button class="btn btn-primary btn-height-40" (click)="openAddModal()" [disabled]="idOrder == 0">Add Invoice</button>
         </div>
         <!-- end search-->
     </div>
 </div>
 <div class="row mt-3">
     <div class="col-md-12">
-        <table class="advanced-table">
+        <table class="advanced-table order-bills-table">
             <thead>
                 <tr>
                     <th class="row_select"><input class="form-check" type="checkbox" /></th>
@@ -104,23 +104,23 @@
                     </td>
                     <td> {{item.vendorName}}</td>
                     <td>
-                        <div class="d-flex">
-                            <div>
-                                <app-avatar [bgColor]="'bg-info'"  color="text-white" [url]="item.senderAvatar" [firstName]="item.senderFirstname" [lastName]="item.senderLastname" [size]="32"
-                                alt="user-img" class="ms-2"></app-avatar>
+                        <div class="d-flex flex-row">
+                            <div class="me-1-1">
+                                <app-avatar [bgColor]="bgColors[i % 6]" [url]="item.senderAvatar" [firstName]="item.senderFirstname" [lastName]="item.senderLastname" color="text-white" [size]="32"
+                                            alt="user-img"></app-avatar>
                             </div>
-                            <div class="ms-1-1">
-                                {{item.senderFirstname}}&nbsp;{{item.senderLastname}}<br/>
-                                <span class="subtitle-2-400-12 text-typeblackdeactivated">{{item.senderEmail}}</span>
+                            <div class="d-flex flex-column search-text">
+                                <div class="text-blackprimary text-overflow-ellipsis"
+                                     style="max-width: 120px;">{{item.senderFirstname}}&nbsp;{{item.senderLastname}}</div>
+                                <div class="text-blackprimary-op-50">{{item.senderEmail}}</div>
                             </div>
                         </div>
-                       
                     </td>
                     <td> {{item.projectName}}</td>
                     <td> {{item.orderNumber}} </td>
                     <td> {{item.amount | currency}}</td>
                     <td class="text-end">
-                        <button type="button" class="btn btn-primary padding-8-16" id="reviewBill{{item.id}}" (click) ="openEditModal(item.id)">Review Bill</button>
+                        <button type="button" class="btn btn-primary padding-8-16" id="reviewBill{{item.id}}" (click) ="openEditModal(item.id)" style="padding: 6px 16px;">Review Bill</button>
                         <i class="fe-more-vertical- ms-1-1"></i>
                     </td>
                 </tr>

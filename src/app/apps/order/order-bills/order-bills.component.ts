@@ -38,6 +38,15 @@ export class OrderBillsComponent {
   vendorList = [];
   paymentList = [];
   vendorFilter = 'Sender';
+  
+  bgColors = [
+    'bg-primary',
+    'bg-secondary',
+    'bg-danger',
+    'bg-success',
+    'bg-warning',
+    'bg-info',
+  ];
 
   selectedDateRange: string = 'Due date';
   hoveredDate: NgbDate | null = null;

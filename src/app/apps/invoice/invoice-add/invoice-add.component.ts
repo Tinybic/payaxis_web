@@ -40,6 +40,7 @@ export class InvoiceAddComponent {
   @ViewChild('amount') inputAmout: ElementRef;
   @ViewChild('payingBill') payingBillModal: NgbModalRef;
 
+  idCompany: number = 0;
   paymentTermsList = VENDOR_PAYMENTTERM;
   PROJECTLIST = [];
   projectList = [];
@@ -83,6 +84,8 @@ export class InvoiceAddComponent {
     vendorName: '',
     vendorEmail: '',
     status: '',
+    account: '',
+    payType: '',
   };
 
   payingBillModalRef: NgbModalRef;
@@ -100,7 +103,7 @@ export class InvoiceAddComponent {
   ) {}
 
   ngOnInit(): void {
-    this.projectpayment.idCompany = parseInt(this.localStorage.getItem('idcompany'));
+    this.idCompany = parseInt(this.localStorage.getItem('idcompany'));
 
     if (this.id > 0) {
       this.getInvoiceInfo();
@@ -116,7 +119,7 @@ export class InvoiceAddComponent {
   getInvoiceInfo() {
     this.apolloService
       .query(projectpayment_info, {
-        idCompany: parseInt(this.localStorage.getItem('idcompany')),
+        idCompany: this.idCompany,
         id: this.id,
       })
       .then((res) => {
@@ -143,6 +146,8 @@ export class InvoiceAddComponent {
             vendorName: result.data.vendorName,
             vendorEmail: result.data.primaryContact,
             status: result.data.status,
+            account: result.data.account,
+            payType: result.data.payType,
           };
         }
         this.getVendorList();
@@ -156,7 +161,7 @@ export class InvoiceAddComponent {
   getAttachment() {
     this.apolloService
       .query(projectpayment_attachment, {
-        idCompany: parseInt(this.localStorage.getItem('idcompany')),
+        idCompany: this.idCompany,
         idPayment: this.id,
       })
       .then((res) => {
@@ -238,7 +243,7 @@ export class InvoiceAddComponent {
 
       this.apolloService
         .query(getassociatedcompany_list, {
-          idCompany: parseInt(this.localStorage.getItem('idcompany')),
+          idCompany: this.idCompany,
           vendorEmail: this.projectpayment.vendorEmail,
         })
         .then((res) => {
@@ -326,7 +331,7 @@ export class InvoiceAddComponent {
   getProjectList() {
     this.apolloService
       .query(companyproject_list, {
-        idCompany: parseInt(this.localStorage.getItem('idcompany')),
+        idCompany: this.idCompany,
       })
       .then((res) => {
         const result = res.companyproject_list;
@@ -357,7 +362,7 @@ export class InvoiceAddComponent {
   getCostCodeList() {
     this.apolloService
       .query(categorycostcode_list, {
-        idCompany: parseInt(this.localStorage.getItem('idcompany')),
+        idCompany: this.idCompany,
       })
       .then((res) => {
         const result = res.categorycostcode_list;
@@ -402,7 +407,7 @@ export class InvoiceAddComponent {
   getVendorList() {
     this.apolloService
       .query(vendor_list, {
-        idCompany: parseInt(this.localStorage.getItem('idcompany')),
+        idCompany: this.idCompany,
       })
       .then((res) => {
         const result = res.vendor_list;
@@ -420,7 +425,7 @@ export class InvoiceAddComponent {
   getOrderList() {
     this.apolloService
       .query(projectorder_list, {
-        idCompany: parseInt(this.localStorage.getItem('idcompany')),
+        idCompany: this.idCompany,
         idProject: 0,
       })
       .then((res) => {
@@ -442,7 +447,7 @@ export class InvoiceAddComponent {
   getPaymentList() {
     this.apolloService
       .query(companypayment_list, {
-        idCompany: parseInt(this.localStorage.getItem('idcompany')),
+        idCompany: this.idCompany,
       })
       .then((res) => {
         const result = res.companypayment_list;
@@ -793,7 +798,7 @@ export class InvoiceAddComponent {
     this.mappingFlag = true;
     this.apolloService
       .mutate(projectinvoice_mapping, {
-        idCompany: parseInt(this.localStorage.getItem('idcompany')),
+        idCompany: this.idCompany,
         fileUrl: this.file.fileUrl,
       })
       .then((res) => {
@@ -967,7 +972,7 @@ export class InvoiceAddComponent {
   decline() {
     this.apolloService
       .mutate(projectpayment_reject, {
-        idCompany: this.projectpayment.idCompany,
+        idCompany: this.idCompany,
         id: this.projectpayment.id,
         revision: this.projectpayment.revision,
       })
