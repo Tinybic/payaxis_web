@@ -153,8 +153,10 @@ export class PayingBillComponent {
           if(this.paymentList.length == 0){
             this.paymentList.push(list[0]);
           }
-          this.payment.payType = this.paymentList[0].payType;
-          this.payment.account = this.paymentList[0].account;
+          if(this.payment.account == ''){
+            this.payment.payType = this.paymentList[0].payType;
+            this.payment.account = this.paymentList[0].account;
+          }
         }
       }
     });

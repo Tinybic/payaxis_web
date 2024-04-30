@@ -129,6 +129,7 @@ const projectpayment_info = gql`
         orderDue
         orderStatus
         idCompany_payment
+        bankName
         account
         payType
         holderName

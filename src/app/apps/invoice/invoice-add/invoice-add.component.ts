@@ -453,18 +453,18 @@ export class InvoiceAddComponent {
         const result = res.companypayment_list;
         if (!result.error) {
           this.paymentList = result.data;
-          this.paymentList.forEach((item) => {
-            if (item.account.length > 4)
-              item.account = item.account.substring(item.account.length - 4);
-            if (item.defaultPay) {
-              this.payment = item;
-              this.projectpayment.idCompany_payment = item.id;
-            }
-          });
-          if (!this.payment && this.paymentList.length > 0) {
-            this.payment = this.paymentList[0];
-            this.projectpayment.idCompany_payment = this.payment.id;
-          }
+          // this.paymentList.forEach((item) => {
+          //   if (item.account.length > 4)
+          //     item.account = item.account.substring(item.account.length - 4);
+          //   if (item.defaultPay) {
+          //     this.payment = item;
+          //     this.projectpayment.idCompany_payment = item.id;
+          //   }
+          // });
+          // if (!this.payment && this.paymentList.length > 0) {
+          //   this.payment = this.paymentList[0];
+          //   this.projectpayment.idCompany_payment = this.payment.id;
+          // }
         }
       });
   }
