@@ -5,6 +5,7 @@ import { ToastrService } from "ngx-toastr";
 import { formatDate, formatCurrency } from "@angular/common";
 import { projectpayment_pay } from "../../../core/gql/receivables";
 import { vendorpayment_list } from "../../../core/gql/vendor-payment";
+import { LocalStorageService } from "../../../core/service/local-storage.service";
 
 @Component({
   selector: 'app-paying-bill',
@@ -35,7 +36,7 @@ export class PayingBillComponent {
   dueDate: NgbDate | null = null;
   blueDate: NgbDate | null = null;
   
-  
+  idCompany: number = 0;
   paymentList = [];
   
   constructor(
@@ -43,10 +44,12 @@ export class PayingBillComponent {
     private modalService: NgbModal,
     private toastrService: ToastrService,
     private calendar: NgbCalendar,
+    private localStorage: LocalStorageService,
     private ngbDateFormater: NgbDateParserFormatter
   ){}
   
   ngOnInit(): void{
+    this.idCompany = parseInt(this.localStorage.getItem('idcompany'));
     this.amount.value = parseFloat(this.payment.amount).toFixed(2);
     this.dueDate = NgbDate.from(this.ngbDateFormater.parse(this.payment.dueDate));
     this.onDateSelection(this.currentDate);
@@ -135,7 +138,7 @@ export class PayingBillComponent {
   
   getPaymentList(){
     this.apolloService.query(vendorpayment_list, {
-      idCompany: parseInt(this.payment.idCompany),
+      idCompany: this.idCompany,
       idVendor: parseInt(this.payment.idVendor)
     }).then((res) => {
       const result = res.vendorpayment_list;
@@ -150,6 +153,8 @@ export class PayingBillComponent {
           if(this.paymentList.length == 0){
             this.paymentList.push(list[0]);
           }
+          this.payment.payType = this.paymentList[0].payType;
+          this.payment.account = this.paymentList[0].account;
         }
       }
     });
@@ -157,10 +162,10 @@ export class PayingBillComponent {
   
   savePayingBill(){
     let params = {
-      idCompany: parseInt(this.payment.idCompany),
+      idCompany: this.idCompany,
       id: parseInt(this.payment.id),
       revision: parseInt(this.payment.revision),
-      idVendor_payment: parseInt(this.payment.idVendor),
+      idVendor: parseInt(this.payment.idVendor),
       paidDate: this.blueDate.year + '-' + this.blueDate.month + '-' + this.blueDate.day,
       amount: this.parseFloat(this.amount.value)
     }
@@ -192,7 +197,7 @@ export class PayingBillComponent {
     } else{
       if(this.step == 1){
         this.modalRef.dismiss('cancel');
-      }else if(this.step < 4){
+      } else if(this.step < 4){
         this.step--;
       }
     }
