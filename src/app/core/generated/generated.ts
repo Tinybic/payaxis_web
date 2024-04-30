@@ -2239,6 +2239,7 @@ export type Project_Payment = {
   active: Scalars['Boolean']['output'];
   amount: Scalars['Float']['output'];
   avatar: Scalars['String']['output'];
+  bankName: Scalars['String']['output'];
   billNumber: Scalars['String']['output'];
   costCode: Scalars['String']['output'];
   costCodeName: Scalars['String']['output'];
