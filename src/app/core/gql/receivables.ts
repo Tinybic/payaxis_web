@@ -333,7 +333,7 @@ const projectpayment_pay = gql`
       idCompany: $idCompany
       id: $id
       revision: $revision
-      idVendor: $idVendor_payment
+      idVendor: $idVendor
       paidDate: $paidDate
       amount: $amount
     ) {
