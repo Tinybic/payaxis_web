@@ -108,6 +108,7 @@ export class InvoiceAddComponent {
     if (this.id > 0) {
       this.getInvoiceInfo();
     } else {
+      this.projectpayment.idCompany = this.idCompany;
       this.getVendorList();
       this.getProjectList();
       this.getOrderList();
