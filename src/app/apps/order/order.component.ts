@@ -21,7 +21,6 @@ import { projectpayment_new } from 'src/app/core/gql/receivables';
   styleUrls: ['./order.component.scss'],
 })
 export class OrderComponent extends Base {
-  
   @ViewChild('confirmModal') confirmModal: any;
   @ViewChild('payingBill') payingBillModal: any;
   statusFilter: string = 'All';
@@ -70,7 +69,7 @@ export class OrderComponent extends Base {
     private router: Router,
     private globalFuns: GlobalFunctionsService,
     private activatedRoute: ActivatedRoute,
-    private toastrService:ToastrService,
+    private toastrService: ToastrService,
     private modalService: NgbModal,
     private localStorage: LocalStorageService
   ) {
@@ -250,7 +249,7 @@ export class OrderComponent extends Base {
     this.router.navigate(['apps/order/detail/' + id]);
   }
 
-  duplicateOrder(id,idVendor,revision){
+  duplicateOrder(id, idVendor, revision) {
     if (id > 0) {
       this.apolloService
         .mutate(projectorder_duplicate, {
@@ -264,7 +263,7 @@ export class OrderComponent extends Base {
           let message = '';
           if (!result.error) {
             message = 'Duplicate successful';
-            this.router.navigate(['apps/order/detail/'+result.data.id])
+            this.router.navigate(['apps/order/detail/' + result.data.id]);
           } else {
             message = result.message;
           }
@@ -278,7 +277,7 @@ export class OrderComponent extends Base {
   confirmModalRef;
 
   selectItem;
-  openConfirmModal(item){
+  openConfirmModal(item) {
     this.selectItem = item;
     this.confirmModalRef = this.modalService.open(this.confirmModal, {
       backdrop: 'static',
@@ -287,20 +286,21 @@ export class OrderComponent extends Base {
     });
 
     this.confirmModalRef.result.then(
-      (res) => {
-      },
-      (dismiss) => {
-      }
+      (res) => {},
+      (dismiss) => {}
     );
   }
 
-  cancelConfirm(){
+  cancelConfirm() {
     this.confirmModalRef.close();
   }
   projectpayment;
   vendor;
-  PayBill(){
-    this.vendor
+  PayBill() {
+    this.vendor = {
+      id: this.selectItem.idVendor,
+      vendorName: this.selectItem.vendorName,
+    };
     this.projectpayment = {
       idCompany: this.selectItem.idCompany,
       idProject: this.selectItem.idProject,
@@ -329,17 +329,9 @@ export class OrderComponent extends Base {
         .mutate(projectpayment_new, this.projectpayment)
         .then((res) => {
           const result = res.projectpayment_new;
-          if (!result.error) {
-            this.toastrService.info(
-              'Bill for ' +
-              this.projectpayment.vendorName +
-                ' has been saved to Bill Inbox.',
-              ''
-            );
-            this.getPaymentList();
-          } else {
-            this.toastrService.info(result.message, '');
-          }
+          this.projectpayment.id = result.data.id;
+          this.projectpayment.revision = result.data.revision;
+          this.getPaymentList();
           this.confirmModalRef.close();
         });
     } else {
@@ -357,11 +349,10 @@ export class OrderComponent extends Base {
         const result = res.companypayment_list;
         if (!result.error) {
           this.paymentList = result.data;
-         this.openPayingBill();
+          this.openPayingBill();
         }
       });
   }
-
 
   payingBillModalRef;
   openPayingBill() {
