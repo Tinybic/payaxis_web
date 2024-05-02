@@ -74,13 +74,13 @@
                         </div>
                     </div>
                     <div ngbDropdownItem *ngFor="let item of paymentList"
-                        (click)="paymentTypeFilterList(item.id, 'ACH * ' + item.account)">
+                        (click)="paymentTypeFilterList(item.id, item.payType + ' * ' + item.account)">
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input"
                                 id="dropdownCheckpaymentType{{item.account}}"
-                                [checked]="paymentTypeFilter=='ACH * ' + item.account">
+                                [checked]="paymentTypeFilter==item.payType + ' * ' + item.account">
                             <label class="form-check-label ms-1-1" for="dropdownCheckpaymentType{{item.account}}">
-                                ACH * {{item.account}}
+                                {{item.payType}}  *  {{item.account}}
                             </label>
                         </div>
                     </div>
