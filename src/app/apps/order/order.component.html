@@ -80,7 +80,7 @@
                             </div>
                             <!--end filter 3-->
                             <div class="d-inline-block ms-1-1">
-                                <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords"
+                                <input id="search1" class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords"
                                        style="padding: 10px 16px 10px 36px;"/>
                             </div>
                             <!-- end search-->
@@ -96,7 +96,7 @@
                         <table class="orders-table advanced-table" style="width: max-content;min-width: 100%;">
                             <thead>
                             <tr>
-                                <th class="row_select"><input class="form-check" type="checkbox"/></th>
+                                <th class="row_select"><input id="checkboxTitle" class="form-check" type="checkbox"/></th>
                                 <th class="sortable"
                                     [ngClass]="{'sorting_asc':sortColumn == 'status' && direction == 'asc','sorting_desc':sortColumn == 'status' && direction == 'desc'}"
                                     (click)="onSort('status')">Status
@@ -141,7 +141,7 @@
                             </thead>
                             <tbody>
                             <tr class="c-p" *ngFor="let item of orders | callback: filterTable; let i = index" >
-                                <td (click)="$event.stopPropagation()"><input class="form-check" type="checkbox"/></td>
+                                <td (click)="$event.stopPropagation()"><input id="checkbox{{i}}" class="form-check" type="checkbox"/></td>
                                 <td>
                                     <div class="d-inline-block {{item.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{item.status}}</div>
                                 </td>

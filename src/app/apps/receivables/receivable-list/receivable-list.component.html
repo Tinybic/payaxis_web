@@ -68,7 +68,7 @@
                         <div class="form-check" id="roleAll">
                             <input type="checkbox" class="form-check-input" id="dropdownCheckRolepaymentTypeAll"
                                 [checked]="paymentTypeFilter=='All'" />
-                            <label class="form-check-label ms-1-1">
+                            <label class="form-check-label ms-1-1" for="dropdownCheckRolepaymentTypeAll">
                                 ALL
                             </label>
                         </div>
@@ -101,7 +101,7 @@
                 <a class="dropdown-outline" href="javascript:void(0)">
                     <i class="fe-calendar font-16 me-1-1"></i>
                     <div class="d-inline-block position-relative">
-                        <input style="border:0; outline: 0; width: 155px;" [value]="selectedDateRange" ngbDatepicker
+                        <input id="datepicker1" style="border:0; outline: 0; width: 155px;" [value]="selectedDateRange" ngbDatepicker
                             #datepicker8="ngbDatepicker" [dayTemplate]="t" (dateSelect)="onDateSelection($event)"
                             (click)="datepicker8.toggle()" autoClose="'outside'" />
                     </div>
@@ -144,7 +144,7 @@
         </div>
         <!--end filter 3-->
         <div class="d-inline-block ms-1-1">
-            <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords" />
+            <input id="searchTextbox" class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords" />
         </div>
         <!-- end search-->
     </div>
@@ -154,7 +154,7 @@
         <table class="advanced-table">
             <thead>
                 <tr>
-                    <th class="row_select"><input class="form-check" type="checkbox" /></th>
+                    <th class="row_select"><input id="checkboxTitle" class="form-check" type="checkbox" /></th>
                     <th class="sortable"
                         [ngClass]="{'sorting_asc':sortColumn == 'status' && direction == 'asc','sorting_desc':sortColumn == 'status' && direction == 'desc'}"
                         (click)="onSort('status')">Status</th>
@@ -185,7 +185,7 @@
             <tbody *ngIf="!loading">
                 <tr class="cursor-pointer"
                     *ngFor="let item of paymentRequestList | callback:filterTable; let i = index">
-                    <td><input class="form-check" type="checkbox" /></td>
+                    <td><input class="form-check" type="checkbox" id="checkbox{{i}}" /></td>
                     <td>
                         <div
                             class="d-inline-block {{item.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">

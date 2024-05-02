@@ -97,7 +97,7 @@
     </div>
     <div class="col-md-4 text-end mt-2-1">
         <div class="d-inline-block ms-1-1">
-            <input class="form-control form-search" type="search" placeholder="Search here..." [(ngModel)]="keywords" />
+            <input id="search1" class="form-control form-search" type="search" placeholder="Search here..." [(ngModel)]="keywords" />
         </div>
         <!-- end search-->
     </div>
@@ -107,7 +107,7 @@
         <table class="advanced-table">
             <thead>
                 <tr>
-                    <th class="row_select"><input class="form-check" type="checkbox" /></th>
+                    <th class="row_select"><input id="checkboxTitle" class="form-check" type="checkbox" /></th>
                     <th class="sortable"
                         [ngClass]="{'sorting_asc':sortColumn == 'vendorName' && direction == 'asc','sorting_desc':sortColumn == 'vendorName' && direction == 'desc'}"
                         (click)="onSort('vendorName')">Name</th>
@@ -126,7 +126,7 @@
             <tbody *ngIf="!loading">
                 <tr class="cursor-pointer" *ngFor="let item of vendorlist | callback:filterTable; let i = index"
                     (click)="openEditModal(item.id)">
-                    <td><input class="form-check" type="checkbox" /></td>
+                    <td><input id="checkbox{{i}}" class="form-check" type="checkbox" /></td>
                     <td>
                         <div class="d-flex flex-row bold-600 ">
                             {{item.vendorName}}
