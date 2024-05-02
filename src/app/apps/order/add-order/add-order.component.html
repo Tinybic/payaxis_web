@@ -632,7 +632,7 @@
             <div class="d-inline-block" *ngIf="order.status == 'Paid'"><button type="button"
                     class="btn btn-primary ms-1-1" style="border:0px; box-shadow: none;">Send Receipt</button></div>
             <div class="d-inline-block" *ngIf="order.status !== 'Paid'"><button type="button"
-                    class="btn btn-primary ms-1-1" style="border:0px; box-shadow: none;">Pay Invoice</button></div>
+                    class="btn btn-primary ms-1-1" style="border:0px; box-shadow: none;" (click)="openConfirmModal()">Pay Bill</button></div>
             <div class="d-inline-block" *ngIf="order.status !== 'Paid'"><button type="button"
                     class="btn btn-primary ms-1-1"
                     style="border:1px solid #ffffff; box-shadow: none;background-color: transparent;" (click) = "projectorderSend()">Send
@@ -657,4 +657,33 @@
     <app-vendoradd class="flex-column-1" [modalRef]="modalVendorRef" (outId)="getVendorId($event)"
         style="width: calc(100vw - 216px); padding:32px 32px 0; background-color: #F8F9FC;overflow-y: auto;"
         [idvendor]="0"></app-vendoradd>
+</ng-template>
+
+<ng-template #confirmModal let-modal>
+    <div class="delete-modal-container">
+        <input type="text" style="display: none;"/>
+        <div class="row">
+            <div class="col-md-10">
+                <div class="headline-24 text-start">Pay this order</div>
+            </div>
+            <div class="col-md-2 text-end text-black">
+                <i class="fe-x cursor-pointer bold-600" (click)="cancelConfirm()"></i>
+            </div>
+        </div>
+        <div class="delete-alert-content text-start">
+            Do you want to pay this order ?
+        </div>
+        <div class="d-flex justify-content-end mt-3">
+            <div class="delete-cancel-button mt-0 line-40 cursor-pointer" (click)="cancelConfirm()">
+                Cancel
+            </div>
+            <div>
+                <button class="btn btn-primary ms-2-1" (click)="PayBill()">Yes</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #payingBill>
+    <app-paying-bill [payment]="projectpayment" [vendor]="vendor" [modalRef]="payingBillModalRef"></app-paying-bill>
 </ng-template>

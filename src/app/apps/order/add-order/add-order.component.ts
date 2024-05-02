@@ -26,6 +26,8 @@ import { EventService } from 'src/app/core/service/event.service';
 import { HttpService } from 'src/app/core/service/http.service';
 import * as moment from 'moment';
 import { LocalStorageService } from 'src/app/core/service/local-storage.service';
+import { projectpayment_new } from 'src/app/core/gql/receivables';
+import { companypayment_list } from 'src/app/core/gql/payment';
 
 @Component({
   selector: 'app-add-order',
@@ -37,6 +39,8 @@ export class AddOrderComponent {
   @ViewChild('addcostcode') addcostcode: any;
   @ViewChild('addvendor') addvendor: any;
   @ViewChild('addproject') addproject: any;
+  @ViewChild('confirmModal') confirmModal: any;
+  @ViewChild('payingBill') payingBillModal: any;
   @ViewChild('t') t: any;
   tabs1 = 1;
   reasonList = [];
@@ -843,6 +847,120 @@ export class AddOrderComponent {
             positionClass: 'toast-top-right-order',
           });
         });
+    }
+  }
+
+  confirmModalRef;
+
+  openConfirmModal(){
+    this.confirmModalRef = this.modalService.open(this.confirmModal, {
+      backdrop: 'static',
+      size: '443',
+      centered: true,
+    });
+
+    this.confirmModalRef.result.then(
+      (res) => {
+      },
+      (dismiss) => {
+      }
+    );
+  }
+
+  cancelConfirm(){
+    this.confirmModalRef.close();
+  }
+  projectpayment;
+  PayBill(){
+    this.projectpayment = {
+      idCompany: this.order.idCompany,
+      idProject: this.order.idProject,
+      idVendor: this.order.idVendor,
+      idOrder1: this.order.id,
+      idCompany_payment: 0,
+      billNumber: this.order.orderNumber,
+      sentDate: this.order.invoicedDate,
+      dueDate: this.order.indvoicedueDate,
+      paymentTerms: '',
+      amount: this.order.total,
+      txtNotes: this.order.notes,
+      billyn: true,
+      costCode: this.order.costCode,
+      paymentFiles: [],
+      idInvitedCompany: 0,
+      vendorName: this.vendor.vendorName,
+      vendorEmail: '',
+      status: '',
+      account: '',
+      payType: '',
+    };
+
+    if (this.projectpayment.amount > 0) {
+      this.apolloService
+        .mutate(projectpayment_new, this.projectpayment)
+        .then((res) => {
+          const result = res.projectpayment_new;
+          if (!result.error) {
+            this.toastrService.info(
+              'Bill for ' +
+              this.projectpayment.vendorName +
+                ' has been saved to Bill Inbox.',
+              ''
+            );
+            this.getPaymentList();
+          } else {
+            this.toastrService.info(result.message, '');
+          }
+          this.confirmModalRef.close();
+        });
+    } else {
+      this.toastrService.info('Please enter amount', '');
+    }
+  }
+
+  paymentList = [];
+  getPaymentList() {
+    this.apolloService
+      .query(companypayment_list, {
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
+      })
+      .then((res) => {
+        const result = res.companypayment_list;
+        if (!result.error) {
+          this.paymentList = result.data;
+         this.openPayingBill();
+        }
+      });
+  }
+
+
+  payingBillModalRef;
+  openPayingBill() {
+    if (this.paymentList.length == 0) {
+      this.toastrService.info(
+        'No payment method available, please go to company settings and add a new payment method.',
+        'Warning',
+        {
+          timeOut: 6000,
+          enableHtml: true,
+          toastClass: 'max-width-300 text-white',
+        }
+      );
+    } else {
+      this.payingBillModalRef = this.modalService.open(this.payingBillModal, {
+        backdrop: 'static',
+        modalDialogClass: 'modal-right',
+        size: '640',
+      });
+
+      this.payingBillModalRef.result.then(
+        (res) => {
+          console.log('OK');
+        },
+        (dismiss) => {
+          console.log('dismiss');
+        }
+      );
     }
   }
 }

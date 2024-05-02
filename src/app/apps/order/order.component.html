@@ -140,7 +140,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr class="c-p" *ngFor="let item of orders | callback: filterTable; let i = index" >
+                            <tr class="c-p" *ngFor="let item of orders | callback: filterTable; let i = index" (click)="openDetail(item.id)">
                                 <td (click)="$event.stopPropagation()"><input id="checkbox{{i}}" class="form-check" type="checkbox"/></td>
                                 <td>
                                     <div class="d-inline-block {{item.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{item.status}}</div>
@@ -180,10 +180,10 @@
                                     </div>
                                 </td>
                                 <td class="text-center">
-                                    <button *ngIf="item.status !== 'Paid'" class="btn btn-primary btn-text-12" style="padding: 6px 27px;" (click)="openDetail(item.id)">
+                                    <button *ngIf="item.status !== 'Paid'" class="btn btn-primary btn-text-12" style="padding: 6px 27px;" (click)="$event.stopPropagation();openConfirmModal(item)">
                                         Pay Bill
                                     </button>
-                                    <button *ngIf="item.status === 'Paid'" class="btn btn-outline-primary btn-text-12" style="padding: 7px 12px;" (click)="openDetail(item.id)">
+                                    <button *ngIf="item.status === 'Paid'" class="btn btn-outline-primary btn-text-12" style="padding: 7px 12px;" >
                                         View Details
                                     </button>
                                 </td>
@@ -241,6 +241,34 @@
     </div>
 </div>
 
+<ng-template #confirmModal let-modal>
+    <div class="delete-modal-container">
+        <input type="text" style="display: none;"/>
+        <div class="row">
+            <div class="col-md-10">
+                <div class="headline-24 text-start">Pay this order</div>
+            </div>
+            <div class="col-md-2 text-end text-black">
+                <i class="fe-x cursor-pointer bold-600" (click)="cancelConfirm()"></i>
+            </div>
+        </div>
+        <div class="delete-alert-content text-start">
+            Do you want to pay this order ?
+        </div>
+        <div class="d-flex justify-content-end mt-3">
+            <div class="delete-cancel-button mt-0 line-40 cursor-pointer" (click)="cancelConfirm()">
+                Cancel
+            </div>
+            <div>
+                <button class="btn btn-primary ms-2-1" (click)="PayBill()">Yes</button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #payingBill>
+    <app-paying-bill [payment]="projectpayment" [vendor]="vendor" [modalRef]="payingBillModalRef"></app-paying-bill>
+</ng-template>
 
 
 
