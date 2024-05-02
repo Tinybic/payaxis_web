@@ -177,7 +177,7 @@ export class PayingBillComponent {
       if(!result.error){
         this.step++;
         this.btnOK = 'Notify my vendor';
-        this.btnCancel = 'Thanks, I’m done here';
+        this.btnCancel = 'Thanks, I\'m done here';
       } else{
         this.toastrService.info(result.message, '');
       }
@@ -219,7 +219,7 @@ export class PayingBillComponent {
           break;
         case 4:
           this.btnOK = 'Notify my vendor';
-          this.btnCancel = 'Thanks, I’m done here';
+          this.btnCancel = 'Thanks, I\'m done here';
           break;
         default:
           this.btnOK = 'Continue';

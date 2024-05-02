@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ApolloService } from '../../core/service/apollo.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
@@ -12,6 +12,8 @@ import { GlobalFunctionsService } from '../../core/service/global-functions.serv
 import { companyproject_list } from 'src/app/core/gql/project';
 import { projectorder_duplicate } from 'src/app/core/gql/order';
 import { LocalStorageService } from 'src/app/core/service/local-storage.service';
+import { companypayment_list } from 'src/app/core/gql/payment';
+import { projectpayment_new } from 'src/app/core/gql/receivables';
 
 @Component({
   selector: 'app-order',
@@ -19,6 +21,9 @@ import { LocalStorageService } from 'src/app/core/service/local-storage.service'
   styleUrls: ['./order.component.scss'],
 })
 export class OrderComponent extends Base {
+  
+  @ViewChild('confirmModal') confirmModal: any;
+  @ViewChild('payingBill') payingBillModal: any;
   statusFilter: string = 'All';
   roleFilter = 'Approval';
 
@@ -66,6 +71,7 @@ export class OrderComponent extends Base {
     private globalFuns: GlobalFunctionsService,
     private activatedRoute: ActivatedRoute,
     private toastrService:ToastrService,
+    private modalService: NgbModal,
     private localStorage: LocalStorageService
   ) {
     super();
@@ -266,6 +272,124 @@ export class OrderComponent extends Base {
             positionClass: 'toast-top-right-order',
           });
         });
+    }
+  }
+
+  confirmModalRef;
+
+  selectItem;
+  openConfirmModal(item){
+    this.selectItem = item;
+    this.confirmModalRef = this.modalService.open(this.confirmModal, {
+      backdrop: 'static',
+      size: '443',
+      centered: true,
+    });
+
+    this.confirmModalRef.result.then(
+      (res) => {
+      },
+      (dismiss) => {
+      }
+    );
+  }
+
+  cancelConfirm(){
+    this.confirmModalRef.close();
+  }
+  projectpayment;
+  vendor;
+  PayBill(){
+    this.vendor
+    this.projectpayment = {
+      idCompany: this.selectItem.idCompany,
+      idProject: this.selectItem.idProject,
+      idVendor: this.selectItem.idVendor,
+      idOrder1: this.selectItem.id,
+      idCompany_payment: 0,
+      billNumber: this.selectItem.orderNumber,
+      sentDate: this.selectItem.invoicedDate,
+      dueDate: this.selectItem.indvoicedueDate,
+      paymentTerms: '',
+      amount: this.selectItem.remainingAmount,
+      txtNotes: this.selectItem.notes,
+      billyn: true,
+      costCode: this.selectItem.costCode,
+      paymentFiles: [],
+      idInvitedCompany: 0,
+      vendorName: this.selectItem.vendorName,
+      vendorEmail: '',
+      status: '',
+      account: '',
+      payType: '',
+    };
+
+    if (this.projectpayment.amount > 0) {
+      this.apolloService
+        .mutate(projectpayment_new, this.projectpayment)
+        .then((res) => {
+          const result = res.projectpayment_new;
+          if (!result.error) {
+            this.toastrService.info(
+              'Bill for ' +
+              this.projectpayment.vendorName +
+                ' has been saved to Bill Inbox.',
+              ''
+            );
+            this.getPaymentList();
+          } else {
+            this.toastrService.info(result.message, '');
+          }
+          this.confirmModalRef.close();
+        });
+    } else {
+      this.toastrService.info('Please enter amount', '');
+    }
+  }
+
+  paymentList = [];
+  getPaymentList() {
+    this.apolloService
+      .query(companypayment_list, {
+        idCompany: parseInt(this.localStorage.getItem('idcompany')),
+      })
+      .then((res) => {
+        const result = res.companypayment_list;
+        if (!result.error) {
+          this.paymentList = result.data;
+         this.openPayingBill();
+        }
+      });
+  }
+
+
+  payingBillModalRef;
+  openPayingBill() {
+    if (this.paymentList.length == 0) {
+      this.toastrService.info(
+        'No payment method available, please go to company settings and add a new payment method.',
+        'Warning',
+        {
+          timeOut: 6000,
+          enableHtml: true,
+          toastClass: 'max-width-300 text-white',
+        }
+      );
+    } else {
+      this.payingBillModalRef = this.modalService.open(this.payingBillModal, {
+        backdrop: 'static',
+        modalDialogClass: 'modal-right',
+        size: '640',
+      });
+
+      this.payingBillModalRef.result.then(
+        (res) => {
+          console.log('OK');
+        },
+        (dismiss) => {
+          console.log('dismiss');
+        }
+      );
     }
   }
 }

@@ -58,7 +58,8 @@ import { ReceivablesModule } from '../receivables/receivables.module';
     MomentModule,
     HttpClientModule,
     InvoiceModule,
-    ReceivablesModule
+    ReceivablesModule,
+    InvoiceModule
   ],
   providers:[
     provideNgxMask()
