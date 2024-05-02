@@ -900,17 +900,9 @@ export class AddOrderComponent {
         .mutate(projectpayment_new, this.projectpayment)
         .then((res) => {
           const result = res.projectpayment_new;
-          if (!result.error) {
-            this.toastrService.info(
-              'Bill for ' +
-              this.projectpayment.vendorName +
-                ' has been saved to Bill Inbox.',
-              ''
-            );
-            this.getPaymentList();
-          } else {
-            this.toastrService.info(result.message, '');
-          }
+          this.projectpayment.id = result.data.id;
+          this.projectpayment.revision = result.data.revision;
+          this.getPaymentList();
           this.confirmModalRef.close();
         });
     } else {
