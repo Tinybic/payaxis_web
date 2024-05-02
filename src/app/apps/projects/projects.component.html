@@ -138,7 +138,7 @@
 
                 <div class="filterDropdownMenu d-inline-block dropdown ms-3" ngbDropdown autoClose="outside"
                     #filterDropdownMenu="ngbDropdown">
-                    <div class="dropdown-outline c-p search-text" ngbDropdownToggle>
+                    <div id="projectSearch" class="dropdown-outline c-p search-text" ngbDropdownToggle>
                         <i class="fe-folder me-1-1"></i>
                         {{selectedGroup.txtName}}
                         <i class="fe-chevron-down font-16 ms-1-1"></i>
@@ -191,7 +191,7 @@
         </div>
         <div class="col-md-4 text-end">
             <div class="d-inline-block ms-1-1">
-                <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords"
+                <input id="search1" class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords"
                     style="padding: 10px 16px 10px 36px;" />
             </div>
             <!-- end search-->

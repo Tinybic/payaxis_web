@@ -3,10 +3,10 @@
             class="fe-chevron-down ms-1-1" [ngClass]="color"></i></a>
     <div class="dropdown-menu" ngbDropdownMenu>
         <div *ngFor="let item of data">
-            <label (click)="changeStatus(item.id,item.text);"
+            <span (click)="changeStatus(item.id,item.text);"
                 class="cursor-pointer line-16 ms-1-1 " ngbDropdownItem>
                 {{item.text}}
-            </label>
+            </span>
         </div>
     </div>
 </div>
