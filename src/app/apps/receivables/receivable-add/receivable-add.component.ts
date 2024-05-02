@@ -140,7 +140,7 @@ export class ReceivableAddComponent {
           status: result.data.status,
           revision: result.data.revision,
           bankName: result.data.bankName,
-          account: result.data.account,
+          account: result.data.account.length > 4 ? result.data.account.substring(result.data.account.length - 4) : result.data.account,
           payType: result.data.payType,
           id: this.id
         };

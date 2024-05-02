@@ -288,9 +288,9 @@ export class OrderBillsComponent {
           this.invoiceList.forEach((item) => {
             if (item.account.length > 4)
               item.account =
-                'ACH * ' + item.account.substring(item.account.length - 4);
+                item.payType +' * ' + item.account.substring(item.account.length - 4);
             else {
-              item.account = 'ACH * ' + item.account;
+              item.account =  item.payType +' * ' + item.account;
             }
           });
           this.INVOICELIST = JSON.parse(JSON.stringify(this.invoiceList));
