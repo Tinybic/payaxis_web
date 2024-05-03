@@ -157,41 +157,40 @@
                     [(ngModel)]="projectpayment.billNumber" />
             </div>
         </div>
+        <!-- <div class="row mt-2-1">
+            <div class="col-md-6  subtitle-2-500">
+                Deposit Account
+            </div>
+            <div class="col-md-6 text-end">
+            </div>
+        </div>
+        <div ngbDropdown>
+            <div class="row mt-1-1 cursor-pointer" style="border:1px solid #E5E7EB; border-radius: 16px; padding: 16px;"
+                ngbDropdownToggle>
+                <div class="col-md-4 subtitle-2-500">
+                    <img class=" me-1-1" src="/assets/images/ach.png" />{{projectpayment.payType}}
+                </div>
+                <div class="col-md-8 text-end">
+                    <div class="Subtitle-1 text-end">****{{projectpayment.account}}</div>
+                    <div class="subtitle-2-400-12 text-end text-typeblack80">{{projectpayment.bankName}}</div>
+                </div>
+            </div>
 
-<!--        <div class="row mt-2-1">-->
-<!--            <div class="col-md-6  subtitle-2-500">-->
-<!--                Deposit Account-->
-<!--            </div>-->
-<!--            <div class="col-md-6 text-end">-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div ngbDropdown>-->
-<!--            <div class="row mt-1-1 cursor-pointer" style="border:1px solid #E5E7EB; border-radius: 16px; padding: 16px;"-->
-<!--                ngbDropdownToggle>-->
-<!--                <div class="col-md-4 subtitle-2-500">-->
-<!--                    <img class=" me-1-1" src="/assets/images/ach.png" />{{projectpayment.payType}}-->
-<!--                </div>-->
-<!--                <div class="col-md-8 text-end">-->
-<!--                    <div class="Subtitle-1 text-end">****{{projectpayment.account}}</div>-->
-<!--                    <div class="subtitle-2-400-12 text-end text-typeblack80">{{projectpayment.bankName}}</div>-->
-<!--                </div>-->
-<!--            </div>-->
-
-<!--            <div ngbDropdownMenu aria-labelledby="s" style="width: 100%;">-->
-<!--                <div *ngFor="let item of paymentList" (click)="selectPayment(item)" class="mt-1-1 cursor-pointer"-->
-<!--                    style="border:1px solid #E5E7EB; border-radius: 16px; padding: 16px;width: 100%;" ngbDropdownItem>-->
-<!--                    <div class="row">-->
-<!--                        <div class="col-md-4 subtitle-2-500">-->
-<!--                            <img class=" me-1-1" src="/assets/images/ach.png" />{{item.payType}}-->
-<!--                        </div>-->
-<!--                        <div class="col-md-8 text-end">-->
-<!--                            <div class="Subtitle-1 text-end">****{{item.account}}</div>-->
-<!--                            <div class="subtitle-2-400-12 text-end text-typeblack80">{{item.bankName}}</div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+            <div ngbDropdownMenu aria-labelledby="s" style="width: 100%;">
+                <div *ngFor="let item of paymentList" (click)="selectPayment(item)" class="mt-1-1 cursor-pointer"
+                    style="border:1px solid #E5E7EB; border-radius: 16px; padding: 16px;width: 100%;" ngbDropdownItem>
+                    <div class="row">
+                        <div class="col-md-4 subtitle-2-500">
+                            <img class=" me-1-1" src="/assets/images/ach.png" />{{item.payType}}
+                        </div>
+                        <div class="col-md-8 text-end">
+                            <div class="Subtitle-1 text-end">****{{item.account}}</div>
+                            <div class="subtitle-2-400-12 text-end text-typeblack80">{{item.bankName}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
     </div>
 </div>
 

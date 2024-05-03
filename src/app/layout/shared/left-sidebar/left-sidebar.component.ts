@@ -72,7 +72,7 @@ export class LeftSidebarComponent implements OnInit {
       this.getUserInfo();
     });
   }
-
+  idcompany = 0;
   getUserInfo(){
     this.userAvatar = this.localStorage.getItem('avatar');
     this.firstName = this.localStorage.getItem('firstName');
@@ -135,6 +135,7 @@ export class LeftSidebarComponent implements OnInit {
             }
           }
         }
+        this.idcompany = this.localStorage.getItem('idcompany');
       });
     }
   }
@@ -144,8 +145,11 @@ export class LeftSidebarComponent implements OnInit {
     this.getCompanyList();
   }
 
+  
+   
   selectCompanyName(id, name, idUserOwner, companyAccess) {
     const cIdCompany = this.localStorage.getItem('idcompany');
+    this.idcompany = id;
     this.localStorage.setItem('idcompany', id);
     this.localStorage.setItem('companyName', name);
     this.localStorage.setItem('idUserOwner', idUserOwner);
