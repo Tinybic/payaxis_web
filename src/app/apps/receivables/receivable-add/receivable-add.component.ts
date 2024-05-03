@@ -108,7 +108,7 @@ export class ReceivableAddComponent {
       this.getVendorList();
       this.getProjectList();
       this.getOrderList();
-      this.getPaymentList();
+      // this.getPaymentList();
     }
   }
   
@@ -565,10 +565,10 @@ export class ReceivableAddComponent {
             this.toastrService.info('Please enter amount', '');
             return;
           }
-          if(this.projectpayment.account == ''){
-            this.toastrService.info('Please select one deposit account', '');
-            return;
-          }
+          // if(this.projectpayment.account == ''){
+          //   this.toastrService.info('Please select one deposit account', '');
+          //   return;
+          // }
           this.apolloService.mutate(projectpayment_new, this.projectpayment).then((res) => {
             const result = res.projectpayment_new;
             if(!result.error){
