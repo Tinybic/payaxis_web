@@ -56,38 +56,38 @@
         </div>
     </div>
     <div class="col-md-8 text-end">
-        <div class="d-inline-block ms-1-1">
-            <div class="dropdown" ngbDropdown #roleDrop="ngbDropdown">
-                <a class="dropdown-outline" href="javascript:void(0)" ngbDropdownToggle>
-                    <i class="fe-user font-16 me-1-1"></i>
-                    {{paymentTypeFilter}}
-                    <i class="fe-chevron-down font-16 ms-1-1"></i>
-                </a>
-                <div class="dropdown-menu" ngbDropdownMenu>
-                    <div ngbDropdownItem (click)="paymentTypeFilterList(0,'All')">
-                        <div class="form-check" id="roleAll">
-                            <input type="checkbox" class="form-check-input" id="dropdownCheckRolepaymentTypeAll"
-                                [checked]="paymentTypeFilter=='All'" />
-                            <label class="form-check-label ms-1-1" for="dropdownCheckRolepaymentTypeAll">
-                                ALL
-                            </label>
-                        </div>
-                    </div>
-                    <div ngbDropdownItem *ngFor="let item of paymentList"
-                        (click)="paymentTypeFilterList(item.id, item.payType + ' * ' + item.account)">
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input"
-                                id="dropdownCheckpaymentType{{item.account}}"
-                                [checked]="paymentTypeFilter==item.payType + ' * ' + item.account">
-                            <label class="form-check-label ms-1-1" for="dropdownCheckpaymentType{{item.account}}">
-                                {{item.payType}}  *  {{item.account}}
-                            </label>
-                        </div>
-                    </div>
+<!--        <div class="d-inline-block ms-1-1">-->
+<!--            <div class="dropdown" ngbDropdown #roleDrop="ngbDropdown">-->
+<!--                <a class="dropdown-outline" href="javascript:void(0)" ngbDropdownToggle>-->
+<!--                    <i class="fe-user font-16 me-1-1"></i>-->
+<!--                    {{paymentTypeFilter}}-->
+<!--                    <i class="fe-chevron-down font-16 ms-1-1"></i>-->
+<!--                </a>-->
+<!--                <div class="dropdown-menu" ngbDropdownMenu>-->
+<!--                    <div ngbDropdownItem (click)="paymentTypeFilterList(0,'All')">-->
+<!--                        <div class="form-check" id="roleAll">-->
+<!--                            <input type="checkbox" class="form-check-input" id="dropdownCheckRolepaymentTypeAll"-->
+<!--                                [checked]="paymentTypeFilter=='All'" />-->
+<!--                            <label class="form-check-label ms-1-1" for="dropdownCheckRolepaymentTypeAll">-->
+<!--                                ALL-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div ngbDropdownItem *ngFor="let item of paymentList"-->
+<!--                        (click)="paymentTypeFilterList(item.id, item.payType + ' * ' + item.account)">-->
+<!--                        <div class="form-check">-->
+<!--                            <input type="checkbox" class="form-check-input"-->
+<!--                                id="dropdownCheckpaymentType{{item.account}}"-->
+<!--                                [checked]="paymentTypeFilter==item.payType + ' * ' + item.account">-->
+<!--                            <label class="form-check-label ms-1-1" for="dropdownCheckpaymentType{{item.account}}">-->
+<!--                                {{item.payType}}  *  {{item.account}}-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                    </div>-->
 
-                </div>
-            </div>
-        </div>
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
         <!--end filter 1-->
         <div class="d-inline-block ms-1-1">
             <ng-template #t let-date let-focused="focused">
@@ -170,9 +170,9 @@
                     <th class="sortable"
                         [ngClass]="{'sorting_asc':sortColumn == 'vendorName' && direction == 'asc','sorting_desc':sortColumn == 'vendorName' && direction == 'desc'}"
                         (click)="onSort('vendorName')">Contact</th>
-                    <th class="sortable"
-                        [ngClass]="{'sorting_asc':sortColumn == 'account' && direction == 'asc','sorting_desc':sortColumn == 'account' && direction == 'desc'}"
-                        (click)="onSort('account')">Payment type</th>
+<!--                    <th class="sortable"-->
+<!--                        [ngClass]="{'sorting_asc':sortColumn == 'account' && direction == 'asc','sorting_desc':sortColumn == 'account' && direction == 'desc'}"-->
+<!--                        (click)="onSort('account')">Payment type</th>-->
                     <th class="sortable"
                         [ngClass]="{'sorting_asc':sortColumn == 'sentDate' && direction == 'asc','sorting_desc':sortColumn == 'sentDate' && direction == 'desc'}"
                         (click)="onSort('sentDate')">Sent date</th>
@@ -199,7 +199,7 @@
                     </td>
                     <td> {{item.orderNumber}}</td>
                     <td> {{item.vendorName}}</td>
-                    <td> {{item.account}}</td>
+<!--                    <td> {{item.account}}</td>-->
                     <td> {{item.sentDate}}</td>
                     <td> {{item.amount | currency}}</td>
                     <td class="text-end">

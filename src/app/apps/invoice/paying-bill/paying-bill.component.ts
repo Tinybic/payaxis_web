@@ -53,7 +53,7 @@ export class PayingBillComponent {
     this.amount.value = parseFloat(this.payment.amount).toFixed(2);
     this.dueDate = NgbDate.from(this.ngbDateFormater.parse(this.payment.dueDate));
     this.onDateSelection(this.currentDate);
-    this.getPaymentList();
+    // this.getPaymentList();
   }
   
   getRemainingOrderBalance(){

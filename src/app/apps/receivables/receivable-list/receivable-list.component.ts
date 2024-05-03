@@ -50,7 +50,7 @@ export class ReceivableListComponent {
     if (this.localStorage.getItem('idcompany')) {
       this.getList();
       this.getVendorList();
-      this.getPaymentList();
+      // this.getPaymentList();
 
       this.fromDate = this.calendar.getToday();
       this.toDate = this.calendar.getNext(this.calendar.getToday(), 'd', 10);
