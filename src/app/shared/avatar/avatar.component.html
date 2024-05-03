@@ -1,6 +1,6 @@
 <div [ngClass]="[bgColor, color]"  
     style="width: {{size}}px; height: {{size}}px; border-radius: {{radius}}px; display: inline-block;text-align: center; line-height: {{size}}px; z-index:{{zindex}}; position: relative;">
-    <img *ngIf="url.length>0" [src]="url" style="width: {{size}}px; height: {{size}}px;border-radius: {{radius}}px; " />
+    <img *ngIf="url.length>0" [src]="url" style="width: {{size}}px; height: {{size}}px;border-radius: {{radius}}px; position: absolute; left: 0; top: 0" />
     <span *ngIf="url.length<1 && firstName.length>0 && lastName.length>0"
         style="text-transform: uppercase;">{{firstName.substring(0,1)}}{{lastName.substring(0,1)}}</span>
     <span *ngIf="url.length<1 && companyName.length>0"
