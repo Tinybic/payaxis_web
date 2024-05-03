@@ -6,7 +6,7 @@ import {
 } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { bankname_routing } from 'src/app/core/gql/payment';
+import { bankname_routing, projectpayment_history } from 'src/app/core/gql/payment';
 import {
   vendoradditional_update, vendorinsurance_attachment,
   vendorpayment_deactivate,
@@ -103,6 +103,7 @@ export class VendorPaymentComponent {
     this.formValues1['form1099'].setValue(this.params.vendorAdditional.form1099);
     this.getPaymentList();
     this.getInsuranceAttachmentList();
+    this.getPaymentHistoryList();
   }
 
   getPaymentList() {
@@ -461,5 +462,21 @@ export class VendorPaymentComponent {
         console.log(reason);
       })
     
+  }
+  
+  paymentHistoryList=[];
+  getPaymentHistoryList(){
+    this.apolloService
+    .query(projectpayment_history, {
+      idCompany: parseInt(this.localStorage.getItem('idcompany')),
+      idProject: 0,
+      idVendor: this.params.vendorAdditional.id,
+      dateFrom: '',
+      dateTo: '',
+    })
+    .then((res) => {
+      const result = res.projectpayment_history;
+      this.paymentHistoryList = result.data;
+    });
   }
 }

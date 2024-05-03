@@ -14,6 +14,7 @@ export class AvatarComponent {
   @Input() bgColor: string = 'bg-white';
   @Input() companyName: string = '';
   @Input() color: string = 'text-primary';
+  @Input() radius: number = 32;
   companyNameText = '';
   constructor() {}
 
