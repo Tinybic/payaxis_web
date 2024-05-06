@@ -217,7 +217,7 @@
                                                     <label class="form-label" i18n>Cost Code</label>
                                                    
                                                     <div class="dropdown" ngbDropdown>
-                                                        <input class="form-select cursor-default" type="text"
+                                                        <input class="form-select cursor-default" type="text"  disabled="disabled"
                                                             id="vendorcostcodes" readonly
                                                             [(ngModel)]="vendorcostcodesText" required i18n-placeholder
                                                             placeholder="Assign Cost Code"
@@ -230,7 +230,7 @@
                                                 <div class="col-md-12">
                                                     <label class="form-label" i18n>Notes & Description</label>
                                                     <span class="float-end text-typeblack80">Optional</span>
-                                                    <textarea class="form-control" type="text" id="notes" style="height: 131px;" placeholder="Notes" [(ngModel)]="order.notes">
+                                                    <textarea  disabled="disabled" class="form-control" type="text" id="notes" style="height: 131px;" placeholder="Notes" [(ngModel)]="order.notes">
                                                     </textarea>
                                                 </div>
                                             </div>
@@ -353,36 +353,36 @@
                                                         <tbody *ngIf="!loading">
                                                             <tr class="cursor-pointer"
                                                                 *ngFor="let item of order.listItems; let i = index">
-                                                                <td><input class="form-check" type="checkbox"
+                                                                <td><input class="form-check" type="checkbox" disabled="disabled"
                                                                         [(ngModel)]="item.paidyn" /></td>
                                                                 <td>
                                                                     <input type="text" class="form-control"
-                                                                        placeholder="Description" thousandSeparator=","
+                                                                        placeholder="Description" thousandSeparator="," disabled="disabled"
                                                                         (change)="AddListItem(i,item)"
                                                                         [(ngModel)]="item.description" />
                                                                 </td>
                                                                 <td>
                                                                     <input type="text" class="form-control"
-                                                                        [(ngModel)]="item.qty" thousandSeparator=","
+                                                                        [(ngModel)]="item.qty" thousandSeparator="," disabled="disabled"
                                                                         mask="separator.2" (keyup)="getAmout(item)" />
                                                                 </td>
                                                                 <td>
-                                                                    <input type="text" class="form-control"
+                                                                    <input type="text" class="form-control" disabled="disabled"
                                                                         [(ngModel)]="item.unit" />
                                                                 </td>
                                                                 <td>
                                                                     <input type="text" class="form-control text-end"
                                                                         [(ngModel)]="item.price" prefix="$"
-                                                                        mask="separator.2" thousandSeparator=","
+                                                                        mask="separator.2" thousandSeparator="," disabled="disabled"
                                                                         (keyup)="getAmout(item)" />
                                                                 </td>
                                                                 <td>
                                                                     <input type="text" class="form-control" prefix="$"
-                                                                        mask="separator.2" [(ngModel)]="item.amount"
+                                                                        mask="separator.2" [(ngModel)]="item.amount" disabled="disabled"
                                                                         disabled="disabled" />
                                                                 </td>
                                                                 <td>
-                                                                    <input class="form-check" type="checkbox"
+                                                                    <input class="form-check" type="checkbox" disabled="disabled"
                                                                         (change)="setTotal()"
                                                                         [(ngModel)]="item.taxyn" />
                                                                 </td>
@@ -391,7 +391,7 @@
                                                                         | date: 'MM/dd/yy HH:mm:ss' | amTimeAgo}}</span>
                                                                 </td>
                                                                 <td>
-                                                                    <input class="form-control" type="text"
+                                                                    <input class="form-control" type="text" disabled="disabled"
                                                                         [(ngModel)]="item.notes" />
                                                                 </td>
                                                                 <td>
