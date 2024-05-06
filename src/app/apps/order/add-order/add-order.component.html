@@ -160,7 +160,7 @@
                 <button class="btn btn-outline-primary ms-2-1">
                     Direct Payment
                 </button>
-                <button class="btn btn-primary ms-2-1" *ngIf="tabs1 == 1" (click)="saveOrder();">Save</button>
+                <button class="btn btn-primary ms-2-1" *ngIf="tabs1 == 1 && order.status != 'Paid'" (click)="saveOrder();">Save</button>
                 <div class="d-inline-block dropdown ms-1-1" ngbDropdown>
                     <span ngbDropdownToggle><i class="fe-more-vertical- font-24 cursor-pointer"></i></span>
                     <div class="dropdown-menu" ngbDropdownMenu>

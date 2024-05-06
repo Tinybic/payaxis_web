@@ -363,10 +363,10 @@ export class OrderComponent extends Base {
 
       this.payingBillModalRef.result.then(
         (res) => {
-          console.log('OK');
+          this.getOrders();
         },
         (dismiss) => {
-          console.log('dismiss');
+          this.getOrders();
         }
       );
     }
