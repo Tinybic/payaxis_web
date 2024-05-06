@@ -47,12 +47,12 @@
             <div class="ms-2 sidebar-hr"></div>
 
             <div class="companyList">
-                <div class="mt-1-1 cursor-pointer" style="height: 44px; overflow: hidden;"
+                <div class="mt-1-1 cursor-pointer d-flex" style="height: 44px; overflow: hidden;"
                     *ngFor="let item of companyList" (click)="selectCompanyName(item.id,item.txtName,item.idUserOwner,item.companyAccess)">
                     <div class="ms-2 d-inline-block" style="border: {{item.id==idcompany?'2px solid #3BA755':'2px solid transparent'}}; width: 44px; height: 44px; border-radius: 8px;">
                     <app-avatar [url]="item.avatar" [companyName]="item.txtName" [size]="40" [radius] = "5" alt="user-img" style="border-radius: 8;"></app-avatar>
                     </div>
-                    <span class="user-profile bold-600 ms-1">
+                    <span class="user-profile bold-600 ms-1 d-flex align-items-center">
                         {{item.txtName.length>10?item.txtName.substring(0,10):item.txtName}}
                     </span>
                 </div>
