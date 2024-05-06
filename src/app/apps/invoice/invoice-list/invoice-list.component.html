@@ -10,42 +10,24 @@
 <div class="row mt-2-1">
     <div class="col-md-4">
         <span class="font-20 bold-600">{{invoiceList.length}} Invoices</span>
-        <div class="d-inline-block dropdown ms-1-1" ngbDropdown>
+        <div class="d-inline-block dropdown dropdown-40 ms-1-1" ngbDropdown>
             <a class="dropdown-outline" href="javascript:void(0)" ngbDropdownToggle>
                 <i class="fe-filter font-16 me-1-1"></i>
-                Status
-                <b>{{statusFilter}}</b>
-                <i class="fe-chevron-down font-16 ms-1-1"></i>
+                <span class="text-typeblack80">Status</span>
+                <span class="ms-1-1 text-black btn-text-12">{{statusFilter}}</span>
+                <i class="fe-chevron-down text-black ms-1-1"></i>
             </a>
             <div class="dropdown-menu" ngbDropdownMenu>
-                <div ngbDropdownItem (click)="filterListStatus('All')">
-                    <div class="form-check text-center">
-                        <input type="checkbox" class="form-check-input" id="allDropdownCheck"
-                            [checked]="statusFilter == 'All'">
-                        <label class="form-check-label ms-1-1 bold-600" for="allDropdownCheck">
-                            All
+                <div *ngFor="let status of objectKeys(listStatusCount)" ngbDropdownItem>
+                    <div class="form-check">
+                        <input id="status_{{status}}" type="checkbox" class="form-check-input"
+                               [checked]="statusFilter==status"
+                               (change)="statusFilterChange($event, status, 'statusFilter')">
+                        
+                        <label for="status_{{status}}" class="d-inline-block {{status == 'Active' ? 'NO' : status.toLowerCase()}}Tag subtitle-2-600 text-optional text-center ms-2-1">{{status}}
                         </label>
-                    </div>
-                </div>
-                <div ngbDropdownItem (click)="filterListStatus('Sent')">
-                    <div class="form-check text-center">
-                        <input type="checkbox" class="form-check-input" id="invoiceOpendropdownCheck"
-                            [checked]="statusFilter == 'Sent'">
-                            <div class="d-inline-block sentTag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">Sent</div>
-                    </div>
-                </div>
-                <div ngbDropdownItem (click)="filterListStatus('Due')">
-                    <div class="form-check text-center">
-                        <input type="checkbox" class="form-check-input" id="overDuedropdownCheck"
-                            [checked]="statusFilter == 'Due'">
-                        <div for="overDuedropdownCheck" class="d-inline-block dueTag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">Due</div>
-                    </div>
-                </div>
-                <div ngbDropdownItem (click)="filterListStatus('PastDue')">
-                    <div class="form-check text-center">
-                        <input type="checkbox" class="form-check-input" id="pastDueDropdownCheck"
-                            [checked]="statusFilter == 'PastDue'">
-                        <div for="pastDueDropdownCheck" class="d-inline-block pastdueTag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">Past Due</div>
+                        
+                        <label for="status_{{status}}" class="ms-2-1 subtitle-2-400-12 text-optional">{{ status != 'Active' ? listStatusCount[status] : ''}}</label>
                     </div>
                 </div>
             </div>
@@ -53,7 +35,7 @@
     </div>
     <div class="col-md-8 text-end">
         <div class="d-inline-block ms-1-1">
-            <div class="dropdown" ngbDropdown #roleDrop="ngbDropdown">
+            <div class="dropdown dropdown-40" ngbDropdown #roleDrop="ngbDropdown">
                 <a class="dropdown-outline" href="javascript:void(0)" ngbDropdownToggle>
                     <i class="fe-user font-16 me-1-1"></i>
                     {{vendorFilter}}
@@ -86,7 +68,7 @@
         </div>
         <!--end filter 2-->
         <div class="d-inline-block ms-1-1">
-            <div class="dropdown ms-1-1" ngbDropdown>
+            <div class="dropdown dropdown-40 ms-1-1" ngbDropdown>
                 <a class="dropdown-outline" href="javascript:void(0)" ngbDropdownToggle>
                     <i class="fe-folder font-16 me-1-1"></i>
                     {{projectFilter}}
@@ -126,7 +108,7 @@
                     {{ date.day }}
                 </span>
             </ng-template>
-            <div class="dropdown ms-1-1">
+            <div class="dropdown dropdown-40 ms-1-1">
                 <a class="dropdown-outline" href="javascript:void(0)">
                     <i class="fe-dollar-sign font-16 me-1-1"></i>
                     <div class="d-inline-block position-relative">
@@ -140,7 +122,7 @@
         </div>
         <!--end filter 3-->
         <div class="d-inline-block ms-1-1">
-            <input id="search1" class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords" />
+            <input id="search1" class="form-control form-search input-height-40" type="search" placeholder="Search here" [(ngModel)]="keywords" />
         </div>
         <!-- end search-->
     </div>

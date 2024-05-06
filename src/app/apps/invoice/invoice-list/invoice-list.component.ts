@@ -12,6 +12,8 @@ import { projectbill_list } from 'src/app/core/gql/receivables';
 import { vendor_list } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { LocalStorageService } from 'src/app/core/service/local-storage.service';
+import { GlobalFunctionsService } from '../../../core/service/global-functions.service';
+
 
 @Component({
   selector: 'app-invoice-list',
@@ -32,7 +34,7 @@ export class InvoiceListComponent {
   paymentTypeFilter = 'Sender';
   dueDateFilter = 'Due date';
   projectFilter = 'Project';
-  statusFilter = 'All';
+  statusFilter = 'Active';
   projects = [];
   vendorList = [];
   paymentList = [];
@@ -43,16 +45,22 @@ export class InvoiceListComponent {
   fromDate!: NgbDate;
   toDate: NgbDate | null = null;
   idInvoice = 0;
+  
+  
+  listStatusCount: any;
+  objectKeys = Object.keys;
 
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
     private toastrService: ToastrService,
     private calendar: NgbCalendar,
-    private localStorage: LocalStorageService
+    private localStorage: LocalStorageService,
+    private globalFuns: GlobalFunctionsService,
   ) {}
 
   ngOnInit(): void {
+    this.listStatusCount = {...this.globalFuns.BillStatusCount};
     if (this.localStorage.getItem('idcompany')) {
       this.getList();
       this.getProjectList();
@@ -221,6 +229,9 @@ export class InvoiceListComponent {
   }
 
   filterTable = (request: any) => {
+    if ((this.statusFilter !== 'Active' && request.status != this.statusFilter) || (this.statusFilter == 'Active' && request.status == 'Paid')) {
+      return false;
+    }
     let values = Object.values(request);
     return values.some(
       (v) =>
@@ -237,6 +248,16 @@ export class InvoiceListComponent {
           .includes(this.keywords.toLowerCase())
     );
   };
+  
+  
+  statusFilterChange(e, status, type) {
+    if (this[type] === status) {
+      setTimeout(() => {
+        e.target.checked = true;
+      }, 50);
+    }
+    this[type] = status;
+  }
 
   filterListStatus(status) {
     this.statusFilter = status;
@@ -279,8 +300,21 @@ export class InvoiceListComponent {
           }
         });
         this.INVOICELIST = JSON.parse(JSON.stringify(this.invoiceList));
+        this.getStatusCount();
         this.loading = false;
       });
+  }
+  
+  getStatusCount() {
+    let listStatusCount = {...this.globalFuns.BillStatusCount};
+    
+    this.INVOICELIST.map((invoice) => {
+      if(!listStatusCount[invoice.status]){
+        listStatusCount[invoice.status]=0;
+      }
+      listStatusCount[invoice.status]++;
+    })
+    this.listStatusCount = listStatusCount;
   }
 
   openInvoiceModal() {

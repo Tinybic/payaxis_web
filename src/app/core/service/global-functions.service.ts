@@ -90,4 +90,31 @@ export class GlobalFunctionsService {
       this.fileSaverService.save((<any>res).body, attachment.fileName);
     });
   }
+  
+  /**
+   * Active 不属于 status，这是为了使用方便添加
+   * Active 表示除 Paid 之外的其他状态
+   */
+  OPStatusCount={
+    Active: 0,
+    Draft: 0,
+    Pending: 0,
+    Accepted: 0,
+    Paid: 0,
+    Declined: 0,
+    Voided: 0,
+  }
+  
+  /**
+   * Active 不属于 status，这是为了使用方便添加
+   * Active 表示除 Paid 之外的其他状态
+   */
+  BillStatusCount={
+    Active: 0,
+    Sent: 0,
+    Approved: 0,
+    Declined: 0,
+    Paid: 0,
+  }
+  
 }

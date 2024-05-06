@@ -1,12 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 import { ApolloService } from '../../../core/service/apollo.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
-import { projectorder_list } from '../../../core/gql/orders';
 import { SweetAlertOptions } from 'sweetalert2';
 import { Base } from 'src/app/core/base';
 import { Router } from '@angular/router';
-import { HttpService } from '../../../core/service/http.service';
 import { company_roles } from '../../../core/gql/company';
 import { GlobalFunctionsService } from '../../../core/service/global-functions.service';
 import { companyproject_list } from 'src/app/core/gql/project';
@@ -20,7 +17,7 @@ import { LocalStorageService } from 'src/app/core/service/local-storage.service'
 })
 export class ReceivedOrdersComponent extends Base {
   @ViewChild('addModal') addModal: any;
-  statusFilter: string = 'All';
+  statusFilter: string = 'Active';
   roleFilter = 'Approval';
   orders = [];
   currentOrderId: number = 0;
@@ -41,16 +38,6 @@ export class ReceivedOrdersComponent extends Base {
     'bg-warning',
     'bg-info',
   ];
-  ordersStatusCount = {
-    All: 0,
-    Active: 0,
-    Overdue: 0,
-    'Partially Paid': 0,
-    Due: 0,
-    Draft: 0,
-    Paid: 0,
-  };
-  showCount: number = 0;
   keywords = '';
   direction = 'asc';
   sortColumn = '';
@@ -58,6 +45,8 @@ export class ReceivedOrdersComponent extends Base {
   loading = true;
   tabs1 = 1;
   canEdit = false;
+  
+  listStatusCount: any;
   objectKeys = Object.keys;
 
   constructor(
@@ -72,6 +61,7 @@ export class ReceivedOrdersComponent extends Base {
 
   ngOnInit(): void {
     this.canEdit = super.setRole('Manage company users');
+    this.listStatusCount = {...this.globalFuns.OPStatusCount};
     if (this.localStorage.getItem('idcompany')) {
       this.getOrders();
       this.getRoles();
@@ -143,20 +133,15 @@ export class ReceivedOrdersComponent extends Base {
   }
 
   getStatusCount() {
-    let ordersStatusCount = {
-      All: this.InitialOrders.length,
-      Active: 0,
-      Overdue: 0,
-      'Partially Paid': 0,
-      Due: 0,
-      Draft: 0,
-      Paid: 0,
-    };
-    this.InitialOrders.map((order) => {
-      ordersStatusCount[order.status]++;
-    });
-
-    this.ordersStatusCount = ordersStatusCount;
+    let listStatusCount = {...this.globalFuns.OPStatusCount};
+    
+    this.InitialOrders.map((invoice) => {
+      if(!listStatusCount[invoice.status]){
+        listStatusCount[invoice.status]=0;
+      }
+      listStatusCount[invoice.status]++;
+    })
+    this.listStatusCount = listStatusCount;
   }
 
   statusFilterChange(e, status, type) {
@@ -210,7 +195,7 @@ export class ReceivedOrdersComponent extends Base {
   }
 
   filterTable = (order: any) => {
-    if (this.statusFilter !== 'All' && order.status != this.statusFilter) {
+    if ((this.statusFilter !== 'Active' && order.status != this.statusFilter) || (this.statusFilter == 'Active' && order.status == 'Paid')) {
       return false;
     }
     if (
