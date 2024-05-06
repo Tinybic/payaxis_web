@@ -23,7 +23,7 @@ import { projectpayment_new } from 'src/app/core/gql/receivables';
 export class OrderComponent extends Base {
   @ViewChild('confirmModal') confirmModal: any;
   @ViewChild('payingBill') payingBillModal: any;
-  statusFilter: string = 'All';
+  statusFilter: string = 'Active';
   roleFilter = 'Approval';
 
   orders = [];
@@ -45,16 +45,6 @@ export class OrderComponent extends Base {
     'bg-warning',
     'bg-info',
   ];
-  ordersStatusCount = {
-    All: 0,
-    Active: 0,
-    Overdue: 0,
-    'Partially Paid': 0,
-    Due: 0,
-    Draft: 0,
-    Paid: 0,
-  };
-  showCount: number = 0;
   keywords = '';
   direction = 'asc';
   sortColumn = '';
@@ -62,6 +52,8 @@ export class OrderComponent extends Base {
   loading = true;
   tabs1 = 1;
   canEdit = false;
+  
+  listStatusCount: any;
   objectKeys = Object.keys;
 
   constructor(
@@ -77,6 +69,7 @@ export class OrderComponent extends Base {
   }
 
   ngOnInit(): void {
+    this.listStatusCount = {...this.globalFuns.OPStatusCount};
     const tab = this.activatedRoute.snapshot.queryParams['tab'];
     this.canEdit = super.setRole('Manage company users');
     if (tab) {
@@ -153,20 +146,15 @@ export class OrderComponent extends Base {
   }
 
   getStatusCount() {
-    let ordersStatusCount = {
-      All: this.InitialOrders.length,
-      Active: 0,
-      Overdue: 0,
-      'Partially Paid': 0,
-      Due: 0,
-      Draft: 0,
-      Paid: 0,
-    };
-    this.InitialOrders.map((order) => {
-      ordersStatusCount[order.status]++;
-    });
-
-    this.ordersStatusCount = ordersStatusCount;
+    let listStatusCount = {...this.globalFuns.OPStatusCount};
+    
+    this.InitialOrders.map((invoice) => {
+      if(!listStatusCount[invoice.status]){
+        listStatusCount[invoice.status]=0;
+      }
+      listStatusCount[invoice.status]++;
+    })
+    this.listStatusCount = listStatusCount;
   }
 
   statusFilterChange(e, status, type) {
@@ -220,7 +208,7 @@ export class OrderComponent extends Base {
   }
 
   filterTable = (order: any) => {
-    if (this.statusFilter !== 'All' && order.status != this.statusFilter) {
+    if ((this.statusFilter !== 'Active' && order.status != this.statusFilter) || (this.statusFilter == 'Active' && order.status == 'Paid')) {
       return false;
     }
     if (

@@ -1,30 +1,3 @@
-.orders-dropdown {
-  .dropdown {
-    height: 40px;
-
-    .dropdown-toggle {
-      padding: 10px 16px;
-    }
-
-    &.dropdown-outline {
-      padding: 10px 0px;
-    }
-
-    .dropdown-menu {
-      .form-check {
-        .form-check-input {
-          margin-top: 1px;
-        }
-        .form-check-label {
-          width: 100%;
-          padding-left: 0.5rem;
-          cursor: pointer;
-        }
-      }
-    }
-  }
-}
-
 .orders-table {
   tbody {
     tr {

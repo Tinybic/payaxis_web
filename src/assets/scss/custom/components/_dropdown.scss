@@ -2,7 +2,6 @@
 // dropdown.scss
 //
 
-
 .dropdown-menu {
     box-shadow: $box-shadow;
 
@@ -27,12 +26,35 @@
     }
 }
 
+.dropdown-40 > .dropdown-menu{
+  padding: 0.5rem 0;
+}
+
 .dropdown-item{
     border-radius: 8px;
     padding: 8px;
     cursor: pointer;
 }
 
+.dropdown-40 > .dropdown-menu > .dropdown-item{
+  border-radius: 0 ;
+  padding: 0.5rem 1rem;
+}
+
+.dropdown-40 > .dropdown-menu > .dropdown-item > .form-check{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 0;
+}
+
+.dropdown-40 > .dropdown-menu > .dropdown-item > .form-check > .form-check-input{
+  margin-top: 0;
+}
+
+.dropdown-40 > .dropdown-menu > .dropdown-item > .form-check > label{
+  margin-left: 0.5rem;
+}
 
 .dropdown-item .form-check label{
     cursor: pointer;
@@ -44,6 +66,11 @@
     border:1px solid #E1E6EF;
     border-radius: 8px;
     color:#202020;
+}
+
+.dropdown-40 > .dropdown-outline {
+  height: 40px;
+  padding: 10px 16px;
 }
 
 .dropdown-menu-end {

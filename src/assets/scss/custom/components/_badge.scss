@@ -38,6 +38,10 @@ $value in $theme-colors {
     }
 }
 
+.NOTag{
+  width: 128px;
+}
+
 .openTag, .draftTag, .voidedTag {
     color: #60A5FA !important;
     width: 128px;

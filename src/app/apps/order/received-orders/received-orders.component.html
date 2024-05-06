@@ -1,19 +1,21 @@
 <div class="orders-dropdown row mt-2-1">
     <div class="col-md-4">
         <div class="d-flex align-items-center">
-            <span class="subtitle-2-600-24">{{statusFilter}} ({{ordersStatusCount[statusFilter]}})</span>
-            <div class="dropdown-outline ms-1-2" ngbDropdown #statusDrop="ngbDropdown">
-                <a href="javascript:void(0)"
+            <span class="subtitle-2-600-24">{{statusFilter}} {{ statusFilter != 'Active' ? '(' + listStatusCount[statusFilter] + ')' : ''}}</span>
+            <div class="d-inline-block dropdown dropdown-40 ms-1-2" ngbDropdown #statusDrop="ngbDropdown">
+                <a class="dropdown-outline" href="javascript:void(0)"
                    ngbDropdownToggle>
                     <span class="text-typeblack80">Status</span>
                     <span class="ms-1-1 text-black btn-text-12">{{statusFilter}}</span>
                     <i class="fe-chevron-down text-black ms-1-1"></i></a>
                 <div class="dropdown-menu" ngbDropdownMenu>
-                    <div *ngFor="let status of objectKeys(ordersStatusCount)" ngbDropdownItem>
+                    <div *ngFor="let status of objectKeys(listStatusCount)" ngbDropdownItem>
                         <div class="form-check">
-                            <input id="status_{{status}}" type="checkbox" class="form-check-input" [checked]="statusFilter==status" (change)="statusFilterChange($event, status, 'statusFilter')">
-                            <label class="form-check-label" for="status_{{status}}">
-                                {{status}} ({{ordersStatusCount[status]}})
+                            <input id="status_{{status}}" type="checkbox" class="form-check-input"
+                                   [checked]="statusFilter==status"
+                                   (change)="statusFilterChange($event, status, 'statusFilter')">
+                            <label class="form-check-label ms-1-1" for="status_{{status}}">
+                                {{status}} {{ status != 'Active' ? '(' + listStatusCount[status] + ')' : ''}}
                             </label>
                         </div>
                     </div>
@@ -23,13 +25,13 @@
     </div>
     <div class="col-md-8 d-flex flex-row justify-content-end">
         <!--end filter 1-->
-        <div class="dropdown" ngbDropdown #roleDrop="ngbDropdown">
+        <div class="dropdown dropdown-40" ngbDropdown #roleDrop="ngbDropdown">
             <a class="dropdown-outline" href="javascript:void(0)" ngbDropdownToggle>
                 <i class="fe-folder font-16 me-1-1"></i>
                 Approval
                 <i class="fe-chevron-down font-16 ms-1-1"></i>
             </a>
-            <div class="dropdown-menu" ngbDropdownMenu>
+            <div class="dropdown-menu" ngbDropdownMenu  style="max-height: 240px;overflow: auto;">
                 <div *ngFor="let role of roles" ngbDropdownItem>
                     <div class="form-check">
                         <input id="role_{{role.id}}" type="checkbox" class="form-check-input" [(ngModel)]="role.checked" (change)="filterChange(role, 'roles')">
@@ -41,7 +43,7 @@
             </div>
         </div>
         <!--end filter 2-->
-        <div class="dropdown ms-1-1" ngbDropdown>
+        <div class="dropdown dropdown-40 ms-1-1" ngbDropdown>
             <a class="dropdown-outline" href="javascript:void(0)" ngbDropdownToggle>
                 <i class="fe-folder font-16 me-1-1"></i>
                 Project

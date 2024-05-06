@@ -1,42 +1,24 @@
 <div class="row mt-2-1">
     <div class="col-md-4">
         <span class="font-20 bold-600">{{invoiceList.length}} Invoices</span>
-        <div class="d-inline-block dropdown ms-1-1" ngbDropdown>
-            <a class="dropdown-outline-40" href="javascript:void(0)" ngbDropdownToggle>
+        <div class="d-inline-block dropdown dropdown-40 ms-1-1" ngbDropdown>
+            <a class="dropdown-outline" href="javascript:void(0)" ngbDropdownToggle>
                 <i class="fe-filter font-16 me-1-1"></i>
-                Status
-                <b>{{statusFilter}}</b>
-                <i class="fe-chevron-down font-16 ms-1-1"></i>
+                <span class="text-typeblack80">Status</span>
+                <span class="ms-1-1 text-black btn-text-12">{{statusFilter}}</span>
+                <i class="fe-chevron-down text-black ms-1-1"></i>
             </a>
             <div class="dropdown-menu" ngbDropdownMenu>
-                <div ngbDropdownItem (click)="filterListStatus('All')">
-                    <div class="form-check text-center">
-                        <input type="checkbox" class="form-check-input" id="allDropdownCheck"
-                            [checked]="statusFilter == 'All'">
-                        <label class="form-check-label ms-1-1 bold-600" for="allDropdownCheck">
-                            All
+                <div *ngFor="let status of objectKeys(listStatusCount)" ngbDropdownItem>
+                    <div class="form-check">
+                        <input id="status_{{status}}" type="checkbox" class="form-check-input"
+                               [checked]="statusFilter==status"
+                               (change)="statusFilterChange($event, status, 'statusFilter')">
+                        
+                        <label for="status_{{status}}" class="d-inline-block {{status == 'Active' ? 'NO' : status.toLowerCase()}}Tag subtitle-2-600 text-optional text-center ms-2-1">{{status}}
                         </label>
-                    </div>
-                </div>
-                <div ngbDropdownItem (click)="filterListStatus('Sent')">
-                    <div class="form-check text-center">
-                        <input type="checkbox" class="form-check-input" id="invoiceOpendropdownCheck"
-                            [checked]="statusFilter == 'Sent'">
-                            <div class="d-inline-block sentTag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">Sent</div>
-                    </div>
-                </div>
-                <div ngbDropdownItem (click)="filterListStatus('Due')">
-                    <div class="form-check text-center">
-                        <input type="checkbox" class="form-check-input" id="overDuedropdownCheck"
-                            [checked]="statusFilter == 'Due'">
-                        <div for="overDuedropdownCheck" class="d-inline-block dueTag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">Due</div>
-                    </div>
-                </div>
-                <div ngbDropdownItem (click)="filterListStatus('PastDue')">
-                    <div class="form-check text-center">
-                        <input type="checkbox" class="form-check-input" id="pastDueDropdownCheck"
-                            [checked]="statusFilter == 'PastDue'">
-                        <div for="pastDueDropdownCheck" class="d-inline-block pastdueTag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">Past Due</div>
+                        
+                        <label for="status_{{status}}" class="ms-2-1 subtitle-2-400-12 text-optional">{{ status != 'Active' ? listStatusCount[status] : ''}}</label>
                     </div>
                 </div>
             </div>
