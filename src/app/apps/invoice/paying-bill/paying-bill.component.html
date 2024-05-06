@@ -200,8 +200,7 @@
     </div>
     
     <div class="d-grid" style="width: calc(100% - 48px);position: fixed;bottom: 24px;right: 24px;z-index: 10;">
-        <button class="btn mb-1-1 {{ step === 3 ? 'btn-success' : 'btn-primary'}}" (click)="nextStep('continue')" [disabled]="step === 3 && payment.account == ''"
-                style="height: 44px;border: none;">
+        <button class="btn mb-1-1 {{ step === 3 ? 'btn-success' : 'btn-primary'}}" (click)="nextStep('continue')" style="height: 44px;border: none;">
             {{btnOK}}
         </button>
         <button class="btn btn-outline-primary" (click)="nextStep('back')" style="height: 44px;">
