@@ -222,7 +222,7 @@
                                                         Code</span>
                                                     <div class="dropdown" ngbDropdown>
                                                         <input class="form-select cursor-default" type="text"
-                                                            id="vendorcostcodes" readonly
+                                                            id="vendorcostcodes" readonly [disabled] = "order.status == 'Paid'"
                                                             [(ngModel)]="vendorcostcodesText" required i18n-placeholder
                                                             placeholder="Assign Cost Code"
                                                             [ngClass]="{'is-invalid':orderError.costcode == 0}"
@@ -269,7 +269,7 @@
                                                 <div class="col-md-12">
                                                     <label class="form-label" i18n>Notes & Description</label>
                                                     <span class="float-end text-typeblack80">Optional</span>
-                                                    <textarea class="form-control" type="text" id="notes" style="height: 131px;" placeholder="Notes" [(ngModel)]="order.notes">
+                                                    <textarea [disabled] = "order.status == 'Paid'" class="form-control" type="text" id="notes" style="height: 131px;" placeholder="Notes" [(ngModel)]="order.notes">
                                                     </textarea>
                                                 </div>
                                             </div>
@@ -287,10 +287,10 @@
                                                         </div>
                                                         <div
                                                             class="col-md-6 btn-text-12 text-primary text-end cursor-pointer line-40">
-                                                            <span *ngIf="!project" (click)="openAddProjectModal()"><i
+                                                            <span *ngIf="!project && order.status != 'Paid'" (click)="openAddProjectModal()"><i
                                                                     class="fe-plus-square me-1-1"></i>Create
                                                                 New Project</span>
-                                                            <span *ngIf="project" (click)="removeProject()"><i
+                                                            <span *ngIf="project && order.status != 'Paid'" (click)="removeProject()"><i
                                                                     class="fe-edit me-1-1"></i>Edit Project</span>
                                                         </div>
                                                     </div>
@@ -306,7 +306,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <input *ngIf="!project" class="form-control form-search"
+                                                                <input *ngIf="!project" class="form-control form-search"  [disabled] = "order.status == 'Paid'"
                                                                     type="search" placeholder="Find Project"
                                                                     [(ngModel)]="keywordsProject"
                                                                     (keyup)="projectFilter()"
@@ -354,10 +354,10 @@
                                                         </div>
                                                         <div
                                                             class="col-md-6 btn-text-12 text-primary text-end cursor-pointer line-40">
-                                                            <span *ngIf="!vendor" (click)="openAddVenodrModal()"><i
+                                                            <span *ngIf="!vendor && order.status != 'Paid'" (click)="openAddVenodrModal()"><i
                                                                     class="fe-plus-square me-1-1"></i>Create
                                                                 New Contact</span>
-                                                            <span *ngIf="vendor" (click)="removeVendor()"><i
+                                                            <span *ngIf="vendor && order.status != 'Paid'" (click)="removeVendor()"><i
                                                                     class="fe-edit me-1-1"></i>Edit Contact</span>
                                                         </div>
                                                     </div>
@@ -390,7 +390,7 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <input *ngIf="!vendor" class="form-control form-search"
+                                                                <input *ngIf="!vendor" class="form-control form-search"   [disabled] = "order.status == 'Paid'"
                                                                     type="search" placeholder="Find Vendor"
                                                                     [(ngModel)]="keywordsVendor"
                                                                     (keyup)="vendorFilter()"
@@ -482,42 +482,42 @@
                                                         <tbody *ngIf="!loading">
                                                             <tr class="cursor-pointer"
                                                                 *ngFor="let item of order.listItems; let i = index">
-                                                                <td><input class="form-check" type="checkbox"
+                                                                <td><input class="form-check" type="checkbox" [disabled] = "order.status == 'Paid'"
                                                                         [(ngModel)]="item.paidyn" /></td>
                                                                 <td>
                                                                     <input type="text" class="form-control"
                                                                         placeholder="Description" thousandSeparator=","
-                                                                        (change)="AddListItem(i,item)"
+                                                                        (change)="AddListItem(i,item)" [disabled] = "order.status == 'Paid'"
                                                                         [(ngModel)]="item.description" />
                                                                 </td>
                                                                 <td>
                                                                     <input type="text" class="form-control"
-                                                                        [(ngModel)]="item.qty" thousandSeparator=","
+                                                                        [(ngModel)]="item.qty" thousandSeparator="," [disabled] = "order.status == 'Paid'"
                                                                         mask="separator.2" (keyup)="getAmout(item)" />
                                                                 </td>
                                                                 <td>
-                                                                    <input type="text" class="form-control"
+                                                                    <input type="text" class="form-control" [disabled] = "order.status == 'Paid'"
                                                                         [(ngModel)]="item.unit" />
                                                                 </td>
                                                                 <td>
                                                                     <input type="text" class="form-control text-end"
-                                                                        [(ngModel)]="item.price" prefix="$"
+                                                                        [(ngModel)]="item.price" prefix="$" [disabled] = "order.status == 'Paid'"
                                                                         mask="separator.2" thousandSeparator=","
                                                                         (keyup)="getAmout(item)" />
                                                                 </td>
                                                                 <td>
                                                                     <input type="text" class="form-control" prefix="$"
-                                                                        mask="separator.2" [(ngModel)]="item.amount"
+                                                                        mask="separator.2" [(ngModel)]="item.amount" [disabled] = "order.status == 'Paid'"
                                                                         disabled="disabled" />
                                                                 </td>
                                                                 <td>
-                                                                    <input class="form-check" type="checkbox"
+                                                                    <input class="form-check" type="checkbox" [disabled] = "order.status == 'Paid'"
                                                                         (change)="setTotal()"
                                                                         [(ngModel)]="item.taxyn" />
                                                                 </td>
                                                                 
                                                                 <td>
-                                                                    <input class="form-control" type="text"
+                                                                    <input class="form-control" type="text" [disabled] = "order.status == 'Paid'"
                                                                         [(ngModel)]="item.notes" />
                                                                 </td>
                                                                 <td *ngIf="order.id > 0">
@@ -525,9 +525,9 @@
                                                                         | date: 'MM/dd/yy HH:mm:ss' | amTimeAgo}}</span>
                                                                 </td>
                                                                 <td>
-                                                                    <i class="fe-copy cursor-pointer"
+                                                                    <i class="fe-copy cursor-pointer" *ngIf="order.status != 'Paid'"
                                                                         (click)="listItemCopy(item,i)"></i>
-                                                                    <i class="fe-trash-2 ms-1-1 cursor-pointer"
+                                                                    <i class="fe-trash-2 ms-1-1 cursor-pointer"  *ngIf="order.status != 'Paid'"
                                                                         (click)="listItemDelete(i,item)"></i>
                                                                 </td>
                                                             </tr>

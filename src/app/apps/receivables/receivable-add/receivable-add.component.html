@@ -19,7 +19,7 @@
                 Contact
             </div>
 
-            <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" *ngIf="vendor && !this.orderInfo"
+            <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" *ngIf="vendor && !this.orderInfo && projectpayment.status != 'Paid'"
                 (click)="removeVendor()">
                 Edit Contact
             </div>
@@ -64,12 +64,12 @@
                         </div>
                     </div>
 
-                    <input *ngIf="!vendor" class="form-control form-search" type="search" placeholder="Find Contact"
+                    <input *ngIf="!vendor" class="form-control form-search" type="search" placeholder="Find Contact"  [disabled]=" projectpayment.status == 'Paid'"
                         [(ngModel)]="keywordsVendor" (keyup)="vendorFilter()"
                         [ngClass]="{'is-invalid':txtError.idVendor == 0}" ngbDropdownToggle />
                     <div *ngIf="txtError.idVendor == 0" class="invalid-feedback" i18n>
                         <i class="fe-alert-triangle invalid-feedback-icon"></i>
-                        Customer required
+                        Contact required
                     </div>
                     <div class="padding-16"
                         style="border:1px solid #E1E6EF;  margin-top: -44px; width: 100%; max-height: 362px; overflow-x: hidden; overflow-y: scroll;"
@@ -130,7 +130,7 @@
 
         <div class="row p-3 mt-1-1" style="border-bottom: 1px solid #E1E6EF;">
             <div class="col-md-12 text-center ">
-                <input #amount type="text" *ngIf="amountEdit" mask="separator.2" (blur)="cancelAmount()"
+                <input #amount type="text" *ngIf="amountEdit" mask="separator.2" (blur)="cancelAmount()"  [disabled]=" projectpayment.status == 'Paid'"
                     class=" subtitle-700-37-40" style="border: 0px;outline: 0;text-align: center;"
                     [(ngModel)]="projectpayment.amount" />
                 <label class="subtitle-700-37-40 cursor-pointer" (click)="editAmount()"
@@ -142,7 +142,7 @@
             <div class="col-md-6">
                 <label class="form-label" i18n>Due Date</label>
                 <div ngbDropdown class="mt-sm-0 mt-2">
-                    <input class="form-select position-relative cursor-default" type="text" id="paymentTerms" i18n-placeholder readonly
+                    <input class="form-select position-relative cursor-default" type="text" id="paymentTerms" i18n-placeholder readonly [disabled]=" projectpayment.status == 'Paid'"
                         placeholder="Payment Terms" [(ngModel)]="projectpayment.paymentTerms" ngbDropdownToggle />
 
                     <div ngbDropdownMenu aria-labelledby="paymentTerms">
@@ -153,7 +153,7 @@
             </div>
             <div class="col-md-6">
                 <label class="form-label" i18n>Bill Number</label>
-                <input type="text" class="form-control" placeholder="Add Bill number"
+                <input type="text" class="form-control" placeholder="Add Bill number"  [disabled]=" projectpayment.status == 'Paid'"
                     [(ngModel)]="projectpayment.billNumber" />
             </div>
         </div>
@@ -203,7 +203,7 @@
             <div class="col-md-6 subtitle-2-400-12 text-end text-typeblack80" *ngIf="!project">
                 Optional
             </div>
-            <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" *ngIf="project && !this.orderInfo"
+            <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" *ngIf="project && !this.orderInfo && projectpayment.status != 'Paid'"
                 (click)="removeProject()">
                 Edit Project
             </div>
@@ -222,7 +222,7 @@
                             </div>
                         </div>
                     </div>
-                    <input *ngIf="!project" class="form-control form-search" type="search" placeholder="Find Project"
+                    <input *ngIf="!project" class="form-control form-search" type="search" placeholder="Find Project"  [disabled]=" projectpayment.status == 'Paid'"
                         [(ngModel)]="keywordsProject" (keyup)="projectFilter()" ngbDropdownToggle />
                     <div class="padding-16"
                         style="border:1px solid #E1E6EF;  margin-top: -44px; width: 100%; max-height: 404px; overflow-x: hidden; overflow-y: scroll;"
@@ -256,7 +256,7 @@
             <div class="col-md-6 subtitle-2-400-12 text-end text-typeblack80" *ngIf="!order">
                 Optional
             </div>
-            <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" *ngIf="order && !this.orderInfo" (click)="removOrder()">
+            <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" *ngIf="order && !this.orderInfo && projectpayment.status != 'Paid'" (click)="removOrder()">
                 Edit Order
             </div>
         </div>
@@ -290,7 +290,7 @@
                         </div>
                     </div>
 
-                    <input *ngIf="!order" class="form-control form-search" type="search" placeholder="Find Order"
+                    <input *ngIf="!order" class="form-control form-search" type="search" placeholder="Find Order"  [disabled]=" projectpayment.status == 'Paid'"
                         [(ngModel)]="keywordsOrder" (keyup)="orderFilter()" ngbDropdownToggle />
                     <div class="padding-16"
                         style="border:1px solid #E1E6EF; margin-top: -44px; width: 100%; max-height: 362px; overflow-x: hidden; overflow-y: scroll;"
@@ -330,7 +330,7 @@
                 Notes & Attachments
             </div>
             <div class="col-md-6 text-end">
-                <button class="btn btn-outline-primary padding-8-16" (click)="drop.showFileSelector()">Add
+                <button class="btn btn-outline-primary padding-8-16" (click)="drop.showFileSelector()"  [disabled]=" projectpayment.status == 'Paid'">Add
                     Attachments</button>
             </div>
         </div>
@@ -357,7 +357,7 @@
         </div>
         <div class="row mt-2-1">
             <div class="col-md-12 ">
-                <ngx-dropzone (change)="onSelectDocument($event)" class="dropzone justify-content-center"
+                <ngx-dropzone (change)="onSelectDocument($event)" class="dropzone justify-content-center"  [disabled]=" projectpayment.status == 'Paid'"
                     style="width: 100%;height: 120px;min-height: unset !important;border: 1px solid #2B52DD !important;background-color: #F7FAFC !important;border-radius: 16px !important;overflow: hidden;padding: 0 !important;"
                     #drop>
                     <ngx-dropzone-label class="d-flex flex-column align-items-center">

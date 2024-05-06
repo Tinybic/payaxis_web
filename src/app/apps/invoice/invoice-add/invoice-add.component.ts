@@ -99,7 +99,7 @@ export class InvoiceAddComponent {
     private http: HttpClient,
     private httpService: HttpService,
     private localStorage: LocalStorageService,
-    private fileSaverService: FileSaverService,
+    private fileSaverService: FileSaverService
   ) {}
 
   ngOnInit(): void {
@@ -204,8 +204,10 @@ export class InvoiceAddComponent {
   setVendor() {
     if (this.projectpayment.idVendor > 0) {
       this.vendorList.forEach((item) => {
-        if (item.id == this.projectpayment.idVendor ||
-          item.idInvitedCompany == this.projectpayment.idCompany) {
+        if (
+          item.id == this.projectpayment.idVendor ||
+          item.idInvitedCompany == this.projectpayment.idCompany
+        ) {
           this.selectVendor(item);
           return;
         }
@@ -295,12 +297,14 @@ export class InvoiceAddComponent {
   }
 
   editAmount() {
-    this.amountEdit = true;
-    setTimeout(() => {
-      this.inputAmout.nativeElement.focus();
-    }, 10);
+    if (this.projectpayment.status != 'Paid') {
+      this.amountEdit = true;
+      setTimeout(() => {
+        this.inputAmout.nativeElement.focus();
+      }, 10);
 
-    if (this.projectpayment.amount == 0) this.projectpayment.amount = null;
+      if (this.projectpayment.amount == 0) this.projectpayment.amount = null;
+    }
   }
 
   cancelAmount() {
@@ -988,13 +992,14 @@ export class InvoiceAddComponent {
       });
   }
 
-
-  downloadFile(url,name){
-    this.http.get(url, {
-      observe: 'response',
-      responseType: 'blob',
-    }).subscribe(res => {
-      this.fileSaverService.save((<any>res).body, name);
-    });
+  downloadFile(url, name) {
+    this.http
+      .get(url, {
+        observe: 'response',
+        responseType: 'blob',
+      })
+      .subscribe((res) => {
+        this.fileSaverService.save((<any>res).body, name);
+      });
   }
 }
