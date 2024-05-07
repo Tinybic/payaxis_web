@@ -627,6 +627,12 @@ del {
   background-color: #73B2FF;
 }
 
+.flex-row-center{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .flex-row-end-center{
   display: flex;
   flex-direction: row;

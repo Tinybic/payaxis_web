@@ -1,4 +1,4 @@
-// 
+//
 // tables.scss
 //
 
@@ -16,7 +16,7 @@ th {
 }
 
 
-// Table 
+// Table
 
 .table-nowrap {
     th,td {
@@ -61,8 +61,8 @@ table {
                 }
             }
         }
-    }       
-    // Table Active 
+    }
+    // Table Active
     tr {
         &.table-active {
             --ct-table-accent-bg: rgba(222, 226, 230, 0.3);
@@ -82,13 +82,24 @@ table {
     }
 }
 
+.table-height-40{
+  tbody {
+    tr {
+      td {
+        height: 40px;
+        padding: 4px 16px !important;
+      }
+    }
+  }
+}
+
 
 // dark mode
 body[data-layout-color="dark"] {
     table {
         .action-icon {
             color: #{map-get($dark-grays, "600")};
-    
+
             &:hover {
                 color: #{map-get($dark-grays, "700")};
             }
@@ -114,8 +125,8 @@ body[data-layout-color="dark"] {
                     }
                 }
             }
-        }       
-        // Table Active 
+        }
+        // Table Active
         tr {
             &.table-active {
                 --ct-table-accent-bg: rgba(64, 73, 84, 0.8);

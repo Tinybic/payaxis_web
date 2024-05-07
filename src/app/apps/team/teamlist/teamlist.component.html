@@ -8,15 +8,16 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <div class="d-inline-block subtitle-2-600-24 line-40">{{showCount}} Users </div>
-        <div class="dropdown-outline ms-2-1" ngbDropdown #statusDrop="ngbDropdown">
-            <a href="javascript:void(0)"
+<div class="row mt-2-1">
+    <div class="col-md-4 flex-row-center">
+        <div class="headline-24">{{showCount}} Users </div>
+        <div class="dropdown dropdown-40 ms-2-1" ngbDropdown #statusDrop="ngbDropdown">
+            <a class="dropdown-outline" href="javascript:void(0)"
                 ngbDropdownToggle>
                <span class="text-typeblack80">Status</span>
                <span class="ms-1-1 text-black btn-text-12">{{statusFilter}} </span>
-                <i class=" fe-chevron-down"></i></a>
+                <i class=" fe-chevron-down"></i>
+            </a>
             <div class="dropdown-menu" ngbDropdownMenu>
                 <div ngbDropdownItem (click)="changeStatusFilter('All')">
                     <div class="form-check cursor-pointer" id="statusAll">
@@ -48,9 +49,9 @@
             </div>
         </div>
     </div>
-    <div class="col-md-8 text-end mt-2-1">
+    <div class="col-md-8 text-end">
 
-        <div class="dropdown" ngbDropdown #roleDrop="ngbDropdown">
+        <div class="dropdown dropdown-40" ngbDropdown #roleDrop="ngbDropdown">
             <a class="dropdown-outline" href="javascript:void(0)" ngbDropdownToggle>
                 <i class="fe-user font-16 me-1-1"></i>
                 {{roleFilter}}
@@ -78,7 +79,7 @@
             </div>
         </div>
         <!--end filter 1-->
-        <div class="dropdown ms-1-1" ngbDropdown>
+        <div class="dropdown dropdown-40 ms-1-1" ngbDropdown>
             <a class="dropdown-outline" href="javascript:void(0)" ngbDropdownToggle>
                 <i class="fe-folder font-16 me-1-1"></i>
                 {{projectFilter}}
@@ -96,7 +97,7 @@
             </div>
         </div>
         <!--end filter 2-->
-        <div class="dropdown ms-1-1" ngbDropdown #approvalDrop="ngbDropdown">
+        <div class="dropdown dropdown-40 ms-1-1" ngbDropdown #approvalDrop="ngbDropdown">
             <a class="dropdown-outline" href="javascript:void(0)" ngbDropdownToggle>
                 <i class="fe-dollar-sign font-16 me-1-1"></i>
                 {{approvalAmountFilter}}
@@ -161,14 +162,14 @@
         </div>
         <!--end filter 3-->
         <div class="d-inline-block ms-1-1">
-            <input id="search1" class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords" />
+            <input id="search1" class="form-control form-search input-height-40" type="search" placeholder="Search here" [(ngModel)]="keywords" />
         </div>
         <!-- end search-->
     </div>
 </div>
 <div class="row mt-3">
     <div class="col-md-12">
-        <table class="advanced-table">
+        <table class="advanced-table table-height-40">
             <thead>
                 <tr>
                     <th class="row_select"><input id="checkboxTitle" class="form-check" type="checkbox" /></th>
