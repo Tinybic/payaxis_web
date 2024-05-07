@@ -20,9 +20,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { OrderBillsComponent } from './order-bills/order-bills.component';
 import { InvoiceModule } from '../invoice/invoice.module';
-import { ReceivedOrdersComponent } from './received-orders/received-orders.component';
 import { OrderDetailComponent } from './order-detail/order-detail.component';
 import { ReceivablesModule } from '../receivables/receivables.module';
+import { OrderListComponent } from './order-list/order-list.component';
 
 
 
@@ -33,8 +33,8 @@ import { ReceivablesModule } from '../receivables/receivables.module';
     AttachmentsComponent,
     ActivityComponent,
     OrderBillsComponent,
-    ReceivedOrdersComponent,
     OrderDetailComponent,
+    OrderListComponent,
   ],
   imports: [
     CommonModule,

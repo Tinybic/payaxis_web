@@ -47,6 +47,14 @@ $value in $theme-colors {
     width: 128px;
 }
 
+.dropdown-40 > .dropdown-menu > .dropdown-item > .form-check > .draftTag{
+  background-color: #E1E6EF;
+  border-radius: 8px;
+  border: 1px solid #E1E6EF;
+  padding: 0px 8px;
+  width: 128px;
+}
+
 .acceptedTag, .activeTag, .paidTag, .approvedTag {
     background-color: #86EFAC;
     border-radius: 8px;

@@ -229,7 +229,7 @@ export class InvoiceListComponent {
   }
 
   filterTable = (request: any) => {
-    if ((this.statusFilter !== 'Active' && request.status != this.statusFilter) || (this.statusFilter == 'Active' && request.status == 'Paid')) {
+    if ((this.statusFilter !== 'Active' && request.status != this.statusFilter) || (this.statusFilter == 'Active' && request.status == 'Paid' && request.status == 'Declined')) {
       return false;
     }
     let values = Object.values(request);

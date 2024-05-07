@@ -1,23 +1,26 @@
 <div class="orders-dropdown row mt-2-1">
-    <div class="col-md-4">
-        <div class="d-flex align-items-center">
-            <span class="subtitle-2-600-24">{{statusFilter}} {{ statusFilter != 'Active' ? '(' + listStatusCount[statusFilter] + ')' : ''}}</span>
-            <div class="d-inline-block dropdown dropdown-40 ms-1-2" ngbDropdown #statusDrop="ngbDropdown">
-                <a class="dropdown-outline" href="javascript:void(0)"
-                   ngbDropdownToggle>
-                    <span class="text-typeblack80">Status</span>
-                    <span class="ms-1-1 text-black btn-text-12">{{statusFilter}}</span>
-                    <i class="fe-chevron-down text-black ms-1-1"></i></a>
-                <div class="dropdown-menu" ngbDropdownMenu>
-                    <div *ngFor="let status of objectKeys(listStatusCount)" ngbDropdownItem>
-                        <div class="form-check">
-                            <input id="status_{{status}}" type="checkbox" class="form-check-input"
-                                   [checked]="statusFilter==status"
-                                   (change)="statusFilterChange($event, status, 'statusFilter')">
-                            <label class="form-check-label ms-1-1" for="status_{{status}}">
-                                {{status}} {{ status != 'Active' ? '(' + listStatusCount[status] + ')' : ''}}
-                            </label>
-                        </div>
+    <div class="col-md-4 flex-row-center">
+        <span class="headline-24">{{statusFilter}} {{ statusFilter != 'Active' ? '(' + listStatusCount[statusFilter] + ')' : ''}}</span>
+        <div class="d-inline-block dropdown dropdown-40 ms-1-2" ngbDropdown #statusDrop="ngbDropdown">
+            <a class="dropdown-outline" href="javascript:void(0)"
+               ngbDropdownToggle>
+                <span class="text-typeblack80">Status</span>
+                <span class="ms-1-1 text-black btn-text-12">{{statusFilter}}</span>
+                <i class="fe-chevron-down text-black ms-1-1"></i>
+            </a>
+            <div class="dropdown-menu" ngbDropdownMenu>
+                <div *ngFor="let status of objectKeys(listStatusCount)" ngbDropdownItem>
+                    <div class="form-check">
+                        <input id="status_{{status}}" type="checkbox" class="form-check-input"
+                               [checked]="statusFilter==status"
+                               (change)="statusFilterChange($event, status, 'statusFilter')">
+                        
+                        <label for="status_{{status}}"
+                               class="d-inline-block {{status == 'Active' ? 'NO' : status.toLowerCase()}}Tag subtitle-2-600 text-optional text-center ms-2-1">{{status}}
+                        </label>
+                        
+                        <label for="status_{{status}}"
+                               class="ms-2-1 subtitle-2-400-12 text-optional">{{ status != 'Active' ? listStatusCount[status] : ''}}</label>
                     </div>
                 </div>
             </div>
@@ -31,10 +34,11 @@
                 Approval
                 <i class="fe-chevron-down font-16 ms-1-1"></i>
             </a>
-            <div class="dropdown-menu" ngbDropdownMenu  style="max-height: 240px;overflow: auto;">
+            <div class="dropdown-menu" ngbDropdownMenu style="max-height: 240px;overflow: auto;">
                 <div *ngFor="let role of roles" ngbDropdownItem>
                     <div class="form-check">
-                        <input id="role_{{role.id}}" type="checkbox" class="form-check-input" [(ngModel)]="role.checked" (change)="filterChange(role, 'roles')">
+                        <input id="role_{{role.id}}" type="checkbox" class="form-check-input" [(ngModel)]="role.checked"
+                               (change)="filterChange(role, 'roles')">
                         <label class="form-check-label" for="role_{{role.id}}">
                             {{role.txtName}}
                         </label>
@@ -52,7 +56,8 @@
             <div class="dropdown-menu" ngbDropdownMenu>
                 <div *ngFor="let project of projects" ngbDropdownItem>
                     <div class="form-check">
-                        <input id="project_{{project.id}}" type="checkbox" class="form-check-input" [(ngModel)]="project.checked" (change)="filterChange(project, 'projects')">
+                        <input id="project_{{project.id}}" type="checkbox" class="form-check-input"
+                               [(ngModel)]="project.checked" (change)="filterChange(project, 'projects')">
                         <label class="form-check-label" for="project_{{project.id}}">
                             {{project.projectName}}
                         </label>
@@ -75,7 +80,7 @@
     </div>
 </div>
 <ngx-simplebar [options]="scrollOptions" class="mt-2-1" style="height: calc(100vh - 260px);">
-    <table class="orders-table advanced-table" style="width: max-content;min-width: 100%;">
+    <table class="table-height-40 advanced-table" style="width: max-content;min-width: 100%;">
         <thead>
         <tr>
             <th class="row_select"><input class="form-check" type="checkbox"/></th>
@@ -122,8 +127,9 @@
         </tr>
         </thead>
         <tbody>
-        <tr class="c-p" *ngFor="let item of orders | callback: filterTable; let i = index" (click)="openDetail(item.id)">
-            <td (click)="$event.stopPropagation()"><input class="form-check" type="checkbox"/></td>
+        <tr class="c-p" *ngFor="let item of orders | callback: filterTable; let i = index"
+            (click)="openDetail(item.id)">
+            <td (click)="$event.stopPropagation()"><input class="form-check cursor-pointer" type="checkbox"/></td>
             <td>
                 <div class="d-inline-block {{item.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{item.status}}</div>
             </td>
@@ -150,31 +156,69 @@
             </td>
             <td>
                 <div class="d-flex flex-row">
-                    &nbsp;
-                    <!-- <div class="me-1-1">
-                        <app-avatar [bgColor]="bgColors[i % 6]" [url]="" [companyName]="item.vendorName" color="text-white" [size]="32"
+                    <div class="me-1-1">
+                        <app-avatar [bgColor]="bgColors[i % 6]" [url]=""
+                                    [companyName]="item.vendorName" color="text-white" [size]="32"
                                     alt="user-img"></app-avatar>
                     </div>
                     <div class="d-flex flex-column search-text">
                         <div class="text-blackprimary text-overflow-ellipsis"
                              style="max-width: 120px;">{{item.vendorName}}</div>
-                        <div class="text-blackprimary-op-50">{{item.vendorType}} 1111</div>
-                    </div> -->
+                        <div class="text-blackprimary-op-50">{{item.vendorType}}</div>
+                    </div>
                 </div>
             </td>
             <td class="text-center">
-                <button *ngIf="item.status == 'Accepted'" class="btn btn-primary btn-text-12" style="padding: 6px 27px;" (click) = "openAddModal(item,$event)">
-                    Payment Request
-                </button>
-                <button *ngIf="item.status != 'Accepted'" class="btn btn-outline-primary btn-text-12" style="padding: 7px 12px;">
-                    View Details
-                </button>
+                <div *ngIf="orderType == 'Sent'">
+                    <button *ngIf="item.status !== 'Paid' && canEdit" class="btn btn-primary btn-text-12"
+                            style="padding: 6px 27px;"
+                            (click)="$event.stopPropagation();payBill(item);">
+                        Pay Bill
+                    </button>
+                    <button *ngIf="item.status === 'Paid'" class="btn btn-outline-primary btn-text-12"
+                            style="padding: 7px 12px;">
+                        View Details
+                    </button>
+                </div>
+                <div *ngIf="orderType == 'Received'">
+                    <button *ngIf="item.status == 'Accepted' && canEdit" class="btn btn-primary btn-text-12"
+                            style="padding: 6px 27px;"
+                            (click)="$event.stopPropagation();openPaymentRequestModal(item,$event)">
+                        Payment Request
+                    </button>
+                    <button *ngIf="item.status != 'Accepted'" class="btn btn-outline-primary btn-text-12"
+                            style="padding: 7px 12px;">
+                        View Details
+                    </button>
+                </div>
             </td>
             <td class="text-center">
                 <i class="fe-paperclip"></i>
             </td>
             <td class="text-center">
-                <i class="fe-more-vertical- c-p"></i>
+                <div class="d-inline-block dropdown dropdown-40 ms-1-1" ngbDropdown #moreDropdown="ngbDropdown"
+                     (click)="moreDropdown.open();$event.stopPropagation();">
+                    <span ngbDropdownToggle><i class="fe-more-vertical- cursor-pointer"></i></span>
+                    <div class="dropdown-menu" ngbDropdownMenu>
+                        <div class="cursor-pointer"
+                             (click)="duplicateOrder(item.id,item.idVendor,item.revision)"
+                             ngbDropdownItem>
+                            Duplicate Order
+                        </div>
+                        <div class="cursor-pointer" ngbDropdownItem>
+                            Print
+                        </div>
+                        <div class="cursor-pointer" ngbDropdownItem>
+                            Email
+                        </div>
+                        <div class="cursor-pointer" ngbDropdownItem>
+                            Back Charge
+                        </div>
+                        <div class="cursor-pointer" ngbDropdownItem>
+                            Change status manually
+                        </div>
+                    </div>
+                </div>
             </td>
         </tr>
         </tbody>
@@ -190,6 +234,18 @@
     </table>
 </ngx-simplebar>
 
-<ng-template #addModal>
-    <app-receivable-add class="p-4-1" [modalRef]="addModalRef" [id]="0" [orderInfo]="selectOrder"></app-receivable-add>
+
+<ng-template #confirmModal let-modal>
+    <app-confirm-modal [title]="confirmObj.title" [message]="confirmObj.message" [btnConfirm]="confirmObj.btnConfirm"
+                       [params]="confirmObj.params" [serviceName]="confirmObj.serviceName"
+                       [btnSide]="confirmObj.btnSide" [modalRef]="confirmModalRef"></app-confirm-modal>
+</ng-template>
+
+<ng-template #payingBillModal let-modal>
+    <app-paying-bill [payment]="projectPayment" [vendor]="vendor" [modalRef]="payingBillModalRef"></app-paying-bill>
+</ng-template>
+
+<ng-template #paymentRequestModal let-modal>
+    <app-receivable-add class="p-4-1" [modalRef]="paymentRequestModalRef" [id]="0"
+                        [orderInfo]="selectedOrder"></app-receivable-add>
 </ng-template>
