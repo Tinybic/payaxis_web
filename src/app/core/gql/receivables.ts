@@ -421,6 +421,25 @@ mutation projectorder_decline($idCompany: Int!, $id: Int!, $revision: Int!) {
 
 `;
 
+const projectpayment_paymultiple = gql`
+mutation projectpayment_paymultiple($idCompany: Int!, $paymentOrders: [paymentorder!]) {
+  projectpayment_paymultiple(idCompany: $idCompany, paymentOrders: $paymentOrders) {
+    error
+    code
+    message
+    data {
+      error
+      code
+      message
+      data {
+        id
+        revision
+      }
+    }
+  }
+}
+`
+
 export {
   projectpayment_new,
   projectpayment_list,
@@ -432,5 +451,6 @@ export {
   projectpayment_update,
   receivable_list,
   projectorder_accept,
-  projectorder_decline
+  projectorder_decline,
+  projectpayment_paymultiple
 };

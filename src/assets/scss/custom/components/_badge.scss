@@ -3,23 +3,23 @@
 //
 
 .badge {
-    box-shadow: $components-shadow;
+  box-shadow: $components-shadow;
 }
 
 // Lighten badge
 @mixin badge-variant-light($bg) {
-    color: $bg;
-    background-color: rgba($bg, 0.18);
-    box-shadow: none;
+  color: $bg;
+  background-color: rgba($bg, 0.18);
+  box-shadow: none;
 }
 
 // Outline badge
 
 @mixin badge-variant-outline($bg) {
-    color: $bg;
-    border: 1px solid $bg;
-    background-color: transparent;
-    box-shadow: none;
+  color: $bg;
+  border: 1px solid $bg;
+  background-color: transparent;
+  box-shadow: none;
 }
 
 // Lighten badge (soft)
@@ -27,99 +27,101 @@
 @each $color,
 $value in $theme-colors {
 
-    // Lighten badge (soft)
-    .badge-soft-#{$color} {
-        @include badge-variant-light($value);
-    }
+  // Lighten badge (soft)
+  .badge-soft-#{$color} {
+    @include badge-variant-light($value);
+  }
 
-    // Outline badge
-    .badge-outline-#{$color} {
-        @include badge-variant-outline($value);
-    }
+  // Outline badge
+  .badge-outline-#{$color} {
+    @include badge-variant-outline($value);
+  }
 }
 
-.NOTag{
+.NOTag {
   width: 128px;
 }
 
-.openTag, .draftTag, .voidedTag {
-    color: #60A5FA !important;
-    width: 128px;
+
+.acceptedTag, .activeTag, .paidTag, .approvedTag {
+  background-color: #86EFAC;
+  border-radius: 8px;
+  border: 1px solid #22C55E;
+  padding: 0px 8px;
+  width: 128px;
+  &.badge{
+    width: auto;
+  }
 }
 
-.dropdown-40 > .dropdown-menu > .dropdown-item > .form-check > .draftTag{
+
+.draftTag, .archivedTag, .inactiveTag {
   background-color: #E1E6EF;
   border-radius: 8px;
   border: 1px solid #E1E6EF;
   padding: 0px 8px;
   width: 128px;
-}
-
-.acceptedTag, .activeTag, .paidTag, .approvedTag {
-    background-color: #86EFAC;
-    border-radius: 8px;
-    border: 1px solid #22C55E;
-    padding: 0px 8px;
-    width: 128px;
-}
-
-
-.archivedTag, .inactiveTag {
-    background-color: #E1E6EF;
-    border-radius: 8px;
-    border: 1px solid #E1E6EF;
-    padding: 0px 8px;
-    width: 128px;
+  &.badge{
+    width: auto;
+  }
 }
 
 .partialTag, .newTag, .invoiceopenTag, .dueTag {
-    background-color: #FFED8E;
-    border-radius: 8px;
-    border: 1px solid #EAC608;
-    padding: 0px 8px;
-    width: 128px;
+  background-color: #FFED8E;
+  border-radius: 8px;
+  border: 1px solid #EAC608;
+  padding: 0px 8px;
+  width: 128px;
+  &.badge{
+    width: auto;
+  }
 }
 
 .overdueTag, .pastdueTag, .invoiceoverdueTag, .errorTag, .rejectedTag, .declinedTag {
-    background-color: #F87171;
-    border-radius: 8px;
-    color: #ffffff !important;
-    width: 128px;
+  background-color: #F87171;
+  border-radius: 8px;
+  color: #ffffff !important;
+  width: 128px;
+  &.badge{
+    width: auto;
+  }
 }
 
 
-.sentTag, .pendingTag, .plumbingTag {
-    border: 1px solid #60A5FA;
-    background-color: #BFDBFE;
-    border-radius: 8px;
-    padding: 0px 8px;
-    width: 128px;
+.sentTag, .pendingTag, .plumbingTag, .partiallyPaidTag {
+  border: 1px solid #60A5FA;
+  background-color: #BFDBFE;
+  border-radius: 8px;
+  padding: 0px 8px;
+  width: 128px;
+  &.badge{
+    width: auto;
+  }
 }
-
 
 
 // dark mode
 body[data-layout-color="dark"] {
 
-    @each $color,
-    $value in $dark-theme-colors {
+  @each $color,
+  $value in $dark-theme-colors {
 
-        // Lighten badge (soft)
-        .badge-soft-#{$color} {
-            @include badge-variant-light($value);
-        }
-
-        // Outline badge
-        .badge-outline-#{$color} {
-            @include badge-variant-outline($value);
-        }
+    // Lighten badge (soft)
+    .badge-soft-#{$color} {
+      @include badge-variant-light($value);
     }
+
+    // Outline badge
+    .badge-outline-#{$color} {
+      @include badge-variant-outline($value);
+    }
+  }
 }
 
 .vendorCostcode {
-    background-color: #BFDBFE;
-    border: 1px solid #60A5FA;
-    display: inline-block;
-    border-radius: 8px;
-    padding: 0px 8px;
+  background-color: #BFDBFE;
+  border: 1px solid #60A5FA;
+  display: inline-block;
+  border-radius: 8px;
+  padding: 0px 8px;
 }

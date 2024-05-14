@@ -36,6 +36,7 @@ query projectorder_list($idCompany: Int!, $idProject: Int!, $idCategory: Int) {
       total
       paidAmount
       remainingAmount
+      idPayment
       status
       active
       txtAddress

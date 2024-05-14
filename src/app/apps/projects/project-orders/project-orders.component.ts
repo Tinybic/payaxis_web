@@ -16,12 +16,12 @@ import { LocalStorageService } from 'src/app/core/service/local-storage.service'
 })
 export class ProjectOrdersComponent extends Base {
   @Input() idProject;
-  @ViewChild('uploadAttachment') uploadAttachment: NgbModalRef;
+  @ViewChild('uploadAttachmentModal') uploadAttachmentModal: NgbModalRef;
+  @ViewChild('payingBillModal') payingBillModal: NgbModalRef;
   
   
   orders = [];
   InitialOrders = [];
-  currentOrderId: number = 0;
   scrollOptions = {
     forceVisible: true
   };
@@ -43,8 +43,11 @@ export class ProjectOrdersComponent extends Base {
     'bg-info'
   ];
   
-  uploadIdOrder1;
+  allOrdersChecked = false;
+  
+  uploadIdOrder1: number;
   uploadAttachmentRef: NgbModalRef;
+  payingBillModalRef: NgbModalRef;
   
   constructor(
     private apolloService: ApolloService,
@@ -52,7 +55,7 @@ export class ProjectOrdersComponent extends Base {
     private toastrService: ToastrService,
     private httpService: HttpService,
     private router: Router,
-    private globalFuns: GlobalFunctionsService,
+    public globalFuns: GlobalFunctionsService,
     private localStorage: LocalStorageService
   ){
     super();
@@ -115,7 +118,7 @@ export class ProjectOrdersComponent extends Base {
   
   uploadAttachments(order) {
     this.uploadIdOrder1 = order.id;
-    this.uploadAttachmentRef = this.modalService.open(this.uploadAttachment, {
+    this.uploadAttachmentRef = this.modalService.open(this.uploadAttachmentModal, {
       backdrop: 'static',
       modalDialogClass: 'modal-right',
       size: '530',
@@ -124,6 +127,49 @@ export class ProjectOrdersComponent extends Base {
     }, (dismiss) => {
     
     })
+  }
+  toggleOrderChecked(){
+    let allOrdersChecked = true;
+    this.orders.map((item) => {
+      if(allOrdersChecked && item.status !== 'Paid'){
+        allOrdersChecked = item.checked;
+      }
+    })
+    this.allOrdersChecked = allOrdersChecked;
+  }
+  
+  toggleAllOrdersChecked(){
+    this.orders.map((item) => {
+      if(item.status !== 'Paid'){
+        item.checked = this.allOrdersChecked;
+      }
+    })
+  }
+  
+  paySelectedBtnStatus(){
+    return !this.orders.some((item) => item.checked)
+  }
+  
+  filterSelectedOrders(){
+    return this.orders.filter((item) => item.checked);
+  }
+  
+  openPaySelectedModal(){
+    this.payingBillModalRef = this.modalService.open(this.payingBillModal, {
+      backdrop: 'static',
+      modalDialogClass: 'modal-right',
+      size: '640',
+    });
+    
+    this.payingBillModalRef.result.then(
+      (res) => {
+        console.log('OK');
+        this.getOrders();
+      },
+      (dismiss) => {
+        console.log('dismiss');
+      }
+    );
   }
   
 }

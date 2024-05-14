@@ -248,7 +248,7 @@
             </li>
         </ul>
     </div>
-    <div class="flex-grow-1 d-flex justify-content-center">
+    <div class="d-none flex-grow-1 d-flex justify-content-center">
         <div *ngIf="tabs === 2" class="d-flex">
             <div class="card mb-0 me-2-1" style="height: 104px;">
                 <div class="card-body padding-24">
@@ -301,43 +301,49 @@
             </div>
         </div>
     </div>
-    <div class="d-flex align-items-center text-end line-56">
-        <div *ngIf="tabs < 3" class="d-inline-block" ngbDropdown>
-            <button class="btn btn-primary ms-2-1" ngbDropdownToggle style="padding: 10px 16px;">New Order<i
+    <div class="d-flex align-items-center text-end" style="padding-right: 0.25rem;">
+        <button *ngIf="tabs == 2" class="btn btn-outline-primary btn-height-40" style="padding: 10px 24px;">
+            <i class="fe-upload me-1-1 text-primary"></i>
+            Upload
+        </button>
+        <button *ngIf="tabs == 2" class="btn btn-outline-primary btn-height-40 mx-2-1" style="padding: 10px 24px;">
+            <i class="fe-edit me-1-1 text-primary"></i>
+            Edit
+        </button>
+        <div *ngIf="tabs < 3" class="d-inline-block dropdown dropdown-40" ngbDropdown>
+            <button class="btn btn-primary btn-height-40" ngbDropdownToggle>New Order<i
                     class="fe-chevron-down ms-1-1"></i></button>
-            <div ngbDropdownMenu style="padding: 4px 8px;">
-                <a class="subtitle-2-500" href="javascript:void(0);" (click)="createNew()" style="padding: 12px 4px;"
-                   ngbDropdownItem>
+            <div class="dropdown-menu" ngbDropdownMenu>
+                <a class="subtitle-2-500" href="javascript:void(0);" (click)="createNew()" ngbDropdownItem>
                     <i class="fe-plus me-1-1"></i>
                     Create New
                 </a>
-                <a class="subtitle-2-500" href="javascript:void(0);" style="padding: 12px 4px;" ngbDropdownItem>
+                <a class="subtitle-2-500" href="javascript:void(0);" ngbDropdownItem>
                     <i class="fe-upload me-1-1"></i>
                     Upload
                 </a>
             </div>
         </div>
-        <div *ngIf="tabs == 1" class="d-inline-block ms-2-1" ngbDropdown>
-            <span ngbDropdownToggle><i class="fe-more-vertical- font-24 cursor-pointer"></i></span>
-            <div ngbDropdownMenu style="padding: 4px 8px;" *ngIf="canEdit">
-                <a class="subtitle-2-500" href="javascript:void(0);" (click)="editProjectDetails()"
-                   style="padding: 12px 4px;" ngbDropdownItem>
+        <div *ngIf="tabs == 1" class="d-inline-block dropdown dropdown-40 ms-2-1" ngbDropdown>
+            <button class="btn btn-link btn-height-40" style="padding: 0 8px;" ngbDropdownToggle><i
+                    class="fe-more-vertical- font-24 text-blackprimary"></i>
+            </button>
+            <div ngbDropdownMenu *ngIf="canEdit">
+                <a class="subtitle-2-500" href="javascript:void(0);" (click)="editProjectDetails()" ngbDropdownItem>
                     <i class="fe-edit me-1-1"></i>
                     Edit Project Details
                 </a>
-                <a class="subtitle-2-500" href="javascript:void(0);" style="padding: 12px 4px;"
-                   (click)="editProjectBudget()" ngbDropdownItem>
+                <a class="subtitle-2-500" href="javascript:void(0);" (click)="editProjectBudget()" ngbDropdownItem>
                     <i class="fe-file-text me-1-1"></i>
                     Edit Project Budget
                 </a>
-                <a class="subtitle-2-500" href="javascript:void(0);" style="padding: 12px 4px;color: #EA001E;"
-                   ngbDropdownItem>
+                <a class="subtitle-2-500" href="javascript:void(0);" ngbDropdownItem>
                     <i class="fe-trash-2 me-1-1"></i>
                     Remove project
                 </a>
             </div>
         </div>
-        <button class="btn btn-primary" *ngIf="tabs == 4 && canInviteMember" (click)="inviteMembers()"><i
+        <button class="btn btn-primary btn-height-40" *ngIf="tabs == 4 && canInviteMember" (click)="inviteMembers()"><i
                 class="fe-plus-square me-1-1"></i>Invite Member
         </button>
     </div>
