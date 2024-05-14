@@ -3,27 +3,28 @@
         {{InitialOrders.length}} {{InitialOrders.length > 1 ? 'Orders' : 'Order'}}
     </div>
     <div class="col-md-8 d-flex flex-row justify-content-end">
-        <div class="d-inline-block me-2-1 subtitle-2-600 pt-1-1 c-p" style="color: #215EA9;">
-            Sort by
-            <i class="fe-filter ms-1-1 font-16"></i>
-        </div>
-        <div class="d-flex align-items-center me-2-1">
-            <button class="btn btn-primary btn-text-12" [disabled]="true"
-                    style="padding: 6px 16px;">
-                Pay Selected
-            </button>
-        </div>
+        <!--        <div class="d-inline-block me-2-1 subtitle-2-600 pt-1-1 c-p" style="color: #215EA9;">-->
+        <!--            Sort by-->
+        <!--            <i class="fe-filter ms-1-1 font-16"></i>-->
+        <!--        </div>-->
         <div class="d-inline-block">
             <input class="form-control form-search" type="search" placeholder="Search here" [(ngModel)]="keywords"
                    style="padding: 10px 16px 10px 36px;"/>
         </div>
+        <div class="d-flex align-items-center ms-2-1" style="padding-right: 0.25rem;">
+            <button class="btn btn-primary btn-text-12" (click)="openPaySelectedModal()" [disabled]="paySelectedBtnStatus()"
+                    style="padding: 6px 16px;">
+                Pay Selected
+            </button>
+        </div>
     </div>
 </div>
 <ngx-simplebar [options]="scrollOptions" class="mt-2-1" style="height: calc(100vh - 265px);">
-    <table class="orders-table advanced-table" style="width: max-content;min-width: 100%;">
+    <table class="orders-table advanced-table table-height-40" style="width: max-content;min-width: 100%;">
         <thead>
         <tr>
-            <th class="row_select"><input class="form-check" type="checkbox"/></th>
+            <th class="row_select"><input class="form-check cursor-pointer" [(ngModel)]="allOrdersChecked" type="checkbox"
+                                          (change)="toggleAllOrdersChecked()"/></th>
             <th class="sortable"
                 [ngClass]="{'sorting_asc':sortColumn == 'status' && direction == 'asc','sorting_desc':sortColumn == 'status' && direction == 'desc'}"
                 (click)="onSort('status')">Status
@@ -71,12 +72,16 @@
         <tbody>
         <tr class="c-p" *ngFor="let item of orders | callback: filterTable; let i = index"
             (click)="openDetail(item.id)">
-            <td><input class="form-check" type="checkbox"/></td>
             <td>
-                <div class="d-inline-block {{item.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{item.status}}</div>
+                <div (click)="$event.stopPropagation();">
+                    <input class="form-check cursor-pointer" [(ngModel)]="item.checked" type="checkbox" (change)="toggleOrderChecked();" [disabled]="item.status == 'Paid' || item.idPayment>0"/>
+                </div>
             </td>
             <td>
-                {{'2022-2-18' | date: 'M/dd/yy'}}
+                <div class="d-inline-block {{globalFuns.toCamelCase(item.status.toLowerCase())}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{item.status}}</div>
+            </td>
+            <td>
+                {{item.indvoicedueDate | date: 'M/dd/yy'}}
             </td>
             <td>
                 {{item.orderNumber}}
@@ -115,7 +120,8 @@
                 <button *ngIf="item.status !== 'Paid'" class="btn btn-primary btn-text-12" style="padding: 6px 27px;">
                     Pay Bill
                 </button>
-                <button *ngIf="item.status === 'Paid'" class="btn btn-outline-primary btn-text-12" style="padding: 7px 12px;">
+                <button *ngIf="item.status === 'Paid'" class="btn btn-outline-primary btn-text-12"
+                        style="padding: 7px 12px;">
                     View Details
                 </button>
             </td>
@@ -140,6 +146,10 @@
 </ngx-simplebar>
 
 <!--uploadAttachment-->
-<ng-template #uploadAttachment let-modal>
+<ng-template #uploadAttachmentModal let-modal>
     <app-upload-attachment [idOrder1]="uploadIdOrder1" [modalRef]="uploadAttachmentRef"></app-upload-attachment>
+</ng-template>
+
+<ng-template #payingBillModal>
+    <app-paying-bill [payment]="filterSelectedOrders()" [modalRef]="payingBillModalRef"></app-paying-bill>
 </ng-template>

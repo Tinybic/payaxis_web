@@ -246,20 +246,24 @@ h6 {
   padding-top: 0.5rem !important;
 }
 
+.pb-1-1{
+  padding-bottom: 0.5rem !important;
+}
+
 .p-2-1 {
-  padding: 1rem;
+  padding: 1rem !important;
 }
 
 .padding-8-16 {
-  padding: 8px 16px;
+  padding: 8px 16px !important;
 }
 
 .padding-12-24 {
-  padding: 12px 24px;
+  padding: 12px 24px !important;
 }
 
 .padding-12-16 {
-  padding: 12px 16px;
+  padding: 12px 16px !important;
 }
 
 .padding-16-24 {
@@ -638,6 +642,19 @@ del {
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
+}
+
+.flex-row-between-center{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.flex-row-between-end{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: end;
 }
 
 // dark mode

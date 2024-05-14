@@ -104,7 +104,7 @@ export class PaymentHistoryComponent {
       const thisYear = new Date().getFullYear();
       if(this.toDate.year == thisYear && this.fromDate.year == thisYear){
         if(this.toDate.month == this.fromDate.month){
-          return formatDate(this.fromDate.month + '-' + this.fromDate.day, 'MMM d', 'en') + ' - ' + this.toDate.day + ',' + this.fromDate.year;
+          return formatDate(this.fromDate.month + '-' + this.fromDate.day, 'MMM d', 'en') + ' - ' + this.toDate.day + ', ' + this.fromDate.year;
         } else{
           return formatDate(this.fromDate.month + '-' + this.fromDate.day, 'MMM d', 'en') + ' - ' + formatDate(this.toDate.month + '-' + this.toDate.day, 'MMM d', 'en');
         }

@@ -1,3 +1,14 @@
 .txtRed{
   color: red;
 }
+
+.step3Active{
+  border: 1px solid #2B52DD;
+  box-shadow: 0px 20px 25px 0px #0000001A, 0px 10px 10px 0px #0000000A;
+}
+
+.step3Inactive{
+  opacity: .5;
+  border: 1px solid #E5E7EB;
+  background-color: #F7FAFC;
+}

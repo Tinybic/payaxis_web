@@ -109,6 +109,7 @@ const projectorder_info = gql`
           tax
           total
           paidAmount
+          idPayment
           status
           active
           projectName

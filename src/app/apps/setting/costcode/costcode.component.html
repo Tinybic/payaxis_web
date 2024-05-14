@@ -4,7 +4,7 @@
             <span *ngIf="costcodelist.length == 0">No</span><span
                 *ngIf="costcodelist.length > 0">{{costcodelist.length}}</span> Cost Codes
         </div>
-        <div class="dropdown d-inline-block ms-2-1" ngbDropdown #roleDrop="ngbDropdown">
+        <div class="dropdown dropdown-40 d-inline-block ms-2-1" ngbDropdown #roleDrop="ngbDropdown">
             <a class="dropdown-outline" href="javascript:void(0)" ngbDropdownToggle>
                 <div style="float:left;">Category&nbsp;</div>
                 <div class="category-scroller" style="max-width: 120px;overflow: auto;float: left;"><b>{{categoryFilter.toString()}}</b></div>
@@ -41,36 +41,36 @@
         </div>
         <div class="d-inline-block">
 
-            <div ngbDropdown class="d-inline-block  ms-2-1">
-                <button class="btn btn-outline-primary btn-h-40" ngbDropdownToggle><i class="fe-upload me-1-1"></i>Import<i
+            <div ngbDropdown class="d-inline-block dropdown dropdown-40 ms-2-1">
+                <button class="btn btn-outline-primary btn-height-40" ngbDropdownToggle><i class="fe-upload me-1-1"></i>Import<i
                         class="fe-chevron-down ms-1-1"></i></button>
 
                 <input id="csvupload" type="file" (change)="importCostCodeFromCSV($event)" accept=".csv"
                     class="d-none" />
                 <div ngbDropdownMenu style="width: 255px; ">
                     <div class="line-32 bold-600 cursor-pointer" ngbDropdownItem>Import from QuickBooks <img
-                            class="float-end mt-1" src="/assets/images/icon/qb.png" /></div>
+                            class="float-end mt-0-1" src="/assets/images/icon/qb.png" /></div>
                     <div class="line-32 bold-600 cursor-pointer" ngbDropdownItem
                         onclick="document.getElementById('csvupload').click()">Import from CSV <img
-                            class="float-end mt-1" src="/assets/images/icon/csv.png" /></div>
+                            class="float-end mt-0-1" src="/assets/images/icon/csv.png" /></div>
                 </div>
             </div>
 
-            <div ngbDropdown class="d-inline-block  ms-2-1">
-                <button class="btn btn-outline-primary btn-h-40" ngbDropdownToggle><i class="fe-download me-1-1"></i>Export<i
+            <div ngbDropdown class="d-inline-block dropdown dropdown-40 ms-2-1">
+                <button class="btn btn-outline-primary btn-height-40" ngbDropdownToggle><i class="fe-download me-1-1"></i>Export<i
                         class="fe-chevron-down ms-1-1"></i></button>
 
                 <div ngbDropdownMenu style="width: 255px;">
                     <div class="line-32 bold-600 cursor-pointer" ngbDropdownItem>Export to QuickBooks <img
-                            class="float-end mt-1" src="/assets/images/icon/qb.png" /></div>
+                            class="float-end mt-0-1" src="/assets/images/icon/qb.png" /></div>
                     <div class="line-32 bold-600 cursor-pointer" ngbDropdownItem>Export to CSV <img
-                            class="float-end mt-1" src="/assets/images/icon/csv.png" /></div>
+                            class="float-end mt-0-1" src="/assets/images/icon/csv.png" /></div>
                     <div class="line-32 bold-600 cursor-pointer" ngbDropdownItem>Export CSV Template <img
-                            class="float-end mt-1" src="/assets/images/icon/csv.png" /></div>
+                            class="float-end mt-0-1" src="/assets/images/icon/csv.png" /></div>
                 </div>
             </div>
 
-            <button class="btn btn-primary ms-2-1 btn-h-40" style="margin-right: 2px;" (click)="openAddModal('Create')"><i
+            <button class="btn btn-primary ms-2-1 btn-height-40" style="margin-right: 2px;" (click)="openAddModal('Create')"><i
                     class="fe-plus-square me-1-1"></i>New
                 Cost Code</button>
         </div>

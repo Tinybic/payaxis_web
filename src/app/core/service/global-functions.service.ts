@@ -92,6 +92,14 @@ export class GlobalFunctionsService {
   }
   
   /**
+   * 将字符串改为驼峰格式字符串
+   * @param str
+   */
+  toCamelCase(str: string): string {
+    return str.replace(/[-_ ](\w)/g, (_, c) => c.toUpperCase());
+  }
+  
+  /**
    * Active 不属于 status，这是为了使用方便添加
    * Active 表示除 Paid 之外的其他状态
    */

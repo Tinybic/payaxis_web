@@ -17,7 +17,6 @@ import { VendoraddModule } from "../vendor/vendoradd/vendoradd.module";
 import { InvoiceAddComponent } from './invoice-add/invoice-add.component';
 import { InvoiceListComponent } from './invoice-list/invoice-list.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
-import { PayingBillComponent } from './paying-bill/paying-bill.component';
 
 
 @NgModule({
@@ -26,7 +25,6 @@ import { PayingBillComponent } from './paying-bill/paying-bill.component';
     MappingAttachmentsComponent,
     InvoiceAddComponent,
     InvoiceListComponent,
-    PayingBillComponent
   ],
   imports: [
     CommonModule,
@@ -53,7 +51,6 @@ import { PayingBillComponent } from './paying-bill/paying-bill.component';
   ],
   exports:[
     InvoiceAddComponent,
-    PayingBillComponent
   ]
 })
 export class InvoiceModule { }

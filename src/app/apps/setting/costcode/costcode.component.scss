@@ -1,25 +1,9 @@
 .dropdown {
-  .dropdown-toggle.dropdown-outline{
-    height: 40px;
-    padding: 0 16px;
-    display: flex;
-    align-items: center;
-  }
-  .dropdown-menu {
-    .form-check{
-      .form-check-label{
-        width: 100%;
-      }
-    }
-  }
   .category-scroller::-webkit-scrollbar {
     height: 4px; /* 设置滚动条的高度 */
   }
 }
 
-.btn-h-40{
-  padding: 10px 16px;
-}
 
 .form-control.form-search {
   padding: 10px 16px 10px 36px;

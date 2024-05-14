@@ -199,6 +199,8 @@ export type Mutation = {
   projectpayment_open: Projectpaymentresult;
   /** pay project payment */
   projectpayment_pay: Projectpaymentresult;
+  /** pay project payment for orders */
+  projectpayment_paymultiple: Projectpaymentresults;
   /** reject project payment */
   projectpayment_reject: Projectpaymentresult;
   /** update project payment */
@@ -886,6 +888,13 @@ export type MutationProjectpayment_PayArgs = {
 
 
 /** structure to handle table sms */
+export type MutationProjectpayment_PaymultipleArgs = {
+  idCompany: Scalars['Int']['input'];
+  paymentOrders?: InputMaybe<Array<Paymentorder>>;
+};
+
+
+/** structure to handle table sms */
 export type MutationProjectpayment_RejectArgs = {
   id: Scalars['Int']['input'];
   idCompany: Scalars['Int']['input'];
@@ -1455,8 +1464,8 @@ export type QueryProjectpayment_AttachmentArgs = {
 
 
 export type QueryProjectpayment_HistoryArgs = {
-  dateFrom: Scalars['String']['input'];
-  dateTo: Scalars['String']['input'];
+  dateFrom?: InputMaybe<Scalars['String']['input']>;
+  dateTo?: InputMaybe<Scalars['String']['input']>;
   idCompany: Scalars['Int']['input'];
   idProject: Scalars['Int']['input'];
   idVendor?: InputMaybe<Scalars['Int']['input']>;
@@ -2056,6 +2065,27 @@ export type Paymentlist = {
   message: Scalars['String']['output'];
 };
 
+export type Paymentorder = {
+  amount: Scalars['Float']['input'];
+  billNumber: Scalars['billNumber_String_NotNull_maxLength_25']['input'];
+  costCode?: InputMaybe<Scalars['String']['input']>;
+  dueDate: Scalars['dueDate_String_NotNull_format_date']['input'];
+  idInvitedCompany?: InputMaybe<Scalars['Int']['input']>;
+  idProject: Scalars['Int']['input'];
+  idVendor: Scalars['Int']['input'];
+  paymentOrderids?: InputMaybe<Array<Paymentorderid>>;
+  paymentTerms: Scalars['paymentTerms_String_NotNull_maxLength_50']['input'];
+  sentDate: Scalars['sentDate_String_NotNull_format_date']['input'];
+  txtNotes: Scalars['txtNotes_String_NotNull_maxLength_512']['input'];
+  vendorEmail?: InputMaybe<Scalars['String']['input']>;
+  vendorName?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type Paymentorderid = {
+  amount: Scalars['Float']['input'];
+  idOrder1: Scalars['Int']['input'];
+};
+
 export type Paymentresult = {
   __typename?: 'paymentresult';
   code: Scalars['Int']['output'];
@@ -2184,6 +2214,7 @@ export type Project_Order1 = {
   createdDate: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   idCompany: Scalars['Int']['output'];
+  idPayment: Scalars['Int']['output'];
   idProject: Scalars['Int']['output'];
   idReason: Scalars['Int']['output'];
   idVendor: Scalars['Int']['output'];
@@ -2241,6 +2272,7 @@ export type Project_Payment = {
   avatar: Scalars['String']['output'];
   bankName: Scalars['String']['output'];
   billNumber: Scalars['String']['output'];
+  checkNumber: Scalars['String']['output'];
   costCode: Scalars['String']['output'];
   costCodeName: Scalars['String']['output'];
   costcodes?: Maybe<Array<_Order_Costcode>>;
@@ -2266,6 +2298,7 @@ export type Project_Payment = {
   phone: Scalars['String']['output'];
   primaryContact: Scalars['String']['output'];
   projectName: Scalars['String']['output'];
+  requestAmount: Scalars['Float']['output'];
   revision: Scalars['Int']['output'];
   senderAvatar: Scalars['String']['output'];
   senderEmail: Scalars['String']['output'];
@@ -2593,6 +2626,14 @@ export type Projectpaymentresult = {
   __typename?: 'projectpaymentresult';
   code: Scalars['Int']['output'];
   data?: Maybe<Projectpaymentidrevision>;
+  error: Scalars['Boolean']['output'];
+  message: Scalars['String']['output'];
+};
+
+export type Projectpaymentresults = {
+  __typename?: 'projectpaymentresults';
+  code: Scalars['Int']['output'];
+  data?: Maybe<Array<Projectpaymentresult>>;
   error: Scalars['Boolean']['output'];
   message: Scalars['String']['output'];
 };
