@@ -1,11 +1,9 @@
 import { formatDate } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { VENDOR_PAYMENTTERM } from 'src/app/core/constants/vendor_payment';
 import { getNewFileName, get_file_url } from 'src/app/core/gql/file';
-import { projectorder_list } from 'src/app/core/gql/orders';
 import { companypayment_list } from 'src/app/core/gql/payment';
 import { companyproject_list } from 'src/app/core/gql/project';
 import {
@@ -19,6 +17,7 @@ import { vendor_list } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { HttpService } from 'src/app/core/service/http.service';
 import { LocalStorageService } from 'src/app/core/service/local-storage.service';
+import { GlobalFunctionsService } from "../../../core/service/global-functions.service";
 
 @Component({
   selector: 'app-receivable-add',
@@ -87,7 +86,8 @@ export class ReceivableAddComponent {
     private modalService: NgbModal,
     private toastrService: ToastrService,
     private httpService: HttpService,
-    private localStorage: LocalStorageService
+    private localStorage: LocalStorageService,
+    private globalFuns: GlobalFunctionsService,
   ) {}
 
   ngOnInit(): void {
@@ -187,21 +187,25 @@ export class ReceivableAddComponent {
   }
 
   cancelAmount() {
-    if (!this.projectpayment.amount) {
-      this.projectpayment.amount = 0;
-    }
     this.amountEdit = false;
     this.orderList = JSON.parse(JSON.stringify(this.ORDERLIST));
+    if (!this.projectpayment.amount || this.projectpayment.amount == 0) {
+      this.projectpayment.amount = 0;
+      return;
+    }
     if (this.project) {
       this.orderList = this.orderList.filter(
         (item) =>
           item.idProject == this.project.id &&
-          item.total >= this.projectpayment.amount
+          item.remainingAmount >= this.projectpayment.amount
       );
     } else {
       this.orderList = this.orderList.filter(
-        (item) => item.total >= this.projectpayment.amount
+        (item) => item.remainingAmount >= this.projectpayment.amount
       );
+    }
+    if(this.projectpayment.amount > this.order.remainingAmount){
+      this.order=null;
     }
   }
 
@@ -289,8 +293,8 @@ export class ReceivableAddComponent {
       .then((res) => {
         const result = res.receivable_list;
         if (!result.error) {
-          this.orderList = result.data;
-          this.ORDERLIST = JSON.parse(JSON.stringify(result.data));
+          this.orderList = result.data.filter((order)=>order.status != 'Paid' && order.idPayment == 0);
+          this.ORDERLIST = JSON.parse(JSON.stringify(this.orderList));
           this.setOrder();
         }
       });
@@ -648,4 +652,7 @@ export class ReceivableAddComponent {
         });
     }
   }
+  
+  
+  protected readonly globalFunc = this.globalFuns;
 }

@@ -74,11 +74,11 @@
             (click)="openDetail(item.id)">
             <td>
                 <div (click)="$event.stopPropagation();">
-                    <input class="form-check cursor-pointer" [(ngModel)]="item.checked" type="checkbox" (change)="toggleOrderChecked();" [disabled]="item.status == 'Paid' || item.idPayment>0"/>
+                    <input class="form-check cursor-pointer" [(ngModel)]="item.checked" type="checkbox" (change)="toggleOrderChecked();" [disabled]="item.status == 'Paid'"/>
                 </div>
             </td>
             <td>
-                <div class="d-inline-block {{globalFuns.toCamelCase(item.status.toLowerCase())}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{item.status}}</div>
+                <div class="d-inline-block {{globalFunc.toCamelCase(item.status.toLowerCase())}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{item.status}}</div>
             </td>
             <td>
                 {{item.indvoicedueDate | date: 'M/dd/yy'}}

@@ -103,11 +103,12 @@ export class GlobalFunctionsService {
    * Active 不属于 status，这是为了使用方便添加
    * Active 表示除 Paid 之外的其他状态
    */
-  OPStatusCount={
+  POStatusCount={
     Active: 0,
     Draft: 0,
     Pending: 0,
     Accepted: 0,
+    'Partially paid': 0,
     Declined: 0,
     Paid: 0,
     // Voided: 0,
