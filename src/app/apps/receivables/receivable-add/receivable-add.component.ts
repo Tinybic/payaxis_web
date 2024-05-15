@@ -305,10 +305,10 @@ export class ReceivableAddComponent {
     }).then((res) => {
       const result = res.receivable_list;
       if(!result.error){
-        if(this.id == 0){
-          this.orderList = result.data.filter((order) => order.status != 'Paid' && order.idPayment == 0);
-        } else{
+        if(this.from == 'Received Orders'){
           this.orderList = result.data;
+        } else{
+          this.orderList = result.data.filter((order) => order.status != 'Paid' && order.idPayment == 0);
         }
         this.ORDERLIST = JSON.parse(JSON.stringify(this.orderList));
         this.setOrder();
