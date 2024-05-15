@@ -218,7 +218,7 @@ export class PayingBillComponent {
   }
   
   
-  getDateRange(){
+  getDeliveryDateRange(){
     if(this.toDate){
       const thisYear = new Date().getFullYear();
       if(this.toDate.year == thisYear && this.fromDate.year == thisYear){
@@ -252,24 +252,6 @@ export class PayingBillComponent {
       return 'current-month';
     } else{
       return 'outside'
-    }
-  }
-  
-  getDeliveryDateRange(){
-    if(this.toDate){
-      const thisYear = new Date().getFullYear();
-      if(this.toDate.year == thisYear && this.fromDate.year == thisYear){
-        // if(this.toDate.month == this.fromDate.month){
-        //   return formatDate(this.fromDate.month + '-' + this.fromDate.day, 'MMM d', 'en') + ' - ' + this.toDate.day + ',' + this.fromDate.year;
-        // } else{
-        //   return formatDate(this.fromDate.month + '-' + this.fromDate.day, 'MMM d', 'en') + ' - ' + formatDate(this.toDate.month + '-' + this.toDate.day, 'MMM d', 'en');
-        // }
-        return formatDate(this.fromDate.month + '-' + this.fromDate.day, 'MMM d', 'en') + ' - ' + formatDate(this.toDate.month + '-' + this.toDate.day, 'MMM d', 'en');
-      } else{
-        return formatDate(this.fromDate.year + '-' + this.fromDate.month + '-' + this.fromDate.day, 'MMM d, y', 'en') + ' - ' + formatDate(this.toDate.year + '-' + this.toDate.month + '-' + this.toDate.day, 'MMM d, y', 'en');
-      }
-    } else{
-      return formatDate(this.fromDate.year + '-' + this.fromDate.month + '-' + this.fromDate.day, 'MMM d, y', 'en');
     }
   }
   

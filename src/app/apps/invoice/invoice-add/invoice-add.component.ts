@@ -442,8 +442,12 @@ export class InvoiceAddComponent {
       })
       .then((res) => {
         const result = res.projectorder_list;
-        if (!result.error) {
-          this.orderList = result.data.filter((order)=>order.status != 'Paid' && order.idPayment == 0);
+        if(!result.error){
+          if(this.id==0){
+            this.orderList = result.data.filter((order) => order.status != 'Paid' && order.idPayment == 0);
+          }else {
+            this.orderList = result.data;
+          }
           this.ORDERLIST = JSON.parse(JSON.stringify(this.orderList));
           this.setOrder();
         }

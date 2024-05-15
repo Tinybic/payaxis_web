@@ -130,7 +130,7 @@
 
         <div class="row p-3 mt-1-1" style="border-bottom: 1px solid #E1E6EF;">
             <div class="col-md-12 text-center ">
-                <input #amount type="text" *ngIf="amountEdit" mask="separator.2" (blur)="cancelAmount()"  [disabled]=" projectpayment.status == 'Paid'"
+                <input #amount type="text" *ngIf="amountEdit" mask="separator.2" (blur)="cancelAmount()"  [disabled]=" projectpayment.status == 'Paid'" (keydown)="amountKeyDown($event)"
                     class=" subtitle-700-37-40" style="border: 0px;outline: 0;text-align: center;"
                     [(ngModel)]="projectpayment.amount" />
                 <label class="subtitle-700-37-40 cursor-pointer" (click)="editAmount()"
@@ -269,7 +269,7 @@
                         <div class="row">
                             <div class="col-md-8 Subtitle-1 text-start">
                                 <div class="d-flex align-items-center">{{order.orderNumber}}
-                                    <div class="d-inline-block {{order.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{order.status}}</div>
+                                    <div class="d-inline-block badge {{globalFunc.toCamelCase(order.status.toLowerCase())}}Tag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">{{order.status}}</div>
                                 </div>
                                 <div class="subtitle-2-400-12 text-typeblackdeactivated">{{order.projectName}}</div>
                                 
