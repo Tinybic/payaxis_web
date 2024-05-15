@@ -328,4 +328,6 @@ export class ReceivableListComponent {
     this.selectId = id;
     this.openModal();
   }
+  
+  protected readonly globalFunc = this.globalFuns;
 }

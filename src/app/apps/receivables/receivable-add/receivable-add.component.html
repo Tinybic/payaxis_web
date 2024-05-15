@@ -5,7 +5,7 @@
     <div class="col-md-12  headline text-black" *ngIf="id > 0 && this.projectpayment.status">
         Payment Request #{{this.projectpayment.billNumber}}
         <div
-            class="d-inline-block {{projectpayment.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">
+            class="d-inline-block badge {{projectpayment.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">
             {{projectpayment.status}}</div>
     </div>
     <div class="subtitle-2-500 text-typeblack80" *ngIf="id > 0 && order">
@@ -272,19 +272,19 @@
                                     <div class="d-inline-block {{order.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{order.status}}</div>
                                 </div>
                                 <div class="subtitle-2-400-12 text-typeblackdeactivated">{{order.projectName}}</div>
-
+                                
+                                <div class="vendorCostcode subtitle-2-600 d-inline-block mt-1-1">{{order.costCodeName}}
+                                </div>
                             </div>
                             <div class="col-md-4 d-flex flex-row-reverse">
                                 <div class="ms-1-1 text-center" style="width: 32px;">
                                     <i class="fe-external-link text-primary"></i>
                                 </div>
                                 <div class="text-end">
-                                    <div class="Subtitle-1">{{order.total}}</div>
+                                    <div class="search-text text-end">{{order.remainingAmount | currency}}</div>
+                                    <div class="text-typeblackdeactivated">Remaining Amount</div>
+                                    <div class="Subtitle-1 text-end">{{order.total | currency}}</div>
                                     <div class="text-typeblackdeactivated">Total Due</div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 mt-1-1">
-                                <div class="vendorCostcode subtitle-2-600 d-inline-block">{{order.costCodeName}}
                                 </div>
                             </div>
                         </div>
@@ -299,19 +299,19 @@
                             <div class="row cursor-pointer" (click)="selectOrder(item)">
                                 <div class="col-md-8 Subtitle-1 text-start">
                                     <div class="d-flex align-items-center">{{item.orderNumber}}
-                                        <div class="d-inline-block {{item.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">{{item.status}}</div>
+                                        <div class="d-inline-block badge {{item.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">{{item.status}}</div>
                                     </div>
                                     <div class="subtitle-2-400-12 text-typeblackdeactivated">{{item.projectName}}</div>
 
+                                    <div class="vendorCostcode subtitle-2-600 d-inline-block mt-1-1">{{item.costCodeName}}
+                                    </div>
                                 </div>
                                 <div class="col-md-4 d-flex flex-row-reverse">
                                     <div class="text-end">
-                                        <div class="Subtitle-1">{{item.total}}</div>
+                                        <div class="search-text text-end">{{item.remainingAmount | currency}}</div>
+                                        <div class="text-typeblackdeactivated">Remaining Amount</div>
+                                        <div class="Subtitle-1 text-end">{{item.total | currency}}</div>
                                         <div class="text-typeblackdeactivated">Total Due</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 mt-1-1">
-                                    <div class="vendorCostcode subtitle-2-600 d-inline-block">{{item.costCodeName}}
                                     </div>
                                 </div>
                             </div>

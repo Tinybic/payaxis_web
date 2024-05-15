@@ -59,7 +59,6 @@ export class PayingBillComponent {
     private localStorage: LocalStorageService,
     private ngbDateFormater: NgbDateParserFormatter,
     private elementRef: ElementRef,
-    public globalFuns: GlobalFunctionsService
   ){}
   
   ngOnInit(): void{
@@ -101,7 +100,7 @@ export class PayingBillComponent {
           sentDate: '',
           dueDate: '',
           amount: totalAmount,
-          txtNotes: '',
+          payMemo: '',
           idInvitedCompany: 0,
           vendorName: vendors[0].vendorName,
           vendorEmail: '',
@@ -122,7 +121,7 @@ export class PayingBillComponent {
         billNumber: this.payment.billNumber,
         paidDate: '',
         amount: this.parseFloat(this.payment.amount),
-        txtNotes: '',
+        payMemo: '',
         dueDate: this.payment.dueDate,
         paymentOrderids: [{
           number: this.payment.billNumber,
@@ -304,8 +303,6 @@ export class PayingBillComponent {
   
   selectVendor(idVendor, index){
     this.step3ActiveIndex = index;
-    const vendorElement = this.elementRef.nativeElement.querySelector('#vendor_' + idVendor);
-    vendorElement.scrollIntoView();
   }
   
   calcProgressPercentage(item){
@@ -343,7 +340,7 @@ export class PayingBillComponent {
           dueDate: new Date(this.toDate.year + '-' + this.toDate.month + '-' + this.toDate.day),
           paymentTerms: '',
           amount: this.getTotalAmount(item),
-          txtNotes: item.txtNotes,
+          payMemo: item.payMemo,
           idInvitedCompany: item.idInvitedCompany,
           vendorName: item.vendorName,
           vendorEmail: item.vendorEmail,
@@ -364,7 +361,8 @@ export class PayingBillComponent {
         revision: parseInt(this.paymentList[0].revision),
         idVendor: parseInt(this.paymentList[0].idVendor),
         paidDate: this.blueDate.year + '-' + this.blueDate.month + '-' + this.blueDate.day,
-        amount: this.parseFloat(this.paymentList[0].paymentOrderids[0].currentAmount.value)
+        amount: this.parseFloat(this.paymentList[0].paymentOrderids[0].currentAmount.value),
+        payMemo: this.paymentList[0].payMemo,
       }
     }
     
@@ -438,5 +436,5 @@ export class PayingBillComponent {
   }
   
   protected readonly parseFloat = parseFloat;
-  protected readonly JSON = JSON;
+  protected readonly globalFuns: GlobalFunctionsService;
 }

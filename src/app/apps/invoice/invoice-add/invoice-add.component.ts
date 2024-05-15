@@ -25,6 +25,7 @@ import { ApolloService } from 'src/app/core/service/apollo.service';
 import { HttpService } from 'src/app/core/service/http.service';
 import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 import { FileSaverService } from 'ngx-filesaver';
+import { GlobalFunctionsService } from "../../../core/service/global-functions.service";
 
 @Component({
   selector: 'app-invoice-add',
@@ -91,7 +92,8 @@ export class InvoiceAddComponent {
   payingBillModalRef: NgbModalRef;
 
   amountEdit = false;
-
+  
+  
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
@@ -99,7 +101,8 @@ export class InvoiceAddComponent {
     private http: HttpClient,
     private httpService: HttpService,
     private localStorage: LocalStorageService,
-    private fileSaverService: FileSaverService
+    private fileSaverService: FileSaverService,
+    private globalFuns: GlobalFunctionsService,
   ) {}
 
   ngOnInit(): void {
@@ -176,7 +179,7 @@ export class InvoiceAddComponent {
         }
       });
   }
-
+  
   setOrder() {
     if (this.projectpayment.idOrder1 > 0) {
       this.orderList.forEach((item) => {
@@ -308,21 +311,25 @@ export class InvoiceAddComponent {
   }
 
   cancelAmount() {
-    if (!this.projectpayment.amount) {
-      this.projectpayment.amount = 0;
-    }
     this.amountEdit = false;
     this.orderList = JSON.parse(JSON.stringify(this.ORDERLIST));
+    if (!this.projectpayment.amount || this.projectpayment.amount == 0) {
+      this.projectpayment.amount = 0;
+      return;
+    }
     if (this.project) {
       this.orderList = this.orderList.filter(
         (item) =>
           item.idProject == this.project.id &&
-          item.total >= this.projectpayment.amount
+          item.remainingAmount >= this.projectpayment.amount
       );
     } else {
       this.orderList = this.orderList.filter(
-        (item) => item.total >= this.projectpayment.amount
+        (item) => item.remainingAmount >= this.projectpayment.amount
       );
+    }
+    if(this.projectpayment.amount > this.order.remainingAmount){
+      this.order=null;
     }
   }
 
@@ -436,8 +443,8 @@ export class InvoiceAddComponent {
       .then((res) => {
         const result = res.projectorder_list;
         if (!result.error) {
-          this.orderList = result.data;
-          this.ORDERLIST = JSON.parse(JSON.stringify(result.data));
+          this.orderList = result.data.filter((order)=>order.status != 'Paid' && order.idPayment == 0);
+          this.ORDERLIST = JSON.parse(JSON.stringify(this.orderList));
           this.setOrder();
         }
       });
@@ -1002,4 +1009,7 @@ export class InvoiceAddComponent {
         this.fileSaverService.save((<any>res).body, name);
       });
   }
+  
+  
+  protected readonly globalFunc = this.globalFuns;
 }

@@ -55,7 +55,7 @@ export class ProjectOrdersComponent extends Base {
     private toastrService: ToastrService,
     private httpService: HttpService,
     private router: Router,
-    public globalFuns: GlobalFunctionsService,
+    private globalFuns: GlobalFunctionsService,
     private localStorage: LocalStorageService
   ){
     super();
@@ -172,4 +172,5 @@ export class ProjectOrdersComponent extends Base {
     );
   }
   
+  protected readonly globalFunc=this.globalFuns;
 }

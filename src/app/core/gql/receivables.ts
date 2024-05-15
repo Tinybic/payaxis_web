@@ -328,6 +328,7 @@ const projectpayment_pay = gql`
     $idVendor: Int
     $paidDate: String!
     $amount: Float!
+    $payMemo: payMemo_String_maxLength_255
   ) {
     projectpayment_pay(
       idCompany: $idCompany
@@ -336,6 +337,7 @@ const projectpayment_pay = gql`
       idVendor: $idVendor
       paidDate: $paidDate
       amount: $amount
+      payMemo: $payMemo
     ) {
       error
       code
@@ -385,6 +387,7 @@ const receivable_list = gql`
         total
         paidAmount
         remainingAmount
+        idPayment
         status
         active
       }

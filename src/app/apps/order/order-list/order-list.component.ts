@@ -83,7 +83,7 @@ export class OrderListComponent extends Base {
   
   ngOnInit(): void{
     this.canEdit = super.setRole('Edit Order');
-    this.listStatusCount = {...this.globalFuns.OPStatusCount};
+    this.listStatusCount = {...this.globalFuns.POStatusCount};
     if(this.localStorage.getItem('idcompany')){
       this.getOrders();
       this.getRoles();
@@ -152,7 +152,7 @@ export class OrderListComponent extends Base {
   }
   
   getStatusCount(){
-    let listStatusCount = {...this.globalFuns.OPStatusCount};
+    let listStatusCount = {...this.globalFuns.POStatusCount};
     
     this.InitialOrders.map((invoice) => {
       if(!listStatusCount[invoice.status]){
@@ -394,4 +394,6 @@ export class OrderListComponent extends Base {
     );
     event.stopPropagation();
   }
+  
+  protected readonly globalFunc = this.globalFuns;
 }

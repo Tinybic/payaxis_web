@@ -6,7 +6,6 @@ import {
   NgbModalRef,
 } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { companypayment_list } from 'src/app/core/gql/payment';
 import { companyproject_list } from 'src/app/core/gql/project';
 import { projectbill_list } from 'src/app/core/gql/receivables';
 import { vendor_list } from 'src/app/core/gql/vendor';
@@ -21,7 +20,7 @@ import { GlobalFunctionsService } from '../../../core/service/global-functions.s
   styleUrls: ['./invoice-list.component.scss'],
 })
 export class InvoiceListComponent {
-  @ViewChild('addModal') addModal: any;
+  @ViewChild('addModal') addModal: NgbModalRef;
 
   addModalRef;
   invoiceList = [];
@@ -344,4 +343,6 @@ export class InvoiceListComponent {
     this.idInvoice = id;
     this.openInvoiceModal();
   }
+  
+  protected readonly globalFunc = this.globalFuns;
 }
