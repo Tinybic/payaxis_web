@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { EventService } from "../../core/service/event.service";
 import { ApolloService } from "../../core/service/apollo.service";
 import { ToastrService } from "ngx-toastr";
+import { projectpayment_new } from "../../core/gql/receivables";
 
 @Component({
   selector: 'app-confirm-modal',
@@ -29,14 +30,18 @@ export class ConfirmModalComponent {
     if(this.serviceName){
       this.apolloService.mutate(this.serviceName, this.params).then((res) => {
         let result: any = Object.values(res)[0];
-        if(!result.error){
-          this.toastrService.info(result.message, '');
+        if(this.serviceName == projectpayment_new){
           this.modalRef.close(result);
         } else{
-          this.toastrService.info(result.message, '');
+          if(!result.error){
+            this.toastrService.info(result.message, '');
+            this.modalRef.close(result);
+          } else{
+            this.toastrService.info(result.message, '');
+          }
         }
       });
-    }else {
+    } else{
       this.modalRef.close('ok');
     }
   }

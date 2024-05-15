@@ -327,7 +327,6 @@ export class OrderListComponent extends Base {
         }
         this.getPaymentList();
         this.confirmModalRef.close();
-        
       }, (reason) => {
         console.log(reason);
       })
