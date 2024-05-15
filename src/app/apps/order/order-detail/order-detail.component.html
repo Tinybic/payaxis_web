@@ -499,10 +499,10 @@
                 type="text" id="tax" required i18n-placeholder />
         </div>
         <div class="col-md-6 pt-2-1 d-flex flex-row-reverse text-end">
-            <div class="d-inline-block" *ngIf="order.status == 'Pending'">
-                <button type="button"
+            <div class="d-inline-block" *ngIf="order.status == 'Accepted'">
+                <!-- <button type="button"
                     class="btn btn-success ms-1-1"
-                    style="border:1px solid #ffffff; box-shadow: none;" (click) = "Accept()">Accept</button>
+                    style="border:1px solid #ffffff; box-shadow: none;" (click) = "Accept()">Accept</button> -->
                 <button type="button"
                     class="btn btn-danger ms-1-1"
                     style="border:1px solid #ffffff; box-shadow: none;" (click) = "Decline()">Decline</button>
