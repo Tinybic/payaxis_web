@@ -1,4 +1,4 @@
-<div class="row" style="padding-top: 4px;padding-bottom: 16px;">
+<div *ngIf="!isLoading" class="row" style="padding-top: 4px;padding-bottom: 16px;">
     <div class="col-md-6">
         <div class="headline-28">{{projectList.length > 0 ? 'Projects' : 'No Projects'}}</div>
         <div class="subtitle-2-500"></div>
