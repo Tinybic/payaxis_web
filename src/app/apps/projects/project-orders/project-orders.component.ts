@@ -26,6 +26,9 @@ export class ProjectOrdersComponent extends Base {
     forceVisible: true
   };
   
+  statusFilter: string = 'Active';
+  listStatusCount: any;
+  objectKeys = Object.keys;
   keywords = '';
   direction = 'asc';
   sortColumn = '';
@@ -33,7 +36,6 @@ export class ProjectOrdersComponent extends Base {
   loading = true;
   
   canEdit = false;
-  objectKeys = Object.keys;
   bgColors = [
     'bg-primary',
     'bg-secondary',
@@ -64,6 +66,7 @@ export class ProjectOrdersComponent extends Base {
   
   ngOnInit(): void{
     this.canEdit = super.setRole('Manage company users');
+    this.listStatusCount = {...this.globalFuns.POStatusCount};
     this.getOrders();
   }
   
@@ -78,12 +81,25 @@ export class ProjectOrdersComponent extends Base {
         if(!result.error){
           this.orders = result.data;
           this.InitialOrders = JSON.parse(JSON.stringify(result.data));
+          this.getStatusCount();
           this.loading = false;
         }
       });
     }else{
       this.loading = false;
     }
+  }
+  
+  getStatusCount(){
+    let listStatusCount = {...this.globalFuns.POStatusCount};
+    
+    this.InitialOrders.map((invoice) => {
+      if(!listStatusCount[invoice.status]){
+        listStatusCount[invoice.status] = 0;
+      }
+      listStatusCount[invoice.status]++;
+    })
+    this.listStatusCount = listStatusCount;
   }
   
   
@@ -102,7 +118,19 @@ export class ProjectOrdersComponent extends Base {
     this.direction = result.direction;
   }
   
+  statusFilterChange(e, status, type){
+    if(this[type] === status){
+      setTimeout(() => {
+        e.target.checked = true;
+      }, 50);
+    }
+    this[type] = status;
+  }
+  
   filterTable = (order: any) => {
+    if((this.statusFilter !== 'Active' && order.status != this.statusFilter) || (this.statusFilter == 'Active' && order.status == 'Paid')){
+      return false;
+    }
     let values = Object.values(order);
     return values.some(
       (v: any) =>

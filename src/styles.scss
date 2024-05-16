@@ -501,3 +501,5 @@ div[name='user-signature'] {
     border: 1px solid #E1E6EF !important;
   }
 }
+
+.simplebar-wrapper:hover ~ .simplebar-track > .simplebar-scrollbar:before { opacity: 0.5 !important; }

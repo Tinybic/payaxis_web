@@ -1,4 +1,4 @@
-import { formatDate } from '@angular/common';
+import { formatDate, formatCurrency } from '@angular/common';
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
@@ -105,7 +105,7 @@ export class ReceivableAddComponent {
         this.projectpayment.idVendor = this.orderInfo.idCompany;
         this.projectpayment.idOrder1 = this.orderInfo.id;
         this.projectpayment.idProject = this.orderInfo.idProject;
-        this.projectpayment.billNumber = this.orderInfo.orderNumber;
+        // this.projectpayment.billNumber = this.orderInfo.orderNumber;
         this.projectpayment.amount = this.orderInfo.remainingAmount;
       }
       
@@ -203,27 +203,10 @@ export class ReceivableAddComponent {
   }
   
   cancelAmount(){
-    if(this.from == 'Receivables'){
-      this.amountEdit = false;
-      this.orderList = JSON.parse(JSON.stringify(this.ORDERLIST));
-      if(!this.projectpayment.amount || this.projectpayment.amount == 0){
-        this.projectpayment.amount = 0;
-        return;
-      }
-      if(this.project){
-        this.orderList = this.orderList.filter(
-          (item) =>
-            item.idProject == this.project.id &&
-            item.remainingAmount >= this.projectpayment.amount
-        );
-      } else{
-        this.orderList = this.orderList.filter(
-          (item) => item.remainingAmount >= this.projectpayment.amount
-        );
-      }
-      if(this.projectpayment.amount > this.order.remainingAmount){
-        this.order = null;
-      }
+    this.amountEdit = false;
+    if(!this.projectpayment.amount){
+      this.projectpayment.amount = 0;
+      return;
     }
   }
   
@@ -308,7 +291,7 @@ export class ReceivableAddComponent {
         if(this.from == 'Received Orders'){
           this.orderList = result.data;
         } else{
-          this.orderList = result.data.filter((order) => order.status != 'Paid' && order.idPayment == 0);
+          this.orderList = result.data.filter((order) => order.status != 'Paid');
         }
         this.ORDERLIST = JSON.parse(JSON.stringify(this.orderList));
         this.setOrder();
@@ -318,9 +301,9 @@ export class ReceivableAddComponent {
   
   setOrder(){
     if(this.projectpayment.idOrder1 > 0){
-      this.orderList = this.orderList.filter(
-        (item) => item.total >= this.projectpayment.amount
-      );
+      // this.orderList = this.orderList.filter(
+      //   (item) => item.total >= this.projectpayment.amount
+      // );
       this.orderList.forEach((item) => {
         if(item.id == this.projectpayment.idOrder1){
           this.order = item;
@@ -589,16 +572,21 @@ export class ReceivableAddComponent {
   }
   
   save(){
+    if(this.projectpayment.amount == 0){
+      this.toastrService.info('Please enter amount', '');
+      return;
+    }
+    if(this.order && this.projectpayment.amount > this.order.remainingAmount){
+      this.toastrService.info('Amount due ' + formatCurrency(this.projectpayment.amount, 'en-US', '$','USD') +' can\'t be more than remaining '+formatCurrency(this.order.remainingAmount, 'en-US', '$','USD')+'.', '');
+      return;
+    }
+    
     if(this.id > 0){
       this.update();
     } else{
       this.txtError.idVendor = this.projectpayment.idVendor;
       
       if(this.txtError.idVendor > 0){
-        if(this.projectpayment.amount == 0){
-          this.toastrService.info('Please enter amount', '');
-          return;
-        }
         // if(this.projectpayment.account == ''){
         //   this.toastrService.info('Please select one deposit account', '');
         //   return;

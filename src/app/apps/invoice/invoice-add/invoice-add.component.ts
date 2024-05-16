@@ -312,24 +312,9 @@ export class InvoiceAddComponent {
 
   cancelAmount() {
     this.amountEdit = false;
-    this.orderList = JSON.parse(JSON.stringify(this.ORDERLIST));
-    if (!this.projectpayment.amount || this.projectpayment.amount == 0) {
+    if (!this.projectpayment.amount) {
       this.projectpayment.amount = 0;
       return;
-    }
-    if (this.project) {
-      this.orderList = this.orderList.filter(
-        (item) =>
-          item.idProject == this.project.id &&
-          item.remainingAmount >= this.projectpayment.amount
-      );
-    } else {
-      this.orderList = this.orderList.filter(
-        (item) => item.remainingAmount >= this.projectpayment.amount
-      );
-    }
-    if(this.projectpayment.amount > this.order.remainingAmount){
-      this.order=null;
     }
   }
 
