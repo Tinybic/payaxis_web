@@ -141,7 +141,7 @@
                 </div>
             </td>
             <td class="text-center">
-                <button *ngIf="item.status !== 'Paid'" class="btn btn-primary btn-text-12" style="padding: 6px 27px;">
+                <button *ngIf="item.status !== 'Paid'" (click)="$event.stopPropagation();payBill(item);" class="btn btn-primary btn-text-12" style="padding: 6px 27px;">
                     Pay Bill
                 </button>
                 <button *ngIf="item.status === 'Paid'" class="btn btn-outline-primary btn-text-12"
@@ -174,6 +174,12 @@
     <app-upload-attachment [idOrder1]="uploadIdOrder1" [modalRef]="uploadAttachmentRef"></app-upload-attachment>
 </ng-template>
 
-<ng-template #payingBillModal>
-    <app-paying-bill [payment]="filterSelectedOrders()" [modalRef]="payingBillModalRef"></app-paying-bill>
+<ng-template #confirmModal let-modal>
+    <app-confirm-modal [title]="confirmObj.title" [message]="confirmObj.message" [btnConfirm]="confirmObj.btnConfirm"
+                       [params]="confirmObj.params" [serviceName]="confirmObj.serviceName"
+                       [btnSide]="confirmObj.btnSide" [modalRef]="confirmModalRef"></app-confirm-modal>
+</ng-template>
+
+<ng-template #payingBillModal let-modal>
+    <app-paying-bill [payment]="projectPayment" [vendor]="vendor" [modalRef]="payingBillModalRef"></app-paying-bill>
 </ng-template>
