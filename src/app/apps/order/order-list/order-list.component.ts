@@ -29,7 +29,8 @@ export class OrderListComponent extends Base {
   roleFilter = 'Approval';
   orders = [];
   scrollOptions = {
-    forceVisible: true
+    // autoHide: false,
+    forceVisible: false,
   };
   
   roles = [];

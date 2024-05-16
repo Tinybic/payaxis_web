@@ -1,6 +1,30 @@
 <div class="orders-dropdown row mt-2-1">
-    <div class="col-md-4 subtitle-2-600-24 pt-1-1">
-        {{InitialOrders.length}} {{InitialOrders.length > 1 ? 'Orders' : 'Order'}}
+    <div class="col-md-4 flex-row-center">
+        <span class="headline-24">{{statusFilter}} {{ statusFilter != 'Active' ? '(' + listStatusCount[statusFilter] + ')' : ''}}</span>
+        <div class="d-inline-block dropdown dropdown-40 ms-1-2" ngbDropdown #statusDrop="ngbDropdown">
+            <a class="dropdown-outline" href="javascript:void(0)"
+               ngbDropdownToggle>
+                <span class="text-typeblack80">Status</span>
+                <span class="ms-1-1 text-black btn-text-12">{{statusFilter}}</span>
+                <i class="fe-chevron-down text-black ms-1-1"></i>
+            </a>
+            <div class="dropdown-menu" ngbDropdownMenu>
+                <div *ngFor="let status of objectKeys(listStatusCount)" ngbDropdownItem>
+                    <div class="form-check">
+                        <input id="status_{{status}}" type="checkbox" class="form-check-input"
+                               [checked]="statusFilter==status"
+                               (change)="statusFilterChange($event, status, 'statusFilter')">
+                        
+                        <label for="status_{{status}}"
+                               class="d-inline-block {{status == 'Active' ? 'NO' : globalFunc.toCamelCase(status.toLowerCase())}}Tag subtitle-2-600 text-optional text-center ms-2-1">{{status}}
+                        </label>
+                        
+                        <label for="status_{{status}}"
+                               class="ms-2-1 subtitle-2-400-12 text-optional">{{ status != 'Active' ? listStatusCount[status] : ''}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="col-md-8 d-flex flex-row justify-content-end">
         <!--        <div class="d-inline-block me-2-1 subtitle-2-600 pt-1-1 c-p" style="color: #215EA9;">-->

@@ -8,13 +8,6 @@
         <ngb-progressbar [value]="progressTitles[step][2]" class="progress-md mt-1-1"></ngb-progressbar>
     </div>
     
-    <div *ngIf="step == 1 && vendor !== undefined" class="d-inline-block form-check form-switch">
-        <input type="checkbox" id="customCombine" class="form-check-input mt-none me-1-1" [(ngModel)]="combine"/>
-        <label for="customCombine" class="form-check-label align-middle subtitle-2-500">Combine similar vendors into
-            one
-            payment</label>
-    </div>
-    
     
     <div *ngIf="step == 1">
         <div class="card mt-3-1" *ngFor="let item of paymentList">

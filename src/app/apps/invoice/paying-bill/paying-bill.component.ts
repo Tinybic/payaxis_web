@@ -19,7 +19,7 @@ export class PayingBillComponent {
   @Input() vendor?: any;
   @ViewChild('dp') dp: NgbDatepicker;
   
-  combine: boolean = true;
+  
   step = 1;
   btnOK = 'Continue';
   btnCancel = 'Cancel';
@@ -355,7 +355,15 @@ export class PayingBillComponent {
         this.btnOK = 'Notify my vendor';
         this.btnCancel = 'Thanks, I\'m done here';
       } else{
-        this.toastrService.info(result.message, '');
+        if(this.vendor == undefined){
+          result.data.map((item) => {
+            if(item.error){
+              this.toastrService.info(item.message, '');
+            }
+          })
+        }else{
+          this.toastrService.info(result.message, '');
+        }
       }
     })
     
