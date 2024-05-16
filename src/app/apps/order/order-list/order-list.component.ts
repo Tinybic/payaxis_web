@@ -378,6 +378,7 @@ export class OrderListComponent extends Base {
   
   openPaymentRequestModal(order, event){
     this.selectedOrder = order;
+    console.log(this.selectedOrder);
     this.paymentRequestModalRef = this.modalService.open(this.paymentRequestModal, {
       backdrop: 'static',
       modalDialogClass: 'modal-right',

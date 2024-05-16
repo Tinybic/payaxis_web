@@ -38,6 +38,8 @@ export class OrderDetailComponent {
   @ViewChild('addcostcode') addcostcode: any;
   @ViewChild('addvendor') addvendor: any;
   @ViewChild('addproject') addproject: any;
+  @ViewChild('paymentRequestModal') paymentRequestModal: any;
+  
   @ViewChild('t') t: any;
   tabs1 = 1;
   reasonList = [];
@@ -70,6 +72,9 @@ export class OrderDetailComponent {
     total: 0.0,
     status: '',
     listItems: [],
+    projectName:'',
+    vendorName:'',
+    remainingAmount:0.0
   };
 
   attachmentFilesTemp = [];
@@ -241,6 +246,9 @@ export class OrderDetailComponent {
             total: result.data.projectOrder.total,
             status: result.data.projectOrder.status,
             listItems: result.data.listItems,
+            projectName:result.data.projectOrder.projectName,
+            vendorName:result.data.projectOrder.vendorName,
+            remainingAmount:result.data.projectOrder.total - result.data.projectOrder.paidAmount
           };
           this.project = {
             projectName : result.data.projectOrder.projectName
@@ -774,6 +782,24 @@ export class OrderDetailComponent {
           });
         });
     }
+  }
+  paymentRequestModalRef;
+  openPaymentRequestModal(){
+    console.log(this.order);
+    this.paymentRequestModalRef = this.modalService.open(this.paymentRequestModal, {
+      backdrop: 'static',
+      modalDialogClass: 'modal-right',
+      size: '640'
+    });
+    this.paymentRequestModalRef.result.then(
+      (res) => {
+       // this.clickAllOrder();
+      },
+      (dismiss) => {
+        //this.getOrders();
+      }
+    );
+    event.stopPropagation();
   }
 }
 

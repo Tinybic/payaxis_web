@@ -512,6 +512,13 @@
                 <span class="headline-24" style=" color:  {{order.status == 'Paid'?'#FFFFFF80':'white'}};"
                     id="total">{{order.total | currency}}</span>
             </div>
+            <div class="d-inline-block" *ngIf="order.status !== 'Paid'"><button type="button"
+                class="btn btn-primary me-1-1" style="border:0px; box-shadow: none;" (click)="openPaymentRequestModal()">Payment Request</button></div>
         </div>
     </div>
 </div>
+
+<ng-template #paymentRequestModal let-modal>
+    <app-receivable-add class="p-4-1" [modalRef]="paymentRequestModalRef" [id]="0"
+                        [orderInfo]="order" [from]="'Received Orders'"></app-receivable-add>
+</ng-template>
