@@ -37,6 +37,8 @@ export type Scalars = {
   mobile_String_NotNull_pattern_093093094: { input: any; output: any; }
   notes_String_NotNull_maxLength_250: { input: any; output: any; }
   notes_String_NotNull_maxLength_255: { input: any; output: any; }
+  payMemo_String_NotNull_maxLength_255: { input: any; output: any; }
+  payMemo_String_maxLength_255: { input: any; output: any; }
   payType_String_NotNull_maxLength_25: { input: any; output: any; }
   paymentTerms_String_NotNull_maxLength_50: { input: any; output: any; }
   payto_String_NotNull_maxLength_255: { input: any; output: any; }
@@ -883,6 +885,7 @@ export type MutationProjectpayment_PayArgs = {
   idCompany: Scalars['Int']['input'];
   idVendor?: InputMaybe<Scalars['Int']['input']>;
   paidDate: Scalars['String']['input'];
+  payMemo?: InputMaybe<Scalars['payMemo_String_maxLength_255']['input']>;
   revision: Scalars['Int']['input'];
 };
 
@@ -2073,10 +2076,10 @@ export type Paymentorder = {
   idInvitedCompany?: InputMaybe<Scalars['Int']['input']>;
   idProject: Scalars['Int']['input'];
   idVendor: Scalars['Int']['input'];
+  payMemo: Scalars['payMemo_String_NotNull_maxLength_255']['input'];
   paymentOrderids?: InputMaybe<Array<Paymentorderid>>;
   paymentTerms: Scalars['paymentTerms_String_NotNull_maxLength_50']['input'];
   sentDate: Scalars['sentDate_String_NotNull_format_date']['input'];
-  txtNotes: Scalars['txtNotes_String_NotNull_maxLength_512']['input'];
   vendorEmail?: InputMaybe<Scalars['String']['input']>;
   vendorName?: InputMaybe<Scalars['String']['input']>;
 };
