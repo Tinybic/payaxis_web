@@ -1,15 +1,11 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { ApolloService } from "../../../core/service/apollo.service";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
-import { ToastrService } from "ngx-toastr";
-import { HttpService } from "../../../core/service/http.service";
 import { Router } from "@angular/router";
 import { GlobalFunctionsService } from "../../../core/service/global-functions.service";
 import { Base } from 'src/app/core/base';
 import { projectorder_list } from "../../../core/gql/orders";
 import { LocalStorageService } from 'src/app/core/service/local-storage.service';
-import { projectpayment_new } from 'src/app/core/gql/receivables';
-import { companypayment_list } from 'src/app/core/gql/payment';
 
 @Component({
   selector: 'app-project-orders',
@@ -49,6 +45,7 @@ export class ProjectOrdersComponent extends Base {
   ];
   
   allOrdersChecked = false;
+  selectedOrders:any = [];
   
   uploadIdOrder1: number;
   uploadAttachmentRef: NgbModalRef;
@@ -57,8 +54,6 @@ export class ProjectOrdersComponent extends Base {
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
-    private toastrService: ToastrService,
-    private httpService: HttpService,
     private router: Router,
     private globalFuns: GlobalFunctionsService,
     private localStorage: LocalStorageService
@@ -82,6 +77,7 @@ export class ProjectOrdersComponent extends Base {
       }).then((res) => {
         const result = res.projectorder_list;
         if(!result.error){
+          this.allOrdersChecked=false;
           this.orders = result.data;
           this.InitialOrders = JSON.parse(JSON.stringify(result.data));
           this.getStatusCount();
@@ -141,11 +137,9 @@ export class ProjectOrdersComponent extends Base {
     );
   }
   
-  
   openDetail(id){
     this.router.navigate(['apps/order/detail/' + id]);
   }
-  
   
   uploadAttachments(order) {
     this.uploadIdOrder1 = order.id;
@@ -159,9 +153,19 @@ export class ProjectOrdersComponent extends Base {
     
     })
   }
+  
+  payBill(item){
+    this.selectedOrders=[item];
+    this.openPaySelectedModal();
+  }
+  
   toggleOrderChecked(){
+    this.selectedOrders=[];
     let allOrdersChecked = true;
     this.orders.map((item) => {
+      if(item.checked){
+        this.selectedOrders.push(item);
+      }
       if(allOrdersChecked && item.status !== 'Paid'){
         allOrdersChecked = item.checked;
       }
@@ -170,6 +174,11 @@ export class ProjectOrdersComponent extends Base {
   }
   
   toggleAllOrdersChecked(){
+    if(this.allOrdersChecked){
+      this.selectedOrders = this.orders.filter((order)=>order.status != 'Paid');
+    }else {
+      this.selectedOrders=[];
+    }
     this.orders.map((item) => {
       if(item.status !== 'Paid'){
         item.checked = this.allOrdersChecked;
@@ -181,10 +190,6 @@ export class ProjectOrdersComponent extends Base {
     return !this.orders.some((item) => item.checked)
   }
   
-  filterSelectedOrders(){
-    return this.orders.filter((item) => item.checked);
-  }
-  
   openPaySelectedModal(){
     this.payingBillModalRef = this.modalService.open(this.payingBillModal, {
       backdrop: 'static',
@@ -194,137 +199,12 @@ export class ProjectOrdersComponent extends Base {
     
     this.payingBillModalRef.result.then(
       (res) => {
-        console.log('OK');
         this.getOrders();
       },
       (dismiss) => {
         console.log('dismiss');
       }
     );
-  }
-
-  confirmObj = {
-    title: 'Pay this order',
-    message: 'Do you want to pay this order ?',
-    btnConfirm: 'Yes',
-    serviceName: projectpayment_new,
-    params: {},
-    btnSide: 'end',
-  };
-  confirmModalRef: NgbModalRef;
-  vendor;
-  projectPayment;
-  payBill(item) {
-    if (item.remainingAmount > 0) {
-      this.confirmObj.params = {
-        idCompany: item.idCompany,
-        idProject: item.idProject,
-        idVendor: item.idVendor,
-        idOrder1: item.id,
-        idCompany_payment: 0,
-        billNumber: item.orderNumber,
-        sentDate: item.invoicedDate,
-        dueDate: item.indvoicedueDate,
-        paymentTerms: '',
-        amount: item.remainingAmount,
-        txtNotes: item.notes,
-        billyn: true,
-        costCode: item.costCode,
-        paymentFiles: [],
-        idInvitedCompany: 0,
-        vendorName: item.vendorName,
-        vendorEmail: '',
-        status: '',
-        account: '',
-        payType: '',
-      };
-
-      this.confirmModalRef = this.modalService.open(this.confirmModal, {
-        size: '443',
-        centered: true,
-      });
-
-      this.confirmModalRef.result.then(
-        (result) => {
-          this.vendor = {
-            id: item.idVendor,
-            vendorName: item.vendorName,
-          };
-          this.projectPayment = {
-            id: result.data.id,
-            idCompany: item.idCompany,
-            idProject: item.idProject,
-            idVendor: item.idVendor,
-            idOrder1: item.id,
-            idCompany_payment: 0,
-            revision: result.data.revision,
-            billNumber: item.orderNumber,
-            sentDate: item.invoicedDate,
-            dueDate: item.indvoicedueDate,
-            paymentTerms: '',
-            amount: item.remainingAmount,
-            txtNotes: item.notes,
-            billyn: true,
-            costCode: item.costCode,
-            paymentFiles: [],
-            idInvitedCompany: 0,
-            vendorName: item.vendorName,
-            vendorEmail: '',
-            status: '',
-            account: '',
-            payType: '',
-          };
-          this.getPaymentList();
-          this.confirmModalRef.close();
-        },
-        (reason) => {
-          console.log(reason);
-        }
-      );
-    }
-  }
-  paymentList = [];
-  getPaymentList() {
-    this.apolloService
-      .query(companypayment_list, {
-        idCompany: parseInt(this.localStorage.getItem('idcompany')),
-      })
-      .then((res) => {
-        const result = res.companypayment_list;
-        if (!result.error) {
-          this.paymentList = result.data;
-          this.openPayingBill();
-        }
-      });
-  }
-
-  openPayingBill() {
-    if (this.paymentList.length == 0) {
-      this.toastrService.info(
-        'No payment method available, please go to company settings and add a new payment method.',
-        'Warning',
-        {
-          timeOut: 6000,
-          enableHtml: true,
-          toastClass: 'max-width-300 text-white',
-        }
-      );
-    } else {
-      this.payingBillModalRef = this.modalService.open(this.payingBillModal, {
-        backdrop: 'static',
-        modalDialogClass: 'modal-right',
-        size: '640',
-      });
-
-      this.payingBillModalRef.result.then(
-        (res) => {
-          this.getOrders();
-        },
-        (dismiss) => {
-          this.getOrders();
-        }
-      );
-    }
   }
   
   protected readonly globalFunc=this.globalFuns;
