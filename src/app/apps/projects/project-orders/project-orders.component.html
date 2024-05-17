@@ -174,12 +174,7 @@
     <app-upload-attachment [idOrder1]="uploadIdOrder1" [modalRef]="uploadAttachmentRef"></app-upload-attachment>
 </ng-template>
 
-<ng-template #confirmModal let-modal>
-    <app-confirm-modal [title]="confirmObj.title" [message]="confirmObj.message" [btnConfirm]="confirmObj.btnConfirm"
-                       [params]="confirmObj.params" [serviceName]="confirmObj.serviceName"
-                       [btnSide]="confirmObj.btnSide" [modalRef]="confirmModalRef"></app-confirm-modal>
-</ng-template>
 
 <ng-template #payingBillModal let-modal>
-    <app-paying-bill [payment]="projectPayment" [vendor]="vendor" [modalRef]="payingBillModalRef"></app-paying-bill>
+    <app-paying-bill [payment]="selectedOrders" [modalRef]="payingBillModalRef"></app-paying-bill>
 </ng-template>
