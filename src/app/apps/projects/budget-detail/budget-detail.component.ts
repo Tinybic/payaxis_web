@@ -259,7 +259,7 @@ export class BudgetDetailComponent {
   
   
   createNew(){
-      this.router.navigate(['apps/order/detail/-'+ this.projectId])
+      this.router.navigate(['apps/order/detail/0'],{ queryParams: {idProject: this.projectId}});
   }
   
   
