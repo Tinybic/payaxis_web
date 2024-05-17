@@ -58,9 +58,6 @@ export class ProjectDetailComponent extends Base {
   
   budgetList = [];
   isLoading = true;
-  categoryName = '';
-  categoryNameError = false;
-  categoryList = [];
   
   selectedDateRange: string = 'Pick Dates';
   hoveredDate: NgbDate | null = null;
@@ -75,7 +72,6 @@ export class ProjectDetailComponent extends Base {
     private modalService: NgbModal,
     private router: Router,
     private apolloService: ApolloService,
-    private toastrService: ToastrService,
     private activatedRoute: ActivatedRoute,
     private eventService: EventService,
     private calendar: NgbCalendar,
@@ -195,7 +191,7 @@ export class ProjectDetailComponent extends Base {
   
   createNew(){
     if(this.tabs < 3){
-      this.router.navigate(['apps/order/detail/-' + this.project.id])
+      this.router.navigate(['apps/order/detail/0'],{ queryParams: {idProject: this.project.id}});
     }
   }
   

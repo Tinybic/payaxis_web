@@ -85,15 +85,12 @@ export class AddOrderComponent {
     invoicedDate: -1,
     indvoicedueDate: -1
   };
-  submitForm = false;
   keywordsVendor = '';
   keywordsProject = '';
-  keywordsListItem = '';
   costCodeList = [];
   COSTCODE_LIST = [];
   vendorcostcodesText = '';
   txtReason = '';
-  sortCloumn = '';
   loading = true;
   direction = 'asc';
   
@@ -144,9 +141,7 @@ export class AddOrderComponent {
         this.getOrderInfo(this.order.id);
       }else {
         this.order.id = 0;
-        if(this.idProject === undefined){
-          this.order.idProject = 0;
-        }
+        this.order.idProject = this.idProject === undefined ? 0 : this.idProject;
         //this.order.invoicedDate = new Date().toISOString().slice(0, 10);
         this.getOrderNumber();
         this.getCostCodeList();
