@@ -1,26 +1,25 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { errorMonitor } from 'events';
 import { ToastrService } from 'ngx-toastr';
 import { Base } from 'src/app/core/base';
 import {
   project_vendors,
   quickbooks_downloadvendors,
-  vendor_list,
 } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 import { environment } from 'src/environments/environment';
+import { ActivatedRoute } from "@angular/router";
 @Component({
   selector: 'app-project-vendor',
   templateUrl: './project-vendor.component.html',
   styleUrls: ['./project-vendor.component.scss'],
 })
 export class ProjectVendorComponent extends Base {
-  @Input() idProject: number;
   @ViewChild('inviteVendor') inviteVendor: any;
   @ViewChild('addVendor') addVendor: any;
+  
+  idProject=0;
   keywords = '';
   direction = '';
   sortColumn = '';
@@ -36,6 +35,7 @@ export class ProjectVendorComponent extends Base {
     private apolloService: ApolloService,
     private modalService: NgbModal,
     private toastrService: ToastrService,
+    private activatedRoute: ActivatedRoute,
     private localStorage: LocalStorageService
   ) {
     super();
@@ -45,7 +45,10 @@ export class ProjectVendorComponent extends Base {
     this.canEdit = super.setRole('Edit Vendors');
     if (this.localStorage.getItem('idcompany')) {
       this.canImport = super.setRole('Sync with accounting software');
-      this.getVendorList();
+      this.activatedRoute.params.subscribe((params) => {
+        this.idProject = parseInt(params['id']);
+        this.getVendorList();
+      });
     } else {
       this.loading = false;
     }

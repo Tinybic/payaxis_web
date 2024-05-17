@@ -9,7 +9,7 @@
         
         <ul ngbNav #nav="ngbNav" [(activeId)]="tabs" class="nav-pills navtab-bg mt-1-1">
             <li [ngbNavItem]="1">
-                <a ngbNavLink>
+                <a ngbNavLink (click)="setTabActiveIndex('1')">
                     Budget
                 </a>
                 <ng-template ngbNavContent>
@@ -214,23 +214,23 @@
                     </div>
                 </ng-template>
             </li>
-            <li [ngbNavItem]="2">
+            <li [ngbNavItem]="2" (click)="setTabActiveIndex('2')">
                 <a ngbNavLink>
                     Orders
                 </a>
                 <ng-template ngbNavContent>
-                    <app-project-orders [idProject]="project.id"></app-project-orders>
+                    <app-project-orders></app-project-orders>
                 </ng-template>
             </li>
-            <li [ngbNavItem]="3">
+            <li [ngbNavItem]="3" (click)="setTabActiveIndex('3')">
                 <a ngbNavLink>
                     Contacts
                 </a>
                 <ng-template ngbNavContent>
-                    <app-project-vendor [idProject]="project.id"></app-project-vendor>
+                    <app-project-vendor></app-project-vendor>
                 </ng-template>
             </li>
-            <li [ngbNavItem]="4">
+            <li [ngbNavItem]="4" (click)="setTabActiveIndex('4')">
                 <a ngbNavLink>
                     Team
                 </a>
@@ -238,7 +238,7 @@
                     <app-project-team></app-project-team>
                 </ng-template>
             </li>
-            <li [ngbNavItem]="5">
+            <li [ngbNavItem]="5" (click)="setTabActiveIndex('5')">
                 <a ngbNavLink>
                     Payment History
                 </a>

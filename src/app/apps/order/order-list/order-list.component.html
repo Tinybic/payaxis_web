@@ -169,7 +169,7 @@
                 </div>
             </td>
             <td class="text-center">
-                <div *ngIf="orderType == 'Sent'">
+                <div *ngIf="tab == 1">
                     <button *ngIf="item.status !== 'Paid' && canEdit" class="btn btn-primary btn-text-12"
                             style="padding: 6px 27px;"
                             (click)="$event.stopPropagation();payBill(item);">
@@ -180,7 +180,7 @@
                         View Details
                     </button>
                 </div>
-                <div *ngIf="orderType == 'Received'">
+                <div *ngIf="tab == 2">
                     <button *ngIf="item.status != 'Paid' && canEdit" class="btn btn-primary btn-text-12"
                             style="padding: 6px 27px;"
                             (click)="$event.stopPropagation();openPaymentRequestModal(item,$event)">

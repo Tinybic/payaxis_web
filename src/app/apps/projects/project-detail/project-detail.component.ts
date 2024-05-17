@@ -23,7 +23,9 @@ export class ProjectDetailComponent extends Base {
   @ViewChild('editProjectModal') editProjectModal: NgbModalRef;
   @ViewChild('editBudgetModal') editBudgetModal: NgbModalRef;
   @ViewChild('addCategoryModal') addCategoryModal: any;
-  tabs = 1;
+  
+  
+  tabs = parseInt(window.localStorage.getItem('ProjectsTabActiveIndex'));
   keywords = '';
   
   project = {
@@ -297,6 +299,10 @@ export class ProjectDetailComponent extends Base {
     }, (reason) => {
       console.log(reason);
     })
+  }
+  
+  setTabActiveIndex(index: string){
+    window.localStorage.setItem('ProjectsTabActiveIndex', index);
   }
   
 }

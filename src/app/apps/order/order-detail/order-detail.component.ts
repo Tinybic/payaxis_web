@@ -149,7 +149,7 @@ export class OrderDetailComponent {
     if (this.idOrder < 0) {
       this.router.navigate(['apps/projects/detail/' + -this.idOrder]);
     } else {
-      this.router.navigateByUrl('apps/order?tab=2');
+      this.router.navigateByUrl('apps/order');
     }
   }
 
@@ -785,7 +785,6 @@ export class OrderDetailComponent {
   }
   paymentRequestModalRef;
   openPaymentRequestModal(){
-    console.log(this.order);
     this.paymentRequestModalRef = this.modalService.open(this.paymentRequestModal, {
       backdrop: 'static',
       modalDialogClass: 'modal-right',
