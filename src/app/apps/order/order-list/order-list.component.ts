@@ -22,11 +22,11 @@ import { projectorder_list } from '../../../core/gql/orders';
   styleUrls: ['./order-list.component.scss'],
 })
 export class OrderListComponent extends Base {
-  @Input() orderType?: string;
   @ViewChild('paymentRequestModal') paymentRequestModal: NgbModalRef;
   @ViewChild('confirmModal') confirmModal: NgbModalRef;
   @ViewChild('payingBillModal') payingBillModal: NgbModalRef;
 
+  tab=1;
   statusFilter: string = 'Active';
   roleFilter = 'Approval';
   orders = [];
@@ -88,9 +88,12 @@ export class OrderListComponent extends Base {
     this.canEdit = super.setRole('Edit Order');
     this.listStatusCount = { ...this.globalFuns.POStatusCount };
     if (this.localStorage.getItem('idcompany')) {
-      this.getOrders();
-      this.getRoles();
-      this.getProjects();
+      setTimeout(() =>{
+        this.tab=parseInt(window.localStorage.getItem('OrdersTabActiveIndex'))
+        this.getOrders();
+        this.getRoles();
+        this.getProjects();
+      }, 0)
     } else {
       this.loading = false;
     }
@@ -99,7 +102,7 @@ export class OrderListComponent extends Base {
   getOrders() {
     if (this.localStorage.getItem('idcompany')) {
       let serviceName =
-        this.orderType == 'Sent' ? projectorder_list : receivable_list;
+        this.tab == 1 ? projectorder_list : receivable_list;
       this.apolloService
         .query(serviceName, {
           idCompany: parseInt(this.localStorage.getItem('idcompany')),
@@ -253,7 +256,7 @@ export class OrderListComponent extends Base {
   };
 
   openDetail(id) {
-    if (this.orderType == 'Sent') {
+    if (this.tab == 1) {
       this.router.navigate(['apps/order/detail/' + id]);
     } else {
       this.router.navigate(['apps/order/info/' + id]);
@@ -400,7 +403,6 @@ export class OrderListComponent extends Base {
 
   openPaymentRequestModal(order, event) {
     this.selectedOrder = order;
-    console.log(this.selectedOrder);
     this.paymentRequestModalRef = this.modalService.open(
       this.paymentRequestModal,
       {

@@ -14,19 +14,19 @@
     <div class="col flex-column-1">
         <ul ngbNav #nav2="ngbNav" [(activeId)]="tabs1" class="nav-pills navtab-bg ">
             <li [ngbNavItem]="1">
-                <a ngbNavLink>
+                <a ngbNavLink (click)="setTabActiveIndex('1')">
                     Sent Orders
                 </a>
                 <ng-template class="d-flex flex-column" ngbNavContent>
-                    <app-order-list [orderType]="'Sent'"></app-order-list>
+                    <app-order-list></app-order-list>
                 </ng-template>
             </li>
             <li [ngbNavItem]="2">
-                <a ngbNavLink>
+                <a ngbNavLink (click)="setTabActiveIndex('2')">
                     Received Orders
                 </a>
                 <ng-template ngbNavContent class="d-flex flex-column">
-                    <app-order-list [orderType]="'Received'"></app-order-list>
+                    <app-order-list></app-order-list>
                 </ng-template>
             </li>
         </ul>

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Base } from 'src/app/core/base';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-order',
@@ -13,18 +13,19 @@ export class OrderComponent extends Base {
 
   constructor(
     private router: Router,
-    private activatedRoute: ActivatedRoute,
   ) {
     super();
   }
 
   ngOnInit(): void {
-    const tab = this.activatedRoute.snapshot.queryParams['tab'];
     this.canCreate = super.setRole('Create Order');
-    if (tab) {
-      this.tabs1 = 2;
-    }
+    this.tabs1 = parseInt(window.localStorage.getItem('OrdersTabActiveIndex'));
   }
+  
+  setTabActiveIndex(index: string){
+    window.localStorage.setItem('OrdersTabActiveIndex', index);
+  }
+  
   openDetail(id) {
     this.router.navigate(['apps/order/detail/' + id]);
   }

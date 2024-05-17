@@ -127,8 +127,8 @@
         <div class="row">
             <input type="text" style="display: none;" />
             <div class="col-md-12 d-flex align-items-center">
-                <i class="fe-chevron-left"></i>
-                <span class="bold-500 cursor-pointer" (click)="clickAllOrder()">All Orders &
+                <span class="bold-500 cursor-pointer flex-row-center" (click)="clickAllOrder()">
+                <i class="fe-chevron-left"></i>All Orders &
                     Bills</span>&nbsp;/&nbsp;<span class="bold-800 text-primary" *ngIf="order.id > 0">Order
                     #{{order.orderNumber}}</span><span class="bold-800 text-primary" *ngIf="order.id == 0">New
                     Order</span>

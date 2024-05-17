@@ -492,6 +492,7 @@ export class ProjectsComponent extends Base implements OnInit {
   }
   
   navProjectDetail(id){
+    localStorage.setItem('ProjectsTabActiveIndex', '1');
     this.router.navigate(['/apps/projects/detail/' + id]);
   }
   

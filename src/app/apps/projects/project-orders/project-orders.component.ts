@@ -1,7 +1,7 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { ApolloService } from "../../../core/service/apollo.service";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { GlobalFunctionsService } from "../../../core/service/global-functions.service";
 import { Base } from 'src/app/core/base';
 import { projectorder_list } from "../../../core/gql/orders";
@@ -13,12 +13,11 @@ import { LocalStorageService } from 'src/app/core/service/local-storage.service'
   styleUrls: ['./project-orders.component.scss']
 })
 export class ProjectOrdersComponent extends Base {
-  @Input() idProject;
   @ViewChild('uploadAttachmentModal') uploadAttachmentModal: NgbModalRef;
   @ViewChild('payingBillModal') payingBillModal: NgbModalRef;
   @ViewChild('confirmModal') confirmModal: NgbModalRef;
   
-  
+  idProject=0;
   orders = [];
   InitialOrders = [];
   scrollOptions = {
@@ -56,6 +55,7 @@ export class ProjectOrdersComponent extends Base {
     private modalService: NgbModal,
     private router: Router,
     private globalFuns: GlobalFunctionsService,
+    private activatedRoute: ActivatedRoute,
     private localStorage: LocalStorageService
   ){
     super();
@@ -65,7 +65,10 @@ export class ProjectOrdersComponent extends Base {
   ngOnInit(): void{
     this.canEdit = super.setRole('Manage company users');
     this.listStatusCount = {...this.globalFuns.POStatusCount};
-    this.getOrders();
+    this.activatedRoute.params.subscribe((params) => {
+      this.idProject = parseInt(params['id']);
+      this.getOrders();
+    });
   }
   
   
@@ -138,7 +141,7 @@ export class ProjectOrdersComponent extends Base {
   }
   
   openDetail(id){
-    this.router.navigate(['apps/order/detail/' + id]);
+    this.router.navigate(['apps/order/detail/' + id],{ queryParams: {idProject: this.idProject}});
   }
   
   uploadAttachments(order) {
