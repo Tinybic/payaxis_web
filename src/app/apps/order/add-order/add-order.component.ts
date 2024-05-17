@@ -131,7 +131,7 @@ export class AddOrderComponent {
     this.paymentTermsList = PAYMENTTERM;
     
     // from Project Orders, others idProject==undefined
-    this.idProject = this.activatedRoute.snapshot.queryParams['idProject'];
+    this.idProject = parseInt(this.activatedRoute.snapshot.queryParams['idProject']);
     
     this.activatedRoute.params.subscribe((params) => {
       
