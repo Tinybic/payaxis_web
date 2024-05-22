@@ -192,8 +192,8 @@
                        
                     </td>
                     <td> {{item.projectName}}</td>
-                    <td> {{item.orderNumber}} </td>
-                    <td> {{item.amount | currency}}</td>
+                    <td> {{item.orderNumber == 0 ? '' : item.orderNumber}} </td>
+                    <td class="text-end"> {{item.amount | currency}}</td>
                     <td class="text-end">
                         <button type="button" class="btn btn-primary padding-8-16" id="reviewBill{{item.id}}" (click) ="openEditModal(item.id)">Review Bill</button>
                         <i class="fe-more-vertical- ms-1-1"></i>
@@ -231,5 +231,5 @@
     </div>
 </div>
 <ng-template #addModal>
-    <app-invoice-add class="p-4-1" [modalRef]="addModalRef" [id] = "idInvoice"></app-invoice-add>
+    <app-invoice-add class="p-4-1" [modalRef]="addModalRef" [id]="idInvoice"></app-invoice-add>
 </ng-template>

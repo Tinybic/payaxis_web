@@ -242,7 +242,7 @@
 </ng-template>
 
 <ng-template #payingBillModal let-modal>
-    <app-paying-bill [payment]="projectPayment" [vendor]="vendor" [modalRef]="payingBillModalRef"></app-paying-bill>
+    <app-paying-bill [payment]="selectedOrders" [modalRef]="payingBillModalRef"></app-paying-bill>
 </ng-template>
 
 <ng-template #paymentRequestModal let-modal>

@@ -95,6 +95,7 @@ const projectorder_info = gql`
           idCompany
           idProject
           idVendor
+          idNewVendor
           orderNumber
           idReason
           invoiceNumber
@@ -109,6 +110,7 @@ const projectorder_info = gql`
           tax
           total
           paidAmount
+          pendingAmount
           remainingAmount
           idPayment
           status
@@ -235,6 +237,7 @@ const projectorder_related = gql`
         tax
         total
         paidAmount
+        pendingAmount
         remainingAmount
         status
         active

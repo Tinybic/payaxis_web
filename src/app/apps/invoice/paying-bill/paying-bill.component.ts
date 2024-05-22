@@ -1,9 +1,9 @@
-import { Component, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { NgbCalendar, NgbDate, NgbModal, NgbModalRef, NgbDatepicker, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { ApolloService } from "../../../core/service/apollo.service";
 import { ToastrService } from "ngx-toastr";
 import { formatDate } from "@angular/common";
-import { projectpayment_pay, projectpayment_paymultiple } from "../../../core/gql/receivables";
+import { projectbill_list, projectpayment_pay, projectpayment_paymultiple } from "../../../core/gql/receivables";
 import { LocalStorageService } from "../../../core/service/local-storage.service";
 import { vendor_list } from "../../../core/gql/vendor";
 import { GlobalFunctionsService } from "../../../core/service/global-functions.service";
@@ -34,6 +34,7 @@ export class PayingBillComponent {
   idCompany: number = 0;
   paymentList = [];
   vendorList: any[] = [];
+  billList: any[] = [];
   objectValues = Object.values;
   
   step3ActiveIndex: number = 0;
@@ -58,99 +59,105 @@ export class PayingBillComponent {
     private calendar: NgbCalendar,
     private localStorage: LocalStorageService,
     private ngbDateFormater: NgbDateParserFormatter,
-    private elementRef: ElementRef,
+    private globalFuns: GlobalFunctionsService
   ){}
   
   ngOnInit(): void{
     this.idCompany = parseInt(this.localStorage.getItem('idcompany'));
-    if(this.vendor === undefined){
-      const groupedVendorIds = this.payment.reduce((acc, item) => {
-        if(!acc[item.idVendor]){
-          acc[item.idVendor] = [];
-        }
-        acc[item.idVendor].push(item);
-        return acc;
-      }, {} as { [key: number]: any[] })
-      
-      Object.keys(groupedVendorIds).map((item) => {
-        let vendors = groupedVendorIds[item];
-        let totalAmount = 0;
-        let paymentOrderids = [];
-        vendors.map((vendor) => {
-          totalAmount += vendor.remainingAmount;
-          paymentOrderids.push({
-            idOrder1: vendor.id,
-            number: vendor.orderNumber,
-            dueDate: vendor.indvoicedueDate,
-            amount: vendor.remainingAmount,
-            status: vendor.status,
-            currentAmount: {
-              value: vendor.remainingAmount.toFixed(2),
-              balance: 0.00,
-              redColor: false
-            }
-          })
-        })
-        let vendor = {
-          idProject: vendors[0].idProject,
-          idVendor: vendors[0].idVendor,
-          billNumber: '',
-          costCode: '',
-          paymentTerms: '',
-          sentDate: '',
-          dueDate: '',
-          amount: totalAmount,
-          payMemo: '',
-          idInvitedCompany: 0,
-          vendorName: vendors[0].vendorName,
-          vendorEmail: '',
-          paymentOrderids: paymentOrderids
-        }
-        
-        this.paymentList.push(vendor);
-      })
-      
-      this.getVendorList();
-    } else{
-      this.paymentList = [{
-        idCompany: this.idCompany,
-        id: parseInt(this.payment.id),
-        revision: parseInt(this.payment.revision),
-        idVendor: parseInt(this.payment.idVendor),
-        vendorName: this.payment.vendorName,
-        billNumber: this.payment.billNumber,
-        paidDate: '',
-        amount: this.parseFloat(this.payment.amount),
-        payMemo: '',
-        dueDate: this.payment.dueDate,
-        paymentOrderids: [{
-          number: this.payment.billNumber,
-          dueDate: this.payment.dueDate,
-          amount: this.payment.amount,
+    const groupedVendorIds = this.payment.reduce((acc, item) => {
+      if(!acc[item.idVendor]){
+        acc[item.idVendor] = [];
+      }
+      acc[item.idVendor].push(item);
+      return acc;
+    }, {} as { [key: number]: any[] })
+    Object.keys(groupedVendorIds).map((item) => {
+      let vendors = groupedVendorIds[item];
+      let totalAmount = 0;
+      let paymentOrderids = [];
+      vendors.map((subItem) => {
+        totalAmount += subItem.remainingAmount;
+        paymentOrderids.push({
+          idOrder1: subItem.id,
+          number: subItem.orderNumber,
+          idPayment: subItem.idPayment,
+          dueDate: subItem.indvoicedueDate,
+          amount: subItem.remainingAmount,
+          status: subItem.status,
           currentAmount: {
-            value: this.payment.amount.toFixed(2),
-            balance: 0.00,
-            redColor: false
+            value: subItem.amount ? subItem.amount : subItem.pendingAmount == 0 ? subItem.remainingAmount.toFixed(2) : subItem.pendingAmount.toFixed(2),
+            balance: subItem.amount ? subItem.remainingAmount - subItem.amount : subItem.pendingAmount == 0 ? 0.00 : subItem.remainingAmount - subItem.pendingAmount,
+            redColor: subItem.amount ? subItem.amount < subItem.remainingAmount : false
           }
-        }]
-      }];
+        })
+      })
+      let vendor = {
+        idProject: vendors[0].idProject,
+        idVendor: vendors[0].idVendor,
+        billNumber: '',
+        costCode: '',
+        paymentTerms: '',
+        sentDate: '',
+        dueDate: '',
+        amount: totalAmount,
+        payMemo: '',
+        idInvitedCompany: 0,
+        vendorName: vendors[0].vendorName,
+        vendorEmail: '',
+        paymentOrderids: paymentOrderids
+      }
+      
+      this.paymentList.push(vendor);
+    })
+    
+    if(this.vendor === undefined){
+      this.getVendorList();
     }
+    this.getBillList();
     this.onDateSelection(this.currentDate);
   }
   
-  amountKeyDown(e, item){
-    const preValue = e.target.value;
-    setTimeout(() => {
-      if(e.target.value && e.target.value.length > 0){
-        const currentValue = parseFloat(e.target.value.replace(/[$,]/g, ''));
-        if(currentValue > item.amount){
-          e.target.value = preValue;
-          item.currentAmount.value = parseFloat(preValue.replace(/[$,]/g, ''));
-        }
-      }
+  
+  getBillList(){
+    this.apolloService.query(projectbill_list, {
+      idCompany: parseInt(this.localStorage.getItem('idcompany')),
+      idProject: 0,
+      idVendor: 0,
+      idOrder1: 0
+    }).then((res) => {
+      const result = res.projectbill_list;
+      this.billList = result.data;
       
-      this.getRemainingOrderBalance(item);
-    }, 0)
+      this.paymentList.map((item) => {
+        item.paymentOrderids.map((subItem) => {
+          for(let i = 0; i < this.billList.length; i++){
+            if(subItem.idPayment == this.billList[i].id){
+              subItem.bill = this.billList[i];
+              break;
+            }
+          }
+          return subItem;
+        })
+      })
+    });
+  }
+  
+  
+  amountKeyDown(e, item){
+    if(item.number > 0){
+      const preValue = e.target.value;
+      setTimeout(() => {
+        if(e.target.value && e.target.value.length > 0){
+          const currentValue = parseFloat(e.target.value.replace(/[$,]/g, ''));
+          if(currentValue > item.amount){
+            e.target.value = preValue;
+            item.currentAmount.value = parseFloat(preValue.replace(/[$,]/g, ''));
+          }
+        }
+        
+        this.getRemainingOrderBalance(item);
+      }, 0)
+    }
   }
   
   getRemainingOrderBalance(item){
@@ -339,12 +346,12 @@ export class PayingBillComponent {
       serviceName = projectpayment_pay;
       params = {
         idCompany: this.idCompany,
-        id: parseInt(this.paymentList[0].id),
-        revision: parseInt(this.paymentList[0].revision),
-        idVendor: parseInt(this.paymentList[0].idVendor),
+        id: parseInt(this.payment[0].id),
+        revision: parseInt(this.payment[0].revision),
+        idVendor: parseInt(this.payment[0].idVendor),
         paidDate: this.blueDate.year + '-' + this.blueDate.month + '-' + this.blueDate.day,
         amount: this.parseFloat(this.paymentList[0].paymentOrderids[0].currentAmount.value),
-        payMemo: this.paymentList[0].payMemo,
+        payMemo: this.paymentList[0].payMemo
       }
     }
     
@@ -355,13 +362,17 @@ export class PayingBillComponent {
         this.btnOK = 'Notify my vendor';
         this.btnCancel = 'Thanks, I\'m done here';
       } else{
-        if(this.vendor == undefined){
-          result.data.map((item) => {
-            if(item.error){
-              this.toastrService.info(item.message, '');
-            }
-          })
-        }else{
+        if(serviceName == projectpayment_paymultiple){
+          if(result.data.length == 0){
+            this.toastrService.info(result.message, '');
+          } else{
+            result.data.map((item) => {
+              if(item.error){
+                this.toastrService.info(item.message, '');
+              }
+            })
+          }
+        } else{
           this.toastrService.info(result.message, '');
         }
       }
@@ -382,8 +393,9 @@ export class PayingBillComponent {
       if(this.step !== 3){
         this.step++;
         if(this.step === 3 && this.vendor === undefined){
-          let modal = document.getElementsByClassName('modal-640 modal-dialog modal-right');
-          modal[0].className = 'modal-932 modal-dialog modal-right';
+          let el = document.getElementById('payingBillModal');
+          let modal = el.closest('.modal-640.modal-dialog.modal-right');
+          modal.className = 'modal-932 modal-dialog modal-right';
         }
       } else{
         this.savePayingBill();
@@ -426,5 +438,5 @@ export class PayingBillComponent {
   }
   
   protected readonly parseFloat = parseFloat;
-  protected readonly globalFuns: GlobalFunctionsService;
+  protected readonly globalFunc = this.globalFuns;
 }

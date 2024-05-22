@@ -6,6 +6,8 @@ import { GlobalFunctionsService } from "../../../core/service/global-functions.s
 import { Base } from 'src/app/core/base';
 import { projectorder_list } from "../../../core/gql/orders";
 import { LocalStorageService } from 'src/app/core/service/local-storage.service';
+import { companypayment_list } from "../../../core/gql/payment";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: 'app-project-orders',
@@ -17,13 +19,14 @@ export class ProjectOrdersComponent extends Base {
   @ViewChild('payingBillModal') payingBillModal: NgbModalRef;
   @ViewChild('confirmModal') confirmModal: NgbModalRef;
   
-  idProject=0;
+  idProject = 0;
   orders = [];
   InitialOrders = [];
   scrollOptions = {
     forceVisible: true
   };
   
+  paymentList: any = [];
   statusFilter: string = 'Active';
   listStatusCount: any;
   objectKeys = Object.keys;
@@ -44,7 +47,7 @@ export class ProjectOrdersComponent extends Base {
   ];
   
   allOrdersChecked = false;
-  selectedOrders:any = [];
+  selectedOrders: any = [];
   
   uploadIdOrder1: number;
   uploadAttachmentRef: NgbModalRef;
@@ -56,7 +59,8 @@ export class ProjectOrdersComponent extends Base {
     private router: Router,
     private globalFuns: GlobalFunctionsService,
     private activatedRoute: ActivatedRoute,
-    private localStorage: LocalStorageService
+    private localStorage: LocalStorageService,
+    private toastrService: ToastrService
   ){
     super();
   }
@@ -68,6 +72,7 @@ export class ProjectOrdersComponent extends Base {
     this.activatedRoute.params.subscribe((params) => {
       this.idProject = parseInt(params['id']);
       this.getOrders();
+      this.getPaymentList();
     });
   }
   
@@ -80,14 +85,14 @@ export class ProjectOrdersComponent extends Base {
       }).then((res) => {
         const result = res.projectorder_list;
         if(!result.error){
-          this.allOrdersChecked=false;
+          this.allOrdersChecked = false;
           this.orders = result.data;
           this.InitialOrders = JSON.parse(JSON.stringify(result.data));
           this.getStatusCount();
           this.loading = false;
         }
       });
-    }else{
+    } else{
       this.loading = false;
     }
   }
@@ -141,29 +146,29 @@ export class ProjectOrdersComponent extends Base {
   }
   
   openDetail(id){
-    this.router.navigate(['apps/order/detail/' + id],{ queryParams: {idProject: this.idProject}});
+    this.router.navigate(['apps/order/detail/' + id], {queryParams: {idProject: this.idProject}});
   }
   
-  uploadAttachments(order) {
+  uploadAttachments(order){
     this.uploadIdOrder1 = order.id;
     this.uploadAttachmentRef = this.modalService.open(this.uploadAttachmentModal, {
       backdrop: 'static',
       modalDialogClass: 'modal-right',
-      size: '530',
+      size: '530'
     })
-    this.uploadAttachmentRef.result.then((res)=>{
+    this.uploadAttachmentRef.result.then((res) => {
     }, (dismiss) => {
     
     })
   }
   
   payBill(item){
-    this.selectedOrders=[item];
+    this.selectedOrders = [item];
     this.openPaySelectedModal();
   }
   
   toggleOrderChecked(){
-    this.selectedOrders=[];
+    this.selectedOrders = [];
     let allOrdersChecked = true;
     this.orders.map((item) => {
       if(item.checked){
@@ -178,9 +183,9 @@ export class ProjectOrdersComponent extends Base {
   
   toggleAllOrdersChecked(){
     if(this.allOrdersChecked){
-      this.selectedOrders = this.orders.filter((order)=>order.status != 'Paid');
-    }else {
-      this.selectedOrders=[];
+      this.selectedOrders = this.orders.filter((order) => order.status != 'Paid');
+    } else{
+      this.selectedOrders = [];
     }
     this.orders.map((item) => {
       if(item.status !== 'Paid'){
@@ -193,22 +198,46 @@ export class ProjectOrdersComponent extends Base {
     return !this.orders.some((item) => item.checked)
   }
   
-  openPaySelectedModal(){
-    this.payingBillModalRef = this.modalService.open(this.payingBillModal, {
-      backdrop: 'static',
-      modalDialogClass: 'modal-right',
-      size: '640',
-    });
-    
-    this.payingBillModalRef.result.then(
-      (res) => {
-        this.getOrders();
-      },
-      (dismiss) => {
-        console.log('dismiss');
+  
+  getPaymentList(){
+    this.apolloService.query(companypayment_list, {
+      idCompany: parseInt(this.localStorage.getItem('idcompany'))
+    }).then((res) => {
+      const result = res.companypayment_list;
+      if(!result.error){
+        this.paymentList = result.data;
       }
-    );
+    });
   }
   
-  protected readonly globalFunc=this.globalFuns;
+  openPaySelectedModal(){
+    if(this.paymentList.length == 0){
+      this.toastrService.info(
+        'No payment method available, please go to company settings and add a new payment method.',
+        'Warning',
+        {
+          timeOut: 6000,
+          enableHtml: true,
+          toastClass: 'max-width-300 text-white'
+        }
+      );
+    } else{
+      this.payingBillModalRef = this.modalService.open(this.payingBillModal, {
+        backdrop: 'static',
+        modalDialogClass: 'modal-right',
+        size: '640'
+      });
+      
+      this.payingBillModalRef.result.then(
+        (res) => {
+          this.getOrders();
+        },
+        (dismiss) => {
+          console.log('dismiss');
+        }
+      );
+    }
+  }
+  
+  protected readonly globalFunc = this.globalFuns;
 }

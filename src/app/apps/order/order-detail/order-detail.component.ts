@@ -230,7 +230,7 @@ export class OrderDetailComponent {
             revision: result.data.projectOrder.revision,
             idCompany: result.data.projectOrder.idCompany,
             idProject: result.data.projectOrder.idProject,
-            idVendor: result.data.projectOrder.idVendor,
+            idVendor: result.data.projectOrder.idNewVendor,
             orderNumber: result.data.projectOrder.orderNumber,
             idReason: result.data.projectOrder.idReason,
             invoiceNumber: result.data.projectOrder.invoiceNumber,

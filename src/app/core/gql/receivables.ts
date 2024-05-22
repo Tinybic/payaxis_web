@@ -111,6 +111,7 @@ const projectpayment_info = gql`
         idProject
         projectName
         idVendor
+        idNewVendor
         vendorName
         vendorType
         txtAddress
@@ -366,6 +367,7 @@ const receivable_list = gql`
         idProject
         projectName
         idVendor
+        idNewVendor
         vendorName
         vendorType
         orderNumber
@@ -386,6 +388,7 @@ const receivable_list = gql`
         tax
         total
         paidAmount
+        pendingAmount
         remainingAmount
         idPayment
         status

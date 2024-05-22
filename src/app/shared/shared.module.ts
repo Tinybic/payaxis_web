@@ -11,6 +11,7 @@ import { PayingBillComponent } from "../apps/invoice/paying-bill/paying-bill.com
 import { NgbDatepickerModule, NgbDropdownModule, NgbModalModule, NgbNavModule, NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from "@angular/forms";
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from "ngx-mask";
+import { AvatarModule } from "./avatar/avatar.module";
 
 
 
@@ -35,6 +36,7 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from "ngx-mask";
     NgbNavModule,
     NgxMaskDirective,
     NgxMaskPipe,
+    AvatarModule
   ],
   providers:[
     provideNgxMask()

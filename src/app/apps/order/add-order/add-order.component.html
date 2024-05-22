@@ -51,7 +51,7 @@
                 </div>
                 <div class="col-md-6">
                     <div
-                        class="d-inline-block {{this.relatedList[relatedIndex].status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
+                        class="d-inline-block badge {{globalFunc.toCamelCase(this.relatedList[relatedIndex].status.toLowerCase())}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
                         {{this.relatedList[relatedIndex].status}}</div>
                 </div>
             </div>
@@ -115,7 +115,7 @@
                     </div>
                     <div class="col-md-6 text-end">
                         <div
-                            class="d-inline-block {{this.relatedList[relatedIndex].status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
+                            class="d-inline-block {{globalFunc.toCamelCase(this.relatedList[relatedIndex].status.toLowerCase())}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
                             {{this.relatedList[relatedIndex].status}}</div>
                     </div>
                 </div>
@@ -143,7 +143,7 @@
                     Draft
                 </div>
                 <div *ngIf="order.status"
-                    class="d-inline-block {{order.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
+                    class="d-inline-block {{globalFunc.toCamelCase(order.status.toLowerCase())}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
                     {{order.status}}</div>
 
                 <!-- <div class="d-inline-block ms-1-1 activeTag">
@@ -220,7 +220,7 @@
                                                         (click)="openAddCostCodeModal('Create')"><i
                                                             class="fe-plus-square me-1-1"></i>Create New Cost
                                                         Code</span>
-                                                    <div class="dropdown" ngbDropdown>
+                                                    <div id="costCodeDropdown" class="dropdown" ngbDropdown #costCodeDropdown="ngbDropdown" (openChange)="keywordsCostCode='';costCodeList=COSTCODE_LIST">
                                                         <input class="form-select cursor-default" type="text"
                                                             id="vendorcostcodes" readonly [disabled] = "order.status == 'Paid'"
                                                             [(ngModel)]="vendorcostcodesText" required i18n-placeholder
@@ -249,11 +249,11 @@
                                                                 <div class="mb-1"
                                                                     *ngFor="let costcode of item.costcodelist; let i2=index;">
                                                                     <div>
-                                                                        <input type="checkbox" class="form-check-input"
+                                                                        <input type="checkbox" class="form-check-input cursor-pointer"
                                                                             [checked]="setCostCodeSelect(costcode.costCode)"
-                                                                            (change)="costCodeSelect($event,costcode)"
+                                                                            (change)="costCodeSelect($event,costcode);costCodeDropdown.close()"
                                                                             id="dropdownCheck_{{i1}}_{{i2}}">
-                                                                        <label class="form-check-label ms-1-1"
+                                                                        <label class="form-check-label ms-1-1 cursor-pointer"
                                                                             for="dropdownCheck_{{i1}}_{{i2}}">
                                                                             {{costcode.txtName}}
                                                                         </label>
@@ -468,12 +468,11 @@
                                                                 <th style="width: 50%;">
                                                                     Billable</th>
                                                                 <th>Qty</th>
-                                                                <th>Unit</th>
+<!--                                                                <th>Unit</th>-->
                                                                 <th>Price</th>
                                                                 <th>Amount</th>
                                                                 <th>Tax</th>
-                                                                <th>Notes</th>
-                                                                <!-- <th>Notes</th> -->
+<!--                                                                <th>Notes</th>-->
                                                                 <th *ngIf="order.id > 0" style="width: 110px;">Last
                                                                     updated</th>
                                                                 <th></th>
@@ -495,10 +494,10 @@
                                                                         [(ngModel)]="item.qty" thousandSeparator="," [disabled] = "order.status == 'Paid'"
                                                                         mask="separator.2" (keyup)="getAmout(item)" />
                                                                 </td>
-                                                                <td>
-                                                                    <input type="text" class="form-control" [disabled] = "order.status == 'Paid'"
-                                                                        [(ngModel)]="item.unit" />
-                                                                </td>
+<!--                                                                <td>-->
+<!--                                                                    <input type="text" class="form-control" [disabled] = "order.status == 'Paid'"-->
+<!--                                                                        [(ngModel)]="item.unit" />-->
+<!--                                                                </td>-->
                                                                 <td>
                                                                     <input type="text" class="form-control text-end"
                                                                         [(ngModel)]="item.price" prefix="$" [disabled] = "order.status == 'Paid'"
@@ -506,9 +505,11 @@
                                                                         (keyup)="getAmout(item)" />
                                                                 </td>
                                                                 <td>
-                                                                    <input type="text" class="form-control" prefix="$"
-                                                                        mask="separator.2" [(ngModel)]="item.amount" [disabled] = "order.status == 'Paid'"
-                                                                        disabled="disabled" />
+                                                                    <input type="text" class="form-control text-end"
+                                                                           prefix="$"
+                                                                           mask="separator.2"
+                                                                           thousandSeparator="," [(ngModel)]="item.amount"
+                                                                        disabled/>
                                                                 </td>
                                                                 <td>
                                                                     <input class="form-check" type="checkbox" [disabled] = "order.status == 'Paid'"
@@ -516,10 +517,10 @@
                                                                         [(ngModel)]="item.taxyn" />
                                                                 </td>
                                                                 
-                                                                <td>
-                                                                    <input class="form-control" type="text" [disabled] = "order.status == 'Paid'"
-                                                                        [(ngModel)]="item.notes" />
-                                                                </td>
+<!--                                                                <td>-->
+<!--                                                                    <input class="form-control" type="text" [disabled] = "order.status == 'Paid'"-->
+<!--                                                                        [(ngModel)]="item.notes" />-->
+<!--                                                                </td>-->
                                                                 <td *ngIf="order.id > 0">
                                                                     <span *ngIf="item.modifiedDate">{{item.modifiedDate
                                                                         | date: 'MM/dd/yy HH:mm:ss' | amTimeAgo}}</span>
@@ -545,7 +546,7 @@
                                                         <tbody *ngIf="order.listItems.length==0 && !loading"
                                                             class="bg-white">
                                                             <tr *ngIf="!loading && order.listItems.length==0">
-                                                                <td colspan="9" class="text-center">
+                                                                <td colspan="7" class="text-center">
                                                                     <div
                                                                         class="text-typeblackdeactivated headline-24-400 mt-40">
                                                                         No List Items Added Yet</div>
@@ -631,16 +632,20 @@
         <div class="col-md-6 pt-2-1 d-flex flex-row-reverse text-end">
             <div class="d-inline-block" *ngIf="order.status == 'Paid'"><button type="button"
                     class="btn btn-primary ms-1-1" style="border:0px; box-shadow: none;">Send Receipt</button></div>
-            <div class="d-inline-block" *ngIf="order.status !== 'Paid'"><button type="button"
-                    class="btn btn-primary ms-1-1" style="border:0px; box-shadow: none;" (click)="openConfirmModal()">Pay Bill</button></div>
+            <div class="d-inline-block" *ngIf="order.status !== 'Paid' && idOrder != 0"><button type="button"
+                    class="btn btn-primary ms-1-1" style="border:0px; box-shadow: none;" (click)="PayBill()">Pay Bill</button></div>
             <div class="d-inline-block" *ngIf="order.status !== 'Paid'"><button type="button"
                     class="btn btn-primary ms-1-1"
                     style="border:1px solid #ffffff; box-shadow: none;background-color: transparent;" (click) = "projectorderSend()">Send
                     Order</button></div>
-            <div class="d-inline-block" style="height: 40px;color:#FFFFFFB2;">
+            <div class="d-inline-block ms-2-1" style="height: 40px;color:#FFFFFFB2;">
                 <span class="btn-text-12">Total Amount Due</span><br />
                 <span class="headline-24" style=" color:  {{order.status == 'Paid'?'#FFFFFF80':'white'}};"
-                    id="total">{{order.total | currency}}</span>
+                      id="total">{{order.total | currency}}</span>
+            </div>
+            <div *ngIf="idOrder != 0" class="d-inline-block" style="height: 40px;color:#FFFFFFB2;">
+                <span class="btn-text-12">Remaining Amount</span><br />
+                <span class="subtitle-2-600 text-white">{{order.remainingAmount | currency}}</span>
             </div>
         </div>
     </div>
@@ -685,5 +690,5 @@
 </ng-template>
 
 <ng-template #payingBill>
-    <app-paying-bill [payment]="projectpayment" [vendor]="vendor" [modalRef]="payingBillModalRef"></app-paying-bill>
+    <app-paying-bill [payment]="[this.order]" [modalRef]="payingBillModalRef"></app-paying-bill>
 </ng-template>
