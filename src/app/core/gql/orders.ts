@@ -35,6 +35,7 @@ query projectorder_list($idCompany: Int!, $idProject: Int!, $idCategory: Int) {
       tax
       total
       paidAmount
+      pendingAmount
       remainingAmount
       idPayment
       status

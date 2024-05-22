@@ -18,7 +18,8 @@
                     Contact
                 </div>
                 <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer"
-                     *ngIf="(vendor || (newVendor && newVendorShow)) && projectpayment.status != 'Paid'" (click)="removeVendor()">
+                     *ngIf="(id==0||isSenderIsLoggedIn())&&(vendor || (newVendor && newVendorShow)) && projectpayment.status != 'Paid'"
+                     (click)="removeVendor()">
                     Edit Contact
                 </div>
                 <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer"
@@ -31,8 +32,7 @@
             <div class="row mt-2-1">
                 <div class="col-md-12">
                     <div ngbDropdown #vendorDropdown="ngbDropdown">
-                        
-                        <div *ngIf="vendor" style="border:1px solid #E1E6EF; border-radius: 8px; padding: 8px 16px;">
+                        <div *ngIf="vendor" class="padding-8-16 b-r-8" style="border:1px solid #E1E6EF;">
                             <div class="row">
                                 <div class="col-md-8 Subtitle-1 text-start">
                                     <div>{{vendor.vendorName}}</div>
@@ -71,9 +71,12 @@
                                 <i class="fe-copy me-1-1"></i>Reset to: {{handleData.vendorName}}
                             </div>
                         </div>
-                        
-                        <input *ngIf="!vendor && !newVendor" class="form-control form-search" type="search"  [disabled]=" projectpayment.status == 'Paid'"
-                               placeholder="Find Contact" [(ngModel)]="keywordsVendor"  (ngModelChange)="vendorFilter(vendorDropdown)" [ngClass]="{'is-invalid':txtError.idVendor == 0}" ngbDropdownToggle/>
+                        <input *ngIf="(id==0||isSenderIsLoggedIn())&&projectpayment.status != 'Paid' && !vendor && !newVendor"
+                               class="form-control form-search" type="search"
+                               [disabled]=" projectpayment.status == 'Paid'"
+                               placeholder="Find Contact" [(ngModel)]="keywordsVendor"
+                               (ngModelChange)="vendorFilter(vendorDropdown)"
+                               [ngClass]="{'is-invalid':txtError.idVendor == 0}" ngbDropdownToggle/>
                         <div *ngIf="txtError.idVendor == 0" class="invalid-feedback" i18n>
                             <i class="fe-alert-triangle invalid-feedback-icon"></i>
                             Contact required
@@ -96,7 +99,7 @@
                             </div>
                         </div>
                         <div *ngIf="newVendor && newVendorShow">
-                            <div class="row" style="border: 1px solid #E1E6EF;border-radius: 8px;padding: 16px;">
+                            <div class="row padding-16 b-r-8" style="border: 1px solid #E1E6EF;">
                                 <div class="col-md-8 Subtitle-1 text-start">
                                     <div>{{projectpayment.vendorName}}</div>
                                 </div>
@@ -132,7 +135,8 @@
                                             {{item.txtZipcode}}</div>
                                     </div>
                                     <div class="col-md-4 text-end">
-                                        <div class="vendorCostcode subtitle-2-600" *ngIf="item.costcodes && item.costcodes.length > 0">
+                                        <div class="vendorCostcode subtitle-2-600"
+                                             *ngIf="item.costcodes && item.costcodes.length > 0">
                                             <span *ngFor="let costcode of item.costcodes">{{costcode.txtName}}</span>
                                         </div>
                                     </div>
@@ -175,10 +179,11 @@
             
             <div class="row p-3 mt-1-1" style="border-bottom: 1px solid #E1E6EF;">
                 <div class="col-md-12 text-center overflow-hidden">
-                    <input #amount type="text" *ngIf="amountEdit" mask="separator.2" (blur)="cancelAmount()"[disabled]=" projectpayment.status == 'Paid'"
+                    <input #amount type="text" *ngIf="amountEdit" mask="separator.2" (blur)="cancelAmount()" [disabled]=" projectpayment.status == 'Paid'"
                            class=" subtitle-700-37-40" style="border: 0px;outline: 0;text-align: center;"
                            [(ngModel)]="projectpayment.amount"/>
-                    <label class="subtitle-700-37-40 cursor-pointer" (click)="editAmount()"
+                    <label [ngClass]="(id==0||isSenderIsLoggedIn())&& projectpayment.status != 'Paid' ? 'cursor-pointer': 'cursor-auto'"
+                           class="subtitle-700-37-40 cursor-pointer" (click)="editAmount()"
                            *ngIf="!amountEdit">{{projectpayment.amount | currency}}</label>
                 </div>
                 <div class="text-primary subtitle-2-400-12 mt-1-1 text-center cursor-pointer" (click)="resetValue(2)"
@@ -191,7 +196,8 @@
                 
                 <div class="col-md-4">
                     <label class="form-label" i18n>Invoice Number</label>
-                    <input type="text" class="form-control" placeholder="Add Number" [disabled]=" projectpayment.status == 'Paid'"
+                    <input type="text" class="form-control" placeholder="Add Number"
+                           [disabled]=" projectpayment.status == 'Paid' || (id>0&&!isSenderIsLoggedIn())"
                            [(ngModel)]="projectpayment.billNumber"/>
                     <div class="text-primary subtitle-2-400-12 mt-1-1 text-center cursor-pointer"
                          (click)="resetValue(3)"
@@ -201,7 +207,8 @@
                 </div>
                 <div class="col-md-4">
                     <label class="form-label" i18n>Invoiced Date</label>
-                    <input type="date" class="form-control" placeholder="Add Sent Date" [disabled]=" projectpayment.status == 'Paid'"
+                    <input type="date" class="form-control" placeholder="Add Sent Date"
+                           [disabled]=" projectpayment.status == 'Paid' || (id>0&&!isSenderIsLoggedIn())"
                            [(ngModel)]="projectpayment.sentDate"/>
                     <div class="text-primary subtitle-2-400-12 mt-1-1 text-center cursor-pointer"
                          (click)="resetValue(5)"
@@ -211,7 +218,8 @@
                 </div>
                 <div class="col-md-4">
                     <label class="form-label" i18n>Due Date</label>
-                    <input type="date" class="form-control" placeholder="Add Due Date" [disabled]=" projectpayment.status == 'Paid'"
+                    <input type="date" class="form-control" placeholder="Add Due Date"
+                           [disabled]=" projectpayment.status == 'Paid' || (id>0&&!isSenderIsLoggedIn())"
                            [(ngModel)]="projectpayment.dueDate"/>
                     <div class="text-primary subtitle-2-400-12 mt-1-1 text-center cursor-pointer"
                          (click)="resetValue(4)"
@@ -219,7 +227,7 @@
                         <i class="fe-copy me-1-1"></i>Reset to: {{handleData.indvoicedueDate}}
                     </div>
                 </div>
-                
+            
             </div>
             
             <!-- <div class="row mt-2-1">
@@ -259,7 +267,29 @@
         </div>
     </div>
     
-    <div class="card mt-2-1">
+    <div *ngIf="id != 0 && !isSenderIsLoggedIn()">
+        <div *ngIf="projectpayment.idProject!=0" class="card mt-2-1">
+            <div class="card-body padding-16">
+                <div class="row">
+                    <div class="col-md-12 subtitle-400-12-32-up">
+                        PROJECT 1
+                    </div>
+                </div>
+                
+                <div class="row padding-8-16 b-r-8"
+                     style="border:1px solid #E1E6EF; padding: 8px 16px;">
+                    <div class="col-md-10 Subtitle-1 text-start line-32">
+                        {{projectpayment.projectName}}
+                    </div>
+                    <div class="col-md-2 line-32 text-end">
+                        <i class="fe-external-link text-primary"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div *ngIf="id == 0 ||isSenderIsLoggedIn()" class="card mt-2-1">
         <div class="card-body padding-16">
             <div class="row">
                 <div class="col-md-6 subtitle-400-12-32-up">
@@ -268,16 +298,17 @@
                 <div class="col-md-6 subtitle-2-400-12 text-end text-typeblack80" *ngIf="!project">
                     Optional
                 </div>
-                <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" *ngIf="project && projectpayment.status != 'Paid'"
+                <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer"
+                     *ngIf="project && projectpayment.status != 'Paid'"
                      (click)="removeProject()">
                     Edit Project
                 </div>
             </div>
             
-            <div class="row  mt-1-1">
+            <div class="row mt-1-1">
                 <div class="col-md-12">
                     <div ngbDropdown>
-                        <div *ngIf="project" style="border:1px solid #E1E6EF; border-radius: 8px; padding: 8px 16px;">
+                        <div *ngIf="project" class="padding-8-16 b-r-8" style="border:1px solid #E1E6EF; ">
                             <div class="row cursor-pointer">
                                 <div class="col-md-10 Subtitle-1 text-start line-32">
                                     {{project.projectName}}
@@ -292,7 +323,8 @@
                                 <i class="fe-copy me-1-1"></i>Reset to: {{handleData.projectName}}
                             </div>
                         </div>
-                        <input *ngIf="!project" class="form-control form-search" type="search"  [disabled]=" projectpayment.status == 'Paid'"
+                        <input *ngIf="!project" class="form-control form-search" type="search"
+                               [disabled]=" projectpayment.status == 'Paid'"
                                placeholder="Find Project"
                                [(ngModel)]="keywordsProject" (keyup)="projectFilter()" ngbDropdownToggle/>
                         <div class="padding-16"
@@ -316,21 +348,24 @@
         </div>
     </div>
     
-    <div class="card mt-2-1">
+    <div *ngIf="id == 0 || isSenderIsLoggedIn() || (!isSenderIsLoggedIn() && projectpayment.idOrder1!=0)" class="card mt-2-1">
         <div class="card-body padding-16">
             <div class="row">
                 <div class="col-md-6  subtitle-400-12-32-up">
                     {{orderCostCodeText}}
                 </div>
-                <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" *ngIf="!showCostcode && projectpayment.status != 'Paid'"
+                <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer"
+                     *ngIf="!showCostcode && projectpayment.status != 'Paid' && (id==0||isSenderIsLoggedIn())"
                      (click)="showFindOrder()">
                     Find Cost Code
                 </div>
-                <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" *ngIf="showCostcode && !order && projectpayment.status != 'Paid'"
+                <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer"
+                     *ngIf="showCostcode && !order && projectpayment.status != 'Paid'"
                      (click)="showFindCostCode()">
                     Find Order
                 </div>
-                <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer" *ngIf="showCostcode && order && projectpayment.status != 'Paid'"
+                <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer"
+                     *ngIf="showCostcode && order && projectpayment.status != 'Paid'"
                      (click)="removOrder()">
                     Edit Order
                 </div>
@@ -340,7 +375,7 @@
                 <div class="col-md-12">
                     <div ngbDropdown>
                         
-                        <div *ngIf="order" style="border:1px solid #E1E6EF; border-radius: 8px; padding: 8px 16px;">
+                        <div *ngIf="order" class="padding-8-16 b-r-8" style="border:1px solid #E1E6EF;">
                             <div class="row">
                                 <div class="col-md-8 Subtitle-1 text-start">
                                     <div class="d-flex align-items-center">{{order.orderNumber}}
@@ -370,7 +405,8 @@
                             </div>
                         </div>
                         
-                        <input *ngIf="!order" class="form-control form-search" type="search" placeholder="Find Order"  [disabled]=" projectpayment.status == 'Paid'"
+                        <input *ngIf="!order" class="form-control form-search" type="search" placeholder="Find Order"
+                               [disabled]=" projectpayment.status == 'Paid'"
                                [(ngModel)]="keywordsOrder" (keyup)="orderFilter()" ngbDropdownToggle/>
                         <div class="padding-16"
                              style="border:1px solid #E1E6EF; margin-top: -44px; width: 100%; max-height: 362px; overflow-x: hidden; overflow-y: scroll;"
@@ -436,12 +472,13 @@
             </div>
         </div>
     </div>
-    <div class="row mt-2-1 mb-2-1" *ngIf="!showNotes">
+    <div class="row mt-2-1 mb-2-1" *ngIf="!showNotes && (id==0||isSenderIsLoggedIn())">
         <div class="col-md-12" *ngIf="!file">
-            <ngx-dropzone (change)="onSelectDocument($event)" class="dropzone justify-content-center" [disabled]="projectpayment.status == 'Paid'"
+            <ngx-dropzone (change)="onSelectDocument($event)" class="dropzone justify-content-center"
+                          [disabled]="projectpayment.status == 'Paid'"
                           style="width: 100%;height: 208px;min-height: unset !important;border: 1px solid #2B52DD !important;background-color: #F7FAFC !important;border-radius: 16px !important;overflow: hidden;padding: 0 !important;"
                           #drop>
-                <ngx-dropzone-label class="d-flex flex-column align-items-center" >
+                <ngx-dropzone-label class="d-flex flex-column align-items-center">
                     <div
                             style="height: 56px; width: 56px; background-color: #73B2FF33; color: #2B52DD; border-radius: 56px; text-align: center; line-height: 56px;">
                         <i class="fe-upload-cloud font-24"></i>
@@ -494,13 +531,15 @@
                         mapped file
                     </div>
                     <div class="col-md-6 text-end">
-                        <div (click)="downloadFile(file.fileUrl,file.fileName)"  class="btn btn-outline-primary padding-8-16">
-                            <i class="fe-download me-1-1"></i> Download</div>
+                        <div (click)="downloadFile(file.fileUrl,file.fileName)"
+                             class="btn btn-outline-primary padding-8-16">
+                            <i class="fe-download me-1-1"></i> Download
+                        </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6 mt-1-1">
-                        <div style="padding: 8px 16px; border-radius: 8px; border:1px solid #E1E6EF; display: flex;">
+                        <div class="padding-8-16 b-r-8" style="border:1px solid #E1E6EF; display: flex;">
                             <img src="/assets/images/ico_ai.png" style="height: 24px; width: 24px;"
                                  onerror="javascript:this.src='/assets/images/icon/dat.png';"/>
                             &nbsp;&nbsp;
@@ -521,22 +560,23 @@
                     Notes & Attachments
                 </div>
                 <div class="col-md-6 text-end">
-                    <button class="btn btn-outline-primary padding-8-16" [disabled]="projectpayment.status == 'Paid'" (click)="drop.showFileSelector()">Add
+                    <button class="btn btn-outline-primary padding-8-16" [disabled]="projectpayment.status == 'Paid'"
+                            (click)="drop.showFileSelector()">Add
                         Attachments
                     </button>
                 </div>
             </div>
             <div class="row mt-2-1">
                 <div class="col-md-12 ">
-                <textarea class="form-control" [(ngModel)]="projectpayment.txtNotes"
-                          style="padding: 12px 16px; border-radius: 8px; width: 100%; height: 129px;"
+                <textarea class="form-control padding-12-16 b-r-8" [(ngModel)]="projectpayment.txtNotes"
+                          style="width: 100%; height: 129px;"
                           placeholder="Notes & Description">
                 </textarea>
                 </div>
             </div>
             <div class="row mt-2-1">
                 <div class="col-md-6 mt-1-1" *ngFor="let item of projectpayment.paymentFiles| slice:1; let i = index; ">
-                    <div style="padding: 8px 16px; border-radius: 8px; border:1px solid #E1E6EF; display: flex;">
+                    <div class="padding-8-16 b-r-8" style="border:1px solid #E1E6EF; display: flex;">
                         <img src="/assets/images/icon/{{item.fileType}}.png" style="height: 24px; width: 24px;"
                              onerror="javascript:this.src='/assets/images/icon/dat.png';"/>
                         &nbsp;&nbsp;
@@ -550,7 +590,8 @@
             </div>
             <div class="row mt-2-1">
                 <div class="col-md-12 ">
-                    <ngx-dropzone (change)="onSelectDocument($event)" class="dropzone justify-content-center" [disabled]=" projectpayment.status == 'Paid'"
+                    <ngx-dropzone (change)="onSelectDocument($event)" class="dropzone justify-content-center"
+                                  [disabled]=" projectpayment.status == 'Paid'"
                                   style="width: 100%;height: 120px;min-height: unset !important;border: 1px solid #2B52DD !important;background-color: #F7FAFC !important;border-radius: 16px !important;overflow: hidden;padding: 0 !important;"
                                   #drop>
                         <ngx-dropzone-label class="d-flex flex-column align-items-center">
@@ -575,7 +616,8 @@
     </div>
     <div class="col-md-6 d-grid">
         <button type="button" class="btn btn-primary" (click)="findVendor()"
-                [disabled]="projectpayment.idVendor == 0 || !(this.projectpayment.dueDate)|| !this.projectpayment.sentDate || !this.projectpayment.billNumber">Save
+                [disabled]="projectpayment.idVendor == 0 || !(this.projectpayment.dueDate)|| !this.projectpayment.sentDate || !this.projectpayment.billNumber">
+            Save
             and Review
         </button>
     </div>
@@ -583,17 +625,18 @@
 
 <div class="row" *ngIf="id > 0 && projectpayment.status == 'Sent'"
      style="height: 72px;background-color: #2B2D30;box-shadow: 0px 25px 50px 0px #00000040;padding: 16px 32px;position: fixed;bottom: 0;width: 100%;margin-left: -32px;z-index: 9999;">
-    <div class="col-md-4 d-grid">
+    <div class="col">
         <button class="btn btn-primary"
-                style="border:1px solid #ffffff; box-shadow: none; background-color: #2B2D30;" (click) ="decline()">Decline
+                style="width: 100%;border:1px solid #ffffff; box-shadow: none; background-color: #2B2D30;" (click)="decline()">
+            Decline
         </button>
     </div>
-    <div class="col-md-4 d-grid">
-        <button class="btn btn-primary" (click)="openPayingBill()" style="border:0px; box-shadow: none;">Pay Now
+    <div class="col">
+        <button class="btn btn-primary" (click)="openPayingBill()" style="width: 100%;border:0px; box-shadow: none;">Pay Now
         </button>
     </div>
-    <div class="col-md-4 d-grid">
-        <button class="btn btn-primary" style="border:0px; box-shadow: none;" (click)="update()">Save</button>
+    <div *ngIf="isSenderIsLoggedIn()" class="col">
+        <button class="btn btn-primary" style="width: 100%;border:0px; box-shadow: none;" (click)="update()">Save</button>
     </div>
 </div>
 
@@ -685,5 +728,5 @@
 
 
 <ng-template #payingBill>
-    <app-paying-bill [payment]="projectpayment" [vendor]="vendor" [modalRef]="payingBillModalRef"></app-paying-bill>
+    <app-paying-bill [payment]="[projectpayment]" [vendor]="vendor" [modalRef]="payingBillModalRef"></app-paying-bill>
 </ng-template>

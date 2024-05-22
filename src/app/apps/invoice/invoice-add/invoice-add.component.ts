@@ -1,4 +1,4 @@
-import { formatDate } from '@angular/common';
+import { formatCurrency, formatDate } from '@angular/common';
 import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -8,7 +8,7 @@ import { categorycostcode_list } from 'src/app/core/gql/costcode';
 import { getNewFileName, get_file_url } from 'src/app/core/gql/file';
 import {
   projectinvoice_mapping,
-  projectpayment_reject,
+  projectpayment_reject
 } from 'src/app/core/gql/invoice';
 import { projectorder_list } from 'src/app/core/gql/orders';
 import { companypayment_list } from 'src/app/core/gql/payment';
@@ -18,7 +18,7 @@ import {
   projectpayment_attachment,
   projectpayment_info,
   projectpayment_new,
-  projectpayment_update,
+  projectpayment_update
 } from 'src/app/core/gql/receivables';
 import { vendor_list } from 'src/app/core/gql/vendor';
 import { ApolloService } from 'src/app/core/service/apollo.service';
@@ -30,7 +30,7 @@ import { GlobalFunctionsService } from "../../../core/service/global-functions.s
 @Component({
   selector: 'app-invoice-add',
   templateUrl: './invoice-add.component.html',
-  styleUrls: ['./invoice-add.component.scss'],
+  styleUrls: ['./invoice-add.component.scss']
 })
 export class InvoiceAddComponent {
   @Input() modalRef: any;
@@ -38,9 +38,9 @@ export class InvoiceAddComponent {
   @ViewChild('deleteModal') deleteModal: any;
   @ViewChild('newVendorListModal') newVendorListModal: any;
   @ViewChild('noVendorModal') noVendorModal: any;
-  @ViewChild('amount') inputAmout: ElementRef;
+  @ViewChild('amount') inputAmount: ElementRef;
   @ViewChild('payingBill') payingBillModal: NgbModalRef;
-
+  
   idCompany: number = 0;
   paymentTermsList = VENDOR_PAYMENTTERM;
   PROJECTLIST = [];
@@ -53,11 +53,11 @@ export class InvoiceAddComponent {
   paymentList = [];
   txtError = {
     idVendor: 1,
-    dueDate: 1,
+    dueDate: 1
   };
   format = 'yyyy-MM-dd';
   locale = 'en-US';
-
+  
   showCostcode = false;
   orderCostCodeText = 'order';
   myDate = new Date();
@@ -69,28 +69,34 @@ export class InvoiceAddComponent {
     revision: 0,
     idCompany: 0,
     idProject: 0,
+    projectName: '',
     idVendor: 0,
+    vendorName: '',
+    vendorType: '',
+    vendorEmail: '',
     idOrder1: 0,
     idCompany_payment: 0,
     billNumber: '',
+    orderNumber: 0,
     sentDate: formatDate(this.myDate, this.format, this.locale),
     dueDate: '',
+    indvoicedueDate: '',
     paymentTerms: '',
     amount: 0.0,
+    remainingAmount: 0.0,
     txtNotes: '',
     billyn: true,
     costCode: '0',
     paymentFiles: [],
     idInvitedCompany: 0,
-    vendorName: '',
-    vendorEmail: '',
+    senderEmail: '',
     status: '',
     account: '',
-    payType: '',
+    payType: ''
   };
-
+  
   payingBillModalRef: NgbModalRef;
-
+  
   amountEdit = false;
   
   
@@ -102,15 +108,15 @@ export class InvoiceAddComponent {
     private httpService: HttpService,
     private localStorage: LocalStorageService,
     private fileSaverService: FileSaverService,
-    private globalFuns: GlobalFunctionsService,
-  ) {}
-
-  ngOnInit(): void {
+    private globalFuns: GlobalFunctionsService
+  ){}
+  
+  ngOnInit(): void{
     this.idCompany = parseInt(this.localStorage.getItem('idcompany'));
-
-    if (this.id > 0) {
+    
+    if(this.id > 0){
       this.getInvoiceInfo();
-    } else {
+    } else{
       this.projectpayment.idCompany = this.idCompany;
       this.getVendorList();
       this.getProjectList();
@@ -119,172 +125,170 @@ export class InvoiceAddComponent {
       this.getCostCodeList();
     }
   }
-
-  getInvoiceInfo() {
-    this.apolloService
-      .query(projectpayment_info, {
-        idCompany: this.idCompany,
-        id: this.id,
-      })
-      .then((res) => {
-        const result = res.projectpayment_info;
-        if (!result.error) {
-          this.projectpayment = {
-            id: result.data.id,
-            revision: result.data.revision,
-            idCompany: result.data.idCompany,
-            idProject: result.data.idProject,
-            idVendor: result.data.idVendor,
-            idOrder1: result.data.idOrder1,
-            idCompany_payment: result.data.idCompany_payment,
-            billNumber: result.data.billNumber,
-            sentDate: result.data.sentDate,
-            dueDate: result.data.dueDate,
-            paymentTerms: result.data.paymentTerms,
-            amount: result.data.amount,
-            txtNotes: result.data.txtNotes,
-            billyn: true,
-            costCode: result.data.costCode,
-            paymentFiles: [],
-            idInvitedCompany: 0,
-            vendorName: result.data.vendorName,
-            vendorEmail: result.data.primaryContact,
-            status: result.data.status,
-            account: result.data.account,
-            payType: result.data.payType,
-          };
-        }
-        this.getVendorList();
-        this.getProjectList();
-        this.getOrderList();
-        this.getPaymentList();
-        this.getAttachment();
-      });
-  }
-
-  getAttachment() {
-    this.apolloService
-      .query(projectpayment_attachment, {
-        idCompany: this.idCompany,
-        idPayment: this.id,
-      })
-      .then((res) => {
-        const result = res.projectpayment_attachment;
-        if (!result.error) {
-          this.projectpayment.paymentFiles = result.data;
-          if (this.projectpayment.paymentFiles.length > 0) {
-            this.file = this.projectpayment.paymentFiles[0];
-            this.showNotes = true;
-          }
-        }
-      });
+  
+  getInvoiceInfo(){
+    this.apolloService.query(projectpayment_info, {
+      idCompany: this.idCompany,
+      id: this.id
+    }).then((res) => {
+      const result = res.projectpayment_info;
+      if(!result.error){
+        this.projectpayment = {
+          id: result.data.id,
+          revision: result.data.revision,
+          idCompany: result.data.idCompany,
+          idProject: result.data.idProject,
+          projectName: result.data.projectName,
+          idVendor: result.data.idNewVendor,
+          vendorName: result.data.vendorName,
+          vendorType: result.data.vendorType,
+          vendorEmail: result.data.primaryContact,
+          idOrder1: result.data.idOrder1,
+          idCompany_payment: result.data.idCompany_payment,
+          billNumber: result.data.billNumber,
+          orderNumber: result.data.orderNumber,
+          sentDate: result.data.sentDate,
+          dueDate: result.data.dueDate,
+          indvoicedueDate: result.data.dueDate,
+          paymentTerms: result.data.paymentTerms,
+          amount: result.data.amount,
+          remainingAmount: 0.0,
+          txtNotes: result.data.txtNotes,
+          billyn: true,
+          costCode: result.data.costCode,
+          paymentFiles: [],
+          idInvitedCompany: 0,
+          senderEmail: result.data.senderEmail,
+          status: result.data.status,
+          account: result.data.account,
+          payType: result.data.payType
+        };
+      }
+      this.getVendorList();
+      this.getProjectList();
+      this.getOrderList();
+      this.getPaymentList();
+      this.getAttachment();
+    });
   }
   
-  setOrder() {
-    if (this.projectpayment.idOrder1 > 0) {
+  getAttachment(){
+    this.apolloService.query(projectpayment_attachment, {
+      idCompany: this.idCompany,
+      idPayment: this.id
+    }).then((res) => {
+      const result = res.projectpayment_attachment;
+      if(!result.error){
+        this.projectpayment.paymentFiles = result.data;
+        if(this.projectpayment.paymentFiles.length > 0){
+          this.file = this.projectpayment.paymentFiles[0];
+          this.showNotes = true;
+        }
+      }
+    });
+  }
+  
+  setOrder(){
+    if(this.projectpayment.idOrder1 > 0){
       this.orderList.forEach((item) => {
-        if (item.id == this.projectpayment.idOrder1) {
+        if(item.id == this.projectpayment.idOrder1){
+          this.projectpayment.remainingAmount = item.remainingAmount;
           this.order = item;
+          return;
+        }
+      });
+    } else{
+      this.projectpayment.remainingAmount = this.projectpayment.amount;
+    }
+  }
+  
+  setProject(){
+    if(this.projectpayment.idProject > 0){
+      this.PROJECTLIST.forEach((project) => {
+        if(this.projectpayment.idProject == project.id){
+          this.project = project;
           return;
         }
       });
     }
   }
-
-  setProject() {
-    if (this.projectpayment.idProject > 0) {
-      this.projectGroupList.forEach((item) => {
-        item.forEach((project) => {
-          if (this.projectpayment.idProject == project.id) {
-            this.project = project;
-            return;
-          }
-        });
-      });
-    }
-  }
-
-  setVendor() {
-    if (this.projectpayment.idVendor > 0) {
+  
+  setVendor(){
+    if(this.projectpayment.idVendor > 0){
       this.vendorList.forEach((item) => {
-        if (
-          item.id == this.projectpayment.idVendor ||
-          item.idInvitedCompany == this.projectpayment.idCompany
-        ) {
+        if(item.id == this.projectpayment.idVendor){
           this.selectVendor(item);
           return;
         }
       });
     }
   }
-
+  
   newVendor = false;
-
-  createVendor() {
+  
+  createVendor(){
     this.newVendor = true;
   }
-
-  showVendor() {
+  
+  showVendor(){
     this.newVendor = false;
     this.projectpayment.vendorEmail = '';
     this.projectpayment.vendorName = '';
   }
-
+  
   createVendorList = [];
-
-  findVendor() {
-    if (this.projectpayment.vendorEmail.length > 0) {
+  
+  findVendor(){
+    if(this.projectpayment.vendorEmail.length > 0){
       this.vendorList.forEach((item) => {
-        if (item.email == this.projectpayment.vendorEmail) {
+        if(item.email == this.projectpayment.vendorEmail){
           this.selectVendor(item);
           this.newVendor = false;
           return;
         }
       });
-
-      if (this.projectpayment.idVendor > 0) {
+      
+      if(this.projectpayment.idVendor > 0){
         this.save();
         return;
       }
-
-      this.apolloService
-        .query(getassociatedcompany_list, {
-          idCompany: this.idCompany,
-          vendorEmail: this.projectpayment.vendorEmail,
-        })
-        .then((res) => {
-          const result = res.getassociatedcompany_list;
-          if (!result.error) {
-            this.createVendorList = result.data;
-            if (this.createVendorList.length > 0) {
-              this.openNewVendorModal();
-            } else {
-              this.save();
-            }
+      
+      this.apolloService.query(getassociatedcompany_list, {
+        idCompany: this.idCompany,
+        vendorEmail: this.projectpayment.vendorEmail
+      }).then((res) => {
+        const result = res.getassociatedcompany_list;
+        if(!result.error){
+          this.createVendorList = result.data;
+          if(this.createVendorList.length > 0){
+            this.openNewVendorModal();
+          } else{
+            this.save();
           }
-        });
-    } else if (this.projectpayment.idVendor > 0) {
+        }
+      });
+    } else if(this.projectpayment.idVendor > 0){
       this.save();
     }
   }
-
+  
   newVendorRef;
-
-  openNewVendorModal() {
+  
+  openNewVendorModal(){
     this.newVendorRef = this.modalService.open(this.newVendorListModal, {
       backdrop: 'static',
       size: '443',
-      centered: true,
+      centered: true
     });
   }
-
-  cancelNewVendor() {
+  
+  cancelNewVendor(){
     this.newVendorRef.close();
   }
-
+  
   newVendorShow = false;
-
-  CreateNewVendor() {
+  
+  CreateNewVendor(){
     // this.createVendorList.forEach((item) => {
     //   if (this.projectpayment.idInvitedCompany == item.idInvitedCompany) {
     //     this.projectpayment.vendorName = item.companyName;
@@ -294,60 +298,59 @@ export class InvoiceAddComponent {
     // if (this.projectpayment.idInvitedCompany > 0) {
     //   this.newVendorShow = true;
     // }
-
+    
     this.newVendorRef.close();
     this.save();
   }
-
-  editAmount() {
-    if (this.projectpayment.status != 'Paid') {
+  
+  
+  editAmount(){
+    if(this.projectpayment.status != 'Paid'&& (this.id==0 || this.isSenderIsLoggedIn())){
       this.amountEdit = true;
       setTimeout(() => {
-        this.inputAmout.nativeElement.focus();
+        this.inputAmount.nativeElement.focus();
       }, 10);
-
-      if (this.projectpayment.amount == 0) this.projectpayment.amount = null;
+      
+      if(this.projectpayment.amount == 0) this.projectpayment.amount = null;
     }
   }
-
-  cancelAmount() {
+  
+  cancelAmount(){
     this.amountEdit = false;
-    if (!this.projectpayment.amount) {
+    if(!this.projectpayment.amount){
       this.projectpayment.amount = 0;
       return;
     }
   }
-
-  groupBy(arr, key) {
+  
+  groupBy(arr, key){
     return arr.reduce((acc, curr) => {
       (acc[curr[key]] = acc[curr[key]] || []).push(curr);
       return acc;
     }, {});
   }
-
-  getProjectList() {
-    this.apolloService
-      .query(companyproject_list, {
-        idCompany: this.idCompany,
-      })
-      .then((res) => {
-        const result = res.companyproject_list;
-        if (!result.error) {
-          this.PROJECTLIST = JSON.parse(JSON.stringify(result.data));
-          this.projectList = this.groupBy(result.data, 'idGroup');
-          for (let key in this.projectList) {
-            this.projectGroupList.push(this.projectList[key]);
-          }
-          this.setProject();
+  
+  getProjectList(){
+    this.apolloService.query(companyproject_list, {
+      idCompany: this.idCompany
+    }).then((res) => {
+      const result = res.companyproject_list;
+      if(!result.error){
+        this.PROJECTLIST = JSON.parse(JSON.stringify(result.data));
+        this.projectList = this.groupBy(result.data, 'idGroup');
+        for(let key in this.projectList){
+          this.projectGroupList.push(this.projectList[key]);
         }
-      });
+        this.setProject();
+      }
+    });
   }
-
-  setCostCodeName() {
+  
+  setCostCodeName(){
     this.costCodeList.forEach((item) => {
-      if (item.costcode) {
+      if(item.costcode){
         item.costcodelist.forEach((costcode) => {
-          if (costcode.costCode == this.projectpayment.costCode) {
+          if(costcode.costCode == this.projectpayment.costCode){
             this.vendorcostcodesText = costcode.txtName;
             return;
           }
@@ -355,43 +358,41 @@ export class InvoiceAddComponent {
       }
     });
   }
-
-  getCostCodeList() {
-    this.apolloService
-      .query(categorycostcode_list, {
-        idCompany: this.idCompany,
-      })
-      .then((res) => {
-        const result = res.categorycostcode_list;
-        if (!result.error) {
-          this.costCodeList = result.data;
-          this.COSTCODE_LIST = JSON.parse(JSON.stringify(result.data));
-        }
-        this.setCostCodeName();
-      });
+  
+  getCostCodeList(){
+    this.apolloService.query(categorycostcode_list, {
+      idCompany: this.idCompany
+    }).then((res) => {
+      const result = res.categorycostcode_list;
+      if(!result.error){
+        this.costCodeList = result.data;
+        this.COSTCODE_LIST = JSON.parse(JSON.stringify(result.data));
+      }
+      this.setCostCodeName();
+    });
   }
-
+  
   vendorcostcodesText = '';
-
-  costCodeSelect(event, item) {
-    if (event.currentTarget.checked) {
+  
+  costCodeSelect(event, item){
+    if(event.currentTarget.checked){
       this.vendorcostcodesText = item.txtName;
       this.projectpayment.costCode = item.costCode;
-    } else {
+    } else{
       this.vendorcostcodesText = '';
       this.projectpayment.costCode = '0';
     }
   }
-
-  setCostCodeSelect(costcode) {
+  
+  setCostCodeSelect(costcode){
     let result = false;
-    if (this.projectpayment.costCode == costcode) {
+    if(this.projectpayment.costCode == costcode){
       result = true;
     }
     return result;
   }
-
-  costCodeFilter() {
+  
+  costCodeFilter(){
     this.costCodeList = JSON.parse(JSON.stringify(this.COSTCODE_LIST));
     this.costCodeList = this.costCodeList.filter((costcode) => {
       costcode.costcodelist = costcode.costcodelist.filter((item) =>
@@ -400,85 +401,79 @@ export class InvoiceAddComponent {
       return costcode;
     });
   }
-
-  getVendorList() {
-    this.apolloService
-      .query(vendor_list, {
-        idCompany: this.idCompany,
-      })
-      .then((res) => {
-        const result = res.vendor_list;
-        if (!result.error) {
-          this.vendorList = result.data;
-          this.vendorList = this.vendorList.filter(
-            (item) => item.status == 'Active'
-          );
-          this.VENDORLIST = JSON.parse(JSON.stringify(this.vendorList));
-          this.setVendor();
-        }
-      });
+  
+  getVendorList(){
+    this.apolloService.query(vendor_list, {
+      idCompany: this.idCompany
+    }).then((res) => {
+      const result = res.vendor_list;
+      if(!result.error){
+        this.vendorList = result.data;
+        this.vendorList = this.vendorList.filter(
+          (item) => item.status == 'Active'
+        );
+        this.VENDORLIST = JSON.parse(JSON.stringify(this.vendorList));
+        this.setVendor();
+      }
+    });
   }
-
-  getOrderList() {
-    this.apolloService
-      .query(projectorder_list, {
-        idCompany: this.idCompany,
-        idProject: 0,
-      })
-      .then((res) => {
-        const result = res.projectorder_list;
-        if(!result.error){
-          if(this.id==0){
-            this.orderList = result.data.filter((order) => order.status != 'Paid' && order.idPayment == 0);
-          }else {
-            this.orderList = result.data;
-          }
-          this.ORDERLIST = JSON.parse(JSON.stringify(this.orderList));
-          this.setOrder();
+  
+  getOrderList(){
+    this.apolloService.query(projectorder_list, {
+      idCompany: this.idCompany,
+      idProject: 0
+    }).then((res) => {
+      const result = res.projectorder_list;
+      if(!result.error){
+        if(this.id == 0){
+          this.orderList = result.data.filter((order) => order.status != 'Paid' && order.idPayment == 0);
+        } else{
+          this.orderList = result.data;
         }
-      });
+        this.ORDERLIST = JSON.parse(JSON.stringify(this.orderList));
+        this.setOrder();
+      }
+    });
   }
-
+  
   payment = {
     account: '',
     bankName: '',
-    id: 0,
+    id: 0
   };
-
-  getPaymentList() {
-    this.apolloService
-      .query(companypayment_list, {
-        idCompany: this.idCompany,
-      })
-      .then((res) => {
-        const result = res.companypayment_list;
-        if (!result.error) {
-          this.paymentList = result.data;
-          // this.paymentList.forEach((item) => {
-          //   if (item.account.length > 4)
-          //     item.account = item.account.substring(item.account.length - 4);
-          //   if (item.defaultPay) {
-          //     this.payment = item;
-          //     this.projectpayment.idCompany_payment = item.id;
-          //   }
-          // });
-          // if (!this.payment && this.paymentList.length > 0) {
-          //   this.payment = this.paymentList[0];
-          //   this.projectpayment.idCompany_payment = this.payment.id;
-          // }
-        }
-      });
+  
+  getPaymentList(){
+    this.apolloService.query(companypayment_list, {
+      idCompany: this.idCompany
+    }).then((res) => {
+      const result = res.companypayment_list;
+      if(!result.error){
+        this.paymentList = result.data;
+        // this.paymentList.forEach((item) => {
+        //   if (item.account.length > 4)
+        //     item.account = item.account.substring(item.account.length - 4);
+        //   if (item.defaultPay) {
+        //     this.payment = item;
+        //     this.projectpayment.idCompany_payment = item.id;
+        //   }
+        // });
+        // if (!this.payment && this.paymentList.length > 0) {
+        //   this.payment = this.paymentList[0];
+        //   this.projectpayment.idCompany_payment = this.payment.id;
+        // }
+      }
+    });
   }
-
-  selectPayment(item) {
+  
+  selectPayment(item){
     this.payment = item;
     this.projectpayment.idCompany_payment = item.id;
   }
-
+  
   project: any;
   keywordsProject = '';
-
-  selectProject(project) {
+  
+  selectProject(project){
     this.project = project;
     this.projectpayment.idProject = project.id;
     this.orderList = JSON.parse(JSON.stringify(this.ORDERLIST));
@@ -487,130 +482,130 @@ export class InvoiceAddComponent {
         item.idProject == project.id && item.total >= this.projectpayment.amount
     );
   }
-
-  projectFilter() {
+  
+  projectFilter(){
     this.projectList = JSON.parse(JSON.stringify(this.PROJECTLIST));
     this.projectList = this.projectList.filter((item) =>
-      item.projectName
-        .toLowerCase()
-        .includes(this.keywordsProject.toLowerCase())
+      item.projectName.toLowerCase().includes(this.keywordsProject.toLowerCase())
     );
     this.projectList = this.groupBy(this.projectList, 'idGroup');
     this.projectGroupList = [];
-    for (let key in this.projectList) {
+    for(let key in this.projectList){
       this.projectGroupList.push(this.projectList[key]);
     }
   }
-
-  removeProject() {
+  
+  removeProject(){
     this.project = null;
     this.projectpayment.idProject = 0;
     this.removOrder();
   }
-
+  
   order: any;
   keywordsOrder = '';
-
-  selectOrder(order) {
+  
+  selectOrder(order){
     this.order = order;
     this.projectpayment.idOrder1 = order.id;
     this.projectpayment.costCode = this.order.costCode;
-    if (!this.project) {
+    this.projectpayment.remainingAmount = order.remainingAmount;
+    if(!this.project){
       this.project = {
         id: order.idProject,
-        projectName: order.projectName,
+        projectName: order.projectName
       };
       this.projectpayment.idProject = this.project.id;
     }
   }
-
-  orderFilter() {
+  
+  orderFilter(){
     this.orderList = JSON.parse(JSON.stringify(this.ORDERLIST));
     this.orderList = this.orderList.filter((item) =>
       item.projectName.toLowerCase().includes(this.keywordsOrder.toLowerCase())
     );
   }
-
-  removOrder() {
+  
+  removOrder(){
     this.order = null;
     this.projectpayment.idOrder1 = 0;
     this.projectpayment.costCode = '0';
-    if (!this.project) {
+    if(!this.project){
       this.orderList = JSON.parse(JSON.stringify(this.ORDERLIST));
       this.orderList = this.orderList.filter(
         (item) => item.total >= this.projectpayment.amount
       );
     }
   }
-
+  
   vendor: any;
   keywordsVendor = '';
-
-  selectVendor(vendor) {
+  
+  selectVendor(vendor){
     this.vendor = vendor;
     let name = vendor.primaryContact.split(/\s+/);
     name = name.filter((item) => item.trim().length > 0);
-    if (name.length > 0) {
+    if(name.length > 0){
       this.vendor.firstName = name[0];
       this.vendor.lastName = name[0];
-      if (name.length > 1) this.vendor.lastName = name[1];
-    } else {
+      if(name.length > 1) this.vendor.lastName = name[1];
+    } else{
       name = vendor.vendorName.split(' ');
-      if (name.length == 1) {
-        if (name[0].length > 1) {
+      if(name.length == 1){
+        if(name[0].length > 1){
           this.vendor.firstName = name[0].substring(0, 1);
           this.vendor.lastName = name[0].substring(1, 2);
-        } else if (name[0].length == 1) {
+        } else if(name[0].length == 1){
           this.vendor.firstName = name[0];
           this.vendor.lastName = name[0];
         }
-      } else if (name.length > 1) {
+      } else if(name.length > 1){
         this.vendor.firstName = name[0];
         this.vendor.lastName = name[1];
       }
     }
     this.projectpayment.idVendor = vendor.id;
+    this.projectpayment.vendorName = vendor.vendorName;
+    this.projectpayment.vendorEmail = vendor.email;
+    this.projectpayment.vendorType = vendor.vendorType;
   }
-
-  vendorFilterFocus(vendorDropdown) {
-    if (this.keywordsVendor.length === 0) {
+  
+  vendorFilterFocus(vendorDropdown){
+    if(this.keywordsVendor.length === 0){
       this.vendorList = JSON.parse(JSON.stringify(this.VENDORLIST));
     }
     setTimeout(() => {
-      if (!vendorDropdown.isOpen()) {
+      if(!vendorDropdown.isOpen()){
         vendorDropdown.open();
       }
     }, 500);
   }
-
-  vendorFilter(vendorDropdown) {
+  
+  vendorFilter(vendorDropdown){
     this.vendorList = JSON.parse(JSON.stringify(this.VENDORLIST));
-    if (this.keywordsVendor.length > 0) {
+    if(this.keywordsVendor.length > 0){
       this.vendorList = this.vendorList.filter((item) =>
-        item.vendorName
-          .toLowerCase()
-          .includes(this.keywordsVendor.toLowerCase())
+        item.vendorName.toLowerCase().includes(this.keywordsVendor.toLowerCase())
       );
     }
-    if (!vendorDropdown.isOpen()) {
+    if(!vendorDropdown.isOpen()){
       vendorDropdown.open();
     }
   }
-
-  removeVendor() {
+  
+  removeVendor(){
     this.vendor = null;
     this.projectpayment.idVendor = 0;
     this.projectpayment.vendorEmail = '';
     this.projectpayment.vendorName = '';
-    if (this.newVendor) {
+    if(this.newVendor){
       this.newVendorShow = false;
     }
   }
-
-  dropdownSelect(item) {
+  
+  dropdownSelect(item){
     this.projectpayment.paymentTerms = item;
     const date = new Date();
-    switch (item) {
+    switch(item){
       case '7 Days':
         this.projectpayment.dueDate = formatDate(
           date.setDate(date.getDate() + 7),
@@ -662,303 +657,300 @@ export class InvoiceAddComponent {
         break;
     }
   }
-
-  showFindOrder() {
+  
+  showFindOrder(){
     this.showCostcode = true;
     this.orderCostCodeText = 'Cost code';
   }
-
-  showFindCostCode() {
+  
+  showFindCostCode(){
     this.showCostcode = false;
     this.orderCostCodeText = 'order';
     this.order = null;
     this.projectpayment.idOrder1 = 0;
   }
-
-  onSelectDocument(event: any) {
+  
+  onSelectDocument(event: any){
     event.addedFiles.map((file) => {
       this.getUploadUrl(file);
     });
   }
-
+  
   file;
-
-  getUploadUrl(file) {
+  
+  getUploadUrl(file){
     const fileName = getNewFileName(file.name);
     file.filename = fileName;
-    this.apolloService
-      .query(get_file_url, {
-        fileName: fileName,
-        folder: 'files',
-      })
-      .then((res) => {
-        if (!res.get_file_url.error) {
-          let uploadUrl = res.get_file_url.data;
-          if (this.projectpayment.paymentFiles.length > 0) {
-            this.httpService.put(uploadUrl, file).then((res) => {
-              this.projectpayment.paymentFiles.push({
-                fileName: file.name,
-                fileSize: file.size,
-                fileType: file.name
-                  .substring(file.name.lastIndexOf('.') + 1)
-                  .toLowerCase(),
-                fileUrl: uploadUrl.split('?')[0],
-              });
+    this.apolloService.query(get_file_url, {
+      fileName: fileName,
+      folder: 'files'
+    }).then((res) => {
+      if(!res.get_file_url.error){
+        let uploadUrl = res.get_file_url.data;
+        if(this.projectpayment.paymentFiles.length > 0){
+          this.httpService.put(uploadUrl, file).then((res) => {
+            this.projectpayment.paymentFiles.push({
+              fileName: file.name,
+              fileSize: file.size,
+              fileType: file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase(),
+              fileUrl: uploadUrl.split('?')[0]
             });
-          } else {
-            this.handleUploadFile(file, uploadUrl);
-          }
+          });
+        } else{
+          this.handleUploadFile(file, uploadUrl);
         }
-      });
+      }
+    });
   }
-
-  handleUploadFile(file, uploadUrl) {
+  
+  handleUploadFile(file, uploadUrl){
     this.file = {
       uploadProgress: 0,
       fileName: file.name,
       fileSize: file.size,
-      fileType: file.name
-        .substring(file.name.lastIndexOf('.') + 1)
-        .toLowerCase(),
-      fileUrl: uploadUrl.split('?')[0],
+      fileType: file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase(),
+      fileUrl: uploadUrl.split('?')[0]
     };
-    file.subscription = this.http
-      .put(uploadUrl, file, {
-        headers: new HttpHeaders()
-          .set('x-ms-blob-type', 'BlockBlob')
-          .set('Content-Type', file.type),
-        reportProgress: true,
-        observe: 'events',
-      })
-      .subscribe({
-        next: (res) => {
-          if (res.type === HttpEventType.Response) {
-            this.projectpayment.paymentFiles.push({
-              fileName: file.name,
-              fileSize: file.size,
-              fileType: file.type,
-              fileUrl: uploadUrl.split('?')[0],
-            });
-            if (this.projectpayment.paymentFiles.length == 1) this.mapping();
-          }
-          if (res.type === HttpEventType.UploadProgress) {
-            const percentDone = Math.round((100 * res.loaded) / res.total);
-            this.file.uploadProgress = percentDone;
-          }
-        },
-        error: (err) => {
-          this.toastrService.info(err, '');
-        },
-      });
+    file.subscription = this.http.put(uploadUrl, file, {
+      headers: new HttpHeaders().set('x-ms-blob-type', 'BlockBlob').set('Content-Type', file.type),
+      reportProgress: true,
+      observe: 'events'
+    }).subscribe({
+      next: (res) => {
+        if(res.type === HttpEventType.Response){
+          this.projectpayment.paymentFiles.push({
+            fileName: file.name,
+            fileSize: file.size,
+            fileType: file.type,
+            fileUrl: uploadUrl.split('?')[0]
+          });
+          if(this.projectpayment.paymentFiles.length == 1) this.mapping();
+        }
+        if(res.type === HttpEventType.UploadProgress){
+          const percentDone = Math.round((100 * res.loaded) / res.total);
+          this.file.uploadProgress = percentDone;
+        }
+      },
+      error: (err) => {
+        this.toastrService.info(err, '');
+      }
+    });
   }
-
-  cancelUploading(file) {
+  
+  cancelUploading(file){
     file.subscription.unsubscribe();
     this.file = null;
   }
-
-  resetValue(type) {
-    if (type == 1) {
+  
+  resetValue(type){
+    if(type == 1){
       this.vendorList.forEach((item) => {
-        if (item.id == this.handleData.idVendor) {
+        if(item.id == this.handleData.idVendor){
           this.selectVendor(item);
           return;
         }
       });
-    } else if (type == 2) {
+    } else if(type == 2){
       this.projectpayment.amount = this.handleData.amount;
-    } else if (type == 3) {
+    } else if(type == 3){
       this.projectpayment.billNumber = this.handleData.invoiceNumber;
-    } else if (type == 4) {
+    } else if(type == 4){
       this.projectpayment.dueDate = this.handleData.indvoicedueDate;
-    } else if (type == 5) {
+    } else if(type == 5){
       this.projectpayment.sentDate = this.handleData.invoicedDate;
-    } else if (type == 6) {
+    } else if(type == 6){
       const projectListTemp = JSON.parse(JSON.stringify(this.PROJECTLIST));
-
+      
       projectListTemp.forEach((item) => {
-        if (item.id == this.handleData.idProject) {
+        if(item.id == this.handleData.idProject){
           this.selectProject(item);
           return;
         }
       });
-    } else if (type == 7) {
+    } else if(type == 7){
       this.orderList.forEach((item) => {
-        if (item.id == this.handleData.idOrder1) {
+        if(item.id == this.handleData.idOrder1){
           this.selectOrder(item);
         }
       });
     }
   }
-
+  
   showNotes = false;
   mappingFlag = false;
   handleData;
-
-  mapping() {
+  
+  mapping(){
     this.mappingFlag = true;
-    this.apolloService
-      .mutate(projectinvoice_mapping, {
-        idCompany: this.idCompany,
-        fileUrl: this.file.fileUrl,
-      })
-      .then((res) => {
-        const result = res.projectinvoice_mapping;
-        this.handleData = result.data;
-        this.showNotes = true;
-        if (!result.error) {
-          if (!this.vendor) {
-            this.vendorList.forEach((item) => {
-              if (item.id == result.data.idVendor) {
-                this.selectVendor(item);
-                this.newVendor = false;
-                return;
-              }
-            });
-          }
-
-          if (!this.projectpayment.costCode) {
-            this.costCodeList.forEach((item) => {
-              if (item.costcode == result.data.costCode) {
-                this.projectpayment.costCode = item.costcode;
-                this.vendorcostcodesText = item.txtName;
-              }
-            });
-          }
-
-          if (!this.projectpayment.sentDate) {
-            this.projectpayment.sentDate = result.data.invoicedDate;
-          }
-          if (!this.projectpayment.dueDate) {
-            this.projectpayment.dueDate = result.data.indvoicedueDate;
-          }
-
-          if (!this.projectpayment.billNumber) {
-            this.projectpayment.billNumber = result.data.invoiceNumber;
-          }
-
-          if (!(this.projectpayment.amount > 0)) {
-            this.projectpayment.amount = result.data.amount;
-          }
-
-          if (!this.project) {
-            const projectListTemp = JSON.parse(
-              JSON.stringify(this.PROJECTLIST)
-            );
-
-            projectListTemp.forEach((item) => {
-              if (item.id == result.data.idProject) {
-                this.selectProject(item);
-                return;
-              }
-            });
-          }
-
-          if (!this.order) {
-            this.orderList.forEach((item) => {
-              if (item.id == result.data.idOrder1) {
-                this.selectOrder(item);
-              }
-            });
-          }
+    this.apolloService.mutate(projectinvoice_mapping, {
+      idCompany: this.idCompany,
+      fileUrl: this.file.fileUrl
+    }).then((res) => {
+      const result = res.projectinvoice_mapping;
+      this.handleData = result.data;
+      this.showNotes = true;
+      if(!result.error){
+        if(!this.vendor){
+          this.vendorList.forEach((item) => {
+            if(item.id == result.data.idVendor){
+              this.selectVendor(item);
+              this.newVendor = false;
+              return;
+            }
+          });
         }
-      });
+        
+        if(!this.projectpayment.costCode){
+          this.costCodeList.forEach((item) => {
+            if(item.costcode == result.data.costCode){
+              this.projectpayment.costCode = item.costcode;
+              this.vendorcostcodesText = item.txtName;
+            }
+          });
+        }
+        
+        if(!this.projectpayment.sentDate){
+          this.projectpayment.sentDate = result.data.invoicedDate;
+        }
+        if(!this.projectpayment.dueDate){
+          this.projectpayment.dueDate = result.data.indvoicedueDate;
+        }
+        
+        if(!this.projectpayment.billNumber){
+          this.projectpayment.billNumber = result.data.invoiceNumber;
+        }
+        
+        if(!(this.projectpayment.amount > 0)){
+          this.projectpayment.amount = result.data.amount;
+        }
+        
+        if(!this.project){
+          const projectListTemp = JSON.parse(
+            JSON.stringify(this.PROJECTLIST)
+          );
+          
+          projectListTemp.forEach((item) => {
+            if(item.id == result.data.idProject){
+              this.selectProject(item);
+              return;
+            }
+          });
+        }
+        
+        if(!this.order){
+          this.orderList.forEach((item) => {
+            if(item.id == result.data.idOrder1){
+              this.selectOrder(item);
+            }
+          });
+        }
+      }
+    });
   }
-
+  
   deleteRef;
   deleteIndex = 0;
   deleteItem;
-
-  openDeleteModal(i, item) {
+  
+  openDeleteModal(i, item){
     this.deleteIndex = i;
     this.deleteItem = item;
     this.deleteRef = this.modalService.open(this.deleteModal, {
       size: '443',
-      centered: true,
+      centered: true
     });
   }
-
-  cancelDelete() {
+  
+  cancelDelete(){
     this.deleteRef.close();
   }
-
-  fileDelete() {
+  
+  fileDelete(){
     let index = this.deleteIndex;
     let item = this.deleteItem;
     this.projectpayment.paymentFiles.splice(index, 1);
     this.deleteRef.close();
   }
-
-  closeModal() {
+  
+  closeModal(){
     this.modalRef.close();
   }
-
-  save() {
+  
+  save(){
     //this.txtError.idVendor = this.projectpayment.idVendor;
-
+    
     // if (this.txtError.idVendor > 0) {
-    if (this.projectpayment.amount > 0) {
-      this.apolloService
-        .mutate(projectpayment_new, this.projectpayment)
-        .then((res) => {
-          const result = res.projectpayment_new;
-          if (!result.error) {
-            this.toastrService.info(
-              'Bill for ' +
-                this.projectpayment.vendorName +
-                ' has been saved to Bill Inbox.',
-              ''
-            );
-            this.modalRef.close();
-          } else {
-            this.toastrService.info(result.message, '');
-          }
-        });
-    } else {
+    if(this.projectpayment.amount > 0){
+      if(this.order && this.projectpayment.amount > this.projectpayment.remainingAmount){
+        this.toastrService.info('Amount due ' + formatCurrency(this.projectpayment.amount, 'en-US', '$','USD') +' can\'t be more than remaining '+formatCurrency(this.order.remainingAmount, 'en-US', '$','USD')+'.', '');
+        return;
+      }
+      this.apolloService.mutate(projectpayment_new, this.projectpayment).then((res) => {
+        const result = res.projectpayment_new;
+        if(!result.error){
+          this.toastrService.info(
+            'Bill for ' +
+            this.projectpayment.vendorName +
+            ' has been saved to Bill Inbox.',
+            ''
+          );
+          this.modalRef.close();
+        } else{
+          this.toastrService.info(result.message, '');
+        }
+      });
+    } else{
       this.toastrService.info('Please enter amount', '');
     }
     //}
   }
-
-  update() {
-    if (this.id > 0) {
-      this.apolloService
-        .mutate(projectpayment_update, this.projectpayment)
-        .then((res) => {
-          const result = res.projectpayment_update;
-          if (!result.error) {
-            this.toastrService.info(
-              'Bill for ' +
-                this.projectpayment.vendorName +
-                ' has been updated.',
-              ''
-            );
-            this.modalRef.close();
-          } else {
-            this.toastrService.info(result.message, '');
-          }
-        });
+  
+  update(){
+    if(this.id > 0){
+      if(this.order && this.projectpayment.amount > this.projectpayment.remainingAmount){
+        this.toastrService.info('Amount due ' + formatCurrency(this.projectpayment.amount, 'en-US', '$','USD') +' can\'t be more than remaining '+formatCurrency(this.order.remainingAmount, 'en-US', '$','USD')+'.', '');
+        return;
+      }
+      this.apolloService.mutate(projectpayment_update, this.projectpayment).then((res) => {
+        const result = res.projectpayment_update;
+        if(!result.error){
+          this.toastrService.info(
+            'Bill for ' +
+            this.projectpayment.vendorName +
+            ' has been updated.',
+            ''
+          );
+          this.modalRef.close();
+        } else{
+          this.toastrService.info(result.message, '');
+        }
+      });
     }
   }
-
-  openPayingBill() {
-    if (this.paymentList.length == 0) {
+  
+  openPayingBill(){
+    if(this.paymentList.length == 0){
       this.toastrService.info(
         'No payment method available, please go to company settings and add a new payment method.',
         'Warning',
         {
           timeOut: 6000,
           enableHtml: true,
-          toastClass: 'max-width-300 text-white',
+          toastClass: 'max-width-300 text-white'
         }
       );
-    } else {
+    } else{
+      if(this.order && this.projectpayment.amount > this.projectpayment.remainingAmount){
+        this.toastrService.info('Amount due ' + formatCurrency(this.projectpayment.amount, 'en-US', '$','USD') +' can\'t be more than remaining '+formatCurrency(this.order.remainingAmount, 'en-US', '$','USD')+'.', '');
+        return;
+      }
+      this.projectpayment.indvoicedueDate = this.projectpayment.dueDate;
       this.payingBillModalRef = this.modalService.open(this.payingBillModal, {
         backdrop: 'static',
         modalDialogClass: 'modal-right',
-        size: '640',
+        size: '640'
       });
-
+      
       this.payingBillModalRef.result.then(
         (res) => {
           console.log('OK');
@@ -969,34 +961,34 @@ export class InvoiceAddComponent {
       );
     }
   }
-
-  decline() {
-    this.apolloService
-      .mutate(projectpayment_reject, {
-        idCompany: this.idCompany,
-        id: this.projectpayment.id,
-        revision: this.projectpayment.revision,
-      })
-      .then((res) => {
-        const result = res.projectpayment_reject;
-        if (!result.error) {
-          this.toastrService.info(result.message, '');
-          this.modalRef.close();
-        } else {
-          this.toastrService.info(result.message, '');
-        }
-      });
+  
+  decline(){
+    this.apolloService.mutate(projectpayment_reject, {
+      idCompany: this.idCompany,
+      id: this.projectpayment.id,
+      revision: this.projectpayment.revision
+    }).then((res) => {
+      const result = res.projectpayment_reject;
+      if(!result.error){
+        this.toastrService.info(result.message, '');
+        this.modalRef.close();
+      } else{
+        this.toastrService.info(result.message, '');
+      }
+    });
   }
-
-  downloadFile(url, name) {
-    this.http
-      .get(url, {
-        observe: 'response',
-        responseType: 'blob',
-      })
-      .subscribe((res) => {
-        this.fileSaverService.save((<any>res).body, name);
-      });
+  
+  downloadFile(url, name){
+    this.http.get(url, {
+      observe: 'response',
+      responseType: 'blob'
+    }).subscribe((res) => {
+      this.fileSaverService.save((<any>res).body, name);
+    });
+  }
+  
+  isSenderIsLoggedIn(){
+    return this.localStorage.getItem('email') == this.projectpayment.senderEmail;
   }
   
   

@@ -1,4 +1,4 @@
-<div class="modal-body modal-form-control" ngbAutoFocus style="padding: 32px 24px 160px;">
+<div id="payingBillModal" class="modal-body modal-form-control" ngbAutoFocus style="padding: 32px 24px 160px;">
     <div class="headline-24">Paying Bill</div>
     
     
@@ -15,13 +15,13 @@
                 <div class="row">
                     <div class="col-12 Subtitle-1 text-start">{{item.vendorName}}</div>
                 </div>
-                <div class="row" *ngFor="let subItem of item.paymentOrderids">
-                    <div class="col-6 mt-2-1">
-                        <div class="Subtitle-2 font-12">#{{subItem.number}}</div>
+                <div class="row" [ngClass]="i==0 ? 'mt-2-1' : 'mt-4-1'" *ngFor="let subItem of item.paymentOrderids; let i=index;">
+                    <div class="col-6">
+                        <div class="Subtitle-2 font-12">{{subItem.number == 0 ? '  ****' : '#' + subItem.number}}</div>
                         <div class="search-text">
                             Due {{subItem.dueDate | date: 'MMM d, y'}}</div>
                     </div>
-                    <div class="col-6 mt-2-1">
+                    <div class="col-6">
                         <input id="projectBudget"
                                class="form-control Subtitle-1"
                                type="text"
@@ -39,14 +39,55 @@
                             Remaining {{subItem.currentAmount.balance | currency}}
                         </div>
                     </div>
-                    <!--                    <div class="col-6 mt-2-1 search-text" style="color: #4B5563;-->
-                    <!--">-->
-                    <!--                        Sent by Check from Chase 4556-->
-                    <!--                    </div>-->
-                    <!--                    <div class="col-6 mt-2-1 text-end" style="color: #2B52DD;">-->
-                    <!--                        <i class="fe-edit me-1-1 font-16"></i>-->
-                    <!--                        <span class="btn-text-12">Edit Payment Method</span>-->
-                    <!--                    </div>-->
+                    
+                    <div *ngIf="subItem.bill" class="card mt-1-1" style="background-color: #F8F9FC;margin-bottom: 0;">
+                        <div class="card-body" style="padding: 0.5rem 0.25rem;">
+                            <div class="row">
+                                <div class="col-12 mb-1-1">
+                                    <div class="Subtitle-2 font-12">Bill Info</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="Subtitle-2 font-12">{{subItem.bill.billNumber == 0 ? '  ****' : '#' + subItem.bill.billNumber}}</div>
+                                    <div class="search-text">
+                                        Sent Date {{subItem.bill.sentDate | date: 'MMM d, y'}}</div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="Subtitle-2 font-12 text-end">Amount</div>
+                                    <div class="search-text text-end">
+                                        {{subItem.bill.amount | currency}}</div>
+                                </div>
+                                <div class="col-6 mt-1-1">
+                                    <div class="Subtitle-2 font-12">Contact</div>
+                                    <div class="search-text">
+                                        {{subItem.bill.vendorName}}</div>
+                                </div>
+                                <div class="col-6 mt-1-1">
+                                    <div class="flex-row-end-center">
+                                        <div class="ms-1-1 text-end">
+                                            {{subItem.bill.senderFirstname}}&nbsp;{{subItem.bill.senderLastname}}<br/>
+                                            <span class="subtitle-2-400-12 text-typeblackdeactivated">{{subItem.bill.senderEmail}}</span>
+                                        </div>
+                                        <div>
+                                            <app-avatar [bgColor]="'bg-info'" color="text-white"
+                                                        [url]="subItem.bill.senderAvatar"
+                                                        [firstName]="subItem.bill.senderFirstname"
+                                                        [lastName]="subItem.bill.senderLastname" [size]="32"
+                                                        alt="user-img" class="ms-2"></app-avatar>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!--                    <div class="col-6 mt-2-1 search-text" style="color: #4B5563;-->
+                                <!--">-->
+                                <!--                        Sent by Check from Chase 4556-->
+                                <!--                    </div>-->
+                                <!--                    <div class="col-6 mt-2-1 text-end" style="color: #2B52DD;">-->
+                                <!--                        <i class="fe-edit me-1-1 font-16"></i>-->
+                                <!--                        <span class="btn-text-12">Edit Payment Method</span>-->
+                                <!--                    </div>-->
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="row mt-2-1">
                     <div class="col-12">
@@ -120,9 +161,9 @@
                             <div *ngFor="let subItem of item.paymentOrderids" class="mt-1-1">
                                 <div class="flex-row-between-center search-text" style="color: #4B5563;">
                                     <div>
-                                        #{{subItem.number}}
+                                        {{subItem.number == 0 ? '  ****' : '#' + subItem.number}}
                                         <div *ngIf="subItem.status==='Overdue'"
-                                             class="d-inline-block badge {{globalFuns.toCamelCase(subItem.status.toLowerCase())}}Tag subtitle-2-600 text-optional text-center ms-1-1">{{subItem.status}}
+                                             class="d-inline-block badge {{globalFunc.toCamelCase(subItem.status.toLowerCase())}}Tag subtitle-2-600 text-optional text-center ms-1-1">{{subItem.status}}
                                         </div>
                                     </div>
                                     <span
@@ -150,7 +191,8 @@
                                 <img src="/assets/images/bill.png">
                             </div>
                             <div>
-                                <div class="Subtitle-1 text-start">Check for {{paymentList[step3ActiveIndex].paymentOrderids.length}}
+                                <div class="Subtitle-1 text-start">Check
+                                    for {{paymentList[step3ActiveIndex].paymentOrderids.length}}
                                     Bills
                                 </div>
                                 <div class="btn-text-12 text-optional text-start">Check will be sent out on
@@ -158,9 +200,9 @@
                                 </div>
                             </div>
                         </div>
-<!--                        <button class="btn btn-outline-primary btn-height-40">-->
-<!--                            <i class="fe-edit me-1-1 text-primary"></i> Edit-->
-<!--                        </button>-->
+                        <!--                        <button class="btn btn-outline-primary btn-height-40">-->
+                        <!--                            <i class="fe-edit me-1-1 text-primary"></i> Edit-->
+                        <!--                        </button>-->
                     </div>
                     <div class="mt-3-1">
                         <span class="search-text" style="color: #4B5563;">Vendor</span>
@@ -185,13 +227,14 @@
                     </div>
                     
                     <div class="mt-3-1">
-                        <div class="mt-2-1 p-2-1" *ngFor="let subItem of paymentList[step3ActiveIndex].paymentOrderids; let i=index;"
+                        <div class="mt-2-1 p-2-1"
+                             *ngFor="let subItem of paymentList[step3ActiveIndex].paymentOrderids; let i=index;"
                              style="border-radius: 8px;background-color: #F8F9FC;">
                             <div class="Subtitle-1 text-start pb-1-1"
                                  style="border-bottom: 1px solid #E5E7EB;">
                                 {{subItem.number}}
                                 <div *ngIf="subItem.status==='Overdue'"
-                                     class="d-inline-block badge {{globalFuns.toCamelCase(subItem.status.toLowerCase())}}Tag subtitle-2-600 text-optional text-center ms-1-1">{{subItem.status}}
+                                     class="d-inline-block badge {{globalFunc.toCamelCase(subItem.status.toLowerCase())}}Tag subtitle-2-600 text-optional text-center ms-1-1">{{subItem.status}}
                                 </div>
                             </div>
                             
@@ -216,7 +259,8 @@
                                  style="color: #4B5563;">
                                 Amount due
                                 <div class="flex-row-center Subtitle-1">
-                                    <button *ngIf="subItem.currentAmount.balance==0" class="btn btn-outline-success btn-text-12 me-1-1"
+                                    <button *ngIf="subItem.currentAmount.balance==0"
+                                            class="btn btn-outline-success btn-text-12 me-1-1"
                                             style="height: 16px;padding:0px 6px;border-radius: 4px;">
                                         Paid in full
                                     </button>
@@ -286,20 +330,21 @@
                         </div>
                         <div class="d-flex flex-row justify-content-between mb-1-1">
                             <div class="search-text" style="flex:1;color: #4B5563;">Memo</div>
-                            <div class="Subtitle-2 text-end font-12" style="flex:1;">{{payment.payMemo}}</div>
+                            <div class="Subtitle-2 text-end font-12" style="flex:1;">{{paymentList[0].payMemo}}</div>
                         </div>
                         <hr class="my-1-1" style="border-top: 1px solid #E1E6EF;">
                         <div class="d-flex flex-row justify-content-between mb-1-1">
-                            <div class="Subtitle-1" style="color: #4B5563;">#{{payment.billNumber}}</div>
+                            <div class="Subtitle-1" style="color: #4B5563;">
+                                #{{paymentList[0].paymentOrderids[0].number}}</div>
                             <div class="text-end">
-                                <div class="d-inline-block dueTag subtitle-2-600 text-blackprimary-op-50 text-center"
-                                     style="width: 40px;padding: 0;line-height:22px;">Due
+                                <div class="d-inline-block badge {{globalFunc.toCamelCase(paymentList[0].paymentOrderids[0].status.toLowerCase())}}Tag subtitle-2-600 text-blackprimary-op-50 text-center"
+                                     style="width: 40px;padding: 0;line-height:22px;">{{paymentList[0].paymentOrderids[0].status}}
                                 </div>
                             </div>
                         </div>
                         <div class="d-flex flex-row justify-content-between">
                             <div class="search-text" style="color: #4B5563;">Due date</div>
-                            <div class="Subtitle-2 font-12">{{paymentList[0].dueDate | date: 'M/d/yy'}}</div>
+                            <div class="Subtitle-2 font-12">{{paymentList[0].paymentOrderids[0].dueDate | date: 'M/d/yy'}}</div>
                         </div>
                     </div>
                     <div class="mt-1-1 p-2-1" style="background-color: #F8F9FC;">
@@ -308,7 +353,7 @@
                             <div class="Subtitle-2 font-12">{{paymentList[0].paymentOrderids[0].currentAmount.balance}}</div>
                         </div>
                         <ngb-progressbar
-                                [value]="paymentList[0].paymentOrderids[0].currentAmount.value/payment.amount*100"
+                                [value]="paymentList[0].paymentOrderids[0].currentAmount.value/payment[0].remainingAmount*100"
                                 type="success"
                                 class="progress-md mt-1-1"></ngb-progressbar>
                         <div class="d-flex flex-row justify-content-between mt-1-1">

@@ -25,8 +25,8 @@ import { EventService } from 'src/app/core/service/event.service';
 import { HttpService } from 'src/app/core/service/http.service';
 import * as moment from 'moment';
 import { LocalStorageService } from 'src/app/core/service/local-storage.service';
-import { projectpayment_new } from 'src/app/core/gql/receivables';
 import { companypayment_list } from 'src/app/core/gql/payment';
+import { GlobalFunctionsService } from "../../../core/service/global-functions.service";
 
 @Component({
   selector: 'app-add-order',
@@ -60,6 +60,9 @@ export class AddOrderComponent {
     orderNumber: 0,
     idReason: 0,
     invoiceNumber: '',
+    idPayment: 0,
+    vendorName: '',
+    vendorType: '',
     invoicedDate: formatDate(this.myDate, this.format, this.locale),
     indvoicedueDate: formatDate(this.nextDate, this.format, this.locale),
     paymentTerms: '',
@@ -70,6 +73,8 @@ export class AddOrderComponent {
     taxrate: 0.0,
     tax: 0.0,
     total: 0.0,
+    pendingAmount: 0.0,
+    remainingAmount: 0.0,
     status: '',
     listItems: []
   };
@@ -122,6 +127,7 @@ export class AddOrderComponent {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private eventService: EventService,
+    private globalFuns: GlobalFunctionsService,
     private localStorage: LocalStorageService
   ){}
   
@@ -134,12 +140,11 @@ export class AddOrderComponent {
     this.idProject = this.activatedRoute.snapshot.queryParams['idProject'] == undefined ? undefined : parseInt(this.activatedRoute.snapshot.queryParams['idProject']);
     
     this.activatedRoute.params.subscribe((params) => {
-      
       this.idOrder = parseInt(params['id']);
       if(this.idOrder > 0){
         this.order.id = this.idOrder;
         this.getOrderInfo(this.order.id);
-      }else {
+      } else{
         this.order.id = 0;
         this.order.idProject = this.idProject === undefined ? 0 : this.idProject;
         //this.order.invoicedDate = new Date().toISOString().slice(0, 10);
@@ -163,6 +168,8 @@ export class AddOrderComponent {
           });
         }
       }
+      
+      this.getPaymentList();
     });
   }
   
@@ -244,7 +251,10 @@ export class AddOrderComponent {
           idCompany: result.data.projectOrder.idCompany,
           idProject: result.data.projectOrder.idProject,
           idVendor: result.data.projectOrder.idVendor,
+          vendorName: result.data.projectOrder.vendorName,
+          vendorType: result.data.projectOrder.vendorType,
           orderNumber: result.data.projectOrder.orderNumber,
+          idPayment: result.data.projectOrder.idPayment,
           idReason: result.data.projectOrder.idReason,
           invoiceNumber: result.data.projectOrder.invoiceNumber,
           invoicedDate: result.data.projectOrder.invoicedDate,
@@ -257,6 +267,8 @@ export class AddOrderComponent {
           taxrate: result.data.projectOrder.taxrate,
           tax: result.data.projectOrder.tax,
           total: result.data.projectOrder.total,
+          pendingAmount: result.data.projectOrder.pendingAmount,
+          remainingAmount: result.data.projectOrder.remainingAmount,
           status: result.data.projectOrder.status,
           listItems: result.data.listItems
         };
@@ -496,9 +508,11 @@ export class AddOrderComponent {
     }
   }
   
+  
   keywordsCostCode = '';
   
   costCodeFilter(){
+    console.log('111')
     this.costCodeList = JSON.parse(JSON.stringify(this.COSTCODE_LIST));
     this.costCodeList = this.costCodeList.filter((costcode) => {
       costcode.costcodelist = costcode.costcodelist.filter((item) =>
@@ -560,8 +574,10 @@ export class AddOrderComponent {
   }
   
   getAmout(item){
-    item.amount = parseFloat(item.qty) * parseFloat(item.price);
-    this.setTotal();
+    if(typeof item.qty === 'number' && typeof item.price === 'number'){
+      item.amount = parseFloat(item.qty) * parseFloat(item.price);
+      this.setTotal();
+    }
   }
   
   setTotal(){
@@ -762,7 +778,7 @@ export class AddOrderComponent {
     if(this.idProject === undefined){
       this.router.navigate(['apps/order/detail/' + id]);
     } else{
-      this.router.navigate(['apps/order/detail/' + id],{ queryParams: {idProject: this.idProject}});
+      this.router.navigate(['apps/order/detail/' + id], {queryParams: {idProject: this.idProject}});
     }
   }
   
@@ -843,40 +859,10 @@ export class AddOrderComponent {
     this.confirmModalRef.close();
   }
   
-  projectpayment;
   
   PayBill(){
-    this.projectpayment = {
-      idCompany: this.order.idCompany,
-      idProject: this.order.idProject,
-      idVendor: this.order.idVendor,
-      idOrder1: this.order.id,
-      idCompany_payment: 0,
-      billNumber: this.order.orderNumber,
-      sentDate: this.order.invoicedDate,
-      dueDate: this.order.indvoicedueDate,
-      paymentTerms: '',
-      amount: this.order.total,
-      txtNotes: this.order.notes,
-      billyn: true,
-      costCode: this.order.costCode,
-      paymentFiles: [],
-      idInvitedCompany: 0,
-      vendorName: this.vendor.vendorName,
-      vendorEmail: '',
-      status: '',
-      account: '',
-      payType: ''
-    };
-    
-    if(this.projectpayment.amount > 0){
-      this.apolloService.mutate(projectpayment_new, this.projectpayment).then((res) => {
-        const result = res.projectpayment_new;
-        this.projectpayment.id = result.data.id;
-        this.projectpayment.revision = result.data.revision;
-        this.getPaymentList();
-        this.confirmModalRef.close();
-      });
+    if(this.order.remainingAmount > 0){
+      this.openPayingBill();
     } else{
       this.toastrService.info('Please enter amount', '');
     }
@@ -891,7 +877,6 @@ export class AddOrderComponent {
       const result = res.companypayment_list;
       if(!result.error){
         this.paymentList = result.data;
-        this.openPayingBill();
       }
     });
   }
@@ -919,7 +904,7 @@ export class AddOrderComponent {
       
       this.payingBillModalRef.result.then(
         (res) => {
-          console.log('OK');
+          this.getOrderInfo(this.order.id);
         },
         (dismiss) => {
           console.log('dismiss');
@@ -927,4 +912,6 @@ export class AddOrderComponent {
       );
     }
   }
+  
+  protected readonly globalFunc = this.globalFuns;
 }

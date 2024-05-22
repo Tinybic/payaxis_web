@@ -19,7 +19,7 @@ export class OrderComponent extends Base {
 
   ngOnInit(): void {
     this.canCreate = super.setRole('Create Order');
-    this.tabs1 = parseInt(window.localStorage.getItem('OrdersTabActiveIndex'));
+    this.tabs1 = window.localStorage.getItem('OrdersTabActiveIndex') ? parseInt(window.localStorage.getItem('OrdersTabActiveIndex')) : 1;
   }
   
   setTabActiveIndex(index: string){

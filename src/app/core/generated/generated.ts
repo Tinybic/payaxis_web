@@ -2217,6 +2217,7 @@ export type Project_Order1 = {
   createdDate: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   idCompany: Scalars['Int']['output'];
+  idNewVendor?: Maybe<Scalars['Int']['output']>;
   idPayment: Scalars['Int']['output'];
   idProject: Scalars['Int']['output'];
   idReason: Scalars['Int']['output'];
@@ -2231,6 +2232,7 @@ export type Project_Order1 = {
   orderNumber: Scalars['Int']['output'];
   paidAmount: Scalars['Float']['output'];
   paymentTerms: Scalars['String']['output'];
+  pendingAmount: Scalars['Float']['output'];
   projectName: Scalars['String']['output'];
   remainingAmount: Scalars['Float']['output'];
   revision: Scalars['Int']['output'];
@@ -2287,6 +2289,7 @@ export type Project_Payment = {
   id: Scalars['Int']['output'];
   idCompany: Scalars['Int']['output'];
   idCompany_payment: Scalars['Int']['output'];
+  idNewVendor?: Maybe<Scalars['Int']['output']>;
   idOrder1: Scalars['Int']['output'];
   idProject: Scalars['Int']['output'];
   idVendor: Scalars['Int']['output'];
