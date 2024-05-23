@@ -988,7 +988,7 @@ export class InvoiceAddComponent {
   }
   
   isSenderIsLoggedIn(){
-    return this.localStorage.getItem('email') == this.projectpayment.senderEmail;
+    return this.idCompany == this.projectpayment.idCompany;
   }
   
   

@@ -374,13 +374,12 @@
          style="height: 80vh;color: #202020CC;">
         <img src="assets/images/check-mark.png"/>
         <div class="headline-24 mt-3-1">Payment Sent!</div>
-        <div class="Subtitle-1-400 mt-3-1 px-2-1" style="padding: 0 70px;">Congrats! Payment has been sent to <span
-                class="Subtitle-1">[Vendor]</span>. Budget amount will be updated.
+        <div class="Subtitle-1-400 mt-3-1 px-2-1" style="padding: 0 70px;">Congrats! Payment has been sent. Budget amount will be updated.
         </div>
     </div>
     
     <div class="d-grid" style="width: calc(100% - 48px);position: fixed;bottom: 24px;right: 24px;z-index: 10;">
-        <button class="btn mb-1-1 {{ step === 3 ? 'btn-success' : 'btn-primary'}}" (click)="nextStep('continue')"
+        <button *ngIf="step != 4"class="btn mb-1-1 {{ step === 3 ? 'btn-success' : 'btn-primary'}}" (click)="nextStep('continue')"
                 style="height: 44px;border: none;">
             {{btnOK}}
         </button>

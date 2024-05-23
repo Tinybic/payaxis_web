@@ -5,41 +5,43 @@
 // Button shadow
 
 @mixin button-shadow($color) {
-    box-shadow: $btn-box-shadow rgba($color, 0.5);
+  box-shadow: $btn-box-shadow rgba($color, 0.5);
 }
 
 .btn {
-    font-weight: 600;
+  font-weight: 600;
 }
 
 .btn:disabled,
 .btn.disabled,
 fieldset:disabled .btn {
-    background-color: #D1D8E2;
-    color: #FFFFFF;
-    opacity: 1;
-    border-color: #D1D8E2;
+  background-color: #D1D8E2;
+  color: #FFFFFF;
+  opacity: 1;
+  border-color: #D1D8E2;
 }
 
 
 .btn-primary {
-    box-shadow: 0 0 0 2px #ffffff;
-    border: 2px solid transparent;
-    line-height: 1rem;
-    &:hover {
-        background-color: #{$interactivelighthover};
-        border-color: #{$interactivelighthover};
-    }
+  box-shadow: 0 0 0 2px #ffffff;
+  border: 2px solid transparent;
+  line-height: 1rem;
 
-    &:active {
-        background-color: #{$interactivelight};
-        border-color: #{$interactivelight};
-        box-shadow: none !important;
-    }
-    &:focus {
-        border: 2px solid #ffffff;
-        box-shadow: 0 0 0 2px #4468E9;
-    }
+  &:hover {
+    background-color: #{$interactivelighthover};
+    border-color: #{$interactivelighthover};
+  }
+
+  &:active {
+    background-color: #{$interactivelight};
+    border-color: #{$interactivelight};
+    box-shadow: none !important;
+  }
+
+  &:focus {
+    border: 2px solid #ffffff;
+    box-shadow: 0 0 0 2px #4468E9;
+  }
 
 
 }
@@ -47,21 +49,21 @@ fieldset:disabled .btn {
 // Button Shadows
 @each $color,
 $value in $theme-colors {
-    .btn-#{$color} {
-        @include button-shadow($value);
-    }
+  .btn-#{$color} {
+    @include button-shadow($value);
+  }
 }
 
 .btn {
-    .mdi {
-        &:before {
-            margin-top: -1px;
-        }
+  .mdi {
+    &:before {
+      margin-top: -1px;
     }
+  }
 
-    i {
-        display: inline-block;
-    }
+  i {
+    display: inline-block;
+  }
 }
 
 //
@@ -69,21 +71,21 @@ $value in $theme-colors {
 //
 .btn-light,
 .btn-white {
-    color: #{map-get($grays, "900")};
+  color: #{map-get($grays, "900")};
 }
 
 .btn-white {
-    border-color: #{map-get($grays, "300")};
+  border-color: #{map-get($grays, "300")};
 
-    &:hover,
-    &:focus {
-        background-color: #{map-get($grays, "100")};
-        border-color: #{map-get($grays, "100")};
-    }
+  &:hover,
+  &:focus {
+    background-color: #{map-get($grays, "100")};
+    border-color: #{map-get($grays, "100")};
+  }
 
-    &.focus {
-        box-shadow: 0 0 0 $btn-focus-width #{rgba(map-get($grays, "300"), .3)};
-    }
+  &.focus {
+    box-shadow: 0 0 0 $btn-focus-width #{rgba(map-get($grays, "300"), .3)};
+  }
 }
 
 //
@@ -91,31 +93,31 @@ $value in $theme-colors {
 //
 // Make a button look and behave like a link
 .btn-link {
-    font-weight: $font-weight-normal;
-    color: $link-color;
+  font-weight: $font-weight-normal;
+  color: $link-color;
+  background-color: transparent;
+
+  &:hover {
+    color: $link-hover-color;
+    text-decoration: $link-hover-decoration;
     background-color: transparent;
+    border-color: transparent;
+  }
 
-    &:hover {
-        color: $link-hover-color;
-        text-decoration: $link-hover-decoration;
-        background-color: transparent;
-        border-color: transparent;
-    }
+  &:focus,
+  &.focus {
+    text-decoration: $link-hover-decoration;
+    border-color: transparent;
+    box-shadow: none;
+  }
 
-    &:focus,
-    &.focus {
-        text-decoration: $link-hover-decoration;
-        border-color: transparent;
-        box-shadow: none;
-    }
+  &:disabled,
+  &.disabled {
+    color: $btn-link-disabled-color;
+    pointer-events: none;
+  }
 
-    &:disabled,
-    &.disabled {
-        color: $btn-link-disabled-color;
-        pointer-events: none;
-    }
-
-    // No need for an active state here
+  // No need for an active state here
 }
 
 //
@@ -130,25 +132,37 @@ $value in $theme-colors {
 
 
 .btn-outline-primary {
+  background-color: #FFFFFF;
+
+  &:hover {
+    color: #1C3DB2;
+    border-color: #1C3DB2;
+    background-color: #1C3DB21A;
+  }
+
+  &:focus {
+    color: #4468E9;
+    border-color: #4468E9;
+    background-color: #1C3DB21A;
+    box-shadow: none;
+  }
+
+  &:active,
+  &.active {
+    color: #18328E;
+    border-color: #18328E;
+    background-color: #1C3DB21A;
+    box-shadow: none;
+  }
+
+  &.keep-initial{
+    color: #2B52DD;
+    border-color: #2B52DD;
     background-color: #FFFFFF;
-    &:hover{
-       color: #1C3DB2;
-       border-color: #1C3DB2;
-       background-color: #1C3DB21A;
+    &:hover, &:focus, &:active, &.active{
+      opacity: 0.7;
     }
-    &:focus{
-        color: #4468E9;
-        border-color: #4468E9;
-        background-color: #1C3DB21A;
-        box-shadow: none;
-    }
-    &:active,
-    &.active {
-        color: #18328E;
-        border-color: #18328E;
-        background-color: #1C3DB21A;
-        box-shadow: none;
-    }
+  }
 }
 
 //
@@ -156,16 +170,16 @@ $value in $theme-colors {
 //
 
 .btn-label {
-    margin: -.55rem .9rem -.55rem -.9rem;
-    padding: .6rem .9rem;
-    background-color: #{rgba(map-get($grays, "900"),0.1)};
+  margin: -.55rem .9rem -.55rem -.9rem;
+  padding: .6rem .9rem;
+  background-color: #{rgba(map-get($grays, "900"),0.1)};
 }
 
 .btn-label-right {
-    margin: (-$btn-padding-y) (-$btn-padding-x) (-$btn-padding-y) ($btn-padding-x);
-    padding: ($btn-padding-y) ($btn-padding-x);
-    background-color: #{rgba(map-get($grays, "900"),0.1)};
-    display: inline-block;
+  margin: (-$btn-padding-y) (-$btn-padding-x) (-$btn-padding-y) ($btn-padding-x);
+  padding: ($btn-padding-y) ($btn-padding-x);
+  background-color: #{rgba(map-get($grays, "900"),0.1)};
+  display: inline-block;
 }
 
 //
@@ -173,9 +187,9 @@ $value in $theme-colors {
 //
 
 .btn-xs {
-    padding: .2rem .6rem;
-    font-size: .75rem;
-    border-radius: .15rem;
+  padding: .2rem .6rem;
+  font-size: .75rem;
+  border-radius: .15rem;
 }
 
 //
@@ -183,157 +197,157 @@ $value in $theme-colors {
 //
 
 @mixin button-variant-soft($bg) {
-    color: $bg;
-    background-color: rgba($bg, 0.18);
-    border-color: rgba($bg, 0.12);
+  color: $bg;
+  background-color: rgba($bg, 0.18);
+  border-color: rgba($bg, 0.12);
 
-    &:hover {
-        color: $white;
-        background-color: $bg;
-    }
+  &:hover {
+    color: $white;
+    background-color: $bg;
+  }
 
-    &:focus,
-    &.focus {
-        box-shadow: 0 0 0 $btn-focus-width rgba($bg, .3);
-    }
+  &:focus,
+  &.focus {
+    box-shadow: 0 0 0 $btn-focus-width rgba($bg, .3);
+  }
 }
 
 @each $color,
 $value in $theme-colors {
-    .btn-soft-#{$color} {
-        @include button-variant-soft($value);
-    }
+  .btn-soft-#{$color} {
+    @include button-variant-soft($value);
+  }
 }
 
 
 // btn bordered
 
 @mixin button-bordered-variant($bg) {
-    background-color: $bg;
-    color: $white !important;
-    border-bottom: 2px solid darken($bg, 7%);
+  background-color: $bg;
+  color: $white !important;
+  border-bottom: 2px solid darken($bg, 7%);
 }
 
 @each $color,
 $value in $theme-colors {
-    .btn-bordered-#{$color} {
-        @include button-bordered-variant($value);
-    }
+  .btn-bordered-#{$color} {
+    @include button-bordered-variant($value);
+  }
 }
 
 .btn-bordered-dark {
-    color: #{map-get($grays, "200")} !important;
+  color: #{map-get($grays, "200")} !important;
 }
 
 
 // dark mode
 body[data-layout-color="dark"] {
-    // .btn-light,
-    // .btn-white {
-    //     color: #{map-get($dark-grays, "800")};
-    //     background-color: #{map-get($dark-grays, "300")};
-    //     border-color: #{map-get($dark-grays, "300")};
-    // }
+  // .btn-light,
+  // .btn-white {
+  //     color: #{map-get($dark-grays, "800")};
+  //     background-color: #{map-get($dark-grays, "300")};
+  //     border-color: #{map-get($dark-grays, "300")};
+  // }
 
-    // .btn-white {
-    //     border-color: #{map-get($dark-grays, "300")};
+  // .btn-white {
+  //     border-color: #{map-get($dark-grays, "300")};
 
-    //     &:hover, &:focus{
-    //         background-color: #{map-get($dark-grays, "300")};
-    //         border-color: #{map-get($dark-grays, "300")};
-    //     }
+  //     &:hover, &:focus{
+  //         background-color: #{map-get($dark-grays, "300")};
+  //         border-color: #{map-get($dark-grays, "300")};
+  //     }
 
-    //     &:focus,
-    //     &.focus {
-    //         box-shadow: 0 0 0 $btn-focus-width #{rgba(map-get($dark-grays, "300"), .3)};
-    //     }
-    // }
-    .btn-label {
-        background-color: #{rgba(map-get($dark-grays, "800"),0.1)};
+  //     &:focus,
+  //     &.focus {
+  //         box-shadow: 0 0 0 $btn-focus-width #{rgba(map-get($dark-grays, "300"), .3)};
+  //     }
+  // }
+  .btn-label {
+    background-color: #{rgba(map-get($dark-grays, "800"),0.1)};
+  }
+
+  .btn-label-right {
+    background-color: #{rgba(map-get($dark-grays, "800"),0.1)};
+  }
+
+  .btn-bordered-dark {
+    color: #{map-get($dark-grays, "200")} !important;
+  }
+
+  @each $color,
+  $value in $dark-theme-colors {
+    .btn-#{$color} {
+      @include button-shadow($value);
     }
 
-    .btn-label-right {
-        background-color: #{rgba(map-get($dark-grays, "800"),0.1)};
+    .btn-outline-#{$color} {
+      @include button-outline-variant($value);
     }
 
-    .btn-bordered-dark {
-        color: #{map-get($dark-grays, "200")} !important;
+    .btn-soft-#{$color} {
+      @include button-variant-soft($value);
     }
 
-    @each $color,
-    $value in $dark-theme-colors {
-        .btn-#{$color} {
-            @include button-shadow($value);
-        }
-
-        .btn-outline-#{$color} {
-            @include button-outline-variant($value);
-        }
-
-        .btn-soft-#{$color} {
-            @include button-variant-soft($value);
-        }
-
-        .btn-bordered-#{$color} {
-            @include button-bordered-variant($value);
-        }
+    .btn-bordered-#{$color} {
+      @include button-bordered-variant($value);
     }
+  }
 
-    .btn-light,
-    .btn-white {
-        background-color: #{map-get($dark-grays, "300")};
-        border-color: #{map-get($dark-grays, "300")};
-        color: #{map-get($dark-grays, "900")};
+  .btn-light,
+  .btn-white {
+    background-color: #{map-get($dark-grays, "300")};
+    border-color: #{map-get($dark-grays, "300")};
+    color: #{map-get($dark-grays, "900")};
+  }
+
+  .btn-dark {
+    background-color: #{map-get($dark-grays, "900")};
+    border-color: #{map-get($dark-grays, "900")};
+    color: #{map-get($dark-grays, "100")};
+  }
+
+  .btn-secondary {
+    background-color: #{map-get($dark-grays, "400")};
+    border-color: #{map-get($dark-grays, "400")};
+    color: #{map-get($dark-grays, "900")};
+  }
+
+  .btn-outline-light {
+    border-color: #{map-get($dark-grays, "300")};
+    color: #{map-get($dark-grays, "300")};
+
+    &:hover,
+    &.active,
+    &:active,
+    &:focus {
+      color: #{map-get($dark-grays, "900")} !important;
+      background-color: #{map-get($dark-grays, "300")};
     }
+  }
 
-    .btn-dark {
-        background-color: #{map-get($dark-grays, "900")};
-        border-color: #{map-get($dark-grays, "900")};
-        color: #{map-get($dark-grays, "100")};
+  .btn-outline-dark {
+    border-color: #{map-get($dark-grays, "900")};
+    color: #{map-get($dark-grays, "900")};
+
+    &:hover,
+    &.active,
+    &:active,
+    &:focus {
+      color: #{map-get($dark-grays, "100")} !important;
+      background-color: #{map-get($dark-grays, "900")};
     }
+  }
 
-    .btn-secondary {
-        background-color: #{map-get($dark-grays, "400")};
-        border-color: #{map-get($dark-grays, "400")};
-        color: #{map-get($dark-grays, "900")};
+  .btn-outline-secondary {
+    border-color: #{map-get($dark-grays, "400")};
+    color: #{map-get($dark-grays, "400")};
+
+    &:hover,
+    &.active,
+    &:active,
+    &:focus {
+      color: #{map-get($dark-grays, "300")} !important;
+      background-color: #{map-get($dark-grays, "400")};
     }
-
-    .btn-outline-light {
-        border-color: #{map-get($dark-grays, "300")};
-        color: #{map-get($dark-grays, "300")};
-
-        &:hover,
-        &.active,
-        &:active,
-        &:focus {
-            color: #{map-get($dark-grays, "900")} !important;
-            background-color: #{map-get($dark-grays, "300")};
-        }
-    }
-
-    .btn-outline-dark {
-        border-color: #{map-get($dark-grays, "900")};
-        color: #{map-get($dark-grays, "900")};
-
-        &:hover,
-        &.active,
-        &:active,
-        &:focus {
-            color: #{map-get($dark-grays, "100")} !important;
-            background-color: #{map-get($dark-grays, "900")};
-        }
-    }
-
-    .btn-outline-secondary {
-        border-color: #{map-get($dark-grays, "400")};
-        color: #{map-get($dark-grays, "400")};
-
-        &:hover,
-        &.active,
-        &:active,
-        &:focus {
-            color: #{map-get($dark-grays, "300")} !important;
-            background-color: #{map-get($dark-grays, "400")};
-        }
-    }
+  }
 }

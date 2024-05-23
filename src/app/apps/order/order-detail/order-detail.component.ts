@@ -59,6 +59,7 @@ export class OrderDetailComponent {
     idVendor: 0,
     orderNumber: 0,
     idReason: 0,
+    idPayment: 0,
     invoiceNumber: '',
     invoicedDate: formatDate(this.myDate, this.format, this.locale),
     indvoicedueDate: formatDate(this.nextDate, this.format, this.locale),
@@ -231,6 +232,7 @@ export class OrderDetailComponent {
             idCompany: result.data.projectOrder.idCompany,
             idProject: result.data.projectOrder.idProject,
             idVendor: result.data.projectOrder.idNewVendor,
+            idPayment: result.data.projectOrder.idPayment,
             orderNumber: result.data.projectOrder.orderNumber,
             idReason: result.data.projectOrder.idReason,
             invoiceNumber: result.data.projectOrder.invoiceNumber,
@@ -785,6 +787,10 @@ export class OrderDetailComponent {
   }
   paymentRequestModalRef;
   openPaymentRequestModal(){
+    if(this.order.idPayment > 0){
+      this.toastrService.info('Another request is pending on this order.', '');
+      return;
+    }
     this.paymentRequestModalRef = this.modalService.open(this.paymentRequestModal, {
       backdrop: 'static',
       modalDialogClass: 'modal-right',

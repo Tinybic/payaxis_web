@@ -392,7 +392,7 @@ export class OrderListComponent extends Base {
   }
   
   openPaymentRequestModal(order, event){
-    if(order.pendingAmount == 0){
+    if(order.idPayment == 0){
       this.selectedOrder = order;
       this.paymentRequestModalRef = this.modalService.open(
         this.paymentRequestModal,
