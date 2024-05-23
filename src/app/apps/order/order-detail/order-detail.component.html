@@ -519,6 +519,6 @@
 </div>
 
 <ng-template #paymentRequestModal let-modal>
-    <app-receivable-add class="p-4-1" [modalRef]="paymentRequestModalRef" [id]="0"
+    <app-receivable-add class="p-4-1" [modalRef]="paymentRequestModalRef" [id]="order.id"
                         [orderInfo]="order" [from]="'Received Orders'"></app-receivable-add>
 </ng-template>

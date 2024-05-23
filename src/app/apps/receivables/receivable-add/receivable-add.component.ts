@@ -18,6 +18,8 @@ import { ApolloService } from 'src/app/core/service/apollo.service';
 import { HttpService } from 'src/app/core/service/http.service';
 import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 import { GlobalFunctionsService } from "../../../core/service/global-functions.service";
+import { projectorder_list } from "../../../core/gql/orders";
+import { projectorder_info } from "../../../core/gql/order";
 
 @Component({
   selector: 'app-receivable-add',
@@ -29,11 +31,12 @@ export class ReceivableAddComponent {
   @Input() from: string = ''; // 从 Receivables 打开时, from='Receivables';
                               // 从 Received Orders 打开时, from='Received Orders';
   @Input() id: number = 0;   // 从 Receivables 打开时，编辑状态时 id>0，新建时 id=0;
-                             // 从 Received Orders 点 'Payment Request' 打开时 id=0;
+                             // 从 Received Orders 点 'Payment Request' 打开时 id=order id;
   @Input() orderInfo?: any;   // 从 Receivables 打开时, orderInfo == undefined
   // 从 Received Orders 点 'Payment Request' 打开时 orderInfo=order，
   @ViewChild('deleteModal') deleteModal: any;
   @ViewChild('amount') inputAmount: ElementRef;
+  @ViewChild('drop') drop: any;
   
   idCompany: number = 0;
   paymentTermsList = VENDOR_PAYMENTTERM;
@@ -57,10 +60,12 @@ export class ReceivableAddComponent {
     id: 0,
     idCompany: 0,
     idProject: 0,
+    projectName: '',
     idVendor: 0,
     idOrder1: 0,
     idCompany_payment: 0,
     billNumber: '',
+    orderNumber: 0,
     sentDate: formatDate(this.myDate, this.format, this.locale),
     dueDate: formatDate(
       this.myDate.setDate(this.myDate.getDate() + 30),
@@ -84,6 +89,7 @@ export class ReceivableAddComponent {
   };
   
   amountEdit = false;
+  createdCurrentCompanyID = 0
   
   constructor(
     private apolloService: ApolloService,
@@ -97,23 +103,65 @@ export class ReceivableAddComponent {
   ngOnInit(): void{
     this.idCompany = parseInt(this.localStorage.getItem('idcompany'));
     
-    if(this.id > 0){  // 从 Receivables 打开, edit
-      this.getDetail();
+    if(this.from == 'Received Orders'){
+      this.getOrderInfo();
     } else{
-      this.projectpayment.idCompany = this.idCompany;
-      if(this.orderInfo){       // 从 Received Orders 打开
-        this.projectpayment.idVendor = this.orderInfo.idCompany;
-        this.projectpayment.idOrder1 = this.orderInfo.id;
-        this.projectpayment.idProject = this.orderInfo.idProject;
-        // this.projectpayment.billNumber = this.orderInfo.orderNumber;
-        this.projectpayment.amount = this.orderInfo.remainingAmount;
+      if(this.id > 0){
+        this.getDetail();
+      } else{
+        this.projectpayment.idCompany = this.idCompany;
+        this.getVendorList();
+        this.getProjectList();
+        this.getSentOrderList();
+        // this.getPaymentList();
       }
-      
+    }
+  }
+  
+  
+  getOrderInfo(){
+    this.apolloService.query(projectorder_info, {
+      idCompany: this.idCompany,
+      id: this.id,
+      received: true
+    }).then((res) => {
+      const result = res.projectorder_info;
+      if(!result.error){
+        this.projectpayment = {
+          id: result.data.projectOrder.id,
+          idCompany: this.idCompany,
+          idProject: result.data.projectOrder.idProject,
+          projectName: result.data.projectOrder.projectName,
+          idVendor: result.data.projectOrder.idNewVendor,
+          idOrder1: result.data.projectOrder.id,
+          idCompany_payment: 0,
+          billNumber: result.data.projectOrder.invoiceNumber,
+          orderNumber: result.data.projectOrder.orderNumber,
+          sentDate: result.data.projectOrder.invoicedDate,
+          dueDate: result.data.projectOrder.indvoicedueDate,
+          paymentTerms: result.data.projectOrder.paymentTerms,
+          amount: result.data.projectOrder.remainingAmount,
+          txtNotes: result.data.projectOrder.notes,
+          billyn: true,
+          costCode: result.data.projectOrder.costCode,
+          paymentFiles: [],
+          idInvitedCompany: 0,
+          vendorName: result.data.projectOrder.vendorName,
+          vendorEmail: '',
+          status: result.data.projectOrder.status,
+          revision: result.data.projectOrder.revision,
+          bankName: '',
+          account: '',
+          payType: ''
+        };
+        
+        this.createdCurrentCompanyID = result.data.projectOrder.idCompany;
+      }
       this.getVendorList();
       this.getProjectList();
-      this.getOrderList();
-      // this.getPaymentList();
-    }
+      this.order = this.orderInfo;// this.getReceivedOrderList();
+      this.getAttachment();
+    });
   }
   
   getDetail(){
@@ -126,10 +174,12 @@ export class ReceivableAddComponent {
         this.projectpayment = {
           idCompany: this.idCompany,
           idProject: result.data.idProject,
-          idVendor: result.data.idVendor,
+          projectName: result.data.projectName,
+          idVendor: result.data.idNewVendor,
           idOrder1: result.data.idOrder1,
           idCompany_payment: result.data.idCompany_payment,
           billNumber: result.data.billNumber,
+          orderNumber: result.data.orderNumber,
           sentDate: result.data.sentDate,
           dueDate: result.data.dueDate,
           paymentTerms: result.data.paymentTerms,
@@ -151,10 +201,16 @@ export class ReceivableAddComponent {
           payType: result.data.payType,
           id: this.id
         };
+        
+        this.createdCurrentCompanyID = result.data.idCompany;
       }
       this.getVendorList();
       this.getProjectList();
-      this.getOrderList();
+      if(this.isSenderIsLoggedIn()){
+        this.getSentOrderList();
+      } else{
+        this.getReceivedOrderList();
+      }
       this.getAttachment();
     });
   }
@@ -176,23 +232,8 @@ export class ReceivableAddComponent {
   }
   
   
-  amountKeyDown(e){
-    if(this.from == 'Received Orders'){
-      const preValue = e.target.value;
-      setTimeout(() => {
-        if(e.target.value && e.target.value.length > 0){
-          const currentValue = parseFloat(e.target.value.replace(/[$,]/g, ''));
-          if(currentValue > this.orderInfo.remainingAmount){
-            e.target.value = preValue;
-            this.projectpayment.amount = parseFloat(preValue.replace(/[$,]/g, ''));
-          }
-        }
-      }, 0)
-    }
-  }
-  
   editAmount(){
-    if(this.projectpayment.status != 'Paid'){
+    if(this.projectpayment.status != 'Paid' && (this.id == 0 || this.isSenderIsLoggedIn())){
       this.amountEdit = true;
       setTimeout(() => {
         this.inputAmount.nativeElement.focus();
@@ -269,30 +310,36 @@ export class ReceivableAddComponent {
   setVendor(){
     if(this.projectpayment.idVendor > 0){
       this.vendorList.forEach((item) => {
-        if(
-          item.id == this.projectpayment.idVendor ||
-          item.idInvitedCompany == this.projectpayment.idVendor
-        ){
+        if(item.id == this.projectpayment.idVendor){
           this.selectVendor(item);
-          
           return;
         }
       });
     }
   }
   
-  getOrderList(){
+  getSentOrderList(){
+    this.apolloService.query(projectorder_list, {
+      idCompany: this.idCompany,
+      idProject: 0
+    }).then((res) => {
+      const result = res.projectorder_list;
+      if(!result.error){
+        this.orderList = result.data.filter((order) => order.status != 'Paid');
+        this.ORDERLIST = JSON.parse(JSON.stringify(this.orderList));
+        this.setOrder();
+      }
+    });
+  }
+  
+  getReceivedOrderList(){
     this.apolloService.query(receivable_list, {
       idCompany: this.idCompany,
       idProject: 0
     }).then((res) => {
       const result = res.receivable_list;
       if(!result.error){
-        if(this.from == 'Received Orders'){
-          this.orderList = result.data;
-        } else{
-          this.orderList = result.data.filter((order) => order.status != 'Paid');
-        }
+        this.orderList = result.data;
         this.ORDERLIST = JSON.parse(JSON.stringify(this.orderList));
         this.setOrder();
       }
@@ -301,10 +348,7 @@ export class ReceivableAddComponent {
   
   setOrder(){
     if(this.projectpayment.idOrder1 > 0){
-      // this.orderList = this.orderList.filter(
-      //   (item) => item.total >= this.projectpayment.amount
-      // );
-      this.orderList.forEach((item) => {
+      this.ORDERLIST.forEach((item) => {
         if(item.id == this.projectpayment.idOrder1){
           this.order = item;
           return;
@@ -460,6 +504,10 @@ export class ReceivableAddComponent {
     this.projectpayment.idVendor = 0;
   }
   
+  addAttachment(){
+    this.drop.showFileSelector();
+  }
+  
   dropdownSelect(item){
     this.projectpayment.paymentTerms = item;
     const date = new Date();
@@ -576,12 +624,16 @@ export class ReceivableAddComponent {
       this.toastrService.info('Please enter amount', '');
       return;
     }
+    if(this.projectpayment.billNumber.length == 0){
+      this.toastrService.info('Please enter Bill Number', '');
+      return;
+    }
     if(this.order && this.projectpayment.amount > this.order.remainingAmount){
-      this.toastrService.info('Amount due ' + formatCurrency(this.projectpayment.amount, 'en-US', '$','USD') +' can\'t be more than remaining '+formatCurrency(this.order.remainingAmount, 'en-US', '$','USD')+'.', '');
+      this.toastrService.info('Amount due ' + formatCurrency(this.projectpayment.amount, 'en-US', '$', 'USD') + ' can\'t be more than remaining ' + formatCurrency(this.order.remainingAmount, 'en-US', '$', 'USD') + '.', '');
       return;
     }
     
-    if(this.id > 0){
+    if(this.id > 0 && this.from == 'Receivables'){
       this.update();
     } else{
       this.txtError.idVendor = this.projectpayment.idVendor;
@@ -608,22 +660,25 @@ export class ReceivableAddComponent {
   }
   
   update(){
-    if(this.id > 0){
-      this.apolloService.mutate(projectpayment_update, this.projectpayment).then((res) => {
-        const result = res.projectpayment_update;
-        if(!result.error){
-          this.toastrService.info(
-            'Bill for ' +
-            this.projectpayment.vendorName +
-            ' has been updated.',
-            ''
-          );
-          this.modalRef.close();
-        } else{
-          this.toastrService.info(result.message, '');
-        }
-      });
-    }
+    this.apolloService.mutate(projectpayment_update, this.projectpayment).then((res) => {
+      const result = res.projectpayment_update;
+      if(!result.error){
+        this.toastrService.info(
+          'Bill for ' +
+          this.projectpayment.vendorName +
+          ' has been updated.',
+          ''
+        );
+        this.modalRef.close();
+      } else{
+        this.toastrService.info(result.message, '');
+      }
+    });
+  }
+  
+  
+  isSenderIsLoggedIn(){
+    return this.idCompany == this.createdCurrentCompanyID;
   }
   
   

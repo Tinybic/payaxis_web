@@ -81,6 +81,8 @@ $value in $theme-colors {
   background-color: #F87171;
   border-radius: 8px;
   color: #ffffff !important;
+  border: 1px solid #F87171;
+  padding: 0px 8px;
   width: 128px;
   &.badge{
     width: auto;
