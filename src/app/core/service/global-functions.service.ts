@@ -135,7 +135,7 @@ export class GlobalFunctionsService {
    */
   BillStatusCount={
     Active: 0,
-    Sent: 0,
+    'Payment Requested': 0,
     Approved: 0,
     Declined: 0,
     Paid: 0,
