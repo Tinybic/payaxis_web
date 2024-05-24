@@ -137,23 +137,23 @@
                         [ngClass]="{'sorting_asc':sortColumn == 'status' && direction == 'asc','sorting_desc':sortColumn == 'status' && direction == 'desc'}"
                         (click)="onSort('status')">Status</th>
                     <th class="sortable"
+                        [ngClass]="{'sorting_asc':sortColumn == 'sentDate' && direction == 'asc','sorting_desc':sortColumn == 'sentDate' && direction == 'desc'}"
+                        (click)="onSort('sentDate')">Sent date</th>
+                    <th class="sortable"
                         [ngClass]="{'sorting_asc':sortColumn == 'billNumber' && direction == 'asc','sorting_desc':sortColumn == 'billNumber' && direction == 'desc'}"
                         (click)="onSort('billNumber')">Bill #</th>
                     <th class="sortable"
-                        [ngClass]="{'sorting_asc':sortColumn == 'dueDate' && direction == 'asc','sorting_desc':sortColumn == 'dueDate' && direction == 'desc'}"
-                        (click)="onSort('dueDate')">Due Date</th>
+                        [ngClass]="{'sorting_asc':sortColumn == 'vendorName' && direction == 'asc','sorting_desc':sortColumn == 'vendorName' && direction == 'desc'}"
+                        (click)="onSort('vendorName')">Contact</th>
                     <th class="sortable"
                         [ngClass]="{'sorting_asc':sortColumn == 'orderNumber' && direction == 'asc','sorting_desc':sortColumn == 'orderNumber' && direction == 'desc'}"
                         (click)="onSort('orderNumber')">Order #</th>
                     <th class="sortable"
-                        [ngClass]="{'sorting_asc':sortColumn == 'vendorName' && direction == 'asc','sorting_desc':sortColumn == 'vendorName' && direction == 'desc'}"
-                        (click)="onSort('vendorName')">Contact</th>
+                        [ngClass]="{'sorting_asc':sortColumn == 'dueDate' && direction == 'asc','sorting_desc':sortColumn == 'dueDate' && direction == 'desc'}"
+                        (click)="onSort('dueDate')">Due Date</th>
 <!--                    <th class="sortable"-->
 <!--                        [ngClass]="{'sorting_asc':sortColumn == 'account' && direction == 'asc','sorting_desc':sortColumn == 'account' && direction == 'desc'}"-->
 <!--                        (click)="onSort('account')">Payment type</th>-->
-                    <th class="sortable"
-                        [ngClass]="{'sorting_asc':sortColumn == 'sentDate' && direction == 'asc','sorting_desc':sortColumn == 'sentDate' && direction == 'desc'}"
-                        (click)="onSort('sentDate')">Sent date</th>
                     <th class="sortable"
                         [ngClass]="{'sorting_asc':sortColumn == 'amount' && direction == 'asc','sorting_desc':sortColumn == 'amount' && direction == 'desc'}"
                         (click)="onSort('amount')">Amount</th>
@@ -169,16 +169,16 @@
                             class="d-inline-block {{globalFunc.toCamelCase(item.status.toLowerCase())}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
                             {{item.status}} <span *ngIf="item.status == 'Paid'">{{item.paidDate | date: 'M/dd/yy'}}</span></div>
                     </td>
+                    <td> {{item.sentDate}}</td>
                     <td>
                         {{item.billNumber}}
                     </td>
+                    <td> {{item.vendorName}}</td>
+                    <td> {{item.orderNumber==''?'':item.orderNumber}}</td>
+<!--                    <td> {{item.account}}</td>-->
                     <td>
                         {{item.dueDate}}
                     </td>
-                    <td> {{item.orderNumber}}</td>
-                    <td> {{item.vendorName}}</td>
-<!--                    <td> {{item.account}}</td>-->
-                    <td> {{item.sentDate}}</td>
                     <td> {{item.amount | currency}}</td>
                     <td class="text-end">
                         <button type="button" class="btn btn-outline-primary padding-8-16 ms-1-1"

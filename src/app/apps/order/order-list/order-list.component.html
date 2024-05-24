@@ -89,8 +89,8 @@
                 (click)="onSort('status')">Status
             </th>
             <th class="sortable"
-                [ngClass]="{'sorting_asc':sortColumn == 'indvoicedueDate' && direction == 'asc','sorting_desc':sortColumn == 'indvoicedueDate' && direction == 'desc'}"
-                (click)="onSort('indvoicedueDate')">Due Date
+                [ngClass]="{'sorting_asc':sortColumn == 'invoicedDate' && direction == 'asc','sorting_desc':sortColumn == 'invoicedDate' && direction == 'desc'}"
+                (click)="onSort('invoicedDate')">Date
             </th>
             <th class="sortable"
                 [ngClass]="{'sorting_asc':sortColumn == 'orderNumber' && direction == 'asc','sorting_desc':sortColumn == 'orderNumber' && direction == 'desc'}"
@@ -98,30 +98,29 @@
             </th>
             <th class="sortable"
                 [ngClass]="{'sorting_asc':sortColumn == 'vendorName' && direction == 'asc','sorting_desc':sortColumn == 'vendorName' && direction == 'desc'}"
-                (click)="onSort('vendorName')">Vendor
+                (click)="onSort('vendorName')">Contact
             </th>
             <th class="sortable"
                 [ngClass]="{'sorting_asc':sortColumn == 'invoiceNumber' && direction == 'asc','sorting_desc':sortColumn == 'invoiceNumber' && direction == 'desc'}"
-                (click)="onSort('invoiceNumber')">Invoice
-            </th>
-            <th class="sortable"
-                [ngClass]="{'sorting_asc':sortColumn == 'costCodeName' && direction == 'asc','sorting_desc':sortColumn == 'costCodeName' && direction == 'desc'}"
-                (click)="onSort('costCodeName')">Cost Code
-            </th>
-            <th class="sortable"
-                [ngClass]="{'sorting_asc':sortColumn == 'remainingAmount' && direction == 'asc','sorting_desc':sortColumn == 'remainingAmount' && direction == 'desc'}"
-                (click)="onSort('remainingAmount')">Amount
+                (click)="onSort('invoiceNumber')">Bill # - Due Date
             </th>
             <th class="sortable"
                 [ngClass]="{'sorting_asc':sortColumn == 'projectName' && direction == 'asc','sorting_desc':sortColumn == 'projectName' && direction == 'desc'}"
                 (click)="onSort('projectName')">Project
             </th>
+<!--            <th class="sortable"-->
+<!--                [ngClass]="{'sorting_asc':sortColumn == 'costCodeName' && direction == 'asc','sorting_desc':sortColumn == 'costCodeName' && direction == 'desc'}"-->
+<!--                (click)="onSort('costCodeName')">Cost Code-->
+<!--            </th>-->
             <th class="sortable"
-                [ngClass]="{'sorting_asc':sortColumn == 'vendorName' && direction == 'asc','sorting_desc':sortColumn == 'vendorName' && direction == 'desc'}"
-                (click)="onSort('vendorName')">Approval
+                [ngClass]="{'sorting_asc':sortColumn == 'remainingAmount' && direction == 'asc','sorting_desc':sortColumn == 'remainingAmount' && direction == 'desc'}"
+                (click)="onSort('remainingAmount')">Amount
             </th>
-            <th>Action
-            </th>
+<!--            <th class="sortable"-->
+<!--                [ngClass]="{'sorting_asc':sortColumn == 'vendorName' && direction == 'asc','sorting_desc':sortColumn == 'vendorName' && direction == 'desc'}"-->
+<!--                (click)="onSort('vendorName')">Approval-->
+<!--            </th>-->
+            <th>&nbsp;</th>
             <th>&nbsp;</th>
             <th>&nbsp;</th>
         </tr>
@@ -133,9 +132,7 @@
             <td>
                 <div class="d-inline-block {{globalFunc.toCamelCase(item.status.toLowerCase())}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{item.status}}</div>
             </td>
-            <td>
-                {{item.indvoicedueDate | date: 'M/dd/yy'}}
-            </td>
+            <td>{{item.invoicedDate | date: 'M/dd/yy'}}</td>
             <td>
                 {{item.orderNumber}}
             </td>
@@ -143,31 +140,31 @@
                 {{item.vendorName}}
             </td>
             <td>
-                {{item.invoiceNumber}}
-            </td>
-            <td>
-                {{item.costCodeName}}
-            </td>
-            <td class="text-end">
-                {{item.remainingAmount | currency}}
+                {{item.invoiceNumber ==''?'':item.invoiceNumber + ' - '}} Due {{item.indvoicedueDate | date: 'M/dd'}}
             </td>
             <td>
                 {{item.projectName}}
             </td>
-            <td>
-                <div class="d-flex flex-row">
-                    <div class="me-1-1">
-                        <app-avatar [bgColor]="bgColors[i % 6]" [url]=""
-                                    [companyName]="item.vendorName" color="text-white" [size]="32"
-                                    alt="user-img"></app-avatar>
-                    </div>
-                    <div class="d-flex flex-column search-text">
-                        <div class="text-blackprimary text-overflow-ellipsis"
-                             style="max-width: 120px;">{{item.vendorName}}</div>
-                        <div class="text-blackprimary-op-50">{{item.vendorType}}</div>
-                    </div>
-                </div>
+<!--            <td>-->
+<!--                {{item.costCodeName}}-->
+<!--            </td>-->
+            <td class="text-end">
+                {{item.remainingAmount | currency}}
             </td>
+<!--            <td>-->
+<!--                <div class="d-flex flex-row">-->
+<!--                    <div class="me-1-1">-->
+<!--                        <app-avatar [bgColor]="bgColors[i % 6]" [url]=""-->
+<!--                                    [companyName]="item.vendorName" color="text-white" [size]="32"-->
+<!--                                    alt="user-img"></app-avatar>-->
+<!--                    </div>-->
+<!--                    <div class="d-flex flex-column search-text">-->
+<!--                        <div class="text-blackprimary text-overflow-ellipsis"-->
+<!--                             style="max-width: 120px;">{{item.vendorName}}</div>-->
+<!--                        <div class="text-blackprimary-op-50">{{item.vendorType}}</div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </td>-->
             <td class="text-center">
                 <div *ngIf="tab == 1">
                     <button *ngIf="item.status !== 'Paid' && canEdit" class="btn btn-primary btn-text-12"
@@ -224,7 +221,7 @@
         </tbody>
         <tbody *ngIf="orders.length == 0" class="bg-white">
         <tr *ngIf="loading">
-            <td colspan="13">
+            <td colspan="11">
                 <div style="position: relative; height: 400px;">
                     <app-ui-preloader [display]="loading"></app-ui-preloader>
                 </div>
