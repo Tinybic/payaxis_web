@@ -64,10 +64,10 @@
                 [ngClass]="{'sorting_asc':sortColumn == 'vendor' && direction == 'asc','sorting_desc':sortColumn == 'vendor' && direction == 'desc'}"
                 (click)="onSort('vendor')">Contact
             </th>
-            <th class="sortable"
-                [ngClass]="{'sorting_asc':sortColumn == 'invoice' && direction == 'asc','sorting_desc':sortColumn == 'invoice' && direction == 'desc'}"
-                (click)="onSort('invoice')">Bill # - Due Date
-            </th>
+<!--            <th class="sortable"-->
+<!--                [ngClass]="{'sorting_asc':sortColumn == 'invoice' && direction == 'asc','sorting_desc':sortColumn == 'invoice' && direction == 'desc'}"-->
+<!--                (click)="onSort('invoice')">Bill # - Due Date-->
+<!--            </th>-->
             <th class="sortable"
                 [ngClass]="{'sorting_asc':sortColumn == 'project' && direction == 'asc','sorting_desc':sortColumn == 'project' && direction == 'desc'}"
                 (click)="onSort('project')">Project
@@ -111,9 +111,9 @@
             <td>
                 {{item.vendorName}}
             </td>
-            <td>
-                {{item.invoiceNumber ==''?'':item.invoiceNumber + ' - '}} Due {{item.indvoicedueDate | date: 'M/dd'}}
-            </td>
+<!--            <td>-->
+<!--                {{item.invoiceNumber ==''?'':item.invoiceNumber + ' - '}} Due {{item.indvoicedueDate | date: 'M/dd'}}-->
+<!--            </td>-->
             <td>
                 {{item.projectName}}
             </td>
@@ -157,7 +157,7 @@
         </tbody>
         <tbody *ngIf="orders.length == 0 && loading" class="bg-white">
         <tr>
-            <td colspan="11">
+            <td colspan="10">
                 <div style="position: relative; height: 400px;">
                     <app-ui-preloader [display]="loading"></app-ui-preloader>
                 </div>
