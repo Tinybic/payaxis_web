@@ -411,7 +411,7 @@ export class ReceivableAddComponent {
   projectFilter(){
     this.projectList = JSON.parse(JSON.stringify(this.PROJECTLIST));
     this.projectList = this.projectList.filter((item) =>
-      item.projectName.toLowerCase().includes(this.keywordsProject.toLowerCase())
+      this.globalFuns.filterValue(item, ['projectName', 'projectAddress', 'projectBudget', 'status'], this.keywordsProject)
     );
     this.projectList = this.groupBy(this.projectList, 'idGroup');
     this.projectGroupList = [];
@@ -444,7 +444,8 @@ export class ReceivableAddComponent {
   orderFilter(){
     this.orderList = JSON.parse(JSON.stringify(this.ORDERLIST));
     this.orderList = this.orderList.filter((item) =>
-      item.projectName.toLowerCase().includes(this.keywordsOrder.toLowerCase())
+      this.globalFuns.filterValue(item, ['orderNumber', 'projectName', 'status', 'vendorName', 'costCodeName', 'remainingAmount', 'total'], this.keywordsOrder)
+    
     );
   }
   
@@ -495,9 +496,10 @@ export class ReceivableAddComponent {
   vendorFilter(){
     this.vendorList = JSON.parse(JSON.stringify(this.VENDORLIST));
     this.vendorList = this.vendorList.filter((item) =>
-      item.vendorName.toLowerCase().includes(this.keywordsVendor.toLowerCase())
+      this.globalFuns.filterValue(item, ['vendorName', 'primaryContact', 'email', 'txtAddress', 'txtCity', 'txtState', 'txtZip', 'status'], this.keywordsVendor)
     );
   }
+  
   
   removeVendor(){
     this.vendor = null;

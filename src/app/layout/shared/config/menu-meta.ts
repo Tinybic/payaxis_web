@@ -21,7 +21,7 @@ const MENU_ITEMS: MenuItem[] = [
   },
   {
     key: 'invoice',
-    label: 'Invoice Inbox',
+    label: 'Bill Inbox',
     isTitle: false,
     icon: 'payaxis-invoice',
     collapsed: true,

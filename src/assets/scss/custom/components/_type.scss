@@ -254,6 +254,10 @@ h6 {
   padding: 1rem !important;
 }
 
+.pl-2-1{
+  padding-left: 1rem !important;
+}
+
 .padding-8-16 {
   padding: 8px 16px !important;
 }
@@ -288,6 +292,14 @@ h6 {
 
 .p-4-1 {
   padding: 32px !important;
+}
+
+.pt-4-1{
+  padding-top: 2rem !important;
+}
+
+.pl-4-1{
+  padding-left: 2rem !important;
 }
 
 // Font sizes (Custom)
@@ -595,6 +607,10 @@ del {
 
 .text-typeblack80 {
   color: #202020CC !important;
+}
+
+.text-white80{
+  color: #FFFFFF80 !important;
 }
 
 .text-red {

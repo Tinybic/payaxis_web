@@ -486,7 +486,7 @@ export class InvoiceAddComponent {
   projectFilter(){
     this.projectList = JSON.parse(JSON.stringify(this.PROJECTLIST));
     this.projectList = this.projectList.filter((item) =>
-      item.projectName.toLowerCase().includes(this.keywordsProject.toLowerCase())
+      this.globalFuns.filterValue(item, ['projectName', 'projectAddress', 'projectBudget', 'status'], this.keywordsProject)
     );
     this.projectList = this.groupBy(this.projectList, 'idGroup');
     this.projectGroupList = [];
@@ -521,9 +521,11 @@ export class InvoiceAddComponent {
   orderFilter(){
     this.orderList = JSON.parse(JSON.stringify(this.ORDERLIST));
     this.orderList = this.orderList.filter((item) =>
-      item.projectName.toLowerCase().includes(this.keywordsOrder.toLowerCase())
+      this.globalFuns.filterValue(item, ['orderNumber', 'projectName', 'status', 'vendorName', 'costCodeName', 'remainingAmount', 'total'], this.keywordsOrder)
     );
   }
+  
+  
   
   removOrder(){
     this.order = null;
@@ -569,22 +571,11 @@ export class InvoiceAddComponent {
     this.projectpayment.vendorType = vendor.vendorType;
   }
   
-  vendorFilterFocus(vendorDropdown){
-    if(this.keywordsVendor.length === 0){
-      this.vendorList = JSON.parse(JSON.stringify(this.VENDORLIST));
-    }
-    setTimeout(() => {
-      if(!vendorDropdown.isOpen()){
-        vendorDropdown.open();
-      }
-    }, 500);
-  }
-  
   vendorFilter(vendorDropdown){
     this.vendorList = JSON.parse(JSON.stringify(this.VENDORLIST));
     if(this.keywordsVendor.length > 0){
       this.vendorList = this.vendorList.filter((item) =>
-        item.vendorName.toLowerCase().includes(this.keywordsVendor.toLowerCase())
+        this.globalFuns.filterValue(item, ['vendorName', 'primaryContact', 'email', 'txtAddress', 'txtCity', 'txtState', 'txtZip', 'status'], this.keywordsVendor)
       );
     }
     if(!vendorDropdown.isOpen()){

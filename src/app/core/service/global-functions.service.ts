@@ -42,6 +42,21 @@ export class GlobalFunctionsService {
     };
   }
   
+  /**
+   * Filters the value of the item
+   * @param item object
+   * @param attrs attribute array
+   * @param key search/filter key
+   */
+  filterValue(item, attrs, key){
+    return attrs.some((attr) => {
+      if(item[attr] && item[attr].toString().toLowerCase().includes(key.toLowerCase())){
+        return true;
+      }
+      return false;
+    });
+  }
+  
   
   /**
    * Formats file size
