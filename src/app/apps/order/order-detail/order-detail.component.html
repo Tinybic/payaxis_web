@@ -51,7 +51,7 @@
                 </div>
                 <div class="col-md-6">
                     <div
-                        class="d-inline-block badge {{this.relatedList[relatedIndex].status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
+                        class="d-inline-block badge {{globalFunc.toCamelCase(this.relatedList[relatedIndex].status.toLowerCase())}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
                         {{this.relatedList[relatedIndex].status}}</div>
                 </div>
             </div>
@@ -115,15 +115,14 @@
                     </div>
                     <div class="col-md-6 text-end">
                         <div
-                            class="d-inline-block {{this.relatedList[relatedIndex].status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
+                            class="d-inline-block badge {{globalFunc.toCamelCase(this.relatedList[relatedIndex].status.toLowerCase())}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
                             {{this.relatedList[relatedIndex].status}}</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div
-        style="flex: 1; padding-left: {{showRelated?16:32}}px; padding-top: 32px; padding-right: {{showRelated?16:32}}px; height: calc(100vh - 75px); overflow-y: scroll;">
+    <div class="pt-4-1" [ngClass]="showRelated ? 'pl-2-1' : 'pl-4-1'" style="flex: 1;height: calc(100vh - 75px); overflow-y: scroll;">
         <div class="row">
             <input type="text" style="display: none;" />
             <div class="col-md-12 d-flex align-items-center">
@@ -143,7 +142,7 @@
                     Draft
                 </div>
                 <div *ngIf="order.status"
-                    class="d-inline-block badge {{order.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
+                    class="d-inline-block badge {{globalFunc.toCamelCase(order.status.toLowerCase())}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
                     {{order.status}}</div>
 
                 <!-- <div class="d-inline-block ms-1-1 activeTag">
@@ -339,14 +338,13 @@
                                                                 <th style="width: 50%;">
                                                                     Billable</th>
                                                                 <th>Qty</th>
-                                                                <th>Unit</th>
+<!--                                                                <th>Unit</th>-->
                                                                 <th>Price</th>
                                                                 <th>Amount</th>
                                                                 <th>Tax</th>
-                                                                <th>Notes</th>
                                                                 <!-- <th>Notes</th> -->
-                                                                <th *ngIf="order.id > 0" style="width: 110px;">Last
-                                                                    updated</th>
+<!--                                                                <th *ngIf="order.id > 0" style="width: 110px;">Last-->
+<!--                                                                    updated</th>-->
                                                                 <th></th>
                                                             </tr>
                                                         </thead>
@@ -366,10 +364,10 @@
                                                                         [(ngModel)]="item.qty" thousandSeparator="," disabled="disabled"
                                                                         mask="separator.2" (keyup)="getAmout(item)" />
                                                                 </td>
-                                                                <td>
-                                                                    <input type="text" class="form-control" disabled="disabled"
-                                                                        [(ngModel)]="item.unit" />
-                                                                </td>
+<!--                                                                <td>-->
+<!--                                                                    <input type="text" class="form-control" disabled="disabled"-->
+<!--                                                                        [(ngModel)]="item.unit" />-->
+<!--                                                                </td>-->
                                                                 <td>
                                                                     <input type="text" class="form-control text-end"
                                                                         [(ngModel)]="item.price" prefix="$"
@@ -386,14 +384,14 @@
                                                                         (change)="setTotal()"
                                                                         [(ngModel)]="item.taxyn" />
                                                                 </td>
-                                                                <td *ngIf="order.id > 0">
-                                                                    <span *ngIf="item.modifiedDate">{{item.modifiedDate
-                                                                        | date: 'MM/dd/yy HH:mm:ss' | amTimeAgo}}</span>
-                                                                </td>
-                                                                <td>
-                                                                    <input class="form-control" type="text" disabled="disabled"
-                                                                        [(ngModel)]="item.notes" />
-                                                                </td>
+<!--                                                                <td *ngIf="order.id > 0">-->
+<!--                                                                    <span *ngIf="item.modifiedDate">{{item.modifiedDate-->
+<!--                                                                        | date: 'MM/dd/yy HH:mm:ss' | amTimeAgo}}</span>-->
+<!--                                                                </td>-->
+<!--                                                                <td>-->
+<!--                                                                    <input class="form-control" type="text" disabled="disabled"-->
+<!--                                                                        [(ngModel)]="item.notes" />-->
+<!--                                                                </td>-->
                                                                 <td>
                                                                     <!-- <i class="fe-copy cursor-pointer"
                                                                         (click)="listItemCopy(item,i)"></i>
@@ -404,7 +402,7 @@
                                                         </tbody>
                                                         <tbody *ngIf="loading" class="bg-white">
                                                             <tr>
-                                                                <td colspan="9">
+                                                                <td colspan="7">
                                                                     <div style="position: relative; height: 150px;">
                                                                         <app-ui-preloader
                                                                             [display]="loading"></app-ui-preloader>
@@ -431,7 +429,7 @@
                                                         </tbody>
                                                         <tfoot style="height: 16px;">
                                                             <tr>
-                                                                <td colspan="6">&nbsp;</td>
+                                                                <td colspan="7">&nbsp;</td>
                                                             </tr>
                                                         </tfoot>
                                                     </table>
@@ -498,22 +496,20 @@
                 mask="separator.2" style="background-color: #3F444D; border:1px solid #3F444D; color: #767676"
                 type="text" id="tax" required i18n-placeholder />
         </div>
-        <div class="col-md-6 pt-2-1 d-flex flex-row-reverse text-end">
-            <div class="d-inline-block" *ngIf="order.status == 'Accepted'">
-                <!-- <button type="button"
-                    class="btn btn-success ms-1-1"
-                    style="border:1px solid #ffffff; box-shadow: none;" (click) = "Accept()">Accept</button> -->
-                <button type="button"
-                    class="btn btn-danger ms-1-1"
-                    style="border:1px solid #ffffff; box-shadow: none;" (click) = "Decline()">Decline</button>
-                </div>
+        <div class="col-md-6 flex-row-end-center">
             <div class="d-inline-block" style="height: 40px;color:#FFFFFFB2;">
                 <span class="btn-text-12">Total Amount Due</span><br />
-                <span class="headline-24" style=" color:  {{order.status == 'Paid'?'#FFFFFF80':'white'}};"
-                    id="total">{{order.total | currency}}</span>
+                <span [ngClass]="order.status == 'Paid' ? '.text-white80': 'text-white'" class="headline-24"
+                      id="total">{{order.total | currency}}</span>
             </div>
-            <div class="d-inline-block" *ngIf="order.status !== 'Paid'"><button type="button"
-                class="btn btn-primary me-1-1" style="border:0px; box-shadow: none;" (click)="openPaymentRequestModal()">Payment Request</button></div>
+            <div class="d-inline-block ms-1-1" *ngIf="order.status == 'Accepted'">
+                <button type="button"
+                        class="btn btn-danger"
+                        style="border:1px solid #ffffff; box-shadow: none;" (click) = "Decline()">Decline</button>
+            </div>
+            <div class="d-inline-block ms-1-1" *ngIf="order.status !== 'Paid'">
+                <button type="button" class="btn btn-primary" style="border:0px; box-shadow: none;" (click)="openPaymentRequestModal()">Payment Request</button>
+            </div>
         </div>
     </div>
 </div>
