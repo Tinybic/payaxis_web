@@ -24,6 +24,7 @@ import { ApolloService } from 'src/app/core/service/apollo.service';
 import { EventService } from 'src/app/core/service/event.service';
 import { HttpService } from 'src/app/core/service/http.service';
 import { LocalStorageService } from 'src/app/core/service/local-storage.service';
+import { GlobalFunctionsService } from "../../../core/service/global-functions.service";
 
 @Component({
   selector: 'app-vendor-order-add',
@@ -117,7 +118,8 @@ export class VendorOrderAddComponent {
     private httpService: HttpService,
     private router: Router,
     private eventService: EventService,
-    private localStorage: LocalStorageService
+    private localStorage: LocalStorageService,
+    private globalFuns: GlobalFunctionsService,
   ) {}
 
   ngOnInit(): void {
@@ -782,4 +784,6 @@ export class VendorOrderAddComponent {
       this.send();
     }
   }
+  
+  protected readonly globalFunc = this.globalFuns;
 }

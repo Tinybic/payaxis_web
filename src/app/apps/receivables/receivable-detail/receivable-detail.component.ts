@@ -26,6 +26,7 @@ import { HttpService } from 'src/app/core/service/http.service';
 import * as moment from 'moment';
 import { projectorder_accept, projectorder_decline } from 'src/app/core/gql/receivables';
 import { LocalStorageService } from 'src/app/core/service/local-storage.service';
+import { GlobalFunctionsService } from "../../../core/service/global-functions.service";
 
 @Component({
   selector: 'app-receivable-detail',
@@ -121,7 +122,8 @@ export class ReceivableDetailComponent {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private eventService: EventService,
-    private localStorage: LocalStorageService
+    private localStorage: LocalStorageService,
+    private globalFuns: GlobalFunctionsService,
   ) {}
 
   ngOnInit(): void {
@@ -774,4 +776,6 @@ export class ReceivableDetailComponent {
         });
     }
   }
+  
+  protected readonly globalFunc = this.globalFuns;
 }

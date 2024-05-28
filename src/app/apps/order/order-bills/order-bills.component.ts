@@ -361,4 +361,6 @@ export class OrderBillsComponent {
     this.idInvoice = id;
     this.openInvoiceModal();
   }
+  
+  protected readonly globalFunc = this.globalFuns;
 }

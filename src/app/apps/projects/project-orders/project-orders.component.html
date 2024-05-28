@@ -16,7 +16,7 @@
                                (change)="statusFilterChange($event, status, 'statusFilter')">
                         
                         <label for="status_{{status}}"
-                               class="d-inline-block {{status == 'Active' ? 'NO' : globalFunc.toCamelCase(status.toLowerCase())}}Tag subtitle-2-600 text-optional text-center ms-2-1">{{status}}
+                               class="d-inline-block {{status == 'Active' ? 'NO' : globalFunc.toCamelCase(status)}}Tag subtitle-2-600 text-optional text-center ms-2-1">{{status}}
                         </label>
                         
                         <label for="status_{{status}}"
@@ -102,7 +102,7 @@
                 </div>
             </td>
             <td>
-                <div class="d-inline-block {{globalFunc.toCamelCase(item.status.toLowerCase())}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{item.status}}</div>
+                <div class="d-inline-block {{globalFunc.toCamelCase(item.status)}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{item.status}}</div>
             </td>
             <td>{{item.invoicedDate | date: 'M/dd/yy'}}</td>
             <td>

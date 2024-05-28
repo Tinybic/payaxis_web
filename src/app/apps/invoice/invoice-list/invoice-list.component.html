@@ -24,7 +24,7 @@
                                [checked]="statusFilter==status"
                                (change)="statusFilterChange($event, status, 'statusFilter')">
                         
-                        <label for="status_{{status}}" class="d-inline-block {{status == 'Active' ? 'NO' : globalFunc.toCamelCase(status.toLowerCase())}}Tag subtitle-2-600 text-optional text-center ms-2-1">{{status}}
+                        <label for="status_{{status}}" class="d-inline-block {{status == 'Active' ? 'NO' : globalFunc.toCamelCase(status)}}Tag subtitle-2-600 text-optional text-center ms-2-1">{{status}}
                         </label>
                         
                         <label for="status_{{status}}" class="ms-2-1 subtitle-2-400-12 text-optional">{{ status != 'Active' ? listStatusCount[status] : ''}}</label>
@@ -170,7 +170,7 @@
                         {{item.sentDate}}
                     </td>
                     <td>
-                        <div class="d-inline-block {{globalFunc.toCamelCase(item.status.toLowerCase())}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{item.status}} <span *ngIf="item.status == 'Paid'">{{item.paidDate | date: 'M/dd/yy'}}</span></div>
+                        <div class="d-inline-block {{globalFunc.toCamelCase(item.status)}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{item.status}} <span *ngIf="item.status == 'Paid'">{{item.paidDate | date: 'M/dd/yy'}}</span></div>
                     </td>
 
                     <td>{{item.billNumber}}</td>

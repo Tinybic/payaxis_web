@@ -11,12 +11,12 @@
                 <i class="fe-chevron-down font-16 ms-1-1"></i>
             </a>
             <div class="dropdown-menu" ngbDropdownMenu style="padding: 8px 4px;">
-                <div ngbDropdownItem *ngFor="let status of objectKeys(ordersStatusCount)" style="padding-top: 0;padding-bottom: 0;">
+                <div ngbDropdownItem *ngFor="let status of objectKeys(listStatusCount)" style="padding-top: 0;padding-bottom: 0;">
                     <div class="form-check text-center d-flex align-items-center" style="padding-top: 6px;padding-bottom: 6px;">
                         <input type="checkbox" class="form-check-input cursor-pointer" id="{{status}}DropdownCheck" [checked]="filterList.includes(status)" (change)="filterVendorList(status)">
                         
-                        <label for="{{status}}DropdownCheck" class="d-inline-block {{status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center ms-2-1 me-2-1">{{status}}</label>
-                        <span class="subtitle-2-400-12 text-typeblack80">{{ordersStatusCount[status]}}</span>
+                        <label for="{{status}}DropdownCheck" class="d-inline-block {{globalFunc.toCamelCase(status)}}Tag subtitle-2-600 text-blackprimary-op-50 text-center ms-2-1 me-2-1">{{status}}</label>
+                        <span class="subtitle-2-400-12 text-typeblack80">{{listStatusCount[status]}}</span>
                     </div>
                 </div>
             </div>
@@ -77,7 +77,7 @@
                         {{item.invoiceNumber}}{{'2022-2-18' }}
                     </td>
                     <td>
-                        <div class="d-inline-block {{item.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{item.status}}</div>
+                        <div class="d-inline-block {{globalFunc.toCamelCase(item.status)}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{item.status}}</div>
                     </td>
                     <td>
                         {{item.costCodeName}}

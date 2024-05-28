@@ -10,6 +10,8 @@ import { ApolloService } from 'src/app/core/service/apollo.service';
 import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 import { environment } from 'src/environments/environment';
 import { ActivatedRoute } from "@angular/router";
+import { GlobalFunctionsService } from 'src/app/core/service/global-functions.service';
+
 @Component({
   selector: 'app-project-vendor',
   templateUrl: './project-vendor.component.html',
@@ -36,7 +38,8 @@ export class ProjectVendorComponent extends Base {
     private modalService: NgbModal,
     private toastrService: ToastrService,
     private activatedRoute: ActivatedRoute,
-    private localStorage: LocalStorageService
+    private localStorage: LocalStorageService,
+    private globalFuns: GlobalFunctionsService,
   ) {
     super();
   }
@@ -246,4 +249,6 @@ export class ProjectVendorComponent extends Base {
         this.filterList.includes(item.status.toLowerCase())
       );
   }
+  
+  protected readonly globalFunc = this.globalFuns;
 }

@@ -111,7 +111,10 @@ export class GlobalFunctionsService {
    * @param str
    */
   toCamelCase(str: string): string {
-    return str.replace(/[-_ ](\w)/g, (_, c) => c.toUpperCase());
+    if(str && str.length > 0){
+      return str.toLowerCase().replace(/[-_ ](\w)/g, (_, c) => c.toUpperCase());
+    }
+    return str;
   }
   
   /**
