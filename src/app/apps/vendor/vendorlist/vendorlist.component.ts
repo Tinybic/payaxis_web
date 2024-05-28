@@ -11,6 +11,7 @@ import {
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { LocalStorageService } from 'src/app/core/service/local-storage.service';
 import { environment } from 'src/environments/environment';
+import { GlobalFunctionsService } from "../../../core/service/global-functions.service";
 
 @Component({
   selector: 'app-vendorlist',
@@ -38,7 +39,8 @@ export class VendorlistComponent extends Base {
     private apolloService: ApolloService,
     private modalService: NgbModal,
     private toastrService: ToastrService,
-    private localStorage: LocalStorageService
+    private localStorage: LocalStorageService,
+    private globalFuns: GlobalFunctionsService,
   ) {
     super();
   }
@@ -244,4 +246,6 @@ export class VendorlistComponent extends Base {
         this.filterList.includes(item.status.toLowerCase())
       );
   }
+  
+  protected readonly globalFunc = this.globalFuns;
 }

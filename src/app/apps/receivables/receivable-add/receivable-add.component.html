@@ -4,7 +4,7 @@
     </div>
     <div class="col-md-12 headline text-black flex-row-center" *ngIf="id > 0 && this.projectpayment.status">
         Payment Request #{{this.projectpayment.billNumber}}
-        <div class="d-inline-block badge {{globalFunc.toCamelCase(projectpayment.status.toLowerCase())}}Tag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">
+        <div class="d-inline-block badge {{globalFunc.toCamelCase(projectpayment.status)}}Tag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">
             {{projectpayment.status}}</div>
     </div>
     <div class="subtitle-2-500 text-typeblack80" *ngIf="from=='Received Orders'">
@@ -305,7 +305,7 @@
                         <div class="row">
                             <div class="col-md-8 Subtitle-1 text-start">
                                 <div class="d-flex align-items-center">{{order.orderNumber}}
-                                    <div class="d-inline-block badge {{globalFunc.toCamelCase(order.status.toLowerCase())}}Tag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">{{order.status}}</div>
+                                    <div class="d-inline-block badge {{globalFunc.toCamelCase(order.status)}}Tag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">{{order.status}}</div>
                                 </div>
                                 <div class="subtitle-2-400-12 text-typeblackdeactivated">{{order.projectName}}</div>
                                 
@@ -336,7 +336,7 @@
                             <div class="row cursor-pointer" (click)="selectOrder(item)">
                                 <div class="col-md-8 Subtitle-1 text-start">
                                     <div class="d-flex align-items-center">{{item.orderNumber}}
-                                        <div class="d-inline-block badge {{globalFunc.toCamelCase(item.status.toLowerCase())}}Tag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">{{item.status}}</div>
+                                        <div class="d-inline-block badge {{globalFunc.toCamelCase(item.status)}}Tag subtitle-2-600 text-blackprimary-op-50 text-center ms-1-1">{{item.status}}</div>
                                     </div>
                                     <div class="subtitle-2-400-12 text-typeblackdeactivated">{{item.projectName}}</div>
                                     

@@ -163,7 +163,7 @@
                                     <div>
                                         {{subItem.number == 0 ? '  ****' : '#' + subItem.number}}
                                         <div *ngIf="subItem.status==='Overdue'"
-                                             class="d-inline-block badge {{globalFunc.toCamelCase(subItem.status.toLowerCase())}}Tag subtitle-2-600 text-optional text-center ms-1-1">{{subItem.status}}
+                                             class="d-inline-block badge {{globalFunc.toCamelCase(subItem.status)}}Tag subtitle-2-600 text-optional text-center ms-1-1">{{subItem.status}}
                                         </div>
                                     </div>
                                     <span
@@ -234,7 +234,7 @@
                                  style="border-bottom: 1px solid #E5E7EB;">
                                 {{subItem.number}}
                                 <div *ngIf="subItem.status==='Overdue'"
-                                     class="d-inline-block badge {{globalFunc.toCamelCase(subItem.status.toLowerCase())}}Tag subtitle-2-600 text-optional text-center ms-1-1">{{subItem.status}}
+                                     class="d-inline-block badge {{globalFunc.toCamelCase(subItem.status)}}Tag subtitle-2-600 text-optional text-center ms-1-1">{{subItem.status}}
                                 </div>
                             </div>
                             
@@ -337,8 +337,8 @@
                             <div class="Subtitle-1" style="color: #4B5563;">
                                 #{{paymentList[0].paymentOrderids[0].number}}</div>
                             <div class="text-end">
-                                <div class="d-inline-block badge {{globalFunc.toCamelCase(paymentList[0].paymentOrderids[0].status.toLowerCase())}}Tag subtitle-2-600 text-blackprimary-op-50 text-center"
-                                     style="width: 40px;padding: 0;line-height:22px;">{{paymentList[0].paymentOrderids[0].status}}
+                                <div class="d-inline-block badge {{globalFunc.toCamelCase(paymentList[0].paymentOrderids[0].status)}}Tag subtitle-2-600 text-blackprimary-op-50 text-center"
+                                     style="line-height:22px;">{{paymentList[0].paymentOrderids[0].status}}
                                 </div>
                             </div>
                         </div>

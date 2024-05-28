@@ -139,7 +139,7 @@
                             </div>
                         </div>
                         <div *ngIf="invoice.status.length > 0" style="padding-top: 4px;">
-                            <div class="d-inline-block {{invoice.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{invoice.status}}</div>
+                            <div class="d-inline-block {{globalFunc.toCamelCase(invoice.status)}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{invoice.status}}</div>
                             <i class="fe-chevron-down"></i>
                         </div>
                     </div>
@@ -165,7 +165,7 @@
                                     </div>
                                 </div>
                                 <div style="padding-top: 4px;">
-                                    <div class="d-inline-block {{order.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{order.status}}</div>
+                                    <div class="d-inline-block {{globalFunc.toCamelCase(order.status)}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{order.status}}</div>
                                 </div>
                             </div>
                         </div>
@@ -183,7 +183,7 @@
                 {{invoice.fileName}}
             </div>
             <div class="ms-1-1 text-end" style="width: 40px;">
-                <i class="fe-download text-primary c-p" (click)="globalService.downloadFile(invoice)"></i>
+                <i class="fe-download text-primary c-p" (click)="globalFunc.downloadFile(invoice)"></i>
                 <i *ngIf="invoice.id > 0" class="fe-trash-2 ms-1-1 c-p" (click)="deleteAttachmentConfirm()"></i>
             </div>
         </div>
@@ -200,7 +200,7 @@
         <div *ngIf="!invoice.fileType.toLowerCase().includes('pdf')"
              class="d-flex align-items-center justify-content-center mt-1-1"
              style="width: 197px;height: 255px;border-radius: 8px;">
-            <img [src]="globalService.getFileImg(invoice)"
+            <img [src]="globalFunc.getFileImg(invoice)"
                  onerror="this.src='assets/images/icon/zz.png';this.onerror='';" alt="attachment.fileName"
                  style="max-width: 197px;max-height: 255px;">
         </div>

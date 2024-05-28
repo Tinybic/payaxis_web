@@ -51,7 +51,7 @@
                 </div>
                 <div class="col-md-6">
                     <div
-                        class="d-inline-block badge {{globalFunc.toCamelCase(this.relatedList[relatedIndex].status.toLowerCase())}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
+                        class="d-inline-block badge {{globalFunc.toCamelCase(this.relatedList[relatedIndex].status)}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
                         {{this.relatedList[relatedIndex].status}}</div>
                 </div>
             </div>
@@ -115,7 +115,7 @@
                     </div>
                     <div class="col-md-6 text-end">
                         <div
-                            class="d-inline-block {{globalFunc.toCamelCase(this.relatedList[relatedIndex].status.toLowerCase())}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
+                            class="d-inline-block {{globalFunc.toCamelCase(this.relatedList[relatedIndex].status)}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
                             {{this.relatedList[relatedIndex].status}}</div>
                     </div>
                 </div>
@@ -142,7 +142,7 @@
                     Draft
                 </div>
                 <div *ngIf="order.status"
-                    class="d-inline-block {{globalFunc.toCamelCase(order.status.toLowerCase())}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
+                    class="d-inline-block {{globalFunc.toCamelCase(order.status)}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
                     {{order.status}}</div>
 
                 <!-- <div class="d-inline-block ms-1-1 activeTag">

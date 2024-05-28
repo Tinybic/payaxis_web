@@ -303,4 +303,6 @@ export class BudgetDetailComponent {
     this.router.navigate(['apps/order/detail/' + id]);
   }
   
+  protected readonly globalFunc = this.globalFuns;
+  
 }

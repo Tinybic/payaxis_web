@@ -15,7 +15,7 @@
         </div>
         <div *ngIf="vendor.status" class="d-inline-block ms-1-1 DraftTag subtitle-2-600 text-typeblackdeactivated">
             <div
-                class="d-inline-block {{vendor.status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
+                class="d-inline-block badge {{globalFunc.toCamelCase(vendor.status)}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">
                 {{vendor.status}}</div>
         </div>
     </div>

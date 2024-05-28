@@ -4,6 +4,7 @@ import { projectorder_related } from 'src/app/core/gql/order';
 import { receivable_list } from 'src/app/core/gql/receivables';
 import { ApolloService } from 'src/app/core/service/apollo.service';
 import { LocalStorageService } from 'src/app/core/service/local-storage.service';
+import { GlobalFunctionsService } from "../../../core/service/global-functions.service";
 
 @Component({
   selector: 'app-vendor-order',
@@ -20,15 +21,7 @@ export class VendorOrderComponent {
   loading = true;
   keywords = '';
   bgColors = [];
-  ordersStatusCount = {
-    Draft: 0,
-    Pending: 0,
-    Accepted: 0,
-    Paid: 0,
-    Partial: 0,
-    Declined: 0,
-    Voided: 0,
-  };
+  listStatusCount: any;
   objectKeys = Object.keys;
   @Input() params;
   @Input() tab;
@@ -36,10 +29,12 @@ export class VendorOrderComponent {
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
-    private localStorage: LocalStorageService
+    private localStorage: LocalStorageService,
+    private globalFuns: GlobalFunctionsService,
   ) {}
 
   ngOnInit(): void {
+    this.listStatusCount = {...this.globalFuns.POStatusCount};
     if (this.params.idvendor > 0) {
       this.getVendorOrderList();
     } else {
@@ -49,20 +44,12 @@ export class VendorOrderComponent {
   
   
   getStatusCount() {
-    let ordersStatusCount = {
-      Draft: 0,
-      Pending: 0,
-      Accepted: 0,
-      Paid: 0,
-      Partial: 0,
-      Declined: 0,
-      Voided: 0,
-    };
+    let listStatusCount = {...this.globalFuns.POStatusCount};
     this.ORDERS.map((order) => {
-      ordersStatusCount[order.status]++;
+      listStatusCount[order.status]++;
     });
     
-    this.ordersStatusCount = ordersStatusCount;
+    this.listStatusCount = listStatusCount;
   }
 
   getVendorOrderList() {
@@ -143,4 +130,6 @@ export class VendorOrderComponent {
         this.filterList.includes(item.status.toLowerCase())
       );
   }
+  
+  protected readonly globalFunc=this.globalFuns;
 }

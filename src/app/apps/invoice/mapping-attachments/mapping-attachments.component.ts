@@ -64,7 +64,7 @@ export class MappingAttachmentsComponent {
   constructor(
     private apolloService: ApolloService,
     private modalService: NgbModal,
-    public globalService: GlobalFunctionsService,
+    private globalFuns: GlobalFunctionsService,
     private http: HttpClient,
     private toastrService: ToastrService,
     private localStorage: LocalStorageService
@@ -372,4 +372,6 @@ export class MappingAttachmentsComponent {
       }
     })
   }
+  
+  protected readonly globalFunc = this.globalFuns;
 }

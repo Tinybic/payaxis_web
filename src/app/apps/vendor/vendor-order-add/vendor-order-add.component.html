@@ -10,7 +10,7 @@
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" style="margin-top: 7px;" id="sameProject"
                                 [(ngModel)]="sameProject">
-                            <label class="form-check-label ms-1-1" for="dropdownCheck">
+                            <label class="form-check-label ms-1-1" for="sameProject">
                                 Same Project
                             </label>
                         </div>
@@ -19,7 +19,7 @@
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" style="margin-top: 7px;" id="sameVendor"
                                 [(ngModel)]="sameVendor">
-                            <label class="form-check-label ms-1-1 " for="dropdownCheck">
+                            <label class="form-check-label ms-1-1 " for="sameVendor">
                                 Same Vendor
                             </label>
                         </div>
@@ -28,7 +28,7 @@
                         <div class="form-check">
                             <input type="checkbox" class="form-check-input" style="margin-top: 7px;" id="paidyn"
                                 [(ngModel)]="paidyn">
-                            <label class="form-check-label ms-1-1" for="dropdownCheck">
+                            <label class="form-check-label ms-1-1" for="paidyn">
                                 Show paid
                             </label>
                         </div>
@@ -49,7 +49,7 @@
                     <div class="Subtitle-1 text-start">#{{this.relatedList[relatedIndex].orderNumber}}</div>
                 </div>
                 <div class="col-md-6">
-                    <div class="d-inline-block {{relatedList[relatedIndex].status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{relatedList[relatedIndex].status}}</div>
+                    <div class="d-inline-block {{globalFunc.toCamelCase(relatedList[relatedIndex].status)}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{relatedList[relatedIndex].status}}</div>
                 </div>
             </div>
             <div class="row mt-1-1">
@@ -111,14 +111,13 @@
                         ${{item.total}}
                     </div>
                     <div class="col-md-6 text-end">
-                        <div class="d-inline-block {{relatedList[relatedIndex].status.toLowerCase()}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{relatedList[relatedIndex].status}}</div>
+                        <div class="d-inline-block {{globalFunc.toCamelCase(relatedList[relatedIndex].status)}}Tag subtitle-2-600 text-blackprimary-op-50 text-center">{{relatedList[relatedIndex].status}}</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div
-        style="flex: 1; padding-left: {{showRelated?16:32}}px; padding-top: 32px; padding-right: {{showRelated?16:32}}px; height: calc(100vh - 75px); overflow-y: scroll;">
+    <div class="pt-4-1" [ngClass]="showRelated ? 'pl-2-1' : 'pl-4-1'" style="flex: 1;height: calc(100vh - 75px); overflow-y: scroll;">
         <div class="row">
             <input type="text" style="display: none;" />
             <div class="col-md-12 d-flex align-items-center">
@@ -133,7 +132,7 @@
             <div class="col-md-6 d-flex align-items-center" style="padding-top: 2px;padding-bottom: 2px;">
                 <span class="headline" style="line-height: 44px;">Order #{{order.orderNumber}}&nbsp;</span>
                 <div *ngIf="!order.status"
-                    class="d-inline-block ms-1-1 {{order.status.toLowerCase()}}Tag subtitle-2-600 text-typeblackdeactivated">
+                    class="d-inline-block ms-1-1 badge {{globalFunc.toCamelCase(order.status)}}Tag subtitle-2-600 text-typeblackdeactivated">
                     {{order.status.toLowerCase()}}
                 </div>
                 <!-- <div class="d-inline-block ms-1-1 activeTag">
