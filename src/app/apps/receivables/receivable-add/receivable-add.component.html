@@ -163,7 +163,7 @@
             <div class="col-md-6">
                 <label class="form-label" i18n>Bill Number</label>
                 <input type="text" class="form-control" placeholder="Add Bill number"
-                       [disabled]="projectpayment.status == 'Paid'"
+                       [disabled]="projectpayment.status == 'Paid' || (id>0 && !isSenderIsLoggedIn())"
                        [(ngModel)]="projectpayment.billNumber"/>
             </div>
         </div>
