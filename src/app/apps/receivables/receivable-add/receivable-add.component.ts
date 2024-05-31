@@ -7,7 +7,7 @@ import { getNewFileName, get_file_url } from 'src/app/core/gql/file';
 import { companyproject_list } from 'src/app/core/gql/project';
 import {
   projectpayment_attachment,
-  projectpayment_info, projectpayment_list,
+  projectpayment_info, projectpayment_cancel,
   projectpayment_new,
   projectpayment_update
 } from 'src/app/core/gql/receivables';
@@ -108,6 +108,7 @@ export class ReceivableAddComponent {
         this.getDetail();
       } else{
         this.projectpayment.idCompany = this.idCompany;
+        this.createdCurrentCompanyID = this.idCompany;
         this.getVendorList();
         this.getProjectList();
         this.getSentOrderList();
@@ -128,7 +129,7 @@ export class ReceivableAddComponent {
           this.order = result.data.projectOrder;
         } else{
           this.projectpayment = {
-            id: result.data.projectOrder.id,
+            id: 0,
             idCompany: this.idCompany,
             idProject: result.data.projectOrder.idProject,
             projectName: result.data.projectOrder.projectName,
@@ -208,7 +209,7 @@ export class ReceivableAddComponent {
       this.getVendorList();
       this.getProjectList();
       if(this.projectpayment.idOrder1 > 0){
-        this.getOrderInfo(this.projectpayment.idOrder1, !this.isSenderIsLoggedIn());
+        this.getOrderInfo(this.projectpayment.idOrder1, !this.isSenderIsLoggedIn()); // received：是自己的，传 false，不是自己的，传 true
       }
       if(this.isSenderIsLoggedIn()){
         this.getSentOrderList();
@@ -235,7 +236,7 @@ export class ReceivableAddComponent {
   
   
   editAmount(){
-    if(this.projectpayment.status != 'Paid' && (this.id == 0 || this.isSenderIsLoggedIn() || this.from == 'Received Orders')){
+    if(this.projectpayment.status != 'Paid' && this.projectpayment.status != 'Voided' && (this.id == 0 || this.isSenderIsLoggedIn() || this.from == 'Received Orders')){
       this.amountEdit = true;
       setTimeout(() => {
         this.inputAmount.nativeElement.focus();
@@ -327,9 +328,8 @@ export class ReceivableAddComponent {
     }).then((res) => {
       const result = res.projectorder_list;
       if(!result.error){
-        this.orderList = result.data.filter((order) => order.status != 'Paid');
+        this.orderList = result.data.filter((order) => order.status != 'Paid' && order.status != 'Voided' && order.idPayment==0);
         this.ORDERLIST = JSON.parse(JSON.stringify(this.orderList));
-        this.setOrder();
       }
     });
   }
@@ -586,6 +586,23 @@ export class ReceivableAddComponent {
   
   closeModal(){
     this.modalRef.close();
+  }
+  
+  cancel(){
+    if(this.id > 0 && this.isSenderIsLoggedIn()){
+      this.apolloService.mutate(projectpayment_cancel, this.projectpayment).then((res) => {
+        const result = res.projectpayment_cancel;
+        if(!result.error){
+          this.toastrService.info(
+            'Payment request has been cancelled',
+            ''
+          );
+          this.modalRef.close();
+        } else{
+          this.toastrService.info(result.message, '');
+        }
+      });
+    }
   }
   
   save(){

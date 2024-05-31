@@ -94,6 +94,17 @@ const projectpayment_update = gql`
   }
 `;
 
+const projectpayment_cancel = gql`
+  mutation projectpayment_cancel($idCompany: Int!, $id: Int!, $revision: Int!) {
+    projectpayment_cancel(idCompany: $idCompany, id: $id, revision: $revision) {
+      error
+      code
+      message
+      data
+    }
+  }
+ `;
+
 const projectpayment_info = gql`
   query projectpayment_info($idCompany: Int!, $id: Int!) {
     projectpayment_info(idCompany: $idCompany, id: $id) {
@@ -455,6 +466,7 @@ export {
   projectpayment_attachment,
   projectpayment_pay,
   projectpayment_update,
+  projectpayment_cancel,
   receivable_list,
   projectorder_accept,
   projectorder_decline,

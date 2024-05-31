@@ -19,7 +19,7 @@
             </div>
             
             <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer"
-                 *ngIf="(id==0||isSenderIsLoggedIn())&&vendor && !this.orderInfo && projectpayment.status != 'Paid'"
+                 *ngIf="(id==0||isSenderIsLoggedIn())&&vendor && !this.orderInfo && projectpayment.status != 'Paid' && projectpayment.status != 'Voided'"
                  (click)="removeVendor()">
                 Edit Contact
             </div>
@@ -64,7 +64,7 @@
                         </div>
                     </div>
                     
-                    <input *ngIf="(id==0||isSenderIsLoggedIn())&&projectpayment.status != 'Paid' && !vendor"
+                    <input *ngIf="(id==0||isSenderIsLoggedIn())&&projectpayment.status != 'Paid'&& projectpayment.status != 'Voided' && !vendor"
                            class="form-control form-search" type="search" placeholder="Find Contact"
                            [(ngModel)]="keywordsVendor" (keyup)="vendorFilter()"
                            [ngClass]="{'is-invalid':txtError.idVendor == 0}" ngbDropdownToggle/>
@@ -133,10 +133,10 @@
         <div class="row p-3 mt-1-1" style="border-bottom: 1px solid #E1E6EF;">
             <div class="col-md-12 text-center overflow-hidden">
                 <input #amount type="text" *ngIf="amountEdit" mask="separator.2" (blur)="cancelAmount()"
-                       [disabled]=" projectpayment.status == 'Paid'"
+                       [disabled]=" projectpayment.status == 'Paid'|| projectpayment.status == 'Voided'"
                        class=" subtitle-700-37-40" style="border: 0px;outline: 0;text-align: center;"
                        [(ngModel)]="projectpayment.amount"/>
-                <label [ngClass]="(id==0||isSenderIsLoggedIn())&& projectpayment.status != 'Paid' ? 'cursor-pointer': 'cursor-auto'"
+                <label [ngClass]="(id==0||isSenderIsLoggedIn())&& projectpayment.status != 'Paid'&& projectpayment.status != 'Voided' ? 'cursor-pointer': 'cursor-auto'"
                        class="subtitle-700-37-40" (click)="editAmount()"
                        *ngIf="!amountEdit">{{projectpayment.amount | currency}}</label>
             </div>
@@ -145,10 +145,10 @@
         <div class="row mt-2-1">
             <div class="col-md-6">
                 <label class="form-label" i18n>Due Date</label>
-                <input *ngIf="projectpayment.status == 'Paid' || (id>0&&!isSenderIsLoggedIn())" type="text"
+                <input *ngIf="projectpayment.status == 'Paid'|| projectpayment.status == 'Voided' || (id>0&&!isSenderIsLoggedIn())" type="text"
                        class="form-control" placeholder="Payment Terms" [(ngModel)]="projectpayment.paymentTerms"
                        disabled/>
-                <div *ngIf="id==0 || (id>0&&isSenderIsLoggedIn()&&projectpayment.status != 'Paid')" ngbDropdown
+                <div *ngIf="id==0 || (id>0&&isSenderIsLoggedIn()&&projectpayment.status != 'Paid'&& projectpayment.status != 'Voided')" ngbDropdown
                      class="mt-sm-0 mt-2">
                     <input class="form-select position-relative cursor-default" type="text" id="paymentTerms"
                            i18n-placeholder readonly placeholder="Payment Terms"
@@ -161,9 +161,9 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <label class="form-label" i18n>Bill Number</label>
-                <input type="text" class="form-control" placeholder="Add Bill number"
-                       [disabled]="projectpayment.status == 'Paid' || (id>0 && !isSenderIsLoggedIn())"
+                <label class="form-label" i18n>Invoice Number</label>
+                <input type="text" class="form-control" placeholder="Add Invoice number"
+                       [disabled]="projectpayment.status == 'Paid'|| projectpayment.status == 'Voided' || (id>0 && !isSenderIsLoggedIn())"
                        [(ngModel)]="projectpayment.billNumber"/>
             </div>
         </div>
@@ -236,7 +236,7 @@
                     Optional
                 </div>
                 <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer"
-                     *ngIf="project && !this.orderInfo && projectpayment.status != 'Paid'"
+                     *ngIf="project && !this.orderInfo && projectpayment.status != 'Paid'&& projectpayment.status != 'Voided'"
                      (click)="removeProject()">
                     Edit Project
                 </div>
@@ -256,7 +256,7 @@
                             </div>
                         </div>
                         <input *ngIf="!project" class="form-control form-search" type="search"
-                               placeholder="Find Project" [disabled]=" projectpayment.status == 'Paid'"
+                               placeholder="Find Project" [disabled]=" projectpayment.status == 'Paid' || projectpayment.status == 'Voided'"
                                [(ngModel)]="keywordsProject" (keyup)="projectFilter()" ngbDropdownToggle/>
                         <div class="padding-16"
                              style="border:1px solid #E1E6EF;  margin-top: -44px; width: 100%; max-height: 404px; overflow-x: hidden; overflow-y: scroll;"
@@ -292,7 +292,7 @@
                 Optional
             </div>
             <div class="col-md-6 btn-text-12 text-end text-primary cursor-pointer"
-                 *ngIf="order && !this.orderInfo && projectpayment.status != 'Paid' && (id==0||isSenderIsLoggedIn())" (click)="removOrder()">
+                 *ngIf="order && !this.orderInfo && projectpayment.status != 'Paid'&& projectpayment.status != 'Voided' && (id==0||isSenderIsLoggedIn())" (click)="removOrder()">
                 Edit Order
             </div>
         </div>
@@ -327,7 +327,7 @@
                     </div>
                     
                     <input *ngIf="!order" class="form-control form-search" type="search" placeholder="Find Order"
-                           [disabled]=" projectpayment.status == 'Paid'"
+                           [disabled]=" projectpayment.status == 'Paid' || projectpayment.status == 'Voided'"
                            [(ngModel)]="keywordsOrder" (keyup)="orderFilter()" ngbDropdownToggle/>
                     <div class="padding-16"
                          style="border:1px solid #E1E6EF; margin-top: -44px; width: 100%; max-height: 362px; overflow-x: hidden; overflow-y: scroll;"
@@ -366,7 +366,7 @@
             <div class="col-md-6 subtitle-400-12-32-up">
                 Notes & Attachments
             </div>
-            <div *ngIf="(id==0||isSenderIsLoggedIn())&&projectpayment.status != 'Paid'" class="col-md-6 text-end">
+            <div *ngIf="(id==0||isSenderIsLoggedIn())&&projectpayment.status != 'Paid'&& projectpayment.status != 'Voided'" class="col-md-6 text-end">
                 <button class="btn btn-outline-primary padding-8-16" (click)="addAttachment()">Add
                     Attachments
                 </button>
@@ -374,7 +374,7 @@
         </div>
         <div class="row mt-2-1">
             <div class="col-md-12 ">
-                <textarea class="form-control" [(ngModel)]="projectpayment.txtNotes" [disabled]=" projectpayment.status == 'Paid' || (id>0&&!isSenderIsLoggedIn())"
+                <textarea class="form-control" [(ngModel)]="projectpayment.txtNotes" [disabled]=" projectpayment.status == 'Paid' || projectpayment.status == 'Voided' || (id>0&&!isSenderIsLoggedIn())"
                           style="padding: 12px 16px; border-radius: 8px; width: 100%; height: 129px;"
                           placeholder="Notes & Description">
                 </textarea>
@@ -389,14 +389,14 @@
                     <div class="bold-600"
                          style="flex: 1;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;line-height: 24px;">
                         {{item.fileName}}</div>
-                    <i *ngIf="(id==0||isSenderIsLoggedIn())&&projectpayment.status != 'Paid'" class="fe-x float-end text-danger cursor-pointer line-24" (click)="openDeleteModal(i,item)"></i>
+                    <i *ngIf="(id==0||isSenderIsLoggedIn())&&projectpayment.status != 'Paid'&& projectpayment.status != 'Voided'" class="fe-x float-end text-danger cursor-pointer line-24" (click)="openDeleteModal(i,item)"></i>
                 </div>
             </div>
         </div>
-        <div *ngIf="(id==0||isSenderIsLoggedIn())&&projectpayment.status != 'Paid'" class="row mt-2-1">
+        <div *ngIf="(id==0||isSenderIsLoggedIn())&&projectpayment.status != 'Paid'&& projectpayment.status != 'Voided'" class="row mt-2-1">
             <div class="col-md-12 ">
                 <ngx-dropzone (change)="onSelectDocument($event)" class="dropzone justify-content-center"
-                              [disabled]=" projectpayment.status == 'Paid'"
+                              [disabled]=" projectpayment.status == 'Paid' || projectpayment.status == 'Voided'"
                               style="width: 100%;height: 120px;min-height: unset !important;border: 1px solid #2B52DD !important;background-color: #F7FAFC !important;border-radius: 16px !important;overflow: hidden;padding: 0 !important;"
                               #drop>
                     <ngx-dropzone-label class="d-flex flex-column align-items-center">
@@ -411,17 +411,17 @@
     </div>
 </div>
 
-<div class="row"
-     style="height: 72px;background-color: #2B2D30;box-shadow: 0px 25px 50px 0px #00000040;padding: 16px 32px;position: fixed;bottom: 0;width: 100%;margin-left: -32px;z-index: 9999;">
-    <div class="col">
+<div *ngIf="projectpayment.status !='Paid'&& projectpayment.status != 'Voided' && isSenderIsLoggedIn() || from=='Received Orders' " class="row"
+     style="height: 72px;background-color: #2B2D30;box-shadow: 0px 25px 50px 0px #00000040;padding: 16px 32px;position: fixed;bottom: 0;width: 100%;margin-left: -33px;z-index: 9999;">
+    <div *ngIf="id>0" class="col">
         <button class="btn keep-initial btn-outline-primary"
-                style="width: 100%;border:0px;box-shadow: none;" (click)="closeModal()">
+                style="width: 100%;border:0px;box-shadow: none;" (click)="cancel()">
             Cancel
         </button>
     </div>
-    <div *ngIf="(id==0||isSenderIsLoggedIn() || from=='Received Orders')&&projectpayment.status != 'Paid'" class="col">
+    <div class="col">
         <button type="button" class="btn btn-primary" style="width: 100%;box-shadow: none;" (click)="save()"
-                [disabled]="projectpayment.status=='Paid'">Send
+                [disabled]="projectpayment.status=='Paid' || projectpayment.status == 'Voided'">Send
         </button>
     </div>
 </div>

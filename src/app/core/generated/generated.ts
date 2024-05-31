@@ -191,6 +191,8 @@ export type Mutation = {
   projectorder_uploadfiles: Projectorderbooleanresult;
   /** approve project payment */
   projectpayment_approve: Projectpaymentresult;
+  /** cancel project payment */
+  projectpayment_cancel: Projectpaymentbooleanresult;
   /** deactivate project payment */
   projectpayment_deactivate: Projectpaymentbooleanresult;
   /** delete projectpayment file */
@@ -826,6 +828,14 @@ export type MutationProjectorder_UploadfilesArgs = {
 
 /** structure to handle table sms */
 export type MutationProjectpayment_ApproveArgs = {
+  id: Scalars['Int']['input'];
+  idCompany: Scalars['Int']['input'];
+  revision: Scalars['Int']['input'];
+};
+
+
+/** structure to handle table sms */
+export type MutationProjectpayment_CancelArgs = {
   id: Scalars['Int']['input'];
   idCompany: Scalars['Int']['input'];
   revision: Scalars['Int']['input'];
