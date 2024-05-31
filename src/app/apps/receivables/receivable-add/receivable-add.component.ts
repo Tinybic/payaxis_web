@@ -35,7 +35,7 @@ export class ReceivableAddComponent {
   @ViewChild('deleteModal') deleteModal: any;
   @ViewChild('amount') inputAmount: ElementRef;
   @ViewChild('drop') drop: any;
-  
+  @ViewChild('cancelModal') cancelModal: any;
   idCompany: number = 0;
   paymentTermsList = VENDOR_PAYMENTTERM;
   PROJECTLIST = [];
@@ -588,6 +588,16 @@ export class ReceivableAddComponent {
     this.modalRef.close();
   }
   
+  cancelModalRef;
+  openCancelModal(){
+    this.cancelModalRef= this.modalService.open(this.cancelModal, {
+      size: '443',
+      centered: true
+    });
+  }
+
+
+
   cancel(){
     if(this.id > 0 && this.isSenderIsLoggedIn()){
       this.apolloService.mutate(projectpayment_cancel, this.projectpayment).then((res) => {
@@ -601,6 +611,7 @@ export class ReceivableAddComponent {
         } else{
           this.toastrService.info(result.message, '');
         }
+        this.cancelModalRef.close();
       });
     }
   }
