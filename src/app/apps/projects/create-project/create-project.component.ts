@@ -227,7 +227,7 @@ export class CreateProjectComponent {
     this.newGroupModalRef.result.then((newGroupName) => {
       this.getGroupList(newGroupName);
     }, (reason) => {
-      console.log(reason);
+      //console.log(reason);
     })
   }
   
@@ -284,7 +284,7 @@ export class CreateProjectComponent {
     }, (reason) => {
       this.budgetAllocation = reason.budgetAllocation;
       this.formStep2Values['budget'].setValue(reason.projectBudget);
-      console.log(reason);
+      //console.log(reason);
     })
   }
   

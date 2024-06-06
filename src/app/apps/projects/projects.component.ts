@@ -236,7 +236,7 @@ export class ProjectsComponent extends Base implements OnInit {
         this.getCompanyGroupList(this.selectedGroup.id);
       },
       (reason) => {
-        console.log(reason);
+        //console.log(reason);
         this.getCompanyGroupList(this.selectedGroup.id);
       }
     );
@@ -301,7 +301,7 @@ export class ProjectsComponent extends Base implements OnInit {
         this.getCompanyGroupList(group.id);
       },
       (reason) => {
-        console.log(reason);
+        //console.log(reason);
       }
     );
   }
@@ -330,7 +330,7 @@ export class ProjectsComponent extends Base implements OnInit {
         this.getCompanyGroupList('all');
       },
       (reason) => {
-        console.log(reason);
+        //console.log(reason);
       }
     );
   }
@@ -399,7 +399,7 @@ export class ProjectsComponent extends Base implements OnInit {
         this.getProjectList();
       },
       (reason) => {
-        console.log(reason);
+        //console.log(reason);
       }
     );
   }
