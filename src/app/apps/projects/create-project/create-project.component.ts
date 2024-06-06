@@ -227,7 +227,7 @@ export class CreateProjectComponent {
     this.newGroupModalRef.result.then((newGroupName) => {
       this.getGroupList(newGroupName);
     }, (reason) => {
-      //console.log(reason);
+      // console.log(reason);
     })
   }
   
